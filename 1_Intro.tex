@@ -1,0 +1,31 @@
+\section{Introduction}
+\noindent \IEEEPARstart{T}{}he evolution and inevitable implementation of connected and autonomous vehicles (CAVs) on roads is a delicate if not utterly fascinating subject.
+Such systems operate in environments marked by inaccessibility, unexpected weather conditions, or unpredictable behavior by surrounding humans\cite{RobustnessAutonomy}. 
+Public safety is clearly a prime concern for putting autonomous vehicles into play, which means the meticulous and thorough process of developing, training, verifying, validating and certifying the artificial intelligence (AI) and software of the vehicle is a task to be handled with care. 
+It requires lots of flexibility and room to iterate to ensure the algorithms are given the sharpest understanding for maximum performance as well as to ensure that they are hazard-free in order for them to be deployed\cite{AirsimUnrealArticle}.\\\\
+\noindent There has been a number of catastrophic fatalities with self-driving vehicles due to lack of verification and validation (V\&V) of software e.g.\cite{FatalityExample}.
+As such, there appears the need for finding ways to V\&V the safety of such software, ranging from AI development to cyber-security, while maintaining minimal risks in testing.\\\\
+\noindent Existing vehicle manufacturers use vehicle dynamic simulators to model the physics of each component in a system. 
+Similarly, the use of simulation for traffic modelling is well established. 
+Despite these proven simulation tools, non of them provide all of the required functionalities together to fully simulate CAVs\cite{FrameworkAndChallenges}.\\\\
+While traffic-level simulators can model road layouts, they do not require as much realism or detail as CAVs require. On the other side, vehicle dynamics simulators include some of the high fidelity physics functionalities needed for CAV testing, but they only consider the vehicle itself and perhaps the road surface and gradient; they do not model any of the road layout, signs, traffic/street lights, other street furniture or surrounding infrastructure. 
+Most critically, neither types of simulators model sensors such as cameras, lidars or radars\cite{FrameworkAndChallenges}.\\\\ 
+Consequently, one of the major routes CAVs developers are moving towards is using physics engines, these are often games engine development frameworks, since they tick all of the boxes needed to fully simulate CAVs \cite{FrameworkAndChallenges}.  
+Robopilot, Capri, Carla, Apollo, Airsim, Udacity etc. are all examples of driving simulator projects that use physics engines to support development, training, and validation of autonomous driving systems software\cite{ListOfSimulators}. \\\\
+Test-retest reliability, is a key factor in V\&V of software. Tests need to be repeatable in order for one to eliminate bugs. 
+In other words physics engines has to be deterministic, or the level of non-determinism of the engine should be low and clearly defined, for them to be used in the context of V\&V of CAV software.\\\\
+\TODO{Remove this paragraph?} Determinism of gaming (physics) engines has not attracted much attention by engines' developers nor researchers. This previously was not important since in gaming, determinism is not critical. 
+Performance, on the other hand, is a subject of more interest in that field, where developers want games to work on all platforms and still be fast to provide a positive user experience. 
+On the contrary, determinism becomes vital and performance not when such engines are used in autonomous vehicles' AI development and testing. \\\\
+This paper aims to investigate how deterministic physics engines are for usage in V\&V for CAV simulations; and will cover the list of following points:
+\begin{itemize}[leftmargin=*]
+    \item Necessary background on gaming engines used in CAV simulations.
+    \item Review of sources of non-determinism in such engines.
+    \item Provide a method of how the level of non-determinism can be investigated and defined.
+    \item A case study showing the implementation of this methodology in an engine widely used in CAVs simulations (Unreal Engine).
+\end{itemize}
+ 
+ 
+
+
+

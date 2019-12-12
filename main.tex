@@ -1,0 +1,52 @@
+\documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
+\input{main.config.tex}
+\pagenumbering{gobble} %suppresses page numbers
+%-------------------------------------------------------------------------------
+
+\begin{document}
+
+\pagenumbering{arabic}
+
+\input{0_TittleAndAbastract.tex}
+
+\input{1_Intro.tex}
+
+\input{2_Background.tex}
+
+\input{3_Methodology.tex}
+
+\input{4_CaseStudy.tex}
+
+% \input{5_ResultsAndDiscussion.tex}
+
+\input{6_Conclusions.tex}
+
+\input{9_FundingAndReferences.tex}
+
+\end{document}
+
+
+
+
+
+% \begin{table*}
+% \centering
+% \caption{Feature importance given in rank order for prediction of elbow position ($\Phi$) for univariate and multivariate response. $\Sigma(NI)$ indicates sum of normalized importance for the top 5 features.}
+% \label{elbow_posn}
+% \begin{tabular}{|c||c|c|c||c|}
+% \hline
+% Rank & $\Phi(x)$ & $\Phi(y)$ & $\Phi(z)$ & $\Phi(xyz)$ \\
+% \hline
+% 1&left shoulder ($13P_x$) &left shoulder ($13P_y$)&left shoulder ($13P_z$) &right hip ($20P_x$)\\
+% 2&right hip ($20P_x$)     &right hip ($20P_x$)    &head ($7P_z$)           &left shoulder ($13P_z$)\\
+% 3&head ($7P_x$)           &right elbow ($10P_y$)  &right hand ($11P_z$)    &left shoulder ($13P_x$)\\
+% 4&right hand ($11P_x$)    &right hand ($11P_x$)   &head ($7P_x$)		   &right hand ($11P_x$)\\
+% 5&left shoulder ($13P_y$) &right elbow ($10P_x$)  &neck ($6P_z$)		   &head ($7P_x$)\\
+% \hline 
+% $\Sigma(NI)$ & 0.683      &0.684                  &0.723 					&0.570 \\
+% \hline
+% %RMSE-test ($m$) & 0.011& 0.017& 0.007& 0.024\\
+% %RMSE-unseen ($m$) & 0.086& 0.060& 0.038& 0.063\\
+% %\hline
+% \end{tabular}
+% \end{table*}
