@@ -1,0 +1,61 @@
+\begin{thebibliography}{10}
+
+\bibitem{RobustnessAutonomy}
+C.~Hutchison, M.~Zizyte, P.~Lanigan, D.~Guttendorf, M.~Wagner, C.~Le~Goues, and
+  P.~Koopman, ``Robustness testing of autonomy software,'' {\em International
+  Conference on Software Engineering: Software Engineering in Practice Track},
+  2018.
+
+\bibitem{AirsimUnrealArticle}
+S.~Miglio, ``Ai in unreal engine: learning through virtual simulations.''
+\newblock [Accessed: 26-03-2019].
+
+\bibitem{FatalityExample}
+``Preliminary report highway hwy18mh010,'' {\em National Transportation Safety
+  Board}, 2018.
+
+\bibitem{FrameworkAndChallenges}
+Z.~Saigol and A.~Peters, ``Verifying automated driving systems in simulation:
+  framework and challenges,'' {\em 25th ITS World Congress, Copenhagen}, 2018.
+
+\bibitem{ListOfSimulators}
+A.~Lakrintis, ``2018: The year of the simulation for autonomous vehicles,''
+  {\em Strategy Analytics}, 2018.
+
+\bibitem{GameEngineArchBook}
+J.~Gregory, {\em Game Engine Architecture}.
+\newblock CRC Press, 2~ed., 2017.
+
+\bibitem{GameProgPatternsBook}
+R.~Nystrom, {\em Game Programming Patterns}.
+\newblock Genever Benning, 1~ed., 2011.
+
+\bibitem{FloatingPointArithmeticArticle}
+D.~Goldberg, ``What every computer scientist should know about floating-point
+  arithmetic,'' {\em ACM Computing Surveys}, 1991.
+
+\bibitem{FloatingPointsBook}
+J.-M. Muller, N.~Brunie, F.~d. Dinechin, C.-P. Jeannerod, M.~Joldes,
+  V.~Lefevre, G.~Melquiond, N.~Revol, and S.~Torres, {\em Handbook of
+  Floating-Point Arithmetic}.
+\newblock Springer International Publishing, 2~ed., 2018.
+
+\bibitem{CARLABenchmark}
+F.~Codevilla, ``Carla 0.8.2: Driving benchmark.''
+\newblock [Accessed: 26-03-2019].
+
+\bibitem{AStarBook}
+L.~Kliemann and P.~Sanders, {\em Algorithm Engineering : Selected Results and
+  Surveys}.
+\newblock Springer, 2~ed., 2016.
+
+\bibitem{UnrealAIDocumentation}
+U.~S. Team, ``Ai and behavior trees.''
+\newblock [Accessed: 26-03-2019].
+
+\bibitem{CARLA_paper}
+A.~Dosovitskiy, G.~Ros, F.~Codevilla, A.~Lopez, and V.~Koltun, ``Carla: An open
+  urban driving simulator,'' {\em 1st Conference on Robot Learning (CoRL)},
+  2017.
+
+\end{thebibliography}

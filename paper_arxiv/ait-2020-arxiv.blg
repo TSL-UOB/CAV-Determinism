@@ -1,0 +1,54 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: ait-2020-arxiv.aux
+The style file: ieeetr.bst
+Database file #1: ait-2020.bib
+Repeated entry---line 231 of file ait-2020.bib
+ : }@inproceedings{Zoumpoulaki2010
+ :                                ,
+I'm skipping whatever remains of this entry
+Warning--empty booktitle in HVC2015
+Warning--empty publisher in StandardsBoard1990
+Warning--empty journal in Menzel2018
+You've used 34 entries,
+            1876 wiz_defined-function locations,
+            693 strings with 9994 characters,
+and the built_in function-call counts, 9131 in all, are:
+= -- 927
+> -- 320
+< -- 0
++ -- 121
+- -- 87
+* -- 616
+:= -- 1239
+add.period$ -- 42
+call.type$ -- 34
+change.case$ -- 31
+chr.to.int$ -- 0
+cite$ -- 37
+duplicate$ -- 457
+empty$ -- 908
+format.name$ -- 87
+if$ -- 2254
+int.to.chr$ -- 0
+int.to.str$ -- 34
+missing$ -- 31
+newline$ -- 113
+num.names$ -- 31
+pop$ -- 143
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 328
+stack$ -- 0
+substring$ -- 644
+swap$ -- 184
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 3
+while$ -- 97
+width$ -- 36
+write$ -- 326
+(There was 1 error message)

@@ -1,0 +1,17 @@
+\BOOKMARK [0][-]{chapter.1}{Investigating Determinism of Physics Engines for usage in CAV and V\046V simulations}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Introduction}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Background}{chapter.1}% 3
+\BOOKMARK [2][-]{subsection.1.2.1}{Overview of a Game Loop}{section.1.2}% 4
+\BOOKMARK [2][-]{subsection.1.2.2}{Sources of non-determinism}{section.1.2}% 5
+\BOOKMARK [1][-]{section.1.3}{Methodology}{chapter.1}% 6
+\BOOKMARK [2][-]{subsection.1.3.1}{Design experiment}{section.1.3}% 7
+\BOOKMARK [2][-]{subsection.1.3.2}{Internal settings}{section.1.3}% 8
+\BOOKMARK [2][-]{subsection.1.3.3}{External settings}{section.1.3}% 9
+\BOOKMARK [2][-]{subsection.1.3.4}{Running experiment}{section.1.3}% 10
+\BOOKMARK [2][-]{subsection.1.3.5}{Output and analysis}{section.1.3}% 11
+\BOOKMARK [1][-]{section.1.4}{Case Study}{chapter.1}% 12
+\BOOKMARK [2][-]{subsection.1.4.1}{Problem And Hypothesis}{section.1.4}% 13
+\BOOKMARK [2][-]{subsection.1.4.2}{Tests Description And Technicalities}{section.1.4}% 14
+\BOOKMARK [2][-]{subsection.1.4.3}{Results And Discussion}{section.1.4}% 15
+\BOOKMARK [1][-]{section.1.5}{Conclusions}{chapter.1}% 16
+\BOOKMARK [1][-]{section.1.6}{Acknowledgement}{chapter.1}% 17
