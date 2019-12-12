@@ -1,4 +1,25 @@
 \section{Case Study} \label{CaseStudy}
+\begin{table*}[h!]
+\centering
+\resizebox{1\textwidth}{!}{
+\begin{tabular}{clclcc}
+\toprule
+Test ID & Test description (See Fig \ref{Test_a} and \ref{Test_b}) & Collision/Intersection & Collision Type & Look ahead distance (m) & No. of repeats \\ \midrule
+1       & Two vehicles driving                   & No  & N/A & 2 & 1000 \\
+2       & Two vehicles driving                   & Yes & Vehicle and Vehicle & 2 & 1000 \\
+3       & Two vehicles driving and a pedestrian  & No  & N/A & 2 & 1000 \\
+4       & Two vehicles driving and a pedestrian  & Yes & Vehicle and Pedestrian & 2 & 1000 \\
+5       & Two pedestrians                        & No  & N/A & 2 & 1000 \\
+6       & Two pedestrians                        & Yes & Pedestrian and Pedestrian & 0.4 & 1000 \\
+7       & Two pedestrians                        & Yes & Pedestrian and Pedestrian & 2 & 1000 \\
+8       & Two pedestrians                        & Yes & Pedestrian and Pedestrian & 20 & 1000 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Set of experiments}
+\label{TableOfExperiments}
+\end{table*}
+
 \noindent Given that our interest is on CAV simulations, this study presents a number of experiments run on typical agents used in CAV simulations and their interactions with each other. These agents are classified into two, either vehicles(cars, motorcycles, bikes etc.) or pedestrians (can include animals). \\\\
 Here we will walk through our hypothesis, description of our tests and the analysis of results from the different tests. We will point out at each stage where we sit in Fig \ref{method_diagram} as we go through this case study.    
 
@@ -6,13 +27,6 @@ Here we will walk through our hypothesis, description of our tests and the analy
 \noindent We want to see whether using Unreal Engine 4 (UE4) along with CARLA \cite{CARLA_paper} for V\&V of CAV simulations is deterministic or not; if not then what is the level of non-determinism we will operate with, is it acceptable or not, and whether it worsens with stressing GPU and CPU.\\\\
 Our hypothesis is that since UE4 is a gaming engine it will not be deterministic, however, the level of non-determinism would be very low to acceptable limits that allows verification engineers to use it confidently.
 This behaviour is expected not to hold as the level of computing stress increases.     
-
-\subsection{Tests Description And Technicalities}\label{TestsDescriptionAndTechnicalities}
-\noindent The vehicles in this simulator follow a trajectory of waypoints using a PID controller and they have a look ahead distance that they target for from a given list of trajectory waypoints. 
-Similarly with the pedestrians, but they don't have a PID controller and they can do dynamic path planning using A* algorithm to reach their destination or in this case a trajectory waypoint.\\\\ 
-\noindent Starting from step 1 in the methodology diagram (Design Experiment); we are using a double mini roundabout for our experiments. 
-The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover the mandatory interactions between the different types of agents. 
-These are summed up in the following: \textbf{i)}Agents (vehicles and pedestrians) moving with no collisions or interactions with each other \textbf{ii)}Collision between vehicles \textbf{iii)}Collision (intersection) between pedestrians \textbf{iv)}Collision between vehicles and pedestrians.
 
 \begin{figure}[h]
     \centering
@@ -29,6 +43,19 @@ These are summed up in the following: \textbf{i)}Agents (vehicles and pedestrian
     \caption{Shows the setup of the different tests in Table \ref{TableOfExperiments} (a)Test IDs 1 to 4 (b)Test IDs 5 to 8.}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.48\textwidth]{Other/Figures/ExperimentsStressSummary.pdf}
+    \caption{Summary of mean deviation for the different tests runs plotted against the different CPU+GPU stresses.}
+
+    \label{ExperimentsStressSummary}
+\end{figure}
+\subsection{Tests Description And Technicalities}\label{TestsDescriptionAndTechnicalities}
+\noindent The vehicles in this simulator follow a trajectory of waypoints using a PID controller and they have a look ahead distance that they target for from a given list of trajectory waypoints. 
+Similarly with the pedestrians, but they don't have a PID controller and they can do dynamic path planning using A* algorithm to reach their destination or in this case a trajectory waypoint.\\\\ 
+\noindent Starting from step 1 in the methodology diagram (Design Experiment); we are using a double mini roundabout for our experiments. 
+The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover the mandatory interactions between the different types of agents. 
+These are summed up in the following: \textbf{i)}Agents (vehicles and pedestrians) moving with no collisions or interactions with each other \textbf{ii)}Collision between vehicles \textbf{iii)}Collision (intersection) between pedestrians \textbf{iv)}Collision between vehicles and pedestrians.\\\\
 \noindent Tests 1, 3and 5 are similar and there are no collisions in them, they were done as separate tests (instead of combining them into one) for the sake of simplicity and to use them as base lines for the tests-collision versions of them. The tests for collisions and non-collisions differ by a very slight change in the trajectory of the agents just to make them avoid colliding or intersecting with each other. \\\\ 
 Test 2 is a collision between two vehicles and no pedestrians involved and is depicted by \ref{Test_a}, where the two vehicles will approach the roundabout and crash.\\\\
 Tests 6,7 and 8 are tests with pedetrians having the same trajectory waypoints but walking in opposite directions to each other (see Fig \ref{Test_b}). 
@@ -42,23 +69,6 @@ Different levels of stress were applied to the computer; using the ------ to str
 In terms of running the experiments (step 4), \textbf{i)} the specs of the computer used are -----; \textbf{ii)} ------ was used to monitor the levels of GPU and CPU stress before and while the experiment was executed; \textbf{iii)} the computer was left alone and not used for any other tasks while the runs were executed.
 
 \subsection{Results And Discussion}
-\noindent We start by analysing (step 5) the summary from all of the tests plotted in Fig \ref{ExperimentsStressSummary}. 
-Note the dotted red line in the plot shows the millimeter (mm) level. 
-Below this level we assume that the level of non-determinism is very low for V\&V of CAV simulations purposes, that it is sufficient to assume the tests are deterministic. 
-This line can be moved up or down and it is entirely up to verification engineers where they want to define the level below which tests are assumed to be sufficiently deterministic, but just for the sake of argument we chose it to be the millimeter level.\\\\
-First, the tests with no collisions are considered, these represent tests 1, 3 and 5.
-Tests 1 and 3, which involves vehicles only and vehicles with pedestrians respectively, shows to be deterministic for stress levels below 50\% and as the stress level increases they surpass the red line crossing our defined deterministic level but still being sufficiently low (i.e. with in the centimeter level). This clearly shows how the load on a computer (i.e. stressing CPU and GPU) can have drastic effects on the repeatablitiy of tests.
-This is more specific to vehicle agents rather than pedestrians since the behaviour of pedestrians is consistent and remarkably below the mm level for all of the different levels of stress shown by test 5, where only pedestrians are involved with no collisions, from which it can be deduced that the mean deviation change with the stress level in test 3 was solely due to the vehicles. \\\\
-Next, given the pedestrians were showing a very robust and low level of non-determinism behaviour, we ran tests for pedestrians colliding (i.e. with paths intersection) for different look ahead distances to exploit whether that would cause any changes, but yet as it can be seen by lines Test IDs' 6,7 and 8 that their performance is consistent for all of the different tests.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.48\textwidth]{Other/Figures/ExperimentsStressSummary.pdf}
-    \caption{Summary of mean deviation for the different tests runs plotted against the different CPU+GPU stresses.}
-
-    \label{ExperimentsStressSummary}
-\end{figure}
-
 \begin{figure*}[h]
     \centering
     \begin{subfigure}{.49\textwidth}
@@ -88,6 +98,15 @@ Next, given the pedestrians were showing a very robust and low level of non-dete
     \end{subfigure}
     \caption{Test ID 4 (a)Mean deviation vs simulation time for 25\% stress. (b)Pre and post collision mean deviation at different CPU+GPU stresses.}
 \end{figure*}
+\noindent We start by analysing (step 5) the summary from all of the tests plotted in Fig \ref{ExperimentsStressSummary}. 
+Note the dotted red line in the plot shows the millimeter (mm) level. 
+Below this level we assume that the level of non-determinism is very low for V\&V of CAV simulations purposes, that it is sufficient to assume the tests are deterministic. 
+This line can be moved up or down and it is entirely up to verification engineers where they want to define the level below which tests are assumed to be sufficiently deterministic, but just for the sake of argument we chose it to be the millimeter level.\\\\
+First, the tests with no collisions are considered, these represent tests 1, 3 and 5.
+Tests 1 and 3, which involves vehicles only and vehicles with pedestrians respectively, shows to be deterministic for stress levels below 50\% and as the stress level increases they surpass the red line crossing our defined deterministic level but still being sufficiently low (i.e. with in the centimeter level). This clearly shows how the load on a computer (i.e. stressing CPU and GPU) can have drastic effects on the repeatablitiy of tests.
+This is more specific to vehicle agents rather than pedestrians since the behaviour of pedestrians is consistent and remarkably below the mm level for all of the different levels of stress shown by test 5, where only pedestrians are involved with no collisions, from which it can be deduced that the mean deviation change with the stress level in test 3 was solely due to the vehicles. \\\\
+Next, given the pedestrians were showing a very robust and low level of non-determinism behaviour, we ran tests for pedestrians colliding (i.e. with paths intersection) for different look ahead distances to exploit whether that would cause any changes, but yet as it can be seen by lines Test IDs' 6,7 and 8 that their performance is consistent for all of the different tests.
+
 
 \noindent Finally, we look at the other collisions tests, tests 2 and 4 where the tests correspond to a collision between two vehicles and a collision between a vehicle and a pedestrian respectively. 
 We observe that in both of these tests the mean deviation is always above our red line regardless of the stress level, nevertheless still increasing the stress levels shows worsening effects. \\\\

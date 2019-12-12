@@ -1,6 +1,12 @@
 \section{Methodology} \label{method}
 \noindent A method for determining the level of non-determinism of an engine is presented in this section and the working flow of the method is shown in Figure \ref{method_diagram}. Each of the steps in the method is elaborated in the following subsections.
+\begin{figure*}[h!]
+    \centering
+    \includegraphics[width=0.99\linewidth]{Other/Figures/MethodologyDiagramCropped.pdf}
+    \caption{Shows a flow diagram of the methodology proposed to define the level of non-determinism of a physics engine.}
 
+    \label{method_diagram}
+\end{figure*}
 \subsection{Design experiment}
 \noindent When designing the experiment(s) one needs to bare in mind the following two questions: i) Is the engine deterministic? ii) If not, how does its level of non-determinism vary?\\\\
 In simulation, actors can either follow a series of trajectory way points or they get given the destination and their AI path plans to that destination. 
@@ -14,25 +20,6 @@ It is crucial to also make sure that any randomisation factors are eliminated in
 \noindent Disabling rendering or running in headless mode is a way of attempting to decouple the rendering engine from the physics engine, which theoretically should affect positively the repeatablility of tests. 
 The downside of most physics engines is that they do not provide a headless mode in the editor setup, thus this could make running in headless mode a real challenge for verification engineers.  \\\\
 \noindent Running in editor or deployed mode can sometimes cause massive differences in performance, with deployed mode being worse, mostly due to the way settings get packaged when in deployed mode.
-
-\begin{table*}[b]
-\centering
-\begin{tabular}{clclcc}
-\toprule
-Test ID & Test description (See Fig \ref{Test_a} and \ref{Test_b}) & Collision/Intersection & Collision Type & Look ahead distance (m) & No. of repeats \\ \midrule
-1       & Two vehicles driving                   & No  & N/A & 2 & 1000 \\
-2       & Two vehicles driving                   & Yes & Vehicle and Vehicle & 2 & 1000 \\
-3       & Two vehicles driving and a pedestrian  & No  & N/A & 2 & 1000 \\
-4       & Two vehicles driving and a pedestrian  & Yes & Vehicle and Pedestrian & 2 & 1000 \\
-5       & Two pedestrians                        & No  & N/A & 2 & 1000 \\
-6       & Two pedestrians                        & Yes & Pedestrian and Pedestrian & 0.4 & 1000 \\
-7       & Two pedestrians                        & Yes & Pedestrian and Pedestrian & 2 & 1000 \\
-8       & Two pedestrians                        & Yes & Pedestrian and Pedestrian & 20 & 1000 \\
-\bottomrule
-\end{tabular}
-\caption{Set of experiments}
-\label{TableOfExperiments}
-\end{table*}
 
 \subsection{External settings}
 \noindent Running other programs in the background, like having a web browser open, or running the physics engine in the background while performing other tasks on the same machine does also have an effect; because it alters the CPU and GPU utilisation of tasks.\\\\ 

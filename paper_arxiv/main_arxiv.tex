@@ -1,10 +1,11 @@
-\documentclass[runningheads,a4paper]{llncs}
+\documentclass[runningheads,twocolumn,a4paper,10pt]{llncs}
 \usepackage{etex}
 \reserveinserts{28}
 \pdfoutput=1
 
 \setcounter{tocdepth}{3}
 
+\usepackage[a4paper, total={7in, 10in}]{geometry}
 \usepackage[linesnumbered,lined,boxed,commentsnumbered,ruled]{algorithm2e}
 \renewcommand{\algorithmcfname}{ALGORITHM}
 \SetAlFnt{\small}
@@ -41,6 +42,7 @@
 % \usepackage{subfig}
 \usepackage{subcaption}
 \usepackage{breakcites}
+% \usepackage{multicol}
 \setcounter{secnumdepth}{3}
 
 
@@ -88,13 +90,13 @@
 \title{Investigating Determinism of Physics Engines for usage in CAV and V\&V simulations}
 
 
-\titlerunning{Investigating Determinism of Physics Engines for usage in CAV and V\&V simulations}
+\titlerunning{Determinism of Physics Engines for CAV}
 
 
-\author{Abanoub Ghobrial\inst{1,3}, Greg Chance\inst{1,3}, Severin Lemaignan\inst{2,3}, \\Tony Pipe\inst{2,3}, Kerstin Eder\inst{1,2}}
+\author{Abanoub Ghobrial\inst{1,3}, Greg Chance\inst{1,3}, Severin Lemaignan\inst{2,3}, Tony Pipe\inst{2,3}, Kerstin Eder\inst{1,2}}
 
 \authorrunning{A. Ghobrial et al.}
-\institute{University of Bristol, Bristol, UK \and University of the West of England, Bristol, UK \and Bristol Robotics Laboratory, University of the West of England, Bristol, UK}
+\institute{University of Bristol, Bristol, UK \and University of the West of England, Bristol, UK \and Bristol Robotics Laboratory, Bristol, UK}
 \tocauthor{Authors' Instructions}
 \maketitle
 
@@ -106,10 +108,12 @@
                         \rightskip=\z@ \@plus 8em\pretolerance=10000 }}
 \makeatother
 
+% \begin{multicols}{2}
 
-\begin{abstract}
-\noindent The industry and certification bodies for connected autonomous vehicles is adopting the use of physics and gaming engines to develop, train, verify, validate and certify the software of these autonomous systems in simulation. It is important for these engines to be deterministic in order for one to carry out these different processes. However, such engines are inherently non-deterministic. We propose a method by which one can identify the region where they can operate in these engines and guarantee that the level of non determinism is sufficiently low that it can be assumed to be deterministic. We also implement this method on a case study and show how we identified the region (encompassing computational utilisation and behaviours in simulation) at which one can guarantee performance to be sufficiently deterministic.  
-\end{abstract}
+
+% \begin{abstract}
+\textbf{\textit{Abstract}--The industry and certification bodies for connected autonomous vehicles is adopting the use of physics and gaming engines to develop, train, verify, validate and certify the software of these autonomous systems in simulation. It is important for these engines to be deterministic in order for one to carry out these different processes. However, such engines are inherently non-deterministic. We propose a method by which one can identify the region where they can operate in these engines and guarantee that the level of non determinism is sufficiently low that it can be assumed to be deterministic. We also implement this method on a case study and show how we identified the region (encompassing computational utilisation and behaviours in simulation) at which one can guarantee performance to be sufficiently deterministic.}  
+% \end{abstract}
 
 \input{1_Intro.tex}
 
@@ -119,7 +123,6 @@
 
 \input{4_CaseStudy.tex}
 
-% \input{5_ResultsAndDiscussion.tex}
 
 \input{6_Conclusions.tex}
 
@@ -132,6 +135,7 @@ Vehicles (CCAV), delivered in partnership with Innovate UK under grant numbers
 
 \bibliography{IROS.bib}
 
+% \end{multicols}
 \end{document}
 
 \grid

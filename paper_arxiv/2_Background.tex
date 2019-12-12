@@ -7,7 +7,7 @@ Figure \ref{GameEngineLoopDiagram} depicts a very basic diagram showing the flow
 A traditional game loop is broken up into three distinct phases: processing the inputs, updating the game world (Physics Engine), and generating outputs (Rendering).
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\textwidth]{Other/Figures/GameEngineLoop.pdf}
+\includegraphics[width=0.5\textwidth]{Other/Figures/GameEngineLoop.pdf}
 \caption{Game engine loop block diagram}
 \label{GameEngineLoopDiagram}
 \end{figure}
@@ -42,13 +42,6 @@ After a few hundred meters, precision issues will start to occur, and will get p
 This is due to the values of the coordinates being used in calculations are getting bigger and hence will not cope with small values that are critical for V\&V testing purposes. 
 A solution to this problem is perhaps every time the simulations moves 100 meters away from the origin the entire world will move by 100m in the opposite direction. Thus, avoiding getting into floating point issues.\cite{FloatingPointArithmeticArticle}\\\\
 \noindent There are many scenarios that could be addressed, and solutions to them will entirely depend on the characteristics of that specific scenario. There is no generalised solution for the floating problem, regardless of how good computers get there will always be a limitation. However, floating points as they stand could just be sufficient for V\&V testing purposes. Whenever they are not, smart solutions can be found to accommodate for these limitations.\\\\
-\begin{figure*}[b]
-    \centering
-    \includegraphics[width=0.99\linewidth]{Other/Figures/MethodologyDiagramCropped.pdf}
-    \caption{Shows a flow diagram of the methodology proposed to define the level of non-determinism of a physics engine.}
-
-    \label{method_diagram}
-\end{figure*}
 \noindent\underline{\textit{Navigation meshes and AI:}}
 Some CAV simulator developers claim that the built-in physics engines' AI is non-deterministic\cite{CARLABenchmark}. 
 The validity of this depends on what are the built in AI algorithms being used by the engine. 

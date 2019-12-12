@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.12.12)  12 DEC 2019 14:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.12.12)  12 DEC 2019 16:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -29,6 +29,11 @@ File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 (/usr/share/texlive/texmf-dist/tex/latex/tools/multicol.sty
 Package: multicol 2017/04/11 v1.8q multicolumn formatting (FMi)
 \c@tracingmulticols=\count87
+
+
+Package multicol Warning: May not work with the twocolumn option on input line 
+134.
+
 \mult@box=\box26
 \multicol@leftmargin=\dimen103
 \c@unbalance=\count88
@@ -74,8 +79,7 @@ Package: multicol 2017/04/11 v1.8q multicolumn formatting (FMi)
 \mult@nat@firstbox=\box50
 \colbreak@box=\box51
 \mc@col@check@num=\count95
-)
-(/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/aliascnt.sty
+) (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/aliascnt.sty
 Package: aliascnt 2009/09/08 v1.3 Alias counter (HO)
 
 (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/remreset.sty))
@@ -134,9 +138,39 @@ LaTeX Font Info:    Redeclaring math symbol \Omega on input line 372.
 Package: etex 2016/08/01 v2.7 eTeX basic definition package (PEB,DPC)
 \et@xins=\count116
 )
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks18
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count117
+\Gm@cntv=\count118
+\c@Gm@tempcnt=\count119
+\Gm@bindingoffset=\dimen125
+\Gm@wd@mp=\dimen126
+\Gm@odd@mp=\dimen127
+\Gm@even@mp=\dimen128
+\Gm@layoutwidth=\dimen129
+\Gm@layoutheight=\dimen130
+\Gm@layouthoffset=\dimen131
+\Gm@layoutvoffset=\dimen132
+\Gm@dimlist=\toks19
+)
 (/usr/share/texlive/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
 Package: algorithm2e 2017/07/18 v5.2 algorithms environments
-\c@AlgoLine=\count117
+\c@AlgoLine=\count120
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
@@ -145,7 +179,7 @@ Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 
 (/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
 Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
-\c@checkoddpage=\count118
+\c@checkoddpage=\count121
 )
 (/usr/share/texlive/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
@@ -161,12 +195,12 @@ Package: relsize 2013/03/29 ver 4.1
 \skiplength=\skip51
 \algomargin=\skip52
 \skipalgocfslide=\skip53
-\algowidth=\dimen125
-\inoutsize=\dimen126
-\inoutindent=\dimen127
-\interspacetitleruled=\dimen128
-\interspacealgoruled=\dimen129
-\interspacetitleboxruled=\dimen130
+\algowidth=\dimen133
+\inoutsize=\dimen134
+\inoutindent=\dimen135
+\interspacetitleruled=\dimen136
+\interspacealgoruled=\dimen137
+\interspacetitleboxruled=\dimen138
 \algocf@ruledwidth=\skip54
 \algocf@inoutbox=\box54
 \algocf@inputbox=\box55
@@ -183,9 +217,9 @@ Package: relsize 2013/03/29 ver 4.1
 \algoheightrule=\skip61
 \algotitleheightruledefault=\skip62
 \algotitleheightrule=\skip63
-\c@algocfline=\count119
-\c@algocfproc=\count120
-\c@algocf=\count121
+\c@algocfline=\count122
+\c@algocfproc=\count123
+\c@algocf=\count124
 \algocf@algoframe=\box60
 \algocf@algobox=\box61
 )
@@ -284,11 +318,10 @@ Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
 
 (/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
 (/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks18
-\XKV@tempa@toks=\toks19
-
-(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex))
-\XKV@depth=\count122
+\XKV@toks=\toks20
+\XKV@tempa@toks=\toks21
+)
+\XKV@depth=\count125
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
@@ -316,9 +349,9 @@ Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
-\pgfutil@everybye=\toks20
-\pgfutil@tempdima=\dimen131
-\pgfutil@tempdimb=\dimen132
+\pgfutil@everybye=\toks22
+\pgfutil@tempdima=\dimen139
+\pgfutil@tempdimb=\dimen140
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
 ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
@@ -346,38 +379,38 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 99.
 )
-\Gin@req@height=\dimen133
-\Gin@req@width=\dimen134
+\Gin@req@height=\dimen141
+\Gin@req@width=\dimen142
 )
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
 Package: pgfsys 2014/07/09 v3.0.1a (rcs-revision 1.48)
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks21
-\pgfkeys@temptoks=\toks22
+\pgfkeys@pathtoks=\toks23
+\pgfkeys@temptoks=\toks24
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
 ex
-\pgfkeys@tmptoks=\toks23
+\pgfkeys@tmptoks=\toks25
 ))
-\pgf@x=\dimen135
-\pgf@y=\dimen136
-\pgf@xa=\dimen137
-\pgf@ya=\dimen138
-\pgf@xb=\dimen139
-\pgf@yb=\dimen140
-\pgf@xc=\dimen141
-\pgf@yc=\dimen142
+\pgf@x=\dimen143
+\pgf@y=\dimen144
+\pgf@xa=\dimen145
+\pgf@ya=\dimen146
+\pgf@xb=\dimen147
+\pgf@yb=\dimen148
+\pgf@xc=\dimen149
+\pgf@yc=\dimen150
 \w@pgf@writea=\write4
 \r@pgf@reada=\read1
-\c@pgf@counta=\count123
-\c@pgf@countb=\count124
-\c@pgf@countc=\count125
-\c@pgf@countd=\count126
-\t@pgf@toka=\toks24
-\t@pgf@tokb=\toks25
-\t@pgf@tokc=\toks26
+\c@pgf@counta=\count126
+\c@pgf@countb=\count127
+\c@pgf@countc=\count128
+\c@pgf@countd=\count129
+\t@pgf@toka=\toks26
+\t@pgf@tokb=\toks27
+\t@pgf@tokc=\toks28
  (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
 )
@@ -393,8 +426,8 @@ File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
 tex
 File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
-\pgfsyssoftpath@smallbuffer@items=\count127
-\pgfsyssoftpath@bigbuffer@items=\count128
+\pgfsyssoftpath@smallbuffer@items=\count130
+\pgfsyssoftpath@bigbuffer@items=\count131
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
 tex
@@ -407,12 +440,12 @@ Package: pgfcore 2010/04/11 v3.0.1a (rcs-revision 1.7)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
-\pgfmath@dimen=\dimen143
-\pgfmath@count=\count129
+\pgfmath@dimen=\dimen151
+\pgfmath@count=\count132
 \pgfmath@box=\box63
-\pgfmath@toks=\toks27
-\pgfmath@stack@operand=\toks28
-\pgfmath@stack@operation=\toks29
+\pgfmath@toks=\toks29
+\pgfmath@stack@operand=\toks30
+\pgfmath@stack@operation=\toks31
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
@@ -432,37 +465,37 @@ tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
 thmetics.code.tex)))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count130
+\c@pgfmathroundto@lastzeros=\count133
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
 x
 File: pgfcorepoints.code.tex 2013/10/07  (rcs-revision 1.27)
-\pgf@picminx=\dimen144
-\pgf@picmaxx=\dimen145
-\pgf@picminy=\dimen146
-\pgf@picmaxy=\dimen147
-\pgf@pathminx=\dimen148
-\pgf@pathmaxx=\dimen149
-\pgf@pathminy=\dimen150
-\pgf@pathmaxy=\dimen151
-\pgf@xx=\dimen152
-\pgf@xy=\dimen153
-\pgf@yx=\dimen154
-\pgf@yy=\dimen155
-\pgf@zx=\dimen156
-\pgf@zy=\dimen157
+\pgf@picminx=\dimen152
+\pgf@picmaxx=\dimen153
+\pgf@picminy=\dimen154
+\pgf@picmaxy=\dimen155
+\pgf@pathminx=\dimen156
+\pgf@pathmaxx=\dimen157
+\pgf@pathminy=\dimen158
+\pgf@pathmaxy=\dimen159
+\pgf@xx=\dimen160
+\pgf@xy=\dimen161
+\pgf@yx=\dimen162
+\pgf@yy=\dimen163
+\pgf@zx=\dimen164
+\pgf@zy=\dimen165
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
 code.tex
 File: pgfcorepathconstruct.code.tex 2013/10/07  (rcs-revision 1.29)
-\pgf@path@lastx=\dimen158
-\pgf@path@lasty=\dimen159
+\pgf@path@lastx=\dimen166
+\pgf@path@lasty=\dimen167
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
 .tex
 File: pgfcorepathusage.code.tex 2014/11/02  (rcs-revision 1.24)
-\pgf@shorten@end@additional=\dimen160
-\pgf@shorten@start@additional=\dimen161
+\pgf@shorten@end@additional=\dimen168
+\pgf@shorten@start@additional=\dimen169
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
 x
@@ -470,19 +503,20 @@ File: pgfcorescopes.code.tex 2015/05/08  (rcs-revision 1.46)
 \pgfpic=\box64
 \pgf@hbox=\box65
 \pgf@layerbox@main=\box66
-\pgf@picture@serial@count=\count131
+\pgf@picture@serial@count=\count134
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
 ode.tex
 File: pgfcoregraphicstate.code.tex 2014/11/02  (rcs-revision 1.12)
-\pgflinewidth=\dimen162
+\pgflinewidth=\dimen170
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
 s.code.tex
 File: pgfcoretransformations.code.tex 2015/08/07  (rcs-revision 1.20)
-\pgf@pt@x=\dimen163
-\pgf@pt@y=\dimen164
-\pgf@pt@temp=\dimen165
+\pgf@pt@x=\dimen171
+Normal \dimen register pool exhausted, switching to extended pool.
+\pgf@pt@y=\dimen256
+\pgf@pt@temp=\dimen257
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
 File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
@@ -498,12 +532,12 @@ File: pgfcorepathprocessing.code.tex 2013/09/09  (rcs-revision 1.9)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
 x
 File: pgfcorearrows.code.tex 2015/05/14  (rcs-revision 1.43)
-\pgfarrowsep=\dimen166
+\pgfarrowsep=\dimen258
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
-\pgf@max=\dimen167
-\pgf@sys@shading@range@num=\count132
+\pgf@max=\dimen259
+\pgf@sys@shading@range@num=\count135
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
@@ -534,8 +568,8 @@ File: pgfmoduleplot.code.tex 2015/08/03  (rcs-revision 1.13)
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
 .sty
 Package: pgfcomp-version-0-65 2007/07/03 v3.0.1a (rcs-revision 1.7)
-\pgf@nodesepstart=\dimen168
-\pgf@nodesepend=\dimen169
+\pgf@nodesepstart=\dimen260
+\pgf@nodesepend=\dimen261
 )
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
 .sty
@@ -549,10 +583,10 @@ Package: pgfcomp-version-1-18 2007/07/23 v3.0.1a (rcs-revision 1.1)
 Package: pgffor 2013/12/13 v3.0.1a (rcs-revision 1.25)
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
-\pgffor@iter=\dimen170
-\pgffor@skip=\dimen171
-\pgffor@stack=\toks30
-\pgffor@toks=\toks31
+\pgffor@iter=\dimen262
+\pgffor@skip=\dimen263
+\pgffor@stack=\toks32
+\pgffor@toks=\toks33
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
 Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
@@ -560,32 +594,31 @@ Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
 .code.tex
 File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
-\pgf@plot@mark@count=\count133
-Normal \dimen register pool exhausted, switching to extended pool.
-\pgfplotmarksize=\dimen256
+\pgf@plot@mark@count=\count136
+\pgfplotmarksize=\dimen264
 )
-\tikz@lastx=\dimen257
-\tikz@lasty=\dimen258
-\tikz@lastxsaved=\dimen259
-\tikz@lastysaved=\dimen260
-\tikzleveldistance=\dimen261
-\tikzsiblingdistance=\dimen262
+\tikz@lastx=\dimen265
+\tikz@lasty=\dimen266
+\tikz@lastxsaved=\dimen267
+\tikz@lastysaved=\dimen268
+\tikzleveldistance=\dimen269
+\tikzsiblingdistance=\dimen270
 \tikz@figbox=\box69
 \tikz@figbox@bg=\box70
 \tikz@tempbox=\box71
 \tikz@tempbox@bg=\box72
-\tikztreelevel=\count134
-\tikznumberofchildren=\count135
-\tikznumberofcurrentchild=\count136
-\tikz@fig@count=\count137
+\tikztreelevel=\count137
+\tikznumberofchildren=\count138
+\tikznumberofcurrentchild=\count139
+\tikz@fig@count=\count140
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
-\pgfmatrixcurrentrow=\count138
-\pgfmatrixcurrentcolumn=\count139
-\pgf@matrix@numberofcolumns=\count140
+\pgfmatrixcurrentrow=\count141
+\pgfmatrixcurrentcolumn=\count142
+\pgf@matrix@numberofcolumns=\count143
 )
-\tikz@expandcount=\count141
+\tikz@expandcount=\count144
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarytopaths.code.tex
@@ -597,87 +630,87 @@ File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.1a (rcs-revision 1.7)
 )
 (/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count142
-\calc@Bcount=\count143
-\calc@Adimen=\dimen263
-\calc@Bdimen=\dimen264
+\calc@Acount=\count145
+\calc@Bcount=\count146
+\calc@Adimen=\dimen271
+\calc@Bdimen=\dimen272
 \calc@Askip=\skip64
 \calc@Bskip=\skip65
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count144
+\calc@Ccount=\count147
 \calc@Cskip=\skip66
 )
-\c@@todonotes@numberoftodonotes=\count145
+\c@@todonotes@numberoftodonotes=\count148
 )
 (/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2012/02/13 v1.0a Color table columns (DPC)
 
 (/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
 Package: array 2016/10/06 v2.4d Tabular extension package (FMi)
-\col@sep=\dimen265
-\extrarowheight=\dimen266
-\NC@list=\toks32
+\col@sep=\dimen273
+\extrarowheight=\dimen274
+\NC@list=\toks34
 \extratabsurround=\skip67
 \backup@length=\skip68
 )
-\everycr=\toks33
+\everycr=\toks35
 \minrowclearance=\skip69
 )
 (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2016/04/27 v1.618033 publication quality tables
-\heavyrulewidth=\dimen267
-\lightrulewidth=\dimen268
-\cmidrulewidth=\dimen269
-\belowrulesep=\dimen270
-\belowbottomsep=\dimen271
-\aboverulesep=\dimen272
-\abovetopsep=\dimen273
-\cmidrulesep=\dimen274
-\cmidrulekern=\dimen275
-\defaultaddspace=\dimen276
-\@cmidla=\count146
-\@cmidlb=\count147
-\@aboverulesep=\dimen277
-\@belowrulesep=\dimen278
-\@thisruleclass=\count148
-\@lastruleclass=\count149
-\@thisrulewidth=\dimen279
+\heavyrulewidth=\dimen275
+\lightrulewidth=\dimen276
+\cmidrulewidth=\dimen277
+\belowrulesep=\dimen278
+\belowbottomsep=\dimen279
+\aboverulesep=\dimen280
+\abovetopsep=\dimen281
+\cmidrulesep=\dimen282
+\cmidrulekern=\dimen283
+\defaultaddspace=\dimen284
+\@cmidla=\count149
+\@cmidlb=\count150
+\@aboverulesep=\dimen285
+\@belowrulesep=\dimen286
+\@thisruleclass=\count151
+\@lastruleclass=\count152
+\@thisrulewidth=\dimen287
 )
 (/usr/share/texlive/texmf-dist/tex/latex/capt-of/capt-of.sty
 Package: capt-of 2009/12/29 v0.2 standard captions outside of floats
 )
 (/usr/share/texlive/texmf-dist/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen280
-\c@nlinenum=\count150
-\TeXr@lab=\toks34
+\rotheadsize=\dimen288
+\c@nlinenum=\count153
+\TeXr@lab=\toks36
 )
 (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
 \multirow@colwidth=\skip70
-\multirow@cntb=\count151
+\multirow@cntb=\count154
 \multirow@dima=\skip71
-\bigstrutjot=\dimen281
+\bigstrutjot=\dimen289
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count152
+\lst@mode=\count155
 \lst@gtempboxa=\box73
-\lst@token=\toks35
-\lst@length=\count153
-\lst@currlwidth=\dimen282
-\lst@column=\count154
-\lst@pos=\count155
-\lst@lostspace=\dimen283
-\lst@width=\dimen284
-\lst@newlines=\count156
-\lst@lineno=\count157
-\lst@maxwidth=\dimen285
+\lst@token=\toks37
+\lst@length=\count156
+\lst@currlwidth=\dimen290
+\lst@column=\count157
+\lst@pos=\count158
+\lst@lostspace=\dimen291
+\lst@width=\dimen292
+\lst@newlines=\count159
+\lst@lineno=\count160
+\lst@maxwidth=\dimen293
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-\c@lstnumber=\count158
-\lst@skipnumbers=\count159
+\c@lstnumber=\count161
+\lst@skipnumbers=\count162
 \lst@framebox=\box74
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
@@ -695,55 +728,56 @@ Package: amstext 2000/06/29 v2.01 AMS text
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks36
-\ex@=\dimen286
+\@emptytoks=\toks38
+\ex@=\dimen294
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen287
+\pmbraise@=\dimen295
 )
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2016/03/08 v2.02 operator names
 )
-\inf@bad=\count160
+\inf@bad=\count163
 LaTeX Info: Redefining \frac on input line 213.
-\uproot@=\count161
-\leftroot@=\count162
+\uproot@=\count164
+\leftroot@=\count165
 LaTeX Info: Redefining \overline on input line 375.
-\classnum@=\count163
-\DOTSCASE@=\count164
+\classnum@=\count166
+\DOTSCASE@=\count167
 LaTeX Info: Redefining \ldots on input line 472.
 LaTeX Info: Redefining \dots on input line 475.
 LaTeX Info: Redefining \cdots on input line 596.
 \Mathstrutbox@=\box75
 \strutbox@=\box76
-\big@size=\dimen288
+\big@size=\dimen296
 LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
 
 
 Package amsmath Warning: Unable to redefine math accent \vec.
 
-\macc@depth=\count165
-\c@MaxMatrixCols=\count166
+\macc@depth=\count168
+\c@MaxMatrixCols=\count169
 \dotsspace@=\muskip10
-\c@parentequation=\count167
-\dspbrk@lvl=\count168
-\tag@help=\toks37
-\row@=\count169
-\column@=\count170
-\maxfields@=\count171
-\andhelp@=\toks38
-\eqnshift@=\dimen289
-\alignsep@=\dimen290
-\tagshift@=\dimen291
-\tagwidth@=\dimen292
-\totwidth@=\dimen293
-\lineht@=\dimen294
-\@envbody=\toks39
+\c@parentequation=\count170
+\dspbrk@lvl=\count171
+\tag@help=\toks39
+Normal \count register pool exhausted, switching to extended pool.
+\row@=\count277
+\column@=\count278
+\maxfields@=\count279
+\andhelp@=\toks40
+\eqnshift@=\dimen297
+\alignsep@=\dimen298
+\tagshift@=\dimen299
+\tagwidth@=\dimen300
+\totwidth@=\dimen301
+\lineht@=\dimen302
+\@envbody=\toks41
 \multlinegap=\skip73
 \multlinetaggap=\skip74
-\mathdisplay@stack=\toks40
+\mathdisplay@stack=\toks42
 LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 ) (/usr/share/texlive/texmf-dist/tex/latex/caption/subcaption.sty
@@ -755,13 +789,13 @@ Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
 (/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 67.
-\captionmargin=\dimen295
-\captionmargin@=\dimen296
-\captionwidth=\dimen297
-\caption@tempdima=\dimen298
-\caption@indent=\dimen299
-\caption@parindent=\dimen300
-\caption@hangindent=\dimen301
+\captionmargin=\dimen303
+\captionmargin@=\dimen304
+\captionwidth=\dimen305
+\caption@tempdima=\dimen306
+\caption@indent=\dimen307
+\caption@parindent=\dimen308
+\caption@hangindent=\dimen309
 Package caption Info: Unknown document class (or package),
 (caption)             standard defaults will be used.
 )
@@ -774,12 +808,11 @@ Package caption Info: \@makecaption = \long macro:#1#2->\small \vskip \abovecap
 tionskip \sbox \@tempboxa {{\bfseries #1.} #2}\ifdim \wd \@tempboxa >\hsize {\b
 fseries #1.} #2\par \else \global \@minipagefalse \hb@xt@ \hsize {\hfil \box \@
 tempboxa \hfil }\fi \vskip \belowcaptionskip .
-Normal \count register pool exhausted, switching to extended pool.
-\c@ContinuedFloat=\count277
+\c@ContinuedFloat=\count280
 Package caption Info: listings package is loaded.
 )
-\c@subfigure=\count278
-\c@subtable=\count279
+\c@subfigure=\count281
+\c@subtable=\count282
 ) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2018/02/06 v6.86b Hypertext links for LaTeX
 
@@ -794,10 +827,9 @@ Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
 Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
-Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
-Package ifvtex Info: VTeX not detected.
+Package hobsub Info: Skipping package `ifvtex' (already loaded).
 Package: intcalc 2016/05/16 v1.2 Expandable calculations with integers (HO)
-Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+Package hobsub Info: Skipping package `ifpdf' (already loaded).
 Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
 Package etexcmds Info: Could not find \expanded.
 (etexcmds)             That can mean that you are not using pdfTeX 1.50 or
@@ -827,23 +859,20 @@ Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
 Package: refcount 2016/05/16 v3.5 Data extraction from label references (HO)
 Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
 )
-(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
-Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
-)
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/auxhook.sty
 Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
 )
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 )
-\@linkdim=\dimen302
-\Hy@linkcounter=\count280
-\Hy@pagecounter=\count281
+\@linkdim=\dimen310
+\Hy@linkcounter=\count283
+\Hy@pagecounter=\count284
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2018/02/06 v6.86b Hyperref: PDFDocEncoding definition (HO)
 )
-\Hy@SavedSpaceFactor=\count282
+\Hy@SavedSpaceFactor=\count285
 
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
@@ -855,17 +884,17 @@ Package hyperref Info: Plain pages OFF on input line 4524.
 Package hyperref Info: Backreferencing OFF on input line 4529.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4762.
-\c@Hy@tempcnt=\count283
+\c@Hy@tempcnt=\count286
 
 (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 5115.
-\XeTeXLinkMargin=\dimen303
-\Fld@menulength=\count284
-\Field@Width=\dimen304
-\Fld@charsize=\dimen305
+\XeTeXLinkMargin=\dimen311
+\Fld@menulength=\count287
+\Field@Width=\dimen312
+\Fld@charsize=\dimen313
 Package hyperref Info: Hyper figures OFF on input line 6369.
 Package hyperref Info: Link nesting OFF on input line 6374.
 Package hyperref Info: Hyper index ON on input line 6377.
@@ -875,16 +904,16 @@ Package hyperref Info: Link coloring with OCG OFF on input line 6394.
 Package hyperref Info: PDF/A mode OFF on input line 6399.
 LaTeX Info: Redefining \ref on input line 6439.
 LaTeX Info: Redefining \pageref on input line 6443.
-\Hy@abspage=\count285
-\c@Item=\count286
-\c@Hfootnote=\count287
+\Hy@abspage=\count288
+\c@Item=\count289
+\c@Hfootnote=\count290
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2018/02/06 v6.86b Hyperref driver for pdfTeX
-\Fld@listcount=\count288
-\c@bookmark@seq@number=\count289
+\Fld@listcount=\count291
+\c@bookmark@seq@number=\count292
 
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
@@ -920,12 +949,12 @@ Package: pgfplots 2017/06/05 v1.15 Data Visualization (1.15)
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotscore.code.tex
-\t@pgfplots@toka=\toks41
-\t@pgfplots@tokb=\toks42
-\t@pgfplots@tokc=\toks43
-\pgfplots@tmpa=\dimen306
-\c@pgfplots@coordindex=\count290
-\c@pgfplots@scanlineindex=\count291
+\t@pgfplots@toka=\toks43
+\t@pgfplots@tokb=\toks44
+\t@pgfplots@tokc=\toks45
+\pgfplots@tmpa=\dimen314
+\c@pgfplots@coordindex=\count293
+\c@pgfplots@scanlineindex=\count294
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/sys/pgfplotssysgeneric.code
 .tex))
@@ -941,7 +970,7 @@ Package pgfplots: loading complementary arithmetics for your pgf version...
 gfsupp_pgflibraryfpu.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldp
 gfsupp_pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count292
+\c@pgfmathroundto@lastzeros=\count295
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotslists
@@ -950,14 +979,14 @@ tructure.code.tex)
 tructureext.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsarray
 .code.tex
-\c@pgfplotsarray@tmp=\count293
+\c@pgfplotsarray@tmp=\count296
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsmatri
 x.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstableshare
 d.code.tex
-\c@pgfplotstable@counta=\count294
-\t@pgfplotstable@a=\toks44
+\c@pgfplotstable@counta=\count297
+\t@pgfplotstable@a=\toks46
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsdeque
 .code.tex)
@@ -969,7 +998,7 @@ de.tex))
 .tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/libs/pgflibrarypgfplots.sur
 fshading.code.tex
-\c@pgfplotslibrarysurf@no=\count295
+\c@pgfplotslibrarysurf@no=\count298
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surf
 shading.pgfsys-pdftex.def)))
@@ -996,14 +1025,14 @@ e.tex)
 zlibrarydecorations.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.cod
 e.tex
-\pgfdecoratedcompleteddistance=\dimen307
-\pgfdecoratedremainingdistance=\dimen308
-\pgfdecoratedinputsegmentcompleteddistance=\dimen309
-\pgfdecoratedinputsegmentremainingdistance=\dimen310
-\pgf@decorate@distancetomove=\dimen311
-\pgf@decorate@repeatstate=\count296
-\pgfdecorationsegmentamplitude=\dimen312
-\pgfdecorationsegmentlength=\dimen313
+\pgfdecoratedcompleteddistance=\dimen315
+\pgfdecoratedremainingdistance=\dimen316
+\pgfdecoratedinputsegmentcompleteddistance=\dimen317
+\pgfdecoratedinputsegmentremainingdistance=\dimen318
+\pgf@decorate@distancetomove=\dimen319
+\pgf@decorate@repeatstate=\count299
+\pgfdecorationsegmentamplitude=\dimen320
+\pgfdecorationsegmentlength=\dimen321
 )
 \tikz@lib@dec@box=\box77
 )
@@ -1015,13 +1044,13 @@ decorations.pathmorphing.code.tex))
 zlibrarydecorations.pathreplacing.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
 decorations.pathreplacing.code.tex))
-\pgfplots@numplots=\count297
-\pgfplots@xmin@reg=\dimen314
-\pgfplots@xmax@reg=\dimen315
-\pgfplots@ymin@reg=\dimen316
-\pgfplots@ymax@reg=\dimen317
-\pgfplots@zmin@reg=\dimen318
-\pgfplots@zmax@reg=\dimen319
+\pgfplots@numplots=\count300
+\pgfplots@xmin@reg=\dimen322
+\pgfplots@xmax@reg=\dimen323
+\pgfplots@ymin@reg=\dimen324
+\pgfplots@ymax@reg=\dimen325
+\pgfplots@zmin@reg=\dimen326
+\pgfplots@zmax@reg=\dimen327
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibraryplotmarks.code.tex
@@ -1053,12 +1082,11 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty
 Package: enumitem 2011/09/28 v3.5.2 Customized lists
-\enitkv@toks@=\toks45
 \labelindent=\skip76
-\enit@outerparindent=\dimen320
-\enit@toks=\toks46
+\enit@outerparindent=\dimen328
+\enit@toks=\toks47
 \enit@inbox=\box79
-\enitdp@description=\count298
+\enitdp@description=\count301
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibraryarrows.code.tex
@@ -1067,48 +1095,82 @@ File: tikzlibraryarrows.code.tex 2008/01/09 v3.0.1a (rcs-revision 1.1)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.
 tex
 File: pgflibraryarrows.code.tex 2013/09/23 v3.0.1a (rcs-revision 1.16)
-\arrowsize=\dimen321
+\arrowsize=\dimen329
 )) (/usr/share/texlive/texmf-dist/tex/latex/breakcites/breakcites.sty)
-\c@mnotei=\count299
+\c@mnotei=\count302
 
 (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/main_arxiv.aux)
 \openout1 = `main_arxiv.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 83.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 83.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 85.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 85.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(36.64713pt, 505.89pt, 54.97075pt)
+* v-part:(T,H,B)=(48.93872pt, 722.7pt, 73.40813pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=505.89pt
+* \textheight=722.7pt
+* \oddsidemargin=-35.62286pt
+* \evensidemargin=-17.29924pt
+* \topmargin=-51.33127pt
+* \headheight=12.0pt
+* \headsep=16.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=71.13188pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumntrue
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count300
-\scratchdimen=\dimen322
+\scratchcounter=\count303
+\scratchdimen=\dimen330
 \scratchbox=\box80
-\nofMPsegments=\count301
-\nofMParguments=\count302
-\everyMPshowfont=\toks47
-\MPscratchCnt=\count303
-\MPscratchDim=\dimen323
-\MPnumerator=\count304
-\makeMPintoPDFobject=\count305
-\everyMPtoPDFconversion=\toks48
+\nofMPsegments=\count304
+\nofMParguments=\count305
+\everyMPshowfont=\toks48
+\MPscratchCnt=\count306
+\MPscratchDim=\dimen331
+\MPnumerator=\count307
+\makeMPintoPDFobject=\count308
+\everyMPtoPDFconversion=\toks49
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -1127,13 +1189,13 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 ABD: EveryShipout initializing macros
-\c@lstlisting=\count306
+\c@lstlisting=\count309
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: threeparttable package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box81
-Package hyperref Info: Link coloring OFF on input line 83.
+Package hyperref Info: Link coloring OFF on input line 85.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -1141,11 +1203,11 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count307
+\c@section@level=\count310
 )
-LaTeX Info: Redefining \ref on input line 83.
-LaTeX Info: Redefining \pageref on input line 83.
-LaTeX Info: Redefining \nameref on input line 83.
+LaTeX Info: Redefining \ref on input line 85.
+LaTeX Info: Redefining \pageref on input line 85.
+LaTeX Info: Redefining \nameref on input line 85.
 
 (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/main_arxiv.out)
 (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/main_arxiv.out)
@@ -1157,38 +1219,70 @@ LaTeX Info: Redefining \nameref on input line 83.
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.15} into 
 your preamble.
- on input line 83.
+ on input line 85.
 
-LaTeX Font Info:    Try loading font information for U+wasy on input line 100.
+LaTeX Font Info:    Try loading font information for U+wasy on input line 102.
 (/usr/share/texlive/texmf-dist/tex/latex/wasysym/uwasy.fd
 File: uwasy.fd 2003/10/30 v2.0 Wasy-2 symbol font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 100.
+LaTeX Font Info:    Try loading font information for U+msa on input line 102.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 100.
+LaTeX Font Info:    Try loading font information for U+msb on input line 102.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Title too long for running head. Please supply
-a shorter form with \titlerunning prior to \maketitle
-
-Overfull \hbox (11.03192pt too wide) in paragraph at lines 111--112
-[]\OT1/cmr/m/n/9 The in-dus-try and cer-ti-fi-ca-tion bod-ies for con-nected au
--tonomous
- []
-
 (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/1_Intro.tex
 Underfull \hbox (badness 10000) in paragraph at lines 2--21
 
  []
 
 
+Underfull \hbox (badness 1253) in paragraph at lines 2--21
+\OT1/cmr/m/n/10 There has been a num-ber of catas-trophic fa-tal-i-ties
+ []
+
+
+Underfull \hbox (badness 1014) in paragraph at lines 2--21
+\OT1/cmr/m/n/10 with self-driving ve-hi-cles due to lack of ver-i-fi-ca-tion
+ []
+
+
+Underfull \hbox (badness 1552) in paragraph at lines 2--21
+\OT1/cmr/m/n/10 and val-i-da-tion (V&V) of soft-ware e.g.[[]3[]]. As such,
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 2--21
 
+ []
+
+
+Underfull \hbox (badness 2134) in paragraph at lines 2--21
+\OT1/cmr/m/n/10 Existing ve-hi-cle man-u-fac-tur-ers use ve-hi-cle dy-namic
+ []
+
+
+Underfull \hbox (badness 1953) in paragraph at lines 2--21
+\OT1/cmr/m/n/10 mod-elling is well es-tab-lished. De-spite these proven
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2--21
+
+ []
+
+
+Underfull \hbox (badness 3240) in paragraph at lines 2--21
+\OT1/cmr/m/n/10 While traffic-level sim-u-la-tors can model road lay-
+ []
+
+
+Underfull \hbox (badness 2065) in paragraph at lines 2--21
+\OT1/cmr/m/n/10 signs, traf-fic/street lights, other street fur-ni-ture or
  []
 
 
@@ -1202,8 +1296,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 2--21
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2--21
-
+Underfull \hbox (badness 2735) in paragraph at lines 2--21
+\OT1/cmr/m/n/10 Test-retest re-li-a-bil-ity, is a key fac-tor in V&V of
  []
 
 
@@ -1212,300 +1306,512 @@ Underfull \hbox (badness 10000) in paragraph at lines 2--21
  []
 
 
+Underfull \hbox (badness 3668) in paragraph at lines 2--21
+[]\OT1/cmr/bx/n/10 TODO: Re-move this para-graph?[] \OT1/cmr/m/n/10 De-ter-min-
+ism
+ []
+
+
+Underfull \hbox (badness 1460) in paragraph at lines 2--21
+\OT1/cmr/m/n/10 pre-vi-ously was not im-por-tant since in gam-ing, de-
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 2--21
 
  []
 
-[1
+
+Underfull \vbox (badness 1845) has occurred while \output is active []
+
+ [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+
+])
 (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/2_Background.tex
-[2]
-<Other/Figures/GameEngineLoop.pdf, id=107, 393.47pt x 101.37875pt>
+<Other/Figures/GameEngineLoop.pdf, id=103, 393.47pt x 101.37875pt>
 File: Other/Figures/GameEngineLoop.pdf Graphic file (type pdf)
 <use Other/Figures/GameEngineLoop.pdf>
 Package pdftex.def Info: Other/Figures/GameEngineLoop.pdf  used on input line 1
 0.
-(pdftex.def)             Requested size: 347.12354pt x 89.43633pt.
+(pdftex.def)             Requested size: 252.94499pt x 65.17143pt.
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 10--11
+ [][] 
+ []
+
 
 Underfull \hbox (badness 10000) in paragraph at lines 28--33
 
  []
 
-[3 </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/G
+
+Underfull \hbox (badness 1178) in paragraph at lines 28--33
+\OT1/cmr/m/n/10 These en-gines up-date at fixed in-ter-vals and ren-der
+ []
+
+
+Underfull \hbox (badness 1430) in paragraph at lines 34--54
+\OT1/cmr/m/n/10 After es-tab-lish-ing an un-der-stand-ing of how physics
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--54
+
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 34--54
+\OT1/cmr/m/n/10 float-ing points pre-ci-sion. Var-i-ous er-rors oc-cur when
+ []
+
+
+Underfull \hbox (badness 1895) in paragraph at lines 34--54
+\OT1/cmr/m/n/10 es-pe-cially when op-er-at-ing be-tween large and small
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--54
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--54
+
+ []
+
+
+Underfull \hbox (badness 1062) in paragraph at lines 34--54
+\OT1/cmr/m/n/10 There are many sce-nar-ios that could be ad-dressed,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--54
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--54
+[]$ \OT1/cmr/m/n/10 Some CAV sim-u-la-tor
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--54
+
+ []
+
+
+Underfull \hbox (badness 4913) in paragraph at lines 34--54
+[]$ \OT1/cmr/m/n/10 The in-her-ent way of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--54
+
+ []
+
+[2 </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/G
 ameEngineLoop.pdf
 
 pdfTeX warning: pdflatex (file /home/abanoub_g/gits/TSL-Github/CAV-Determinism/
 paper_arxiv/Other/Figures/GameEngineLoop.pdf): PDF inclusion: invalid other res
 ource which is no dict (key 'ProcSets', type <array>); ignored.
->]
-<Other/Figures/MethodologyDiagramCropped.pdf, id=147, 648.62326pt x 208.67963pt
+>])
+(/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/3_Methodology.tex
+<Other/Figures/MethodologyDiagramCropped.pdf, id=153, 648.62326pt x 208.67963pt
 >
 File: Other/Figures/MethodologyDiagramCropped.pdf Graphic file (type pdf)
 <use Other/Figures/MethodologyDiagramCropped.pdf>
 Package pdftex.def Info: Other/Figures/MethodologyDiagramCropped.pdf  used on i
-nput line 47.
-(pdftex.def)             Requested size: 343.6542pt x 110.56464pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 34--61
-
- []
+nput line 5.
+(pdftex.def)             Requested size: 500.83388pt x 161.13596pt.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--61
-
- []
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--61
+Underfull \hbox (badness 10000) in paragraph at lines 11--15
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--61
+Underfull \hbox (badness 1917) in paragraph at lines 11--15
+\OT1/cmr/m/n/10 In sim-u-la-tion, ac-tors can ei-ther fol-low a se-ries of
+ []
+
+
+Underfull \hbox (badness 1377) in paragraph at lines 11--15
+\OT1/cmr/m/n/10 pre-de-fined tra-jec-tory way points, is to in-tro-duce a
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 11--15
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--61
+Underfull \hbox (badness 1033) in paragraph at lines 17--23
+\OT1/cmr/m/n/10 set-tings in physics en-gines that can be tweaked to
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--23
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--61
-
- []
-
-[4])
-(/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/3_Methodology.tex
-Underfull \hbox (badness 10000) in paragraph at lines 5--9
-
+Underfull \hbox (badness 1859) in paragraph at lines 17--23
+\OT1/cmr/m/n/10 Increasing the physics time-step cal-cu-la-tions, which
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 5--9
-
- []
-
-[5 </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/M
-ethodologyDiagramCropped.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 11--17
+Underfull \hbox (badness 10000) in paragraph at lines 17--23
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 11--17
+Underfull \hbox (badness 1635) in paragraph at lines 17--23
+\OT1/cmr/m/n/10 If the ex-per-i-ment setup in-cludes the us-age of the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--23
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 11--17
+Underfull \hbox (badness 1009) in paragraph at lines 17--23
+\OT1/cmr/m/n/10 Disabling ren-der-ing or run-ning in head-less mode is
+ []
+
+
+Underfull \hbox (badness 1400) in paragraph at lines 17--23
+\OT1/cmr/m/n/10 from the physics en-gine, which the-o-ret-i-cally should
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--23
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 11--17
+Underfull \hbox (badness 10000) in paragraph at lines 25--27
 
  []
 
 
-Overfull \hbox (205.52054pt too wide) in paragraph at lines 20--33
- [][] 
+Underfull \hbox (badness 1521) in paragraph at lines 25--27
+\OT1/cmr/m/n/10 Trying to run stress ex-per-i-ments on com-put-ers by
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 38--40
-
+Underfull \hbox (badness 2020) in paragraph at lines 25--27
+\OT1/cmr/m/n/10 nonethe-less, there ex-ists ded-i-cated stress util-i-sa-tion
  []
 
-[6]
-Underfull \hbox (badness 10000) in paragraph at lines 46--50
 
+Underfull \hbox (badness 1917) in paragraph at lines 25--27
+\OT1/cmr/m/n/10 pro-grams which pro-vide con-sis-tent CPU and GPU
  []
 
-) (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/4_CaseStudy.tex
-Underfull \hbox (badness 10000) in paragraph at lines 2--4
 
- []
-
-[7]
-Underfull \hbox (badness 10000) in paragraph at lines 6--9
+Underfull \hbox (badness 10000) in paragraph at lines 33--37
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 11--16
+Underfull \hbox (badness 1348) in paragraph at lines 33--37
+\OT1/cmr/m/n/10 This whole pro-cess is re-peated for var-i-ous in-ter-nal
+ []
+
+[3])
+(/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/4_CaseStudy.tex
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--25
 
  []
 
-<Other/Figures/TestCasesDiagram_a.pdf, id=207, 344.18587pt x 305.34076pt>
+
+Underfull \hbox (badness 1067) in paragraph at lines 23--25
+\OT1/cmr/m/n/10 Here we will walk through our hy-poth-e-sis, de-scrip-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--30
+
+ []
+
+
+Underfull \hbox (badness 1014) in paragraph at lines 27--30
+\OT1/cmr/m/n/10 Our hy-poth-e-sis is that since UE4 is a gam-ing en-
+ []
+
+<Other/Figures/TestCasesDiagram_a.pdf, id=165, 344.18587pt x 305.34076pt>
 File: Other/Figures/TestCasesDiagram_a.pdf Graphic file (type pdf)
 <use Other/Figures/TestCasesDiagram_a.pdf>
 Package pdftex.def Info: Other/Figures/TestCasesDiagram_a.pdf  used on input li
-ne 20.
-(pdftex.def)             Requested size: 83.31155pt x 73.9076pt.
-<Other/Figures/TestCasesDiagram_b.pdf, id=208, 344.18587pt x 305.34076pt>
+ne 34.
+(pdftex.def)             Requested size: 121.41637pt x 107.71416pt.
+<Other/Figures/TestCasesDiagram_b.pdf, id=166, 344.18587pt x 305.34076pt>
 File: Other/Figures/TestCasesDiagram_b.pdf Graphic file (type pdf)
 <use Other/Figures/TestCasesDiagram_b.pdf>
 Package pdftex.def Info: Other/Figures/TestCasesDiagram_b.pdf  used on input li
-ne 25.
-(pdftex.def)             Requested size: 83.31155pt x 73.9076pt.
+ne 39.
+(pdftex.def)             Requested size: 121.41637pt x 107.71416pt.
+<Other/Figures/ExperimentsStressSummary.pdf, id=169, 484.81125pt x 373.395pt>
+File: Other/Figures/ExperimentsStressSummary.pdf Graphic file (type pdf)
+<use Other/Figures/ExperimentsStressSummary.pdf>
+Package pdftex.def Info: Other/Figures/ExperimentsStressSummary.pdf  used on in
+put line 48.
+(pdftex.def)             Requested size: 242.82503pt x 187.02179pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 32--43
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 32--43
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 32--43
-
- []
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 32--43
+Underfull \hbox (badness 10000) in paragraph at lines 54--70
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 32--43
+Underfull \hbox (badness 2050) in paragraph at lines 54--70
+\OT1/cmr/m/n/10 Starting from step 1 in the method-ol-ogy di-a-gram
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--70
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 32--43
+Underfull \hbox (badness 10000) in paragraph at lines 54--70
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 32--43
+Underfull \hbox (badness 1448) in paragraph at lines 54--70
+\OT1/cmr/m/n/10 Test 2 is a col-li-sion be-tween two ve-hi-cles and no
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--70
 
  []
 
-[8 </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/T
-estCasesDiagram_a.pdf> </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_a
-rxiv/Other/Figures/TestCasesDiagram_b.pdf
+
+Underfull \hbox (badness 2237) in paragraph at lines 54--70
+\OT1/cmr/m/n/10 Tests 6,7 and 8 are tests with pede-tri-ans hav-ing
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--70
+
+ []
+
+
+Underfull \hbox (badness 1137) in paragraph at lines 54--70
+\OT1/cmr/m/n/10 In V&V of CAV sim-u-la-tions, col-li-sions of pedes-tri-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--70
+
+ []
+
+
+Underfull \hbox (badness 2205) in paragraph at lines 54--70
+\OT1/cmr/m/n/10 Test 4, is where a ve-hi-cle hits a pedes-trian and
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--70
+
+ []
+
+
+Underfull \hbox (badness 1436) in paragraph at lines 54--70
+\OT1/cmr/m/n/10 Proceeding to step 2; by do-ing var-i-ous in-spec-tions
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--70
+
+ []
+
+
+Underfull \hbox (badness 1406) in paragraph at lines 54--70
+\OT1/cmr/m/n/10 Different lev-els of stress were ap-plied to the com-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--70
+
+ []
+
+
+Underfull \hbox (badness 2326) in paragraph at lines 54--70
+\OT1/cmr/m/n/10 In terms of run-ning the ex-per-i-ments (step 4), \OT1/cmr/bx/n
+/10 i)
+ []
+
+[4 </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/M
+ethodologyDiagramCropped.pdf> </home/abanoub_g/gits/TSL-Github/CAV-Determinism/
+paper_arxiv/Other/Figures/TestCasesDiagram_a.pdf
+
+pdfTeX warning: pdflatex (file /home/abanoub_g/gits/TSL-Github/CAV-Determinism/
+paper_arxiv/Other/Figures/TestCasesDiagram_a.pdf): PDF inclusion: multiple pdfs
+ with page group included in a single page
+> </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/Te
+stCasesDiagram_b.pdf
 
 pdfTeX warning: pdflatex (file /home/abanoub_g/gits/TSL-Github/CAV-Determinism/
 paper_arxiv/Other/Figures/TestCasesDiagram_b.pdf): PDF inclusion: multiple pdfs
  with page group included in a single page
 >]
-Underfull \hbox (badness 10000) in paragraph at lines 45--53
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 45--53
-
- []
-
-[9]
-<Other/Figures/ExperimentsStressSummary.pdf, id=308, 484.81125pt x 373.395pt>
-File: Other/Figures/ExperimentsStressSummary.pdf Graphic file (type pdf)
-<use Other/Figures/ExperimentsStressSummary.pdf>
-Package pdftex.def Info: Other/Figures/ExperimentsStressSummary.pdf  used on in
-put line 56.
-(pdftex.def)             Requested size: 166.61781pt x 128.32573pt.
-<Other/Figures/CarsCollisionCG25.pdf, id=309, 464.73625pt x 360.34625pt>
+<Other/Figures/CarsCollisionCG25.pdf, id=286, 464.73625pt x 360.34625pt>
 File: Other/Figures/CarsCollisionCG25.pdf Graphic file (type pdf)
 <use Other/Figures/CarsCollisionCG25.pdf>
 Package pdftex.def Info: Other/Figures/CarsCollisionCG25.pdf  used on input lin
-e 65.
-(pdftex.def)             Requested size: 170.09244pt x 131.88542pt.
-<Other/Figures/CarsCollisionPrePost.pdf, id=310, 463.7325pt x 360.34625pt>
+e 75.
+(pdftex.def)             Requested size: 247.88887pt x 192.20325pt.
+<Other/Figures/CarsCollisionPrePost.pdf, id=287, 463.7325pt x 360.34625pt>
 File: Other/Figures/CarsCollisionPrePost.pdf Graphic file (type pdf)
 <use Other/Figures/CarsCollisionPrePost.pdf>
 Package pdftex.def Info: Other/Figures/CarsCollisionPrePost.pdf  used on input 
-line 70.
-(pdftex.def)             Requested size: 170.09244pt x 132.17134pt.
+line 80.
+(pdftex.def)             Requested size: 247.88887pt x 192.62663pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Other/Figures/CarsPeopleCollsionsCG25.pdf, id=311, 464.73625pt x 354.32375pt>
+<Other/Figures/CarsPeopleCollsionsCG25.pdf, id=288, 464.73625pt x 354.32375pt>
 File: Other/Figures/CarsPeopleCollsionsCG25.pdf Graphic file (type pdf)
 <use Other/Figures/CarsPeopleCollsionsCG25.pdf>
 Package pdftex.def Info: Other/Figures/CarsPeopleCollsionsCG25.pdf  used on inp
-ut line 80.
-(pdftex.def)             Requested size: 170.09244pt x 129.68121pt.
-<Other/Figures/CarsPeopleCollisionPrePost.pdf, id=312, 469.755pt x 360.34625pt>
+ut line 90.
+(pdftex.def)             Requested size: 247.88887pt x 188.99094pt.
+<Other/Figures/CarsPeopleCollisionPrePost.pdf, id=289, 469.755pt x 360.34625pt>
 
 File: Other/Figures/CarsPeopleCollisionPrePost.pdf Graphic file (type pdf)
 <use Other/Figures/CarsPeopleCollisionPrePost.pdf>
 Package pdftex.def Info: Other/Figures/CarsPeopleCollisionPrePost.pdf  used on 
-input line 85.
-(pdftex.def)             Requested size: 170.09244pt x 130.47783pt.
+input line 95.
+(pdftex.def)             Requested size: 247.88887pt x 190.15233pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 92--99
+Underfull \hbox (badness 10000) in paragraph at lines 101--109
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 92--99
+Underfull \hbox (badness 2932) in paragraph at lines 101--109
+\OT1/cmr/m/n/10 First, the tests with no col-li-sions are con-sid-ered,
+ []
+
+
+Underfull \hbox (badness 1292) in paragraph at lines 101--109
+\OT1/cmr/m/n/10 in-volves ve-hi-cles only and ve-hi-cles with pedes-tri-ans
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 101--109
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 92--99
+Underfull \hbox (badness 3078) in paragraph at lines 101--109
+\OT1/cmr/m/n/10 Next, given the pedes-tri-ans were show-ing a very
+ []
+
+
+Underfull \hbox (badness 1132) in paragraph at lines 101--109
+\OT1/cmr/m/n/10 ro-bust and low level of non-determinism be-haviour,
+ []
+
+[5 </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/E
+xperimentsStressSummary.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 111--118
 
  []
 
-[10 </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/
-ExperimentsStressSummary.pdf>])
+
+Underfull \hbox (badness 2158) in paragraph at lines 111--118
+\OT1/cmr/m/n/10 Thus, we re-sorted to plot-ting the mean de-vi-a-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 111--118
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 111--118
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6 </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/
+CarsCollisionCG25.pdf> </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_a
+rxiv/Other/Figures/CarsCollisionPrePost.pdf> </home/abanoub_g/gits/TSL-Github/C
+AV-Determinism/paper_arxiv/Other/Figures/CarsPeopleCollsionsCG25.pdf> </home/ab
+anoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/CarsPeopleCol
+lisionPrePost.pdf>])
 (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/6_Conclusions.tex
-Underfull \vbox (badness 1215) has occurred while \output is active []
-
- [11 </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures
-/CarsCollisionCG25.pdf> </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_
-arxiv/Other/Figures/CarsCollisionPrePost.pdf>]
 Underfull \hbox (badness 10000) in paragraph at lines 2--5
 
  []
 
 ) (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/main_arxiv.bbl
-[12 </home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/Other/Figures/
-CarsPeopleCollsionsCG25.pdf> </home/abanoub_g/gits/TSL-Github/CAV-Determinism/p
-aper_arxiv/Other/Figures/CarsPeopleCollisionPrePost.pdf>]) [13]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 135.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 135.
+Underfull \hbox (badness 1297) in paragraph at lines 14--16
+[]\OT1/cmr/m/n/9 ``Preliminary re-port high-way hwy18mh010,'' \OT1/cmr/m/it/9 N
+a-tional
+ []
+
+) [7]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 139.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 139.
 
 (/home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/main_arxiv.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 135.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 135.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 139.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 139.
 Package rerunfilecheck Info: File `main_arxiv.out' has not changed.
 (rerunfilecheck)             Checksum: C7E4F823D3A00F51EBABD33EBA642FA2;1219.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 135.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 139.
  ) 
 Here is how much of TeX's memory you used:
- 33331 strings out of 494847
- 769805 string characters out of 6179079
- 967202 words of memory out of 5000000
- 36043 multiletter control sequences out of 15000+600000
- 12028 words of font info for 47 fonts, out of 8000000 for 9000
+ 33774 strings out of 494847
+ 776442 string characters out of 6179079
+ 987797 words of memory out of 5000000
+ 36481 multiletter control sequences out of 15000+600000
+ 12387 words of font info for 48 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 62i,9n,96p,857b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,10n,96p,890b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmti9.pfb>
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmt
+i9.pfb>
 Output written on /home/abanoub_g/gits/TSL-Github/CAV-Determinism/paper_arxiv/m
-ain_arxiv.pdf (13 pages, 398584 bytes).
+ain_arxiv.pdf (7 pages, 402961 bytes).
 PDF statistics:
- 398 PDF objects out of 1000 (max. 8388607)
- 314 compressed objects within 4 object streams
- 53 named destinations out of 1000 (max. 500000)
+ 374 PDF objects out of 1000 (max. 8388607)
+ 296 compressed objects within 3 object streams
+ 47 named destinations out of 1000 (max. 500000)
  194 words of extra memory for PDF output out of 10000 (max. 10000000)
 
