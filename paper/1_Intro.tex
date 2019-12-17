@@ -1,6 +1,38 @@
-\section{Introduction}
-\noindent \IEEEPARstart{T}{}he evolution and inevitable implementation of connected and autonomous vehicles (CAVs) on roads is a delicate if not utterly fascinating subject.
-Such systems operate in environments marked by inaccessibility, unexpected weather conditions, or unpredictable behavior by surrounding humans\cite{RobustnessAutonomy}. 
+
+
+\section{Introduction} \label{s:introduction}
+
+% What is verification
+\IEEEPARstart{V}{}erification is the process used to gain confidence in the correctness of a system with respect to its requirements~\cite{bergeron2012writing}. Simulation based verification can be used to test autonomous driving functions under development benefiting from full control over the road network and the actors within it. These simulated tests aim to provide evidence to regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988}. Simulation is an obvious domain choice to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without millions of miles of costly on-road testing~\cite{kalra2016driving} where the rare event can be made to happen more often~\cite{Koopman2018} such as unpredictable actor behaviour~\cite{RobustnessAutonomy}. 
+
+% Requirements of simulation based verification SBV
+For games engines to offer a suitable testing environment they must: operate with a minimal \textit{reality gap} in the physical domain (vehicles, actors), be realistic enough \cite{koopman realistic enough} including suitable rendering for perception stack testing, be easy to setup, run and manipulate the environment and the temporal development of actors \cite{Ulbrich2015.}, include the provision for sensor analogues to a suitable accuracy (e.g. video, LIDAR, IR), allow hardware-in-the-loop development and provide a suitable real-time test-bed for cyber-security testing.
+%
+% Game engines for SBV
+Game engines offer a simulation domain solution for the development and testing of CAVs that meet many of these requirements but many challenges still exist.
+%
+% Verification and Determinism 
+For games engines to be useful as a verification tool then they must be deterministic. 
+%
+% What is a deterministic system
+Deterministic, in this context, refers to the property of causality given a temporal development of events such that any state is completely determined by prior states.
+%
+% Why is determinism important for verification
+Determinism is important for verification. Any software defects that are detected but not repeatable at a later time or by another party does not allow for suitable resolution. Furthermore, defects not found on the verification testing system may arise on deployed system with a different hardware architecture resulting in untested and potentially unsafe vehicle behaviour.
+
+% Challenges of SBV
+\noindent The research questions in this work are:
+\begin{itemize}[leftmargin=*]
+    \item To what extent are gaming engines deterministic so that they can provide a reliable and repeatable testing environment for CAV verification?
+    \item Can this be done whilst providing the realism required for the physical and perceptual requirements of CAV development?
+    \item Will a game engine allowing real-time testing for cyber security analysis? %\todo{What will this be, minimum 30FPS?}
+\end{itemize}
+
+
+
+
+% \noindent \IEEEPARstart{T}{}he evolution and inevitable implementation of connected and autonomous vehicles (CAVs) on roads is a delicate if not utterly fascinating subject. Such systems operate in environments marked by inaccessibility, unexpected weather conditions, or unpredictable behavior by surrounding humans\cite{RobustnessAutonomy}. 
+
 Public safety is clearly a prime concern for putting autonomous vehicles into play, which means the meticulous and thorough process of developing, training, verifying, validating and certifying the artificial intelligence (AI) and software of the vehicle is a task to be handled with care. 
 It requires lots of flexibility and room to iterate to ensure the algorithms are given the sharpest understanding for maximum performance as well as to ensure that they are hazard-free in order for them to be deployed\cite{AirsimUnrealArticle}.\\\\
 \noindent There has been a number of catastrophic fatalities with self-driving vehicles due to lack of verification and validation (V\&V) of software e.g.\cite{FatalityExample}.
