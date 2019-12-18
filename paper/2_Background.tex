@@ -1,38 +1,58 @@
-\section{Background}
-\noindent This section overviews important information and concepts in physics engines, which are relevant to their usage in CAV simulations. 
-Particularly, on how physics engines operate and the sources of non-determinism in these engines necessary to understand the contribution of this paper.
-\subsection{Overview of a Game Loop}\label{GameLoopSection}
-\noindent The game loop is responsible for the interaction between the math, physics and rendering engines\cite{GameEngineArchBook}.
-Figure \ref{GameEngineLoopDiagram} depicts a very basic diagram showing the flow in a game loop. 
-A traditional game loop is broken up into three distinct phases: processing the inputs, updating the game world (Physics Engine), and generating outputs (Rendering).
+
+
+
+
+
+
+
+\section{Background} \label{s:background}
+
+There are numerous game engines with their associated development environments which could be suitable for CAV development, e.g. Unreal, Unity, CryEngine. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing engines, e.g. Carla, AirSim, Apollo, and some have been developed specifically, e.g. the could based Nvidia Drive Constellation simulator. \TODO{ref each of these}
+%
+Investigating the determinism of gaming engines has not attracted much research interest since performance is more critical for playing games than accurate and repeatable runtime execution. However, when these engines are used for CAV development then deterministic behaviour is required. This section gives an overview of a gaming engine and what sources or settings in the engine may affect \textit{simulation variance}.
+%
+% \noindent This section overviews important information and concepts in physics engines, which are relevant to their usage in CAV simulations. Particularly, on how physics engines operate and the sources of non-determinism in these engines necessary to understand the contribution of this paper.
+
+% ======= Overview of a Game Loop
+\subsection{Overview of a Game Loop} \label{GameLoopSection}
+The game loop is responsible for the interaction between the maths, physics and rendering engines~\cite{GameEngineArchBook}. Figure \ref{GameEngineLoopDiagram} depicts a basic representation of the process flow in a game engine loop. A traditional \TODO{For AG: how is it traditional, what is the alternative?} game loop is broken up into three distinct phases: processing the inputs, updating the game world (Physics Engine), and generating outputs (Rendering).
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{Other/Figures/GameEngineLoop.pdf}
 \caption{Game engine loop block diagram}
 \label{GameEngineLoopDiagram}
 \end{figure}
-The first part of the game loop is to process the user input. Then comes update, which advances the AI and physics engine. Finally the rendering engine draws the game\cite{GameProgPatternsBook}.
-It is crucial for this paper to understand how the rendering and physics engines operate together.
+The first part of the game loop is to process the user inputs which may take the form of user keyed inputs or, in the case of CAV development, the resultant actions of the autonomous vehicle given the current state of the environment. \TODO{For AG: need to expand, e.g what are the inputs?} \TODO{For AG: does game logic need to be mentioned?}
+%
+The update interprets the intended actions of the AV along with all other dynamic actors in the scene and performs any necessary physics calculations and updates the actor states. \TODO{For AG: what does the clock symbolise, need to explain it?}
+%
+The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. \TODO{For AG: you cite this book 4 times which might be too much as a general reference, is there something specific you want to draw the reader towards in the book? What specifically about the rendering part of this cycle does the book help to illustrate the point?}
+
+It is crucial for this paper to understand how the rendering and physics engines operate together. \TODO{For AG: why is this crucial and can we say that we resolved it if it is crucial?}
 Briefly, the game loop operates as follows:\cite{GameProgPatternsBook} (see Figure \ref{GameEngineLoopDiagram})
 \begin{itemize}[leftmargin=*]
-    \item At the beginning of each tick (frame), the lag between the game clock and the real world is updated based on how much real time passed. This measures how far the game's clock is behind compared to the real world.
+    \item At the beginning of each tick (scene), the lag between the game clock and the real world is updated based on how much real time passed. This measures how far the game's clock is behind compared to the real world.
     \item Then the user inputs are processed.
-    \item There is then an inner loop to update the physics engine, one fixed step at a time until it catches up with the real world. 
-    The physics engine uses a fixed time step, because it makes everything simpler and more stable for physics and AI. 
-    The shorter this fixed time step is, the more processing time it takes to catch up to real time and the more deterministic the engine becomes and vice versa\cite{GameEngineArchBook}\cite{GameProgPatternsBook}, as will be explained in section \ref{nondeterminisimSources}. 
-    Thus, ideally the time step should be as short as possible, so that simulations run with high fidelity on fast machines. 
-    However, if the fixed time step is too short i.e. less than the time it takes to process an ``Update" inner loop on some (slow) machines, then the simulation will simply never catch up on these slow machines.
+    \item There is then an inner loop to update the physics engine (clock symbol in Fig.~\ref{GameEngineLoopDiagram}), incrementing at fixed step until the game clock is equal to the real world. The physics engine uses a fixed time step, because it makes everything simpler and more stable for physics and AI. The shorter this fixed time step is, the more processing time it takes to catch up to real time and the more deterministic the engine becomes and vice versa\cite{GameEngineArchBook}\cite{GameProgPatternsBook}, as will be explained in section \ref{s:nondeterminisimSources}. Thus, ideally the time step should be as short as possible, so that simulations run with high fidelity on fast machines. However, if the fixed time step is too short i.e. less than the time it takes to process an ``Update" inner loop on some (slow) machines, then the simulation will simply never catch up on these slow machines.
     \item Rendering occurs once the physics engine catches up. The process then starts again.
 \end{itemize} 
 
-\noindent This process allows a game to simulate across a range of hardware, but the rendering will become of jerky quality on slower machines. \\\\
-These engines update at fixed intervals and render whenever they can, which is not steady. 
-This results in what is so called residual lag\cite{GameEngineArchBook}\cite{GameProgPatternsBook}, where the engine is trying to render between two consecutive updates. 
-In this case, the engine will use extrapolation techniques to give a rough estimate of where it thinks the object should be. 
-This often is sufficient for gaming purposes and unnoticeable to the user, in fact it improves the stuttery motion.
-\subsection{Sources of non-determinism}\label{nondeterminisimSources}
+
+
+The time step, $dt$, in any physics calculation is important. To use a fixed physics time step the user's display refresh rate needs to be known in advance. This requires an update loop to take less than one frame of real world time~\cite{gaffer}. Given the different capabilities of game players hardware a variable delta time can be implemented taking the previous frame time as the next $dt$. However, variable $dt$ can lead to different physical results and in some cases unrealistic physics. Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined limit to meet a minimum standard of physical representation but allows computational headroom for slower hardware. Some engines provide sub-stepping which does multiple physics calculations per frame at a greater CPU cost~\footnote{https://docs.unrealengine.com/en-US/Engine/Physics/Substepping/index.html}. If the engine tries to render between updates \textit{residual lag} can occur \cite{GameEngineArchBook}\cite{GameProgPatternsBook} and extrapolation between frames is performed to smooth transition between scenes.
+
+
+
+% This process allows hardware scalability, but the rendering will become of jerky quality on slower machines. These engines update at fixed intervals and render whenever they can, which is not steady. This results in what is so called residual lag\cite{GameEngineArchBook}\cite{GameProgPatternsBook}, where the engine is trying to render between two consecutive updates. In this case, the engine will use extrapolation techniques to give an estimate of where the object should be. This often is sufficient for gaming purposes and unnoticeable to the user, in fact it improves the stuttery motion.
+
+
+
+% ======= Sources of non-determinism
+\subsection{Sources of non-determinism} \label{s:nondeterminisimSources}
 \noindent After establishing an understanding of how physics engines work, the focus will now be on what causes these engines to be non-deterministic. 
 The main reasons that could cause non-determinism are discussed below. \\\\
+
 \noindent\underline{\textit{Floating Points:}}
 A generic issue with computers are floating points precision. 
 Various errors occur when doing arithmetic manipulations using floating points, especially when operating between large and small numbers due to rounding, memory limitations and so forth.\cite{FloatingPointArithmeticArticle}\cite{FloatingPointsBook}. 
