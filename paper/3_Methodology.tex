@@ -1,11 +1,24 @@
 \section{Methodology} \label{method}
-\noindent A method for determining the level of simulation variance of an engine is presented in this section and the working flow of the method is shown in Figure \ref{method_diagram}. Each of the steps in the method is elaborated in the following subsections.
+\noindent A method for determining the level of simulation variance of an engine is presented in this section and the working flow of the method is shown in Figure~\ref{method_diagram}. Each of the steps in the method is elaborated in the following subsections.
 
 \subsection{Design experiment}
-\noindent When designing the experiment(s) one needs to bare in mind the following two questions: i) Is the engine deterministic? ii) If not, how does its simulation variance vary?\\\\
-In simulation, actors can either follow a series of trajectory way points or they get given the destination and their AI path plans to that destination. 
-Thus, given that an engine has a high level of simulation variance, then one needs to set up an experiment that would stress the engine in order to determine how its simulation variance vary. 
-This is best done by generating collision callbacks, because that is when engines' do a lot of calculations to determine the response after the collision. Another approach, if AI is used for path planning instead of just following predefined trajectory way points, is to introduce a decision point for the AI.\\\\
+The experiment should be a simple scenario that can be easily repeated with the same initial conditions. Logs should be used to record the actor positions at fixed time intervals throughout the simulation. For each actor the variance in trajectory can be determined and the deviation from the mean, $S_t$, of the trajectory monitored at each time step. Averages over time and for different actors can be used to condense results down to single figures which is done for some results.
+
+We use game engine actors to simulate the AV and pedestrians. Actors can either follow a series of trajectory waypoints or can plan a route to a further destination using some path planning and obstacle avoidance algorithms, e.g. A* search algorithm. 
+% 
+% Resource - Realism
+To simulate the demands of realistic rendering and complex physics calculations in a simple scenario, stress routines are used to artificially occupy system resources. 
+% Collision callbacks
+Further to this, the experiment should be designed to create collision callbacks to the physics engine by allowing actors to collide during the scenario. 
+%
+The user should also design the experiment to monitor and record system CPU and GPU utilisation. Additionally, if the user is interested in real-time assessment of the simulation then FPS should also be monitored and logged.
+%
+Where possible a fixed $dt$ should be used and any random numbers used should be seed controlled.
+
+
+
+% \noindent When designing the experiment(s) one needs to bare in mind the following two questions: i) Is the engine deterministic? ii) If not, how does its simulation variance vary? In simulation, actors can either follow a series of trajectory way points or they get given the destination and their AI path plans to that destination. Thus, given that an engine has a high level of simulation variance, then one needs to set up an experiment that would stress the engine in order to determine how its simulation variance vary. 
+% This is best done by generating collision callbacks, because that is when engines' do a lot of calculations to determine the response after the collision. Another approach, if AI is used for path planning instead of just following predefined trajectory way points, is to introduce a decision point for the AI.\\\\
 It is crucial to also make sure that any randomisation factors are eliminated in the experiment.
 
 \subsection{Internal settings}
