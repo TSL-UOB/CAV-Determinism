@@ -3,10 +3,16 @@
 \section{Introduction} \label{s:introduction}
 
 % What is verification
-\IEEEPARstart{V}{}erification is the process used to gain confidence in the correctness of a system with respect to its requirements~\cite{bergeron2012writing}. Simulation based verification can be used to test autonomous driving functions under development benefiting from full control over the road network and the actors within it. These simulated tests aim to provide evidence to regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988}. Simulation is an obvious domain choice to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without millions of miles of costly on-road testing~\cite{kalra2016driving} where the rare event can be made to happen more often~\cite{Koopman2018} such as unpredictable actor behaviour~\cite{RobustnessAutonomy}. 
+\IEEEPARstart{V}{}erification is the process used to gain confidence in the correctness of a system with respect to its requirements~\cite{bergeron2012writing}. Simulation based verification can be used to test autonomous driving functions under development benefiting from full control over the road network and the actors within it. These simulated tests aim to provide evidence to regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988}. 
+%
+\noindent There have been a number of fatalities with autonomous vehicles which could be attributed to a lack of verification and validation (V\&V), e.g.\cite{FatalityExample}.
+%
+Simulation is an obvious domain choice to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without millions of miles of costly on-road testing~\cite{kalra2016driving} where the rare event can be made to happen more often~\cite{Koopman2018} such as unpredictable actor behaviour~\cite{RobustnessAutonomy}. 
+%
 
 % Requirements of simulation based verification SBV
-For games engines to offer a suitable testing environment they must: operate with a minimal \textit{reality gap} in the physical domain (vehicles, actors), be realistic enough \cite{koopman realistic enough} including suitable rendering for perception stack testing, be easy to setup, run and manipulate the environment and the temporal development of actors \cite{Ulbrich2015.}, include the provision for sensor analogues to a suitable accuracy (e.g. video, LIDAR, IR), allow hardware-in-the-loop development and provide a suitable real-time test-bed for cyber-security testing.
+For games engines to offer a suitable testing environment they must: operate with a minimal \textit{reality gap} in the physical domain (vehicles, actors), be realistic enough \cite{koopman realistic enough} including suitable rendering for perception stack testing, be easy to setup, run and manipulate the environment and the temporal development of actors \cite{Ulbrich2015.}, include the provision for sensor analogues to a suitable accuracy (e.g. video, LIDAR, IR), allow hardware-in-the-loop development and provide a suitable real-time test-bed for cyber-security testing~\cite{Javaid2013}. 
+%, e.g. minimum rate of frames per second (fps).
 %
 % Game engines for SBV
 Game engines offer a simulation domain solution for the development and testing of CAVs that meet many of these requirements but many challenges still exist.
@@ -18,44 +24,47 @@ For games engines to be useful as a verification tool then they must be determin
 Deterministic, in this context, refers to the property of causality given a temporal development of events such that any state is completely determined by prior states.
 %
 % Why is determinism important for verification
-Determinism is important for verification. Any software defects that are detected but not repeatable at a later time or by another party does not allow for suitable resolution. Furthermore, defects not found on the verification testing system may arise on deployed system with a different hardware architecture resulting in untested and potentially unsafe vehicle behaviour.
+Determinism is important for verification. Any software defects that are detected but not repeatable at a later time or by another party does not allow for suitable resolution. Furthermore, defects not found on the verification testing system may arise on a deployed system with a different hardware architecture resulting in untested and potentially unsafe vehicle behaviour.
 
 % Challenges of SBV
-\noindent The research questions in this work are:
-\begin{itemize}[leftmargin=*]
-    \item To what extent are gaming engines deterministic so that they can provide a reliable and repeatable testing environment for CAV verification?
-    \item Can this be done whilst providing the realism required for the physical and perceptual requirements of CAV development?
-    \item Will a game engine allowing real-time testing for cyber security analysis? %\todo{What will this be, minimum 30FPS?}
-\end{itemize}
+Our main research question is to what extent are gaming engines deterministic so that they can provide a reliable and repeatable testing environment for CAV verification? 
+%
+The game engine, in this context, must also comply with the requirements to provide a suitably realistic environment and real-time processing for perception and security analysis.
 
 
+This paper is structured as follows. In Section~\ref{s:background} a background on gaming engines and sources of potential non-determinism are explored. Section~\ref{s:methodology} presents a method to design and execute an experiment to assess suitability of a system for CAV verification. A case study to illustrate the level of simulation variance for a number of scenarios is explored in Section~\ref{s:case-study}. We conclude in Section~\ref{s:conclusion} and give an outlook on future work. 
 
 
 % \noindent \IEEEPARstart{T}{}he evolution and inevitable implementation of connected and autonomous vehicles (CAVs) on roads is a delicate if not utterly fascinating subject. Such systems operate in environments marked by inaccessibility, unexpected weather conditions, or unpredictable behavior by surrounding humans\cite{RobustnessAutonomy}. 
 
-Public safety is clearly a prime concern for putting autonomous vehicles into play, which means the meticulous and thorough process of developing, training, verifying, validating and certifying the artificial intelligence (AI) and software of the vehicle is a task to be handled with care. 
-It requires lots of flexibility and room to iterate to ensure the algorithms are given the sharpest understanding for maximum performance as well as to ensure that they are hazard-free in order for them to be deployed\cite{AirsimUnrealArticle}.\\\\
-\noindent There has been a number of catastrophic fatalities with self-driving vehicles due to lack of verification and validation (V\&V) of software e.g.\cite{FatalityExample}.
-As such, there appears the need for finding ways to V\&V the safety of such software, ranging from AI development to cyber-security, while maintaining minimal risks in testing.\\\\
-\noindent Existing vehicle manufacturers use vehicle dynamic simulators to model the physics of each component in a system. 
-Similarly, the use of simulation for traffic modelling is well established. 
-Despite these proven simulation tools, non of them provide all of the required functionalities together to fully simulate CAVs\cite{FrameworkAndChallenges}.\\\\
-While traffic-level simulators can model road layouts, they do not require as much realism or detail as CAVs require. On the other side, vehicle dynamics simulators include some of the high fidelity physics functionalities needed for CAV testing, but they only consider the vehicle itself and perhaps the road surface and gradient; they do not model any of the road layout, signs, traffic/street lights, other street furniture or surrounding infrastructure. 
-Most critically, neither types of simulators model sensors such as cameras, lidars or radars\cite{FrameworkAndChallenges}.\\\\ 
-Consequently, one of the major routes CAVs developers are moving towards is using physics engines, these are often games engine development frameworks, since they tick all of the boxes needed to fully simulate CAVs \cite{FrameworkAndChallenges}.  
-Robopilot, Capri, Carla, Apollo, Airsim, Udacity etc. are all examples of driving simulator projects that use physics engines to support development, training, and validation of autonomous driving systems software\cite{ListOfSimulators}. \\\\
-Test-retest reliability, is a key factor in V\&V of software. Tests need to be repeatable in order for one to eliminate bugs. 
-In other words physics engines has to be deterministic, or the level of non-determinism of the engine should be low and clearly defined, for them to be used in the context of V\&V of CAV software.\\\\
-\TODO{Remove this paragraph?} Determinism of gaming (physics) engines has not attracted much attention by engines' developers nor researchers. This previously was not important since in gaming, determinism is not critical. 
-Performance, on the other hand, is a subject of more interest in that field, where developers want games to work on all platforms and still be fast to provide a positive user experience. 
-On the contrary, determinism becomes vital and performance not when such engines are used in autonomous vehicles' AI development and testing. \\\\
-This paper aims to investigate how deterministic physics engines are for usage in V\&V for CAV simulations; and will cover the list of following points:
-\begin{itemize}[leftmargin=*]
-    \item Necessary background on gaming engines used in CAV simulations.
-    \item Review of sources of non-determinism in such engines.
-    \item Provide a method of how the level of non-determinism can be investigated and defined.
-    \item A case study showing the implementation of this methodology in an engine widely used in CAVs simulations (Unreal Engine).
-\end{itemize}
+% Public safety is clearly a prime concern for putting autonomous vehicles into play, which means the meticulous and thorough process of developing, training, verifying, validating and certifying the artificial intelligence (AI) and software of the vehicle is a task to be handled with care. 
+
+% It requires lots of flexibility and room to iterate to ensure the algorithms are given the sharpest understanding for maximum performance as well as to ensure that they are hazard-free in order for them to be deployed\cite{AirsimUnrealArticle}.\\\\
+
+% \noindent There has been a number of catastrophic fatalities with self-driving vehicles due to lack of verification and validation (V\&V) of software e.g.\cite{FatalityExample}.
+
+% As such, there appears the need for finding ways to V\&V the safety of such software, ranging from AI development to cyber-security, while maintaining minimal risks in testing.\\\\
+
+% \noindent Existing vehicle manufacturers use vehicle dynamic simulators to model the physics of each component in a system. Similarly, the use of simulation for traffic modelling is well established. Despite these proven simulation tools, non of them provide all of the required functionalities together to fully simulate CAVs\cite{FrameworkAndChallenges}.\\\\
+
+% move to background---->>>?
+% While traffic-level simulators can model road layouts, they do not require as much realism or detail as CAVs require. On the other side, vehicle dynamics simulators include some of the high fidelity physics functionalities needed for CAV testing, but they only consider the vehicle itself and perhaps the road surface and gradient; they do not model any of the road layout, signs, traffic/street lights, other street furniture or surrounding infrastructure. 
+% Most critically, neither types of simulators model sensors such as cameras, lidars or radars\cite{FrameworkAndChallenges}.\\\\ 
+% Consequently, one of the major routes CAVs developers are moving towards is using physics engines, these are often games engine development frameworks, since they tick all of the boxes needed to fully simulate CAVs \cite{FrameworkAndChallenges}.  
+% Robopilot, Capri, Carla, Apollo, Airsim, Udacity etc. are all examples of driving simulator projects that use physics engines to support development, training, and validation of autonomous driving systems software\cite{ListOfSimulators}. \\\\
+% Test-retest reliability, is a key factor in V\&V of software. Tests need to be repeatable in order for one to eliminate bugs. 
+% In other words physics engines has to be deterministic, or the level of non-determinism of the engine should be low and clearly defined, for them to be used in the context of V\&V of CAV software.\\\\
+% \TODO{Remove this paragraph?} Determinism of gaming (physics) engines has not attracted much attention by engines' developers nor researchers. This previously was not important since in gaming, determinism is not critical. 
+% Performance, on the other hand, is a subject of more interest in that field, where developers want games to work on all platforms and still be fast to provide a positive user experience. 
+% On the contrary, determinism becomes vital and performance not when such engines are used in autonomous vehicles' AI development and testing. \\\\
+
+% This paper aims to investigate how deterministic physics engines are for usage in V\&V for CAV simulations; and will cover the list of following points:
+% \begin{itemize}[leftmargin=*]
+%     \item Necessary background on gaming engines used in CAV simulations.
+%     \item Review of sources of non-determinism in such engines.
+%     \item Provide a method of how the level of non-determinism can be investigated and defined.
+%     \item A case study showing the implementation of this methodology in an engine widely used in CAVs simulations (Unreal Engine).
+% \end{itemize}
  
  
 
