@@ -15,7 +15,7 @@ Investigating the determinism of gaming engines has not attracted much research 
 
 % ======= Overview of a Game Loop
 \subsection{Overview of a Game Loop} \label{GameLoopSection}
-The game loop is responsible for the interaction between the maths, physics and rendering engines. Figure \ref{GameEngineLoopDiagram} depicts a basic representation of the process flow in a game engine loop. A game loop is broken up into three distinct phases: processing the inputs, updating the game world (Physics Engine), and generating outputs (Rendering).~\cite{GameEngineArchBook}
+The game loop is responsible for the interaction between the maths, physics and rendering engines. Figure \ref{GameEngineLoopDiagram} depicts a basic representation of the process flow in a game engine loop (initialisation, game logic and decommissioning are removed from this diagram for brevity). A game loop is broken up into three distinct phases: processing the inputs, updating the game world (Physics Engine), and generating outputs (Rendering).~\cite{GameEngineArchBook}
 
 \begin{figure}[h]
 \centering
@@ -23,17 +23,15 @@ The game loop is responsible for the interaction between the maths, physics and 
 \caption{Game engine loop block diagram~\cite{GameProgPatternsBook}}
 \label{GameEngineLoopDiagram}
 \end{figure}
-The first part of the game loop is to process the user inputs which may take the form of user keyed inputs or, in the case of CAV development, the resultant actions of the autonomous vehicle given the current state of the environment. For example, the throttle and braking inputs from the PID controller controlling the speed of an AV. %\TODO{For AG: need to expand, e.g what are the inputs?} %\TODO{For AG: does game logic need to be mentioned?}
+The first part of the game loop is to process the user inputs which may take the form of user keyed inputs or, in the case of CAV development, the resultant actions of the autonomous vehicle given the current state of the environment. For example, the throttle and steering inputs from the vehicle controller of an AV
 %
-The update interprets the intended actions of all dynamic actors in the scene, performs any necessary physics calculations and updates the actor states. %This update process can still proceed independelty of the main game loop as symbolised by the clock in the upper loop in Figure~\ref{GameEngineLoopDiagram}. % \TODO{For AG: what does the clock symbolise, need to explain it?}
+The update interprets the intended actions of all dynamic actors in the scene, performs any necessary physics calculations and updates the actor states. 
 %
-The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. %\TODO{For AG: you cite this book 4 times which might be too much as a general reference, is there something specific you want to draw the reader towards in the book? What specifically about the rendering part of this cycle does the book help to illustrate the point?}
-% 
-% It is necessary to have an understanding of how rendering and physics engines operate together in order to grasp some of the sources of non-determinsim that will be mentioned. %\TODO{For AG: why is this crucial and can we say that we resolved it if it is crucial?}
+The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. 
 % 
 It is necessary to have an understanding of how the game loop operates in order to understand potential sources of non-determinism that are discussed below. 
 % 
-The key aspects of the game loop needed for this discussion are as follows (initialisation, game logic and decommissioning are removed from this diagram for brevity), see Fig.~\ref{GameEngineLoopDiagram}: 
+The key aspects of the game loop needed for this discussion are as follows, see Fig.~\ref{GameEngineLoopDiagram}: 
 
 \begin{itemize}[leftmargin=*]
     \item At the beginning of each tick (scene), the lag between the game clock and the real world is updated based on how much real time passed. This measures how far the game's clock is behind compared to the real world.
@@ -67,19 +65,20 @@ and the simulation will exhibit delays between input commands and rendered state
 % ======= Sources of non-determinism
 \subsection{Sources of Non-Determinism} \label{s:nondeterminisimSources}
 
-The following points form a hypothesis around potential sources of non-determinism.
+The following points form a hypothesis around potential sources of non-determinism. \\\\
 % \noindent After establishing an understanding of how physics engines work, the focus will now be on what causes these engines to be non-deterministic. The main reasons that we think are causes of these engines' non-determinism are discussed below. \\\\
 
 \noindent\underline{\textit{Floating Points:}}
 Floating point representation of real numbers is limited with fixed register sizes resulting in errors of \textit{rounding} where loss of bits occur and are rounded or truncated and \textit{cancellation} which happens where two similar values are subtracted
 % A generic issue with computers is floating points precision. Various errors occur when doing arithmetic manipulations using floating points, especially when operating between large and small numbers due to rounding, memory limitations and so forth.
-~\cite{FloatingPointsBook}\cite{goldberg1991every}.
-
-Translating to the usage of CAV simulations in physics engines, this could result in many precision issues; for instance consider a simulation where the world is infinite and progressively  generated in the physics engine. 
-After a few hundred meters, precision issues will start to occur due to the coordinates used in arithmetic cacluations getting bigger, and will get progressively worse the further from the origin the simulation gets. 
-Such reasons would often make one rapidly jump to conclude that floating points are the cause of non-determinism of these engines. 
-However, it is important to note that these precision issues should be referred to as incorrectness and not non-determinism. 
-Since hardware is deterministic, then the same hardware should produce the same exact output for the same inputted data i.e. even if the output is incorrect due to floating point precision it should always be the same, given the same hardware.\\\\ 
+~\cite{FloatingPointsBook}\cite{goldberg1991every}. 
+%
+% Translating to the usage of CAV simulations in physics engines,
+This could result in precision issues of, for example, actor position within the environment and falsely satisfying or failing assertions.
+%; for instance consider a simulation where the world is infinite and progressively  generated in the physics engine. 
+% After a few hundred meters, precision issues will start to occur due to the coordinates used in arithmetic cacluations getting bigger, and will get progressively worse the further from the origin the simulation gets. 
+Such reasons would often make one jump to conclude that floating points are the cause of non-determinism, but these precision issues should be referred to as \textit{incorrectness} and not non-determinism. 
+Since hardware is assumed deterministic, then the same hardware should produce the same \textit{incorrect} output for the same initial conditions. %, i.e. even if the output is incorrect due to floating point precision it should always be the same, given the same hardware.\\\\ 
 %
 % A generic issue with computers are floating points precision. 
 %Various errors occur when doing arithmetic manipulations using floating points, especially when operating between large and small numbers due to rounding, memory limitations and so forth.\cite{FloatingPointArithmeticArticle}\cite{FloatingPointsBook}. 
@@ -90,20 +89,29 @@ Since hardware is deterministic, then the same hardware should produce the same 
 % This is due to the values of the coordinates being used in calculations are getting bigger and hence will not cope with small values that are critical for V\&V testing purposes. 
 % A solution to this problem is perhaps every time the simulations moves 100 meters away from the origin the entire world will move by 100m in the opposite direction. Thus, avoiding getting into floating point issues.\cite{FloatingPointArithmeticArticle}
 %
-% There are many scenarios that could be addressed, and solutions to them will entirely depend on the characteristics of that specific scenario. There is no generalised solution for the floating problem, regardless of how good computers get there will always be a limitation. However, floating points as they stand could just be sufficient for V\&V testing purposes. Whenever they are not, smart solutions can be found to accommodate for these limitations.\\\\
+% There are many scenarios that could be addressed, and solutions to them will entirely depend on the characteristics of that specific scenario. There is no generalised solution for the floating problem, regardless of how good computers get there will always be a limitation. However, floating points as they stand could just be sufficient for V\&V testing purposes. Whenever they are not, smart solutions can be found to accommodate for these limitations.
+\\\\
+\noindent\underline{\textit{Multi-Thread Scheduling:}} Scheduling of threads may be a reason for non-deterministic simulation behaviour in game engines. Given the same hardware the output should always be the same, unless scheduling of the threads change. 
+% i.e. the utilisation of hardware is manipulated differently each time. This would then result in non-deterministic behaviours especially if it is combined with the floating point problem discussed earlier. 
 %
-\noindent\underline{\textit{Scheduling of threads:}} Scheduling of threads is believed to be the main reason for non-deterministic behaviour of game engines. Given the same hardware the output should always be the same, unless scheduling of the threads change i.e. the utilisation of hardware is manipulated differently each time. This would then result in non-deterministic behaviours especailly if it is combined with the floating point problem discussed earlier. 
-To solve the scheduling of threads problem, one would have to control all of the threads during runtime, which is very involved. To achieve that one would need to replace or control the whole run-time system to allocate tasks to the same threads in the same order. This is beyond the sope of our work and will not be covered in this paper.\\\\
+For example, if a process on thread 1 requires data from thread 2, but thread 2 is delayed due to additional load then synchrony between the threads may be lost if not controlled for explicitly. Given that game engines will promote performance over accuracy the process on thread 1 may be dropped or skipped until the data are available. This may lead to events happening out of order depending on the computational load and hence non-deterministic.
 %
+% To solve the scheduling of threads problem, one would have to control all of the threads during runtime, which is very involved. To achieve that one would need to replace or control the whole run-time system to allocate tasks to the same threads in the same order. This is beyond the scope of our work and will not be covered in this paper.
+\\\\
 \noindent\underline{\textit{Physics and Rendering clocks:}}
-The inherent way of how these physics engines operate (i.e.game loops) causes the engine to be non-deterministic. 
-A follow up from section \ref{GameLoopSection}, these engines use a variable frame rate, which is good for hardware scalability but creates a challenge for the physics engine which works best with small fixed time steps. 
-The problem of having a variable frame rate could also contribute to the non-deterministic behaviour of these engines, especially if put together with the scheduling of threads problem. That is to say, if the frame rate is allowed to vary then it has to be controlled to give the same variablity through out a given test in order for the test results to be repeatable. This issue might be of negligible significance if the frame rate is consistent and the time steps are small enough. \\\\
+% The inherent way of how these physics engines operate (i.e.game loops) causes the engine to be non-deterministic.  A follow up from section \ref{GameLoopSection}, these
+Some game engines use a variable frame rate, which is good for hardware scalability but creates a challenge for the physics engine which works best with small fixed time steps. %
 %
-\noindent\underline{\textit{Navigation meshes and AI:}}
-Game engines' often use navigation meshes for AI path planning. Some CAV simulator developers claim that the built-in physics engines' AI is non-deterministic\cite{CARLABenchmark}. 
-The validity of this depends on what are the built in AI algorithms being used by the engine. 
-Most of them tend to use the A* algorithm\cite{AStarBook}, which is an algorithm with deterministic behaviour if the environment is deterministic\cite{AirsimUnrealArticle}\cite{UnrealAIDocumentation}. 
-Therefore, the determinism of the AI depends on the determinism of the engine and how its navigation meshes are created/modelled, their shape, granularity etc. It is interesting to note that changes can occur to meshes every time the simulation is loaded or if dynamically loading these navigation meshes as the simulation proceeds. This non-deterministic behaviour can be also resorted to the different scheduling of threads, hence giving variations in meshes everytime they are loaded.
+The problem of having a variable frame rate could also contribute to the non-deterministic behaviour of these engines, especially combined with loss of thread scheduling synchrony. 
+%
+That is to say, if the frame rate is allowed to vary then it has to be controlled to give the same variability through out a given test in order for the test results to be repeatable. This issue might be of negligible significance if the frame rate is consistent and the time steps are small enough. 
+\\\\
+\noindent\underline{\textit{Actor Navigation:}}
+Game engines often use navigation meshes for actor path planning, which should be considered as a potential source of non-deterministic behaviour, e.g.%. Some CAV simulator developers claim that the built-in physics engines' AI is non-deterministic
+~\cite{CARLABenchmark}. 
+This may depend on the algorithms used by the engine which typically use the A* algorithm\cite{AStarBook} and should give deterministic outcomes as long as the environment is deterministic\cite{AirsimUnrealArticle}\cite{UnrealAIDocumentation}. 
+Therefore, the determinism of the actor path planning depends on the environment and the update to actor states within it and how navigation meshes are created or modelled, e.g. shape, granularity. 
+%
+It is interesting to note that changes can occur to navigation meshes if they are dynamically loaded as the simulation proceeds which can reduce computational load for large area maps~\footnote{\url{https://docs.unrealengine.com/en-US/BlueprintAPI/AI/Navigation/RegisterNavigationInvoker/index.html}}. %This non-deterministic behaviour can be also resorted to the different scheduling of threads, hence giving variations in meshes every time they are loaded.
 
 
