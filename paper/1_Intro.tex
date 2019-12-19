@@ -5,20 +5,19 @@
 % What is verification
 \IEEEPARstart{V}{}erification is the process used to gain confidence in the correctness of a system with respect to its requirements~\cite{bergeron2012writing}. Simulation based verification can be used to test autonomous driving functions under development benefiting from full control over the road network and the actors within it. These simulated tests aim to provide evidence to regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988}. 
 %
-\noindent There have been a number of fatalities with autonomous vehicles which could be attributed to a lack of verification and validation (V\&V), e.g.\cite{FatalityExample}.
+There have been a number of fatalities with autonomous vehicles which could be attributed to a lack of verification and validation (V\&V), e.g.\cite{FatalityExample}.
 %
 Simulation is an obvious domain choice to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without millions of miles of costly on-road testing~\cite{kalra2016driving} where the rare event can be made to happen more often~\cite{Koopman2018} such as unpredictable actor behaviour~\cite{RobustnessAutonomy}. 
-%
 
 % Requirements of simulation based verification SBV
 For games engines to offer a suitable testing environment they must: operate with a minimal \textit{reality gap} in the physical domain (vehicles, actors), be realistic enough \cite{Koopman2018} including suitable rendering for perception stack testing, be easy to setup, run and manipulate the environment and the temporal development of actors \cite{Ulbrich2015}, include the provision for sensor analogues to a suitable accuracy (e.g. video, LIDAR, IR), allow hardware-in-the-loop development and provide a suitable real-time test-bed for cyber-security testing~\cite{Javaid2013}. 
 %, e.g. minimum rate of frames per second (fps).
 %
 % Game engines for SBV
-Game engines offer a simulation domain solution for the development and testing of CAVs that meet many of these requirements but many challenges still exist.
-%
+Game engines offer a simulation domain solution for the development and testing of CAVs that meet many of these requirements, as opposed to vehicle dynamics simulators and traffic-level simulators used my manufacturers~\cite{FrameworkAndChallenges}; but many challenges still exist.
+
 % Verification and Determinism 
-For games engines to be useful as a verification tool then they must be deterministic. 
+For game engines to be useful as a verification tool then they must be deterministic. 
 %
 % What is a deterministic system
 Deterministic, in this context, refers to the property of causality given a temporal development of events such that any state is completely determined by prior states.
@@ -32,7 +31,6 @@ Determinism is important for verification. Any software defects that are detecte
 Our main research question is to what extent are gaming engines deterministic so that they can provide a reliable and repeatable testing environment for CAV verification? 
 %
 The game engine, in this context, must also comply with the requirements to provide a suitably realistic environment and real-time processing for perception and security analysis.
-
 
 This paper is structured as follows. In Section~\ref{s:background} a background on gaming engines and sources of potential non-determinism are explored. Section~\ref{s:methodology} presents a method to design and execute an experiment to assess suitability of a system for CAV verification. A case study to illustrate the level of simulation variance for a number of scenarios is explored in Section~\ref{s:case-study}. We conclude in Section~\ref{s:conclusion} and give an outlook on future work. 
 
