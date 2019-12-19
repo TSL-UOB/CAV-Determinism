@@ -7,7 +7,7 @@
 
 \section{Background} \label{s:background}
 
-There are numerous game engines with their associated development environments which could be suitable for CAV development, e.g. Unreal~\footnote{\url{https://www.unrealengine.com/}}, Unity~\footnote{\url{https://unity.com/}}, CryEngine~\footnote{\url{https://www.cryengine.com/}}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing engines, e.g. Carla~\footnote{http://carla.org/}, AirSim~\footnote{\url{https://microsoft.github.io/AirSim/}}, Apollo~\footnote{\url{http://apollo.auto/}}, and some have been developed for cloud based simulation, e.g. Nvidia Drive Constellation~\footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
+There are numerous game engines with their associated development environments which could be suitable for CAV development, e.g. Unreal~\footnote{\url{https://www.unrealengine.com/}}, Unity~\footnote{\url{https://unity.com/}}, CryEngine~\footnote{\url{https://www.cryengine.com/}}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing engines, e.g. Carla~\footnote{\url{http://carla.org/}}, AirSim~\footnote{\url{https://microsoft.github.io/AirSim/}}, Apollo~\footnote{\url{http://apollo.auto/}}, and some have been developed for cloud based simulation, e.g. Nvidia Drive Constellation~\footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
 
 Investigating the determinism of gaming engines has not attracted much research interest since performance is more critical for playing games than accurate and repeatable runtime execution. However, when these engines are used for CAV development then deterministic behaviour is required. This section gives an overview of a gaming engine and what sources or settings in the engine may affect \textit{simulation variance}.
 %
@@ -28,24 +28,33 @@ The first part of the game loop is to process the user inputs which may take the
 The update interprets the intended actions of all dynamic actors in the scene, performs any necessary physics calculations and updates the actor states. %This update process can still proceed independelty of the main game loop as symbolised by the clock in the upper loop in Figure~\ref{GameEngineLoopDiagram}. % \TODO{For AG: what does the clock symbolise, need to explain it?}
 %
 The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. %\TODO{For AG: you cite this book 4 times which might be too much as a general reference, is there something specific you want to draw the reader towards in the book? What specifically about the rendering part of this cycle does the book help to illustrate the point?}
+% 
+% It is necessary to have an understanding of how rendering and physics engines operate together in order to grasp some of the sources of non-determinsim that will be mentioned. %\TODO{For AG: why is this crucial and can we say that we resolved it if it is crucial?}
+% 
+It is necessary to have an understanding of how the game loop operates in order to understand potential sources of non-determinism that are discussed below. 
+% 
+The key aspects of the game loop needed for this discussion are as follows (initialisation, game logic and decommissioning are removed from this diagram for brevity), see Fig.~\ref{GameEngineLoopDiagram}: 
 
-It is necessary to have an understanding of how rendering and physics engines operate together in order to grasp some of the sources of non-determinsim that will be mentioned. %\TODO{For AG: why is this crucial and can we say that we resolved it if it is crucial?}
-The game loop operates as follows: (see Figure \ref{GameEngineLoopDiagram})
 \begin{itemize}[leftmargin=*]
     \item At the beginning of each tick (scene), the lag between the game clock and the real world is updated based on how much real time passed. This measures how far the game's clock is behind compared to the real world.
     \item Then the user inputs are processed.
-    \item There is then an inner loop to update the physics engine (clock symbol in Figure~\ref{GameEngineLoopDiagram}), incrementing at fixed step until the game clock is equal to the real world. The physics engine uses a fixed time step, because it makes everything simpler and more stable for physics and AI. The shorter this fixed time step is, the more processing time it takes to catch up to real time and the more deterministic the engine becomes and vice versa, as will be explained in section \ref{s:nondeterminisimSources}. Thus, ideally the time step should be as short as possible, so that simulations run with high fidelity on fast machines. However, if the fixed time step is too short i.e. less than the time it takes to process an ``Update" inner loop on some (slow) machines, then the simulation will simply never catch up on these slow machines.
-    \item Rendering occurs once the physics engine catches up. The process then starts again.
+    \item There is then an inner loop to update the physics processes (clock symbol in Figure~\ref{GameEngineLoopDiagram}), incrementing at a fixed delta time step, $dt$, until the game clock is equal to the real world. 
+    \item Rendering occurs once the game clock has caught up with the real world clock. 
+    \item The process then repeats.
 \end{itemize} 
 
+The physics engine uses a fixed time step and %, because it makes everything simpler and more stable for physics and AI.
+the shorter this fixed time step is, the smoother the interpretation of the physical dynamics will be. %processing time it takes to catch up to game clock. % and the more deterministic the engine becomes and vice versa, as will be explained in section \ref{s:nondeterminisimSources}. 
+%
+To use a fixed physics time step the user's display refresh rate needs to be known in advance. This requires an update loop to take less than one render tick (one frame of real world time). Given the range of different hardware capabilities a variable delta time can be implemented taking the previous frame time as the next $dt$. However, variable $dt$ can lead to different physical results and in some cases unrealistic physical representations~\cite{gaffer}. Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined limit to meet a minimum standard of physical representation but allows computational headroom for slower hardware. Some engines provide sub-stepping which does multiple physics calculations per frame at a greater CPU cost~\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Physics/Substepping/index.html}}. If the engine tries to render between updates \textit{residual lag} can occur and extrapolation between frames is performed to smooth transition between scenes. %\cite{GameEngineArchBook}\cite{GameProgPatternsBook}
+%
+% Ideally the time step should be as short as possible, so that the simulation returns better accuracy of complex physical processes. %runs with high fidelity on fast machines. 
+In exceptional cases where resources are scarce, the fixed time step can be greater than the time between render ticks %it takes to process an ``Update" inner loop on some (slow) machines, 
+and the simulation will exhibit delays between input commands and rendered states resulting in unsychronised and unrealistic behaviour.
 
-
-The time step, $dt$, in the physics calculation is important and the smaller the value the more realistic the simulation will be. If $dt$ is too large or irregularly spaced then the rendered motion may not be smooth and interpolation may be required at additional computational cost. To use a fixed physics time step the user's display refresh rate needs to be known in advance. This requires an update loop to take less than one frame of real world time~\cite{gaffer}. Given the different capabilities of game players hardware a variable delta time can be implemented taking the previous frame time as the next $dt$. However, variable $dt$ can lead to different physical results and in some cases unrealistic physics. Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined limit to meet a minimum standard of physical representation but allows computational headroom for slower hardware. Some engines provide sub-stepping which does multiple physics calculations per frame at a greater CPU cost~\footnote{https://docs.unrealengine.com/en-US/Engine/Physics/Substepping/index.html}. If the engine tries to render between updates \textit{residual lag} can occur and extrapolation between frames is performed to smooth transition between scenes.%\cite{GameEngineArchBook}\cite{GameProgPatternsBook}
-
-
+% The time step, $dt$, in the physics calculation is important and the smaller the value the more realistic the simulation will be. If $dt$ is too large or irregularly spaced then the rendered motion may not be smooth and interpolation may be required at additional computational cost. 
 
 % This process allows hardware scalability, but the rendering will become of jerky quality on slower machines. These engines update at fixed intervals and render whenever they can, which is not steady. This results in what is so called residual lag\cite{GameEngineArchBook}\cite{GameProgPatternsBook}, where the engine is trying to render between two consecutive updates. In this case, the engine will use extrapolation techniques to give an estimate of where the object should be. This often is sufficient for gaming purposes and unnoticeable to the user, in fact it improves the stuttery motion.
-
 
 \begin{figure*}[b]
     \centering
@@ -56,18 +65,20 @@ The time step, $dt$, in the physics calculation is important and the smaller the
 \end{figure*}
 
 % ======= Sources of non-determinism
-\subsection{Sources of non-determinism} \label{s:nondeterminisimSources}
-\noindent After establishing an understanding of how physics engines work, the focus will now be on what causes these engines to be non-deterministic. 
-The main reasons that we think are causes of these engines' non-determinism are discussed below. \\\\
-%
+\subsection{Sources of Non-Determinism} \label{s:nondeterminisimSources}
+
+The following points form a hypothesis around potential sources of non-determinism.
+% \noindent After establishing an understanding of how physics engines work, the focus will now be on what causes these engines to be non-deterministic. The main reasons that we think are causes of these engines' non-determinism are discussed below. \\\\
+
 \noindent\underline{\textit{Floating Points:}}
-A generic issue with computers are floating points precision. 
-Various errors occur when doing arithmetic manipulations using floating points, especially when operating between large and small numbers due to rounding, memory limitations and so forth.\cite{FloatingPointArithmeticArticle}\cite{FloatingPointsBook}.
+Floating point representation of real numbers is limited with fixed register sizes resulting in errors of \textit{rounding} where loss of bits occur and are rounded or truncated and \textit{cancellation} which happens where two similar values are subtracted
+% A generic issue with computers is floating points precision. Various errors occur when doing arithmetic manipulations using floating points, especially when operating between large and small numbers due to rounding, memory limitations and so forth.
+~\cite{FloatingPointsBook}\cite{goldberg1991every}.
 
 Translating to the usage of CAV simulations in physics engines, this could result in many precision issues; for instance consider a simulation where the world is infinite and progressively  generated in the physics engine. 
 After a few hundred meters, precision issues will start to occur due to the coordinates used in arithmetic cacluations getting bigger, and will get progressively worse the further from the origin the simulation gets. 
 Such reasons would often make one rapidly jump to conclude that floating points are the cause of non-determinism of these engines. 
-However, it is important to note that these precision issues should be referred to as incorrecctness and not non-determinisim. 
+However, it is important to note that these precision issues should be referred to as incorrectness and not non-determinism. 
 Since hardware is deterministic, then the same hardware should produce the same exact output for the same inputted data i.e. even if the output is incorrect due to floating point precision it should always be the same, given the same hardware.\\\\ 
 %
 % A generic issue with computers are floating points precision. 
