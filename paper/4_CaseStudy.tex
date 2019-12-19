@@ -53,7 +53,6 @@ In terms of running the experiments (step 4), \textbf{i)} the computer used is a
 
 \subsection{Results And Discussion}\label{ResultsSection}
 We start by analysing (step 5) the summary from all of the tests plotted in Figure~\ref{ExperimentsStressSummary}; where the $x$-axis represents the percentage of CPU + GPU utilisation and the $y$-axis shows the total mean devaition. 
-This was calculated by averaging the variance between all of the different runs through out the simulation time for all of the agents, then taking the square root to obtain the total mean devaiton.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.48\textwidth]{Other/Figures/ExperimentsStressSummary.pdf}
@@ -91,6 +90,8 @@ This was calculated by averaging the variance between all of the different runs 
     \end{subfigure}
     \caption{Test ID 4 (a)Mean deviation over runs no. vs simulation time for 25\% stress. (b)Pre and post collision mean deviation over runs no. for different CPU + GPU stresses.}
 \end{figure*}
+This was calculated by averaging the variance between all of the different runs through out the simulation time for all of the agents, then taking the square root to obtain the total mean devaiton.
+
 Note the dotted red line in the plot shows the millimeter (mm) level. 
 Below this level we assume that the level of simulation variance is low enough that it would not affect our assertion checking for V\&V of CAV simulations purposes, that it is sufficient to assume the tests are deterministic and repeatable. 
 This line can be moved up or down and it is entirely up to verification engineers where they want to define the level below which tests' variance is negligibale and it is suffcient to assume that tests are deterministic.
