@@ -3,8 +3,9 @@
 %
 \subsection{Design experiment}
 The experiment should be a simple scenario that can be easily repeated with the same initial conditions. Logs should be used to record the actor positions at fixed time intervals throughout the simulation. For each actor the variance in trajectory can be determined and the deviation from the mean, $S_t$, of the trajectory monitored at each time step. Averages over time and for different actors can be used to condense results down to single figures.
+Tests should be run to a significant number of times (e.g.100-1000), to make sure any edge variations are encountered. 
 
-We use game engine actors to simulate the AV and pedestrians. Actors can either follow a series of trajectory waypoints or can plan a route to a further destination using some path planning and obstacle avoidance algorithms, e.g. A* search algorithm. 
+We use game engine actors to simulate the AVs and other agents (vehicles and pedestrians). Actors can either follow a series of trajectory waypoints or can plan a route to a further destination using some path planning and obstacle avoidance algorithms, e.g. A* search algorithm. 
 % 
 % Resource - Realism
 To simulate the demands of realistic rendering and complex physics calculations in a simple scenario, stress routines are used to artificially occupy system resources. 
