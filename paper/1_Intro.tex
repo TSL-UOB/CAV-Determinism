@@ -3,18 +3,20 @@
 \section{Introduction} \label{s:introduction}
 
 % What is verification
-\IEEEPARstart{V}{}erification is the process used to gain confidence in the correctness of a system with respect to its requirements~\cite{bergeron2012writing}. Simulation based verification can be used to test autonomous driving functions under development benefiting from full control over the road network and the actors within it. These simulated tests aim to provide evidence to regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988}. 
+\IEEEPARstart{V}{}erification is the process used to gain confidence in the correctness of a system with respect to its requirements~\cite{bergeron2012writing}. Simulation based verification can be used to test autonomous driving functions under development benefiting from full control over the road network and the actors within it. These simulated tests aim to provide evidence to regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988} which form a body of driving assertions which must not be violated. Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules through assertion checking. 
 %
 There have been a number of fatalities with autonomous vehicles which could be attributed to a lack of verification and validation (V\&V), e.g.\cite{FatalityExample}.
 %
 Simulation is an obvious domain choice to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without millions of miles of costly on-road testing~\cite{kalra2016driving} where the rare event can be made to happen more often~\cite{Koopman2018} such as unpredictable actor behaviour~\cite{RobustnessAutonomy}. 
 
 % Requirements of simulation based verification SBV
-For games engines to offer a suitable testing environment they must: operate with a minimal \textit{reality gap} in the physical domain (vehicles, actors), be realistic enough \cite{Koopman2018} including suitable rendering for perception stack testing, be easy to setup, run and manipulate the environment and the temporal development of actors \cite{Ulbrich2015}, include the provision for sensor analogues to a suitable accuracy (e.g. video, LIDAR, IR), allow hardware-in-the-loop development and provide a suitable real-time test-bed for cyber-security testing~\cite{Javaid2013}. 
+For games engines to offer a suitable testing environment they must operate with a minimal \textit{reality gap} in the physical domain (vehicles, actors) and be realistic enough \cite{Koopman2018} to produce suitable rendering of scenes for perception stack testing. 
+
+The simulation must be easy to setup, run and manipulate the environment and the temporal development of actors \cite{Ulbrich2015} and include a provision for sensor analogues to a suitable degree of accuracy (e.g. video, LIDAR, IR). Some researchers may also require support for hardware-in-the-loop development or a suitable real-time test-bed for cyber-security testing~\cite{Javaid2013}. 
 %, e.g. minimum rate of frames per second (fps).
 %
 % Game engines for SBV
-Game engines offer a simulation domain solution for the development and testing of CAVs that meet many of these requirements, as opposed to vehicle dynamics simulators and traffic-level simulators used my manufacturers~\cite{FrameworkAndChallenges}; but many challenges still exist.
+Game engines offer a simulation domain solution for the development and testing of CAVs that meet many of these requirements, as opposed to vehicle dynamics simulators and traffic-level simulators used by manufacturers~\cite{FrameworkAndChallenges}; but many challenges still exist.
 
 % Verification and Determinism 
 For game engines to be useful as a verification tool then they must be deterministic. 
@@ -25,7 +27,9 @@ Deterministic, in this context, refers to the property of causality given a temp
 Herein the term \textit{simulation variance} is used to refer to how simulation runs vary when repeated many times and specifically the variance of agent paths within a given scenario. We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time, these are considered actors and may include other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific goals and values. A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
 % 
 % Why is determinism important for verification
-Determinism is important for verification. Any software defects that are detected but not repeatable at a later time or by another party does not allow for suitable resolution. Furthermore, defects not found on the verification testing system may arise on a deployed system with a different hardware architecture resulting in untested and potentially unsafe vehicle behaviour.
+Determinism is important for verification. Any software defects that are detected but not repeatable at a later time or by another party does not allow for suitable resolution. Furthermore, defects not found on the verification testing system may arise on a deployed system with a different hardware architecture resulting in untested and potentially unsafe vehicle behaviour. 
+%
+Also, if the simulation is non-deterministic, variance in actor positions may lead to subsequent assessment errors, e.g. assertion checking.
 
 % Challenges of SBV
 Our main research question is to what extent are gaming engines deterministic so that they can provide a reliable and repeatable testing environment for CAV verification? 
