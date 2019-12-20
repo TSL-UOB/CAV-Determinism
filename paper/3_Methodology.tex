@@ -1,9 +1,13 @@
 \section{Methodology} \label{s:methodology}
-\noindent A method for determining the level of simulation variance of an engine is presented in this section and the working flow of the method is shown in Figure~\ref{method_diagram}. Each of the steps in the method is elaborated in the following subsections.
+
+% \noindent 
+In this section a method for determining the level of \textit{simulation variance} is presented along with experimental parameters that may influence it, see Fig.~\ref{method_diagram}. The method includes scenarios that exercise different actor types and functional callbacks of the game engine that may influence thread scheduling. To replicate high computational loads, and hence game loop update rates, that may be experienced in high realism simulations, resource utilisation software is used at runtime for both central and graphical processing units.
+
+ % in this section and the working flow of the method is shown in Figure~\ref{method_diagram}. Each of the steps in the method is elaborated in the following subsections.
 %
+
 \subsection{Design experiment}
-The experiment should be a simple scenario that can be easily repeated with the same initial conditions. Logs should be used to record the actor positions at fixed time intervals throughout the simulation. For each actor the variance in trajectory can be determined and the deviation from the mean, $S_t$, of the trajectory monitored at each time step. Averages over time and for different actors can be used to condense results down to single figures.
-Tests should be run to a significant number of times (e.g.100-1000), to make sure any edge variations are encountered. 
+The experiment should be a short scenario that can be easily repeated with the same initial conditions. Logs should be used to record the actor positions at fixed time intervals throughout the simulation. For each actor the variance in path trajectory should be determined and the deviation from the mean of that trajectory recorded at each time step. Average deviation over time and for different actors can be used to condense results down to single figures. Tests should be repeated enough of times to ensure statistical power~\cite{cohen2013statistical} reveals any low probability errors. If only a small number of tests can be performed  then maximum, rather than average deviation should be considered 
 
 We use game engine actors to simulate the AVs and other agents (vehicles and pedestrians). Actors can either follow a series of trajectory waypoints or can plan a route to a further destination using some path planning and obstacle avoidance algorithms, e.g. A* search algorithm. 
 % 
