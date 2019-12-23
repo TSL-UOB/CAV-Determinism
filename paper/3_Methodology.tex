@@ -1,7 +1,7 @@
 \section{Methodology} \label{s:methodology}
 
 % \noindent 
-In this section a method for determining the level of \textit{simulation variance} is presented along with experimental parameters that may influence it, see Fig.~\ref{method_diagram}. The method includes scenarios that exercise different actor types and functional callbacks of the game engine that may influence thread scheduling. To replicate high computational loads, and hence game loop update rates, that may be experienced in high realism simulations, resource utilisation software is used at runtime for both central and graphical processing units.
+In this section a method for determining the \textit{simulation variance} is presented along with experimental parameters that may influence it, see Fig.~\ref{method_diagram}. The method includes scenarios that exercise different actor types and functional callbacks of the game engine that may influence thread scheduling. To replicate high computational loads, and hence game loop update rates, that may be experienced in high realism simulations, resource utilisation software is used at runtime for both central and graphical processing units.
 
  % in this section and the working flow of the method is shown in Figure~\ref{method_diagram}. Each of the steps in the method is elaborated in the following subsections.
 %
@@ -26,14 +26,14 @@ It is crucial to also make sure that any randomisation factors are eliminated in
 \subsection{Internal settings}
 There are several error and physics collision internal settings in physics engines that can be tweaked to enhance the simulation variance of the engine.
 
-Increasing the physics time-step calculations, which is increasing the number of calculations per unit time, would improve the level of simulation variance since the physics sequence will be more finely defined; but on the other hand this would be more computationally expensive. However, in such applications of V\&V of CAV simulations, the computational cost should be of less concern compared to the importance of repeatability of tests.
+Increasing the physics time-step calculations, which is increasing the number of calculations per unit time, would improve the simulation variance since the physics sequence will be more finely defined; but on the other hand this would be more computationally expensive. However, in such applications of V\&V of CAV simulations, the computational cost should be of less concern compared to the importance of repeatability of tests.
 
-If the experiment setup includes the usage of the physics engine's AI then altering the navigation mesh settings in the engine, like increasing the granularity of the mesh or changing the mesh type; can improve the level of simulation variance as a result of allowing the AI to navigate in a more well defined space. 
+If the experiment setup includes the usage of the physics engine's AI then altering the navigation mesh settings in the engine, like increasing the granularity of the mesh or changing the mesh type; can improve the simulation variance as a result of allowing the AI to navigate in a more well defined space. 
 
 Disabling rendering or running in headless mode is a way of attempting to entirely decouple the rendering engine from the physics engine, which theoretically should affect positively the repeatablility of tests. 
 The downside of most physics engines is that they do not provide a headless mode in the editor setup, thus this could make running in headless mode a real challenge for verification engineers.
 
-Running in editor or deployed mode can sometimes cause massive differences in performance, with deployed mode being worse, mostly due to the way settings get packaged when in deployed mode.
+Running in editor or deployed mode can sometimes cause differences in performance, with deployed mode being worse, mostly due to the way settings get packaged when in deployed mode.
 
 \begin{table*}[b]
 \centering

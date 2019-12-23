@@ -4,9 +4,9 @@ Given that our interest is on CAV simulations, this study presents a number of e
 Here we will walk through our hypothesis, description of our tests and the analysis of results from the different tests. We will point out at each stage where we sit in Figure~\ref{method_diagram} as we go through this case study.    
 
 \subsection{Problem And Hypothesis}
-We want to see whether using Unreal Engine 4 (UE4) along with CARLA \cite{CARLA_paper} for V\&V of CAV simulations is deterministic or not; if not then what is the level of simulation variance that we will operate with, is it acceptable or not, and whether it worsens with stressing GPU and CPU.
+We want to see whether using Unreal Engine 4 (UE4) along with CARLA \cite{CARLA_paper} for V\&V of CAV simulations is deterministic or not; if not then what is the simulation variance that we will operate with, is it acceptable or not, and whether it worsens with stressing GPU and CPU.
 
-Our hypothesis is that since UE4 is a gaming engine it is not deterministic, however, the level of simulation variance would be very low to acceptable limits that allows verification engineers to use it confidently and assume that tests would be repeatable.
+Our hypothesis is that since UE4 is a gaming engine it is not deterministic, however, the simulation variance would be very low to acceptable limits that allows verification engineers to use it confidently and assume that tests would be repeatable.
 This behaviour is expected not to hold as the level of computing stress increases.     
 
 \subsection{Tests Description And Technicalities}\label{TestsDescriptionAndTechnicalities}
@@ -93,7 +93,7 @@ We start by analysing (step 5) the summary from all of the tests plotted in Figu
 This was calculated by averaging the variance between all of the different runs through out the simulation time for all of the agents, then taking the square root to obtain the total mean devaiton.
 
 Note the dotted red line in the plot shows the millimeter (mm) level. 
-Below this level we assume that the level of simulation variance is low enough that it would not affect our assertion checking for V\&V of CAV simulations purposes, that it is sufficient to assume the tests are deterministic and repeatable. 
+Below this level we assume that the simulation variance is low enough that it would not affect our assertion checking for V\&V of CAV simulations purposes, that it is sufficient to assume the tests are deterministic and repeatable. 
 This line can be moved up or down and it is entirely up to verification engineers where they want to define the level below which tests' variance is negligibale and it is suffcient to assume that tests are deterministic.
 
 
@@ -101,7 +101,7 @@ First, the tests with no collisions are considered, these represent tests 1, 3 a
 Tests 1 and 3, which involves vehicles only and vehicles with pedestrians respectively, shows very low simulation variance for stress levels below 50\% and as the stress level increases they surpass the red line crossing our defined deterministic level but still being sufficiently low (i.e. with in the centimeter level). This clearly shows how the load on a computer (i.e. stressing CPU and GPU) can have drastic effects on the repeatablitiy of tests.
 This is more specific to vehicle agents rather than pedestrians since the behaviour of pedestrians is consistent and remarkably below the mm level for all of the different levels of stress shown by test 5, where only pedestrians are involved with no collisions, from which it can be deduced that the mean deviation change with the stress level in test 3 was solely due to the vehicles.
 
-Next, given the pedestrians were showing a very robust and low level of simulation variance, we ran tests for pedestrians colliding (i.e. with paths intersection) for different look ahead distances to exploit whether that would cause any changes, but yet as it can be seen by lines Test IDs' 6,7 and 8 that their performance is consistent for all of the different tests.
+Next, given the pedestrians were showing low simulation variance, we ran tests for pedestrians colliding (i.e. with paths intersection) for different look ahead distances to exploit whether that would cause any changes, but yet as it can be seen by lines Test IDs' 6,7 and 8 that their performance is consistent for all of the different tests.
 
 Finally, we look at the other collisions tests, tests 2 and 4 where the tests correspond to a collision between two vehicles and a collision between a vehicle and a pedestrian respectively. 
 We observe that in both of these tests the mean deviation is always above our red line regardless of the stress level, nevertheless still increasing the stress levels shows worsening effects.
