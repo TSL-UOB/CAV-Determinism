@@ -7,7 +7,7 @@ In this section a method for determining the \textit{simulation variance} is pre
 %
 
 \subsection{Design experiment}
-The experiment should be a short scenario that can be easily repeated with the same initial conditions. Logs should be used to record the actor positions at fixed time intervals throughout the simulation. For each actor the variance in path trajectory should be determined and the deviation from the mean of that trajectory recorded at each time step. Average deviation over time and for different actors can be used to condense results down to single figures. Tests should be repeated enough of times to ensure statistical power~\cite{cohen2013statistical} reveals any low probability errors. If only a small number of tests can be performed  then maximum, rather than average deviation should be considered 
+The experiment should be a short scenario that can be easily repeated with the same initial conditions. Data logging should be used to record the actor positions at fixed time intervals throughout the simulation. For each actor the variance in path trajectory should be determined and the deviation from the mean of that trajectory recorded at each time step. The average deviation over time can be calculated and this can also be averaged across different actors to condense results down to single figures. Tests should be repeated enough of times to ensure statistical power~\cite{cohen2013statistical} reveals any low probability errors. If only a small number of tests can be performed  then maximum, rather than average deviation should be considered 
 
 We use game engine actors to simulate the AVs and other agents (vehicles and pedestrians). Actors can either follow a series of trajectory waypoints or can plan a route to a further destination using some path planning and obstacle avoidance algorithms, e.g. A* search algorithm. 
 % 
@@ -22,7 +22,12 @@ Where possible a fixed $dt$ should be used and any random numbers used should be
 % \noindent When designing the experiment(s) one needs to bare in mind the following two questions: i) Is the engine deterministic? ii) If not, how does its simulation variance vary? In simulation, actors can either follow a series of trajectory way points or they get given the destination and their AI path plans to that destination. Thus, given that an engine has a high level of simulation variance, then one needs to set up an experiment that would stress the engine in order to determine how its simulation variance vary. 
 % This is best done by generating collision callbacks, because that is when engines' do a lot of calculations to determine the response after the collision. Another approach, if AI is used for path planning instead of just following predefined trajectory way points, is to introduce a decision point for the AI.\\\\
 It is crucial to also make sure that any randomisation factors are eliminated in the experiment.
-%
+
+The user should set a deviation threshold, beyond which simulation results deemed unacceptable or non-deterministic. For the majority of CAV navigation on major roads and highways a limit of $1m$ may be acceptable but in denser urban environments a value of $1cm$ may be more appropriate. 
+
+Depending on the number of repeated tests and the average deviation reported from the experiment, a maximum rather than average may be required if the results are close to the user-specified threshold. This is to ensure that an outlier data-point is not hidden in the average of $k$-tests
+
+
 \subsection{Internal settings}
 There are several error and physics collision internal settings in physics engines that can be tweaked to enhance the simulation variance of the engine.
 
