@@ -1,7 +1,7 @@
 
 \documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
 \input{main.config.tex}
-\pagenumbering{gobble} %suppresses page numbers
+% \pagenumbering{gobble} %suppresses page numbers
 \addbibresource{IROS.bib}
 \usepackage{balance} %balance columns
 
@@ -371,7 +371,7 @@ We present a case study to illustrate some the challenges of simulation based ve
 
 In order to reproduce conditions for computationally intensive simulations, the experiments are executed with additional levels of artificial resource utilisation. From previous work it was found that additional loads on either the CPU or GPU could increase simulation variance by equivalent levels\footnote{see footnote 14}. The level of additional resource utilisation, above that of the needs of the simulation, was increased from $0\%$ (no additional resource load) in $25\%$ increments up to a maximum of $95\%$ for both CPU and GPU as reported by system monitors (\texttt{htop} and \texttt{nvidia-smi} respectively). 
 
-Tests 5\&6 involve only pedestrians where they do not collide (test 5) and where they do (test 6). Similar to the vehicle actors, the look ahead range ($d_l$) can be modified so that the actor is forced to navigate on waypoints that are further away. In test 7 $d_l$ is creased from $0.4m$ to $2.0m$ and in test 8 to $20m$.
+Tests 5\&6 involve only pedestrians where they do not collide (test 5) and where they do (test 6). Similar to the vehicle actors, the look ahead range ($d_l$) can be modified so that the actor is forced to navigate on waypoints that are further away. In test 7 $d_l$ is increased from $0.4m$ to $2.0m$ and in test 8 to $20m$ which was done to investigate if the path planning algorithm was deterministic when given waypoints further ahead.
 
 Abanoub: can you change the diagram to be a staggered t-junction as the DMR is just confusing for this example. Also can we zoom in on the lower right area. Tests 5 and 6 have different look ahead values, which is correct?
 
