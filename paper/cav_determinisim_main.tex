@@ -286,7 +286,7 @@ It is also important to control any pseudo-random numbers that are called in any
 % We use game engine actors to simulate the AVs and other agents (vehicles and pedestrians). Actors can either follow a series of trajectory waypoints or can plan a route to a further destination using some path planning and obstacle avoidance algorithms, e.g. A* search algorithm. 
  
 \subsection{System Resources}
-To simulate the demands of taxing simulations, potentially requiring realistic rendering or complex physics calculations in an otherwise simple scenario, stress programs should be used to artificially occupy system resources. Preliminary work\footnote{see footnote 14} suggested that adding stress to the CPU or GPU will  contribute towards increased \textit{simulation variance}. CPU utilisation software, such as the linux \texttt{stress} tool which is a workload generator program that can be used spawn workers on any number of cores or virtual threads on a system. This can be used to tune to total load on the system to explore at what point your system may become unstable leading to \textit{simulation variance}.
+To simulate the demands of taxing simulations, potentially requiring realistic rendering or complex physics calculations in an otherwise simple scenario, stress programs should be used to artificially occupy system resources. Preliminary work\footnote{see footnote 14} suggested that adding stress to the CPU or GPU will  contribute towards increased \textit{simulation variance}. CPU utilisation software, such as the linux \texttt{stress} tool which is a workload generator program that can be used spawn workers on any number of cores or virtual threads on a system. This can be used to artificially increased the load on the system to explore at what point your system may become unstable leading to \textit{simulation variance}. For GPU utilisation \texttt{gpu-burn} was employed using the fur test at different resolutions and multiple instances can be used to generate high utilisation levels~\cite{GPU_stress}.
 
 % The user should also monitor and record system CPU and GPU utilisation rates. Additionally, if the user is interested in real-time assessment of the simulation then FPS should also be monitored and logged.
 
@@ -300,6 +300,9 @@ To simulate the demands of taxing simulations, potentially requiring realistic r
 \subsection{Internal settings}
 Where possible a fixed $dt$ should be used to give the most reliable physics calculations. If using Carla a small fixed value, say $0.05s$, can be set by using the following: \texttt{setting.fixed\_delta\_seconds = 0.05}, whereas in Unity the default fixed time step is set to $0.02s$\footnote{\url{https://docs.unity3d.com/ScriptReference/MonoBehaviour.FixedUpdate.html}} and a good description of the interplay between physics and render clock is given here~\cite{JohnAustinUnity}. In Carla, further settings can be applied to allow synchronous communication to external controllers to ensure no sensor data are passed out of order to the simulator~\cite{carla_sim_config}.
 
+Within Unreal Engine there are numerous internal settings relating to the movement and interaction of physical bodies in the simulation. Settings can be adjusted to alter how actors interact and path plan via the navigation mesh of the environment, e.g. \textit{Contact Offset} and \textit{Navmesh Voxel Size}, or can be changed to improve the fidelity of physics calculations between game update steps, e.g. \textit{Physics Sub-Stepping} and \textit{Max Physics Delta Time}. Other options such as \textit{Enable Enhanced Determinism} were investigated along with running the engine from the command line with options for more deterministic behaviour \texttt{-deterministic}, floating point control \texttt{/fp:strict} and headless mode \texttt{-nullrhi} along with running the test as a packaged release by building and cooking\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Deployment/Releasing/index.html}}. However, none of these options improved simulation variance significantly beyond the default settings, see our previous investigation~\cite{TSLUnrealEngineTesting}.
+
+% By doing various inspections around them we did not notice much improvement or worsening in the simulation variance between test runs, therefore the internal settings option was disregarded. However, one of the options we used is synchronous mode with a fixed time step that is available in CARLA. This would make the simulator proceed to the next tick only when commanded to do so by our script, which makes runs' flow more consistently.  
 
 % There are several error and physics collision internal settings in physics engines that can be tweaked to enhance the simulation variance of the engine.
 % Increasing the physics time-step calculations, which is increasing the number of calculations per unit time, would improve the simulation variance since the physics sequence will be more finely defined; but on the other hand this would be more computationally expensive. However, in such applications of V\&V of CAV simulations, the computational cost should be of less concern compared to the importance of repeatability of tests.
@@ -337,12 +340,12 @@ Test 		& Actors 						 & Collision & Collision Type 			 & $d_l$ (m) & $n$  &$\ma
 3       & Two vehicles and a pedestrian  & No  		 & N/A 			  			 & 2 		 & 1000 & 1000 \\
 4       & Two vehicles and a pedestrian  & Yes 		 & Vehicle and Pedestrian 	 & 2 		 & 1000 & 1000 \\
 5       & Two pedestrians                & No  		 & N/A 			  			 & 2 		 & 1000 & 1000 \\
-6       & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 0.4 		 & 1000 & 1000 \\
-7       & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 2 		 & 1000 & 1000 \\
-8       & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 20 		 & 1000 & 1000 \\
+6       & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 2 		 & 1000 & 1000 \\
+% 6       & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 0.4 		 & 1000 & 1000 \\
+% 8       & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 20 		 & 1000 & 1000 \\
 \bottomrule
 \end{tabular}
-\caption{Set of experiments where $d_l$ is the \textit{look ahead distance}, $n$ is the number of repeats and $\max\sigma$ is the maximum simulation deviation.}
+\caption{Test scenarios where $d_l$ is the \textit{look ahead distance}, $n$ is the number of repeats and $\max\sigma$ is the maximum simulation deviation. CONSIDER removing entries 6 and 8 if they do not contribute towards outcomes and remove references to $d_l$. \textbf{remove all reference to $d_l$}}
 \label{TableOfExperiments}
 \end{table*}
 
@@ -369,12 +372,12 @@ The output for each experiment can be summarised as the maximum variance of any 
 \section{Case Study} \label{s:case-study}
 We present a case study to illustrate some the challenges of simulation based verification outlined in Section~\ref{s:introduction}. The simulation must be deterministic and by our definition this should mean that the overall level of simulation variance $\sigma^2$ for any actor should be less than a user-defined threshold. Results are shown in terms of the maximum deviation ($\sigma$) and the deviation threshold in our case is $1cm$, where any value higher than this is considered non-deterministic. 
 
-In order to reproduce conditions for computationally intensive simulations, the experiments are executed with additional levels of artificial resource utilisation. From previous work it was found that additional loads on either the CPU or GPU could increase simulation variance by equivalent levels\footnote{see footnote 14}. The level of additional resource utilisation, above that of the needs of the simulation, was increased from $0\%$ (no additional resource load) in $25\%$ increments up to a maximum of $95\%$ for both CPU and GPU as reported by system monitors (\texttt{htop} and \texttt{nvidia-smi} respectively). 
-
-Tests 5\&6 involve only pedestrians where they do not collide (test 5) and where they do (test 6). Similar to the vehicle actors, the look ahead range ($d_l$) can be modified so that the actor is forced to navigate on waypoints that are further away. In test 7 $d_l$ is increased from $0.4m$ to $2.0m$ and in test 8 to $20m$ which was done to investigate if the path planning algorithm was deterministic when given waypoints further ahead.
+In order to reproduce conditions for computationally intensive simulations, the experiments are executed with additional levels of artificial resource utilisation. Resource utilisation was artificially increased for both CPU and GPU devices (see Section \ref{s:methodology}) using reported values of the system monitors \texttt{htop} and \texttt{nvidia-smi} respectively. Resource utilisation figures reported here should be considered approximate values.
+% The level of additional resource utilisation, above that of the needs of the simulation, was increased from $0\%$ (no additional resource load) in $25\%$ increments up to a maximum of $95\%$ for both CPU and GPU as reported by system monitors (\texttt{htop} and \texttt{nvidia-smi} respectively). 
 
 Abanoub: can you change the diagram to be a staggered t-junction as the DMR is just confusing for this example. Also can we zoom in on the lower right area. Tests 5 and 6 have different look ahead values, which is correct?
 
+These tests were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 graphics card with 8GB GDDR6 RAM at 1515 MHz. To ensure reliability of results, each test was repeated 1000 times.
 
 % Given that our interest is on CAV simulations, this study presents a number of experiments run on typical agents used in CAV simulations and their interactions with each other. These agents are classified into two, either vehicles(cars, motorcycles, bikes etc.) or pedestrians (can include animals). Here we will walk through our hypothesis, description of our tests and the analysis of results from the different tests. We will point out at each stage where we sit in Figure~\ref{method_diagram} as we go through this case study.    
 
@@ -385,17 +388,19 @@ Abanoub: can you change the diagram to be a staggered t-junction as the DMR is j
 
 % \subsection{Tests Description And Technicalities}\label{TestsDescriptionAndTechnicalities}
 \subsection{Scenario Description}\label{TestsDescriptionAndTechnicalities}
-The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover a range of interactions between actor types. Test 1 \& 2 involve 2 vehicles meeting at a junction where they do not collide (test 1) and when they do tiggering a collision callback in the game engine (test 2). In both cases the trajectories of the vehicles are hard-coded to follow a set of waypoints spaced at 0.1m intervals. Vehicle actors were programmed to use a PID controller to follow the waypoints targetting the closest waypoint but ignoring any waypoints closer than a fixed \textit{look-ahead distance} ($d_l$)\footnote{Targeting waypoints that are within $d_l$ tend to cause improper navigation with the implemented PID controller}.
+The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover a range of interactions between actor types. Tests 1 \& 2 involve 2 vehicles meeting at a junction where they do not collide (test 1) and when they do tiggering a collision callback in the game engine (test 2). In both cases the trajectories of the vehicles are hard-coded to follow a set of waypoints spaced at $0.1m$ intervals using a PID controller. In test 3 a mixture of different actor types are introduced where two vehicles dive without collision and a pedestrian walks across the road at a crossing point. In test 4 this pedestrian collides with one of the vehicles at the crossing triggering a collision callback, see Fig~\ref{Test_a}. Similar to vehicles, pedestrians navigate via a set of regularly space waypoints at $0.1m$ intervals using the A* algorithm which is the default controller for the Carla pedestrian actors. Tests 5 \& 6 involve only pedestrians where they do not collide (test 5) and where they do (test 6), see Fig.~\ref{Test_b}. 
 
-In test 3 two vehicles dive without collision and a pedestrian walks across the road at a crossing point. In test 4 this pedestrian collides with one of the vehicles at the crossing, see Fig~\ref{Test_a}. Pedestrians navigate to a set of regularly space waypoints at 0.1m intervals using the A* algorithm which are the default settings in the Caral/Unreal distribution.
+ % targetting the closest waypoint but ignoring any waypoints closer than a fixed \textit{look-ahead distance} ($d_l$)\footnote{Targeting waypoints with $d_l<0.4$ tend to cause improper navigation with the implemented PID controller}.
+% Pedestrians have the functionality of dynamic path planning i.e. they can avoid obstacles to reach their waypoints and so they can avoid static objects and other actors. To ensure they intersect (collide) with each other $d_l$ is altered; the smaller the look ahead distance the less chance the pedestrian will get to path plan around each other, and thus making sure they intersect. (This sounds like at some $d_l$ the pedestrians do not collide - is this true?) 
+
+
+% Similar to the vehicle actors, the look ahead range ($d_l$) can be modified so that the actor is forced to navigate on waypoints that are further away. In test 7 $d_l$ is increased from $0.4m$ to $2.0m$ and in test 8 to $20m$ which was done to investigate if the path planning algorithm was deterministic when given waypoints further ahead.
 
 % The vehicles in this simulator follow a trajectory of waypoints using a PID controller and they have a look ahead distance that they target for from a given list of trajectory waypoints. Similarly with the pedestrians, but they don't have a PID controller and they can do dynamic path planning using A* algorithm to reach their destination or in this case a trajectory waypoint.
 
+% Starting from step 1 in the methodology diagram (Design Experiment); we are using a double mini roundabout for our experiments. 
 
-Starting from step 1 in the methodology diagram (Design Experiment); we are using a double mini roundabout for our experiments. 
-
-The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover the mandatory interactions between the different types of agents. 
-These are summed up in the following: \textbf{i)}Agents (vehicles and pedestrians) moving with no collisions or interactions with each other \textbf{ii)}Collision between vehicles \textbf{iii)}Collision (intersection) between pedestrians \textbf{iv)}Collision between vehicles and pedestrians.
+% The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover the mandatory interactions between the different types of agents. These are summed up in the following: \textbf{i)}Agents (vehicles and pedestrians) moving with no collisions or interactions with each other \textbf{ii)}Collision between vehicles \textbf{iii)}Collision (intersection) between pedestrians \textbf{iv)}Collision between vehicles and pedestrians.
 
 \begin{figure}[h]
     \centering
@@ -409,37 +414,40 @@ These are summed up in the following: \textbf{i)}Agents (vehicles and pedestrian
         \caption{}
         \label{Test_b}
     \end{subfigure}
-    \caption{Shows the setup of the different tests in Table \ref{TableOfExperiments} (a)Test IDs 1 to 4 (b)Test IDs 5 to 8.}
+    \caption{Schematic of test scenarios for (a) Tests 1-4, (b) Tests 5-6. Descriptions are given in Table~\ref{TableOfExperiments}.}
 \end{figure}
 
-Tests 1, 3and 5 are similar and there are no collisions in them, they were done as separate tests (instead of combining them into one) for the sake of simplicity and to use them as base lines for the tests-collision versions of them. The tests for collisions and non-collisions differ by a very slight change in the trajectory of the agents just to make them avoid colliding or intersecting with each other.
+% Tests 1, 3and 5 are similar and there are no collisions in them, they were done as separate tests (instead of combining them into one) for the sake of simplicity and to use them as base lines for the tests-collision versions of them. The tests for collisions and non-collisions differ by a very slight change in the trajectory of the agents just to make them avoid colliding or intersecting with each other.
 
-Test 2 is a collision between two vehicles and no pedestrians involved and is depicted by \ref{Test_a}, where the two vehicles will approach the roundabout and crash.
+% Test 2 is a collision between two vehicles and no pedestrians involved and is depicted by \ref{Test_a}, where the two vehicles will approach the roundabout and crash.
 
-Tests 6,7 and 8 are tests with pedetrians having the same trajectory waypoints but walking in opposite directions to each other (see Figure~\ref{Test_b}). 
-Pedestrians have the functionality of dynamic path planning i.e. they can avoid obstacles to reach their waypoints and so they can avoid bumping into each other. 
-Hence, to make sure they intersect (collide) with each other then we  have set tests 6,7 and 8 to be the same but with different look ahead distances; the smaller the look ahead distance the less chance they will get to path plan around each other, and thus making sure they intersect.
+% Tests 6,7 and 8 are tests with pedetrians having the same trajectory waypoints but walking in opposite directions to each other (see Figure~\ref{Test_b}). 
+% Pedestrians have the functionality of dynamic path planning i.e. they can avoid obstacles to reach their waypoints and so they can avoid bumping into each other. Hence, to make sure they intersect (collide) with each other then we  have set tests 6,7 and 8 to be the same but with different look ahead distances; the smaller the look ahead distance the less chance they will get to path plan around each other, and thus making sure they intersect.
 
-In V\&V of CAV simulations, collisions of pedestrians together is not of much interest, nevertheless we decided to include these tests for the sake of completeness and to obtain a full image of the simulation variance of the simulator.
+% In V\&V of CAV simulations, collisions of pedestrians together is not of much interest, nevertheless we decided to include these tests for the sake of completeness and to obtain a full image of the simulation variance of the simulator.
 
-Test 4, is where a vehicle hits a pedestrian and runs over it on a zebra line, as shown in Figure~\ref{Test_a}.
+% Test 4, is where a vehicle hits a pedestrian and runs over it on a zebra line, as shown in Figure~\ref{Test_a}.
 
-Proceeding to step 2; there is about 20 different internal settings related to our context that can be tweaked in UE4; such as \textit{Enable Enhanced Determinsim}, \textit{PhysX Tree Rebuild}, \textit{Max Physics Delta Time} etc. By doing various inspections around them we did not notice much improvement or worsening in the simulation variance between test runs, therefore the internal settings option was disregarded. However, one of the options we used is synchronus mode with a fixed time step that is available in CARLA. This would make the simulator proceed to the next tick only when commanded to do so by our script, which makes runs' flow more consistently.  
+% Proceeding to step 2; there is about 20 different internal settings related to our context that can be tweaked in UE4; such as \textit{Enable Enhanced Determinsim}, \textit{PhysX Tree Rebuild}, \textit{Max Physics Delta Time} etc. By doing various inspections around them we did not notice much improvement or worsening in the simulation variance between test runs, therefore the internal settings option was disregarded. However, one of the options we used is synchronus mode with a fixed time step that is available in CARLA. This would make the simulator proceed to the next tick only when commanded to do so by our script, which makes runs' flow more consistently.  
 
-On the other hand the external settings (step 3), where CPU + GPU are stressed, did show significant variations in the results as will be discussed in section \ref{ResultsSection}.
-Different levels of stress were applied to the computer; using the \texttt{stress} function \cite{CPU_stress} to stress the CPU and \texttt{gpu-burn} from github \cite{GPU_stress} to stress the GPU.
+% On the other hand the external settings (step 3), where CPU + GPU are stressed, did show significant variations in the results as will be discussed in section \ref{ResultsSection}. Different levels of stress were applied to the computer; using the \texttt{stress} function \cite{CPU_stress} to stress the CPU and \texttt{gpu-burn} from github \cite{GPU_stress} to stress the GPU.
 
-In terms of running the experiments (step 4), \textbf{i)} the computer used is an Alienware Area 51 R5 with an i9 9960X CPU chip, NVIDIA GeForce RTX 2080 graphics card and 64GB of RAM; \textbf{ii)} \texttt{nvidia-smi} and \texttt{htop} were used to monitor the levels of GPU and CPU stress respectively before and while the experiments were executed \cite{monitoring_stresses}; \textbf{iii)} the computer was left alone and not used for any other tasks while the runs were executed.
+% In terms of running the experiments (step 4), \textbf{i)} the computer used is an Alienware Area 51 R5 with an i9 9960X CPU chip, NVIDIA GeForce RTX 2080 graphics card and 64GB of RAM; \textbf{ii)} \texttt{nvidia-smi} and \texttt{htop} were used to monitor the levels of GPU and CPU stress respectively before and while the experiments were executed \cite{monitoring_stresses}; \textbf{iii)} the computer was left alone and not used for any other tasks while the runs were executed.
 
 % ***************************************************
 %  RESULTS
 % ***************************************************
 \subsection{Results And Discussion}\label{ResultsSection}
-We start by analysing (step 5) the summary from all of the tests plotted in Figure~\ref{ExperimentsStressSummary}; where the $x$-axis represents the percentage of CPU + GPU utilisation and the $y$-axis shows the total mean devaition. 
+The summary of all the tests are shown in the final column of Table~\ref{TableOfExperiments} where $\max\sigma$ is the maximum deviation across all resource utilisation levels. From these summary results it is clear that scenarios with only pedestrian actors not involved in collisions are those that are consistently deterministic over all resource utilisation levels \textbf{(is this true, any other cases?)}. However, resource utlisation level has a significant impact on \textit{simulation variance}.
+
+Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (CPU \& GPU) and the $y$-axis shows the maximum deviation ($\max\sigma$). In this figure, anything above the $cm$ threshold (dashed line) is considered non-deterministic according to our specific threshold level based on our verification requirements. A general pattern in the results indicates that some scenarios fail to produce deterministic results consistently against any resource utilisation level and that some cases only fail at utilisation levels above 50\%.
+
+% This was calculated by averaging the variance between all of the different runs through out the simulation time for all of the agents, then taking the square root to obtain the total mean devaiton. Note the dotted red line in the plot shows the millimeter (mm) level. Below this level we assume that the simulation variance is low enough that it would not affect our assertion checking for V\&V of CAV simulations purposes, that it is sufficient to assume the tests are deterministic and repeatable. This line can be moved up or down and it is entirely up to verification engineers where they want to define the level below which tests' variance is negligibale and it is suffcient to assume that tests are deterministic.
+
 \begin{figure}[!t]
     \centering
     \includegraphics[width=0.48\textwidth]{Other/Figures/ExperimentsStressSummary.pdf}
-    \caption{Summary of total mean deviation for the different tests runs plotted against the different CPU + GPU stresses.}
+    \caption{Summary of total mean deviation for the different tests runs plotted against the different CPU + GPU stresses.\textbf{ Change to "CPU \& GPU Resource Utilisation" and "y axis to $\max\sigma$ (m)" Change to $cm$ level in the graphs. Cannot see Test 6 in the results. Remove test 6 and 8 and rename 7 to test 6. Move 0 stress level data to 5\% to reflect simulation resources required.}}
 
     \label{ExperimentsStressSummary}
 \end{figure}
@@ -456,7 +464,7 @@ We start by analysing (step 5) the summary from all of the tests plotted in Figu
         \caption{}
         \label{CarsCollisionPrePost}
     \end{subfigure}
-    \caption{Test ID 2 (a)Mean deviation over runs no. vs simulation time for 25\% stress. (b)Pre and post collision mean deviation over runs no. for different CPU + GPU stresses.}
+    \caption{Vehicle to vehicle collision (test 2) showing (a) mean deviation against simulation time for 25\% resource utilisation and (b) mean deviation pre- and post-collision against resource utilisation. \textbf{Change Y axis value to $\max\sigma (m)$}}
 \end{figure*}
 
 \begin{figure*}[h]
@@ -471,31 +479,18 @@ We start by analysing (step 5) the summary from all of the tests plotted in Figu
         \caption{}
         \label{CarsPeopleCollisionPrePost}
     \end{subfigure}
-    \caption{Test ID 4 (a)Mean deviation over runs no. vs simulation time for 25\% stress. (b)Pre and post collision mean deviation over runs no. for different CPU + GPU stresses.}
+    \caption{Vehicle to pedestrian collision (test 4) showing (a) mean deviation against simulation time for 25\% stress and (b) mean deviation pre- and post-collision for different resource utilisation. \textbf{Change Y axis value to $\max\sigma (m)$}}
 \end{figure*}
-This was calculated by averaging the variance between all of the different runs through out the simulation time for all of the agents, then taking the square root to obtain the total mean devaiton.
 
-Note the dotted red line in the plot shows the millimeter (mm) level. 
-Below this level we assume that the simulation variance is low enough that it would not affect our assertion checking for V\&V of CAV simulations purposes, that it is sufficient to assume the tests are deterministic and repeatable. 
-This line can be moved up or down and it is entirely up to verification engineers where they want to define the level below which tests' variance is negligibale and it is suffcient to assume that tests are deterministic.
-
-
-First, the tests with no collisions are considered, these represent tests 1, 3 and 5.
-Tests 1 and 3, which involves vehicles only and vehicles with pedestrians respectively, shows very low simulation variance for stress levels below 50\% and as the stress level increases they surpass the red line crossing our defined deterministic level but still being sufficiently low (i.e. with in the centimeter level). This clearly shows how the load on a computer (i.e. stressing CPU and GPU) can have drastic effects on the repeatablitiy of tests.
-This is more specific to vehicle agents rather than pedestrians since the behaviour of pedestrians is consistent and remarkably below the mm level for all of the different levels of stress shown by test 5, where only pedestrians are involved with no collisions, from which it can be deduced that the mean deviation change with the stress level in test 3 was solely due to the vehicles.
+First, the tests with no collisions are considered, these represent tests 1, 3 and 5. Tests 1 and 3, which involves vehicles only and vehicles with pedestrians respectively, shows very low simulation variance for stress levels below 50\% and as the stress level increases they surpass the red line crossing our defined deterministic level but still being sufficiently low (i.e. with in the centimeter level). This clearly shows how the load on a computer (i.e. stressing CPU and GPU) can have drastic effects on the repeatablitiy of tests. This is more specific to vehicle agents rather than pedestrians since the behaviour of pedestrians is consistent and remarkably below the mm level for all of the different levels of stress shown by test 5, where only pedestrians are involved with no collisions, from which it can be deduced that the mean deviation change with the stress level in test 3 was solely due to the vehicles.
 
 Next, given the pedestrians were showing low simulation variance, we ran tests for pedestrians colliding (i.e. with paths intersection) for different look ahead distances to exploit whether that would cause any changes, but yet as it can be seen by lines Test IDs' 6,7 and 8 that their performance is consistent for all of the different tests.
 
-Finally, we look at the other collisions tests, tests 2 and 4 where the tests correspond to a collision between two vehicles and a collision between a vehicle and a pedestrian respectively. 
-We observe that in both of these tests the mean deviation is always above our red line regardless of the stress level, nevertheless still increasing the stress levels shows worsening effects.
+Finally, we look at the other collisions tests, tests 2 and 4 where the tests correspond to a collision between two vehicles and a collision between a vehicle and a pedestrian respectively. We observe that in both of these tests the mean deviation is always above our red line regardless of the stress level, nevertheless still increasing the stress levels shows worsening effects.
 
-Thus, we resorted to plotting the mean deviation over the number of runs of these two tests vs simulation time with stress level \%25 chosen arbitrarily (see Figure~\ref{CarsCollisionCG25} and \ref{CarsPeopleCollsionsCG25}). 
-Doing that we discovered that after collisions occur there is a jump in the mean deviation, which is what causes the averaged mean deviation through the whole simulation time in Figure~\ref{ExperimentsStressSummary} to always surpass our red line.
+Thus, we resorted to plotting the mean deviation over the number of runs of these two tests vs simulation time with stress level \%25 chosen arbitrarily (see Figure~\ref{CarsCollisionCG25} and \ref{CarsPeopleCollsionsCG25}). Doing that we discovered that after collisions occur there is a jump in the mean deviation, which is what causes the averaged mean deviation through the whole simulation time in Figure~\ref{ExperimentsStressSummary} to always surpass our red line.
 
-Plotting Figures~\ref{CarsCollisionPrePost} and \ref{CarsPeopleCollisionPrePost}, which shows the mean deviation pre and post collision for the different stress levels; it can be seen that there is two discrete levels for the pre and post collison devaition from these plots and as the stress increases these two discrete levels start to merge. 
-However, in V\&V of CAV simualtions we  are normally interested in the point until a collision occur after which the simulation will be terminated. Thus, the post collision effect should not be of much concern in the context of CAVs.
-It is important to note, however, that in test 4 a delayed effect of increase in simulation variance was noticed to Car ID 1, which interestingly was not involved in the collision, this was attributed to how the physics engine was programmed to calculate collisions which might cause other obscure behaviours to other agents. The importance of this outcome is that it shows even if an ego vehicle is not involved in a collision, but other agents are, this will still have effects on the simulation variance of the ego vehicle. Thus failing to stay below our red line and the test should be terminated.
-In summary, from the tests carried out we can deduce that for a computer of the following specifications, an Alienware Area 51 R5 with an i9 9960X CPU chip, NVIDIA GeForce RTX 2080 graphics card and 64GB of RAM, that all tests carried out using CARLA in UE4 are gauranteed to be deterministic and repeatable (according to our definition by the red line) as long as the CPU + GPU stress does not exceed 50\% and tests are terminated as soon as a collision of any type is detected in the simulation. 
+Plotting Figures~\ref{CarsCollisionPrePost} and \ref{CarsPeopleCollisionPrePost}, which shows the mean deviation pre and post collision for the different stress levels; it can be seen that there is two discrete levels for the pre and post collison devaition from these plots and as the stress increases these two discrete levels start to merge. However, in V\&V of CAV simualtions we  are normally interested in the point until a collision occur after which the simulation will be terminated. Thus, the post collision effect should not be of much concern in the context of CAVs. It is important to note, however, that in test 4 a delayed effect of increase in simulation variance was noticed to Car ID 1, which interestingly was not involved in the collision, this was attributed to how the physics engine was programmed to calculate collisions which might cause other obscure behaviours to other agents. The importance of this outcome is that it shows even if an ego vehicle is not involved in a collision, but other agents are, this will still have effects on the simulation variance of the ego vehicle. Thus failing to stay below our red line and the test should be terminated. In summary, from the tests carried out we can deduce that for a computer of the following specifications, an Alienware Area 51 R5 with an i9 9960X CPU chip, NVIDIA GeForce RTX 2080 graphics card and 64GB of RAM, that all tests carried out using CARLA in UE4 are gauranteed to be deterministic and repeatable (according to our definition by the red line) as long as the CPU + GPU stress does not exceed 50\% and tests are terminated as soon as a collision of any type is detected in the simulation. 
 
 % ***************************************************
 %  CONCLUSION
@@ -506,9 +501,6 @@ We have provided a summary of the sources of non-determinisim in game engines. T
 A case study is then used to show the implementation of the method introduced, where several tests were setup and run to explore the different interactions between the different agents in a simulator called CARLA. It was found that for the computer used (with specs of an i9 9960X CPU chip, NVIDIA GeForce RTX 2080 graphics card and 64GB of RAM) the simulation variance was sufficiently low to assume the simulator to be deterministic as long as the CPU + GPU utilisation is below 50\% and that tests are terminated as soon as a collision of any type is detected. %since it was noticed that collisions cause the level of non determinism to jump remarkable invalidating the assumption of the simulator is deterministic.
 
 In highlight of obtaining a fully deterministic simulator, one would either have to explore methods to control the scheduling of threads in a computer such that if tests are rerun the utilisation of hardware will be the same. Alternatively, another approach would be to create a new engine that is designed to be deterministic with minimal attention given to performance. 
-
-
-
 
 % ***************************************************
 %  FUNDING, REFS
@@ -522,30 +514,3 @@ Vehicles (CCAV), delivered in partnership with Innovate UK under grant numbers
 \printbibliography
 
 \end{document}
-
-
-
-
-
-
-% \begin{table*}
-% \centering
-% \caption{Feature importance given in rank order for prediction of elbow position ($\Phi$) for univariate and multivariate response. $\Sigma(NI)$ indicates sum of normalized importance for the top 5 features.}
-% \label{elbow_posn}
-% \begin{tabular}{|c||c|c|c||c|}
-% \hline
-% Rank & $\Phi(x)$ & $\Phi(y)$ & $\Phi(z)$ & $\Phi(xyz)$ \\
-% \hline
-% 1&left shoulder ($13P_x$) &left shoulder ($13P_y$)&left shoulder ($13P_z$) &right hip ($20P_x$)\\
-% 2&right hip ($20P_x$)     &right hip ($20P_x$)    &head ($7P_z$)           &left shoulder ($13P_z$)\\
-% 3&head ($7P_x$)           &right elbow ($10P_y$)  &right hand ($11P_z$)    &left shoulder ($13P_x$)\\
-% 4&right hand ($11P_x$)    &right hand ($11P_x$)   &head ($7P_x$)		   &right hand ($11P_x$)\\
-% 5&left shoulder ($13P_y$) &right elbow ($10P_x$)  &neck ($6P_z$)		   &head ($7P_x$)\\
-% \hline 
-% $\Sigma(NI)$ & 0.683      &0.684                  &0.723 					&0.570 \\
-% \hline
-% %RMSE-test ($m$) & 0.011& 0.017& 0.007& 0.024\\
-% %RMSE-unseen ($m$) & 0.086& 0.060& 0.038& 0.063\\
-% %\hline
-% \end{tabular}
-% \end{table*}
