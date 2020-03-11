@@ -438,9 +438,19 @@ The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover a
 %  RESULTS
 % ***************************************************
 \subsection{Results And Discussion}\label{ResultsSection}
-The summary of all the tests are shown in the final column of Table~\ref{TableOfExperiments} where $\max\sigma$ is the maximum deviation across all resource utilisation levels. From these summary results it is clear that scenarios with only pedestrian actors not involved in collisions are those that are consistently deterministic over all resource utilisation levels \textbf{(is this true, any other cases?)}. However, resource utilisation level has a significant impact on \textit{simulation variance}.
+The summary of all the tests are shown in the final column of Table~\ref{TableOfExperiments} where $\max\sigma$ is the maximum deviation across all resource utilisation levels. From these summary results it is clear that scenarios with only pedestrian actors not involved in collisions are those that are consistently deterministic over all resource utilisation levels \textbf{(is this true, any other cases?)}. However, for other scenarios involving vehicles or mixed actors resource utilisation level has a significant impact on \textit{simulation variance}.
 
-Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (CPU \& GPU) and the $y$-axis shows the maximum deviation ($\max\sigma$). In this figure, anything above the $cm$ threshold (dashed line) is considered non-deterministic according to our specific threshold level based on our verification requirements. A general pattern in the results indicates that some scenarios fail to produce deterministic results consistently against any resource utilisation level and that some cases only fail at utilisation levels above 50\%.
+Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (CPU \& GPU) and the $y$-axis shows the maximum deviation ($\max\sigma$). In this figure, anything above the $cm$ threshold (dashed line) is considered non-deterministic according to our specific threshold level informed from our verification requirements. A general pattern in the results indicates that some scenarios fail to produce deterministic results consistently against any resource utilisation level and that some cases only fail at utilisation levels above 50\%.
+
+However, the non-deterministic results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are an overly pessimistic account of the situation. Examining these specific results as a function of simulation time reveals further information about the simulation variance before and after an actor collision callback. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from deterministic prior to the vehicle collision and is non-deterministic afterwards. This pattern of deterministic behaviour prior to collision is maintained up to resource utilisation levels of approximately 50\%, Fig.~\ref{CarsCollisionPrePost}.
+
+This time series examination is repeated for vehicle to pedestrian collisions (test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. \textbf{What is the summary data for this scenario?} Similarly to vehicle collisions, the variation of $\max\sigma$ for pedestrian collisions with resource utilisation indicates deterministic behaviour below 95\% resource utilisation. 
+
+\textbf{Strange gap post-collision for few seconds}
+
+\textbf{Should we plot a pre-collision only summary chart for all scenarios?}
+
+\textbf{Should we rename 'test' to 'scenario???'}
 
 Scenarios that include both collisions and vehicle actors were not deterministic. However, when observing the deviation in actor paths against simulation time, Fig.~\ref{CarsCollisionCG25}, the simulation is deterministic prior to collision but not afterwards. This is a key finding of this work and suggests that verification engineers should consider this as an end condition for terminating tests as any results after this point are not reliable. 
 
@@ -498,6 +508,9 @@ Plotting Figures~\ref{CarsCollisionPrePost} and \ref{CarsPeopleCollisionPrePost}
 %  CONCLUSION
 % ***************************************************
 \section{Conclusions}\label{s:conclusion}
+
+**** These results are not meant as a universal guide but merely to illustrate our method for a single hardware configuration. It is probable that the values quoted here will not translate to individual end-users unless the system configuration is very similar. This paper should be used as a method for users to determine what scenarios and system setting are appropriate for their particular verification needs.
+
 We have provided a summary of the sources of non-determinisim in game engines. This was followed by presenting a method by which one can determine the simulation variance of a gaming engine used in V\&V application of CAV simulations. The method consists of five stages, starting with designing the experiment, then suggesting the various settings that can improve or worsen the performance, and finally focuses on running the experiment and analysing the output.
 
 A case study is then used to show the implementation of the method introduced, where several tests were setup and run to explore the different interactions between the different agents in a simulator called CARLA. It was found that for the computer used (with specs of an i9 9960X CPU chip, NVIDIA GeForce RTX 2080 graphics card and 64GB of RAM) the simulation variance was sufficiently low to assume the simulator to be deterministic as long as the CPU + GPU utilisation is below 50\% and that tests are terminated as soon as a collision of any type is detected. %since it was noticed that collisions cause the level of non determinism to jump remarkable invalidating the assumption of the simulator is deterministic.
