@@ -1,0 +1,4 @@
+Cars People Collsion (average obtained for agents involved in crash only),,,,,
+Stress,0,25,50,75,95
+Max Pre Collsion Deviation /m,1.46E-12,1.43E-13,1.43E-13,1.43E-13,0.02932933
+Max Post Collsion Deviation /m,0.429740433,0.420604432,0.314320278,0.274750227,0.589855609

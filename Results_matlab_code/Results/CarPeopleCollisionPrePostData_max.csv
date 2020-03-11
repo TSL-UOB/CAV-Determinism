@@ -1,0 +1,4 @@
+Cars Collsion,,,,,
+Stress,0,25,50,75,95
+Max Pre Collsion Deviation /m,1.53E-12,1.43E-13,1.43E-13,0.009843605,0.027598893
+Max Post Collsion Deviation /m,0.013557618,0.013568011,0.013568011,0.159231258,0.313163764
