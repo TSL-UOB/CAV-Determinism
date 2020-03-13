@@ -2,7 +2,7 @@
 \documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
 \input{main.config.tex}
 % \pagenumbering{gobble} %suppresses page numbers
-\addbibresource{IROS.bib}
+\addbibresource{cav_determinism.bib}
 \usepackage{balance} %balance columns
 
 
@@ -380,7 +380,7 @@ These tests were carried out on an Alienware Area 51 R5 with an i9 9960X process
 \begin{itemize}[leftmargin=*]
     \item System memory: \texttt{memtest86}\footnote{\url{https://www.memtest86.com/}} full suite of tests ran, all passed.
     \item Graphical memory: \texttt{cuda\_memtest}\footnote{see \url{https://github.com/ComputationalRadiationPhysics/cuda_memtest}} full details of tests found here~\cite{shi2009testing}, all tests passed.
-    \item Non-uniform memory access: \texttt{numactl}\footnote{\url{https://linux.die.net/man/8/numactl}} was used to fix the simulator to a single core but no improvement in simulation variance was observed and not used for subsequent testing.
+    \item Non-uniform memory access: \texttt{numactl}\footnote{\url{https://linux.die.net/man/8/numactl}} was used to fix the simulator and test script to single cores but only a minor (2\%) improvement in simulation variance was observed and therefore not used for subsequent testing.
 \end{itemize}
 
 % Given that our interest is on CAV simulations, this study presents a number of experiments run on typical agents used in CAV simulations and their interactions with each other. These agents are classified into two, either vehicles(cars, motorcycles, bikes etc.) or pedestrians (can include animals). Here we will walk through our hypothesis, description of our tests and the analysis of results from the different tests. We will point out at each stage where we sit in Figure~\ref{method_diagram} as we go through this case study.    
