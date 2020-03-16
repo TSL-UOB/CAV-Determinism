@@ -264,9 +264,9 @@ In this section a method for determining \textit{simulation variance} of an end-
 \subsection{Deterministic Threshold}
 We use the term \textit{deterministic threshold} to refer to the acceptable level of actor path variance ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. This threshold is analogous to the analogue signal level associated with a binary state in a logical processor. At some low analogue voltage the signal is interpreted as binary $0$ which may be below 0.5V and is considered binary $1$ when the same signal is above 3.5v.
 
-The user must specify the level of variance acceptable for their application which is used as a threshold for deterministic execution. In our case study, Section~\ref{s:case-study}, a threshold of $1cm$ was chosen for our given application which reflects the scale at which repeatability of simulation execution is required. This value is sufficiently small to allow accurate \textit{assertion checking} of autonomous vehicles in urban environments [ref] but a larger value may be acceptable for non-urban environments, e.g. motorway or highway. Similarly, the threshold value should not be so small as to fail with minor computational bottlenecks, e.g. $1\mu m$. 
+The user must specify the level of variance acceptable for their application which is used as a threshold for deterministic execution. In our case study, Section~\ref{s:case-study}, a threshold must be chosen for our given application which reflects the scale at which repeatability of simulation execution is required. This value must be sufficiently small to allow accurate \textit{assertion checking} of the ego vehicle in the environment but a larger value may be acceptable for non-urban environments, e.g. motorway or highway. Similarly, the threshold value should not be so small as to fail with minor computational bottlenecks, e.g. $1\mu m$. Two autonomous vehicle projects this group are involved in, Robopilot and Capri, are looking at urban mobility and last mile delivery solutions which are predominantly concerned with urban environments rather than highway or motorway scenarios. Because of this, a deterministic threshold of $1m$ is insufficient when considering potentially dangerous close passing of cyclists and pedestrians and therefore a threshold of $1cm$ is more suitable.  
 
-Depending on the number of repeated tests and the average deviation reported from the experiment, a maximum rather than average may be required if the results are close to the user-specified threshold. This is to ensure that an outlier data-point is not hidden in the average of $n$-tests
+% Depending on the number of repeated tests and the average deviation reported from the experiment, a maximum rather than average may be required if the results are close to the user-specified threshold. This is to ensure that an outlier data-point is not hidden in the average of $n$-tests.
 
 \subsection{Scenario Description}
 The experiment should be a short scenario that can be easily repeated with the same initial conditions. Data logging should be used to record the actor positions at fixed time intervals throughout the simulation in order to determine the variance in actor path. The maximum deviation in actor path with respect to the mean for $n$-repeated tests will indicate at what dimensional scale deterministic results are achieved. For example, if 100 tests are executed and the maximum deviation in actor path is $<1cm$, then this scenario could be interpreted as being deterministic above this scale. 
@@ -356,7 +356,7 @@ Test & Actors 					 	  & Collision 	 & Collision Type 			 & $n$  & $\max\sigma$ 
 % Problem exploration, there is too many variables that one can play with. do statistical analysis some.... some of them get problematic...
 
 \subsection{Output and Analysis}
-The output for each experiment can be summarised as the maximum variance of any actor over the repeated tests. This value can be analysed against the different scenarios or settings that have been identified as potential sources of simulation variance. These values can then be assessed against the user-defined \textit{deterministic threshold} to determine if the simulation is deterministic or not.
+The output for each experiment can be summarised as the \textit{maximum variance} of any actor over the $n-$repeated tests. The maximum variance is chosen to indicate the worst case rather than an average which could hide outlier data points when a high number of repeated tests are performed. This value can be analysed against the different scenarios or settings that have been identified as potential sources of simulation variance. These values can then be assessed against the user-defined \textit{deterministic threshold} to determine if the simulation is deterministic or not. 
 
 % Once the experiments are run, the logged data is post processed to find the variance in the logged data between the different runs. Note that bifurcation effects can cause a jump in the variance, so it is worth plotting the different logged paths in order to determine if there are any bifurcation effects.
 
@@ -424,7 +424,7 @@ The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover a
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=0.48\textwidth]{Other/Figures/ExperimentsStressSummaryV3.pdf}
+    \includegraphics[width=0.48\textwidth]{Other/Figures/ExperimentsStressSummaryV4.pdf}
     \caption{Summary of results showing maximum deviation for each scenario against different resource utilisation levels. Tests 5 and 6 overlap having almost identical results.}
     \label{ExperimentsStressSummary}
 \end{figure}
