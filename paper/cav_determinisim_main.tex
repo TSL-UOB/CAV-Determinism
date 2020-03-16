@@ -2,7 +2,7 @@
 \documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
 \input{main.config.tex}
 % \pagenumbering{gobble} %suppresses page numbers
-\addbibresource{IROS.bib}
+\addbibresource{cav_determinism.bib}
 \usepackage{balance} %balance columns
 
 
@@ -334,18 +334,17 @@ Within Unreal Engine there are numerous internal settings relating to the moveme
 \centering
 \begin{tabular}{clclccc}
 \toprule
-Test 		& Actors 						 & Collision & Collision Type 			 & $d_l$ (m) & $n$  &$\max\sigma$ (m) \\ \midrule
-1       & Two vehicles                   & No  		 & N/A 			  			 & 2 		 & 1000 & 1000 \\
-2       & Two vehicles                   & Yes 		 & Vehicle and Vehicle 		 & 2 		 & 1000 & 1000 \\
-3       & Two vehicles and a pedestrian  & No  		 & N/A 			  			 & 2 		 & 1000 & 1000 \\
-4       & Two vehicles and a pedestrian  & Yes 		 & Vehicle and Pedestrian 	 & 2 		 & 1000 & 1000 \\
-5       & Two pedestrians                & No  		 & N/A 			  			 & 2 		 & 1000 & 1000 \\
-6       & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 2 		 & 1000 & 1000 \\
-% 6       & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 0.4 		 & 1000 & 1000 \\
-% 8       & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 20 		 & 1000 & 1000 \\
+Test & Actors 					 	  & Collision 	 & Collision Type 			 & $n$  & $\max\sigma$ (m) & $\max\sigma$ (m) \\ 
+	 & 								  & 			 & 							 &	    & (unrestricted)  & (restricted)	\\ \midrule
+1    & Two vehicles                   & No  		 & N/A 			  			 & 1000 & 0.03 & $7.0{\times}10^{-3}$ \\
+2    & Two vehicles                   & Yes 		 & Vehicle and Vehicle 		 & 1000 & 0.31 & $9.8{\times}10^{-3}$ \\
+3    & Two vehicles and a pedestrian  & No  		 & N/A 			  			 & 1000 & 0.07 & $5.2{\times}10^{-4}$ \\
+4    & Two vehicles and a pedestrian  & Yes 		 & Vehicle and Pedestrian 	 & 1000 & 0.59 & $1.5{\times}10^{-12}$ \\
+5    & Two pedestrians                & No  		 & N/A 			  			 & 1000 & $5.6{\times}10^{-13}$ & $5.6{\times}10^{-13}$ \\
+6    & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 1000 & $5.6{\times}10^{-13}$ & $5.6{\times}10^{-13}$ \\
 \bottomrule
 \end{tabular}
-\caption{Test scenarios where $d_l$ is the \textit{look ahead distance}, $n$ is the number of repeats and $\max\sigma$ is the maximum simulation deviation. CONSIDER removing entries 6 and 8 if they do not contribute towards outcomes and remove references to $d_l$. \textbf{remove all reference to $d_l$}}
+\caption{A description of the test scenarios showing the test number, the actors included and if a collision occurred and between which actors. Where $n$ is the number of repeats and $\max\sigma$ is the maximum simulation deviation. The term \textit{unrestricted} refers to an unrestricted subset of the results and allowing system states of any resource utilisation whereas \textit{restricted} employs results filtering to pre-collision and limits system resource utilisation levels to 75\%.}
 \label{TableOfExperiments}
 \end{table*}
 
@@ -375,15 +374,13 @@ We present a case study to illustrate some the challenges of simulation based ve
 In order to reproduce conditions for computationally intensive simulations, the experiments are executed with additional levels of artificial resource utilisation. Resource utilisation was artificially increased for both CPU and GPU devices (see Section \ref{s:methodology}) using reported values of the system monitors \texttt{htop} and \texttt{nvidia-smi} respectively. Resource utilisation figures reported here should be considered approximate values.
 % The level of additional resource utilisation, above that of the needs of the simulation, was increased from $0\%$ (no additional resource load) in $25\%$ increments up to a maximum of $95\%$ for both CPU and GPU as reported by system monitors (\texttt{htop} and \texttt{nvidia-smi} respectively). 
 
-\textbf{Abanoub: can you change the diagram to be a staggered t-junction as the DMR is just confusing for this example. Also can we zoom in on the lower right area. Tests 5 and 6 have different look ahead values, which is correct?}
-
 \subsection{System Configuration and Screening}
 These tests were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 graphics card with 8GB GDDR6 RAM at 1515 MHz. To ensure reliability of results, each test was repeated 1000 times. Tests were carried out in Carla using synchronous mode with a fixed $dt$ of $0.05s$. To ensure our experiment did not fall foul of some of the possible sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests were performed on our system. These were:
 
 \begin{itemize}[leftmargin=*]
     \item System memory: \texttt{memtest86}\footnote{\url{https://www.memtest86.com/}} full suite of tests ran, all passed.
     \item Graphical memory: \texttt{cuda\_memtest}\footnote{see \url{https://github.com/ComputationalRadiationPhysics/cuda_memtest}} full details of tests found here~\cite{shi2009testing}, all tests passed.
-    \item Non-uniform memory access: \texttt{numactl}\footnote{\url{https://linux.die.net/man/8/numactl}} \textbf{we need to run these test to look for $\max\sigma$ variations}
+    \item Non-uniform memory access: \texttt{numactl}\footnote{\url{https://linux.die.net/man/8/numactl}} was used to fix the simulator and test script to single cores but only a minor (2\%) improvement in simulation variance was observed and therefore not used for subsequent testing.
 \end{itemize}
 
 % Given that our interest is on CAV simulations, this study presents a number of experiments run on typical agents used in CAV simulations and their interactions with each other. These agents are classified into two, either vehicles(cars, motorcycles, bikes etc.) or pedestrians (can include animals). Here we will walk through our hypothesis, description of our tests and the analysis of results from the different tests. We will point out at each stage where we sit in Figure~\ref{method_diagram} as we go through this case study.    
@@ -409,7 +406,8 @@ The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover a
 
 % The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover the mandatory interactions between the different types of agents. These are summed up in the following: \textbf{i)}Agents (vehicles and pedestrians) moving with no collisions or interactions with each other \textbf{ii)}Collision between vehicles \textbf{iii)}Collision (intersection) between pedestrians \textbf{iv)}Collision between vehicles and pedestrians.
 
-\begin{figure}[h]
+
+\begin{figure}[!t]
     \centering
     \begin{subfigure}{.24\textwidth}
         \includegraphics[width=1\textwidth]{Other/Figures/TestCasesDiagramV2_a.pdf}
@@ -421,7 +419,14 @@ The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover a
         \caption{}
         \label{Test_b}
     \end{subfigure}
-    \caption{Schematic of test scenarios for (a) Tests 1-4, (b) Tests 5-6. Descriptions are given in Table~\ref{TableOfExperiments}.}
+    \caption{Schematic of test scenarios for (a) tests 1-4, (b) tests 5-6. Descriptions are given in Table~\ref{TableOfExperiments}.}
+\end{figure}
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=0.48\textwidth]{Other/Figures/ExperimentsStressSummaryV3.pdf}
+    \caption{Summary of results showing maximum deviation for each scenario against different resource utilisation levels. Tests 5 and 6 overlap having almost identical results.}
+    \label{ExperimentsStressSummary}
 \end{figure}
 
 % Tests 1, 3and 5 are similar and there are no collisions in them, they were done as separate tests (instead of combining them into one) for the sake of simplicity and to use them as base lines for the tests-collision versions of them. The tests for collisions and non-collisions differ by a very slight change in the trajectory of the agents just to make them avoid colliding or intersecting with each other.
@@ -445,19 +450,17 @@ The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover a
 %  RESULTS
 % ***************************************************
 \subsection{Results And Discussion}\label{ResultsSection}
-The summary of all the tests are shown in the final column of Table~\ref{TableOfExperiments} where $\max\sigma$ is the maximum deviation across all resource utilisation levels. From these summary results it is clear that scenarios with only pedestrian actors not involved in collisions are those that are consistently deterministic over all resource utilisation levels \textbf{(is this true, any other cases?)}. However, for other scenarios involving vehicles or mixed actors resource utilisation level has a significant impact on \textit{simulation variance}.
+The summary of all the tests are shown in the final column of Table~\ref{TableOfExperiments} where $\max\sigma$ is the maximum deviation across all resource utilisation levels. From these summary results it is clear that scenarios with only pedestrian actors are those that are consistently deterministic over all resource utilisation levels. However, for other scenarios involving vehicles or a mixture of actors types resource utilisation level has a significant impact on \textit{simulation variance}.
 
 Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (CPU \& GPU). In this figure, anything above the $cm$ threshold (dashed line) is considered non-deterministic according to our specific threshold level informed from our verification requirements. A general pattern in the results indicates that some scenarios fail to produce deterministic results consistently against any resource utilisation level and that some cases only fail at utilisation levels above 50\%.
 
-However, the non-deterministic results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are an overly pessimistic/conservative account of the situation. Examining these specific results (test 2, 4 \& 6??) as a function of simulation time reveals further information about the simulation variance before and after an actor collision callback. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from deterministic prior to the vehicle collision and is non-deterministic afterwards. This pattern of deterministic behaviour prior to collision is maintained up to resource utilisation levels of approximately 50\%, Fig.~\ref{CarsCollisionPrePost}. This time series examination is repeated for vehicle to pedestrian collisions (test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. \textbf{What is the summary data for this scenario?} Similarly to vehicle collisions, the variation of $\max\sigma$ for pedestrian collisions indicates deterministic behaviour below 95\% resource utilisation, Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding of this work and suggests that verification engineers should consider this as an end condition for terminating tests as any results after this point are not reliable. 
+However, the non-deterministic results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation. Examining these specific results, tests 2 \& 4, in more detail as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from deterministic prior to the vehicle collision and is non-deterministic post-collision. This pattern of deterministic behaviour prior to collision is maintained up to a resource utilisation level of approximately 75\%, Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates pre-collision deterministic behaviour with up to 75\% resource utilisation, Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding of this work and suggests that verification engineers should consider this as an end condition for terminating tests as any post-collision results are not reliable. 
 
-The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (test 4), there is a collision between Car ID 2 (solid line) and Ped ID 3 (dot dash line) which occurs at a simulation time of approximately $6s$ and the other vehicle, Car ID 1, is not involved in the collision. There are three key observations here; firstly that the vehicle directly involved in the collision (Car ID 2) displays non-deterministic actor position post-collision as describe above. Secondly, that the pedestrian involved in the collision (Ped ID 3) displays deterministic behaviour even after the collision \textbf{is this because the walker is killed and removed from the game?}. And, thirdly we observed a delayed effect on Car ID 1 showing high simulation variance post-collision but with a $5s$ delayed effect \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers and research practitioners in the field as it implies that any collision between actors will affect the simulation variance of all actors in the simulation and could potentially result in false-positive assertion violations.
+The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (test 4), there is a collision between Car ID 2 (solid line) and Ped ID 3 (dot dash line) which occurs at a simulation time of approximately $6s$ and the other vehicle, Car ID 1, is \textit{not involved in the collision}. There are three key observations here; firstly that the vehicle directly involved in the collision (Car ID 2) displays non-deterministic actor position post-collision as describe above. Secondly, that the pedestrian involved in the collision (Ped ID 3) displays deterministic behaviour throughout the test\footnote{note that in Carla the pedestrian object is destroyed post-collision hence the flat line following the collision}. And, thirdly we observed a delayed effect on Car ID 1 showing high simulation variance with a $5s$ delayed effect \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers and research practitioners in the field as it implies that any collision between actors will affect the simulation variance of all actors in the simulation and could potentially result in false-positive assertion violations.
 
-\textbf{Strange gap post-collision for few seconds}
+% \textbf{Strange gap post-collision for few seconds}
 
-\textbf{Should we plot a pre-collision only summary chart for all scenarios?}
-
-\textbf{Should we rename 'test' to 'scenario???'}
+% \textbf{Should we rename 'test' to 'scenario???'}
 
 \textbf{Big question why does high-RU influence simulation variance?? Can we tie this to thread scheduling and will NUMAclt change this conclusion?'}
 
@@ -465,13 +468,14 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
 
 % This was calculated by averaging the variance between all of the different runs through out the simulation time for all of the agents, then taking the square root to obtain the total mean devaiton. Note the dotted red line in the plot shows the millimeter (mm) level. Below this level we assume that the simulation variance is low enough that it would not affect our assertion checking for V\&V of CAV simulations purposes, that it is sufficient to assume the tests are deterministic and repeatable. This line can be moved up or down and it is entirely up to verification engineers where they want to define the level below which tests' variance is negligibale and it is suffcient to assume that tests are deterministic.
 
+<<<<<<< HEAD
 \begin{figure}[!t]
     \centering
     \includegraphics[width=0.48\textwidth]{Other/Figures/ExperimentsStressSummaryV4.pdf}
     \caption{Summary of total mean deviation for the different tests runs plotted against the different CPU + GPU stresses.\textbf{ Change to "CPU \& GPU Resource Utilisation" and "y axis to $\max\sigma$ (m)" Change to $cm$ level in the graphs. Cannot see Test 6 in the results. Remove test 6 and 8 and rename 7 to test 6. Move 0 stress level data to 5\% to reflect simulation resources required.}}
+=======
+>>>>>>> 0fdb2ce84172268f3ab85b41672d602c293f7629
 
-    \label{ExperimentsStressSummary}
-\end{figure}
 
 \begin{figure*}[h]
     \centering
@@ -485,7 +489,7 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
         \caption{}
         \label{CarsCollisionPrePost}
     \end{subfigure}
-    \caption{Vehicle to vehicle collision (test 2) showing (a) mean deviation against simulation time for 25\% resource utilisation and (b) mean deviation pre- and post-collision against resource utilisation. \textbf{Change Y axis value to $\max\sigma (m)$}}
+    \caption{Vehicle to vehicle collision (test 2) showing (a) mean deviation against simulation time for 25\% resource utilisation and (b) mean deviation pre- and post-collision against resource utilisation.}
 \end{figure*}
 
 \begin{figure*}[h]
@@ -500,7 +504,7 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
         \caption{}
         \label{CarsPeopleCollisionPrePost}
     \end{subfigure}
-    \caption{Vehicle to pedestrian collision (test 4) showing (a) mean deviation against simulation time for 25\% stress and (b) mean deviation pre- and post-collision for different resource utilisation. \textbf{Change Y axis value to $\max\sigma (m)$}}
+    \caption{Vehicle to pedestrian collision (test 4) showing (a) mean deviation against simulation time for 25\% stress and (b) mean deviation pre- and post-collision for different resource utilisation.}
 \end{figure*}
 
 % First, the tests with no collisions are considered, these represent tests 1, 3 and 5. Tests 1 and 3, which involves vehicles only and vehicles with pedestrians respectively, shows very low simulation variance for stress levels below 50\% and as the stress level increases they surpass the red line crossing our defined deterministic level but still being sufficiently low (i.e. with in the centimeter level). This clearly shows how the load on a computer (i.e. stressing CPU and GPU) can have drastic effects on the repeatablitiy of tests. This is more specific to vehicle agents rather than pedestrians since the behaviour of pedestrians is consistent and remarkably below the mm level for all of the different levels of stress shown by test 5, where only pedestrians are involved with no collisions, from which it can be deduced that the mean deviation change with the stress level in test 3 was solely due to the vehicles.
@@ -519,11 +523,7 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
 %  CONCLUSION
 % ***************************************************
 \section{Conclusions}\label{s:conclusion}
-A detailed description of how practitioners in this field can resolve the non-deterministic operational domains of their simulation is presented. Potential sources of non-deterministic simulation behaviour are discussed and some of these are resolved, such as floating point error, and other are left unanswered such as scheduling policy. %
-A case study was used to ascertain the boundaries of non-deterministic operation of the Carla driving simulator which seem to exist at collision events and when resource utilisation levels exceeded 50\% for the particular system used in this study. A collision is not necessarily a problem as long as the simulation is stopped as soon as it is detected as even actors not involved directly will behave non-deterministically. 
-
-
-
+Practitioners in this field can resolve the non-deterministic operational domains of their simulation can be found by following the method outlined in this paper. Potential sources of non-deterministic simulation behaviour have been discussed such as floating point rounding error and scheduling policy. A case study was used to ascertain the boundary between deterministic and non-deterministic operation of the Carla driving simulator. Results suggest non-deterministic outcomes when resource utilisation levels exceeded 75\% or when vehicle collisions occur for the particular hardware used in this study. Furthermore it was found that all actors, even those not involved directly in a collision, will behave non-deterministically if a collision callback to the game engine is made. Best operating practice follows that the simulation should be stopped as soon as a collision callback is detected or resource utilisation levels exceed 75\% although this value may be system specific. 
 
 % We have provided a summary of the sources of non-determinisim in game engines. This was followed by presenting a method by which one can determine the simulation variance of a gaming engine used in V\&V application of CAV simulations. The method consists of five stages, starting with designing the experiment, then suggesting the various settings that can improve or worsen the performance, and finally focuses on running the experiment and analysing the output.
 
