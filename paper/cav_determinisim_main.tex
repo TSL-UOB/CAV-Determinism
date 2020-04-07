@@ -4,6 +4,7 @@
 % \pagenumbering{gobble} %suppresses page numbers
 \addbibresource{cav_determinism.bib}
 \usepackage{balance} %balance columns
+\usepackage{todonotes}
 
 
 %-------------------------------------------------------------------------------
@@ -45,12 +46,22 @@
 
 \begin{abstract}
 \noindent 
-The connected and autonomous vehicle (CAV) community are adopting the use of gaming engines to develop vehicle control systems and testing environments using simulation. These engines must be deterministic for finding and resolving defects (bugs) in software and ensuring auditable and repeatable tests can be executed for verification and validation (V\&V). This work highlights the requirements these engines need (to fulfil this purpose/for CAV development) and proposes a method to determine \textit{simulation variance} for specific configurations and resource utilisation. A case study is used to illustrate the proposed method and results from a small scenario indicate the presence of deterministic operational domains. 
+The autonomous vehicle (AV) community is adopting the use of gaming engines to develop vehicle control systems and testing environments using simulation. Determinism is a key requirement for simulation during AV development and testing. In particular, it ensures repeatability of tests, so that software bugs can be found and fixed, and simulation results are trustworthy.
+%
+% KIE: Ideally, these engines are deterministic, but we've found that they are not. :(
+% These engines must be deterministic for finding and resolving defects (bugs) in software and ensuring auditable and repeatable tests can be executed for verification and validation (V\&V). 
+%
+However, gaming engines do not need to be deterministic per se. % when used for gaming. 
+%
+This work identifies the requirements these engines need to fulfil when used for AV development and testing, and proposes a method to determine the \textit{simulation variance} for specific configurations and utilisation of the software and hardware, respectively. 
+%
+A case study using CARLA, an open-source simulation environment powered by Unreal Engine, illustrates the proposed method and results from a small scenario indicate the presence of deterministic operational domains. \todo{KIE: review at end}
+
 % The industry and certification bodies for connected autonomous vehicles is adopting the use of physics and gaming engines to develop, train, verify, validate and certify the software of these autonomous systems in simulation. It is important for these engines to be deterministic in order for one to carry out these different processes. However, such engines are inherently non-deterministic. We propose a method by which one can identify the region where they can operate in these engines and guarantee that the level of non determinism is sufficiently low that it can be assumed to be deterministic. We also implement this method on a case study and show how we identified the region (encompassing computational utilisation and behaviours in simulation) at which one can guarantee performance to be sufficiently deterministic.          
 \end{abstract}
 
 \begin{IEEEkeywords}
-Autonomous Driving, Determinism, Physics Engines, Connected Autonomous Vehicles (CAV), Verification and Validation(V\&V)
+Autonomous Driving, Determinism, Physics Engines, Autonomous Vehicles, Verification and Validation (V\&V), Simulation, Testing
 \end{IEEEkeywords}
 \IEEEpeerreviewmaketitle
 
@@ -59,34 +70,65 @@ Autonomous Driving, Determinism, Physics Engines, Connected Autonomous Vehicles 
 % ***************************************************
 \section{Introduction} \label{s:introduction}
 % What is verification
-\IEEEPARstart{V}{}erification is the process used to gain confidence in the correctness of a system with respect to its requirements~\cite{bergeron2012writing}. Simulation based verification can be used to test autonomous driving functions under development benefiting from full control over the road network and the actors within it. These simulated tests aim to provide evidence to regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988} which form a body of driving assertions which must not be violated. Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules through assertion checking. 
-There have been a number of fatalities with autonomous vehicles which could be attributed to a lack of verification and validation (V\&V), e.g.\cite{FatalityExample}. Simulation is an obvious domain choice to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without millions of miles of costly on-road testing~\cite{kalra2016driving} where the rare event can be made to happen more often~\cite{Koopman2018} such as unpredictable actor behaviour~\cite{RobustnessAutonomy}. 
+\IEEEPARstart{V}{}erification is the process used to gain confidence in the correctness of a system with respect to its requirements~\cite{bergeron2012writing}. Simulation based verification can be used to test autonomous driving functions under development benefiting from full control over the road network and the actors within it. These simulated tests aim to provide evidence to developers and regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988} which form a body of driving assertions that must not be violated. 
+
+Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules, e.g.\ through assertion checking during simulation. 
+There have been a number of fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. Simulation environments offer a means to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without millions of miles of costly on-road testing~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
+
+% The use of game engines for AV testing
+Increasingly, the autonomous vehicle (AV) community is adopting gaming engines as simulation platforms to support the development and testing of vehicle control software. 
+%
+CARLA\footnote{http://carla.org/}, for instance, is an open-source simulator for autonomous driving that is implemented as a layer over the Unreal Engine (UE4), a  real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
 
 % Requirements of simulation based verification SBV
-For games engines to offer a suitable testing environment they must operate with a minimal \textit{reality gap} in the physical domain (vehicles, actors) and be realistic enough \cite{Koopman2018} to produce suitable rendering of scenes for perception stack testing. The simulation must be easy to setup, run and manipulate the environment and the temporal development of actors \cite{Ulbrich2015} and include a provision for sensor analogues to a suitable degree of accuracy (e.g. video, LIDAR, IR). Some researchers may also require support for hardware-in-the-loop development or a suitable real-time test-bed for cyber-security testing~\cite{Javaid2013}. 
-% Game engines for SBV
-Game engines offer a simulation domain solution for the development and testing of CAVs that meet many of these requirements, as opposed to vehicle dynamics simulators and traffic-level simulators used by manufacturers~\cite{FrameworkAndChallenges}; but many challenges still exist.
+The benefit of using state-of-the-art gaming engines as simulators is that they offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes suitable for perception stack testing. 
+%
+Furthermore, they are easy to setup and run; they also are simple to control and observe, both with respect to the environment the AV operates in as well as the temporal development of actors~\cite{Ulbrich2015}. 
+%
+For gaming engines to be used in simulation-based testing of AVs, they must offer sensors that operate at an accuracy equivalent to those on the AV, e.g.\ video cameras, LIDAR, IR, etc., or interfaces for developers to integrate their own sensor models. CARLA currently offers various basic types of cameras and ray-case based lidar; extensions are still under development. 
+%
+Finally, support for hardware-in-the-loop development or a real-time test-bed for cyber-security testing~\cite{Javaid2013} may also be required. 
 
-% Verification and Determinism 
-For game engines to be useful as a verification tool then they must be deterministic. 
+% Game engines for SBV
+Compared to the vehicle dynamics simulators and traffic-level simulators used by manufacturers~\cite{FrameworkAndChallenges}, gaming engines offer a convenient simulation solution that meets many of the requirements for the development and functional safety testing of AVs in simulation. However, several challenges remain; one of these is determinism.
 %
 % What is a deterministic system
 Deterministic, in this context, refers to the property of causality given a temporal development of events such that any state is completely determined by prior states.
 %
-Herein the term \textit{simulation variance} is used to refer to how simulation outputs vary when repeated many times and specifically the variance of actor paths within a given scenario. We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time, these are considered actors and may include other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific goals and values. A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
+Herein the term \textit{simulation variance} is used to refer to how simulation traces and outputs vary, when the same stimulus is provided repeatedly under identical conditions. Specifically, we focus on the variance of actor paths within a given scenario. 
 
+We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time; these are considered actors and may include other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific goals and values.\todo{values - Does this mean stimulus or other parameters?} A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
+
+% Verification and Determinism 
 % Why is determinism important for verification
-Determinism is important for verification. Any software defects that are detected but not repeatable at a later time or by another party does not allow for suitable resolution. Furthermore, defects not found on the verification testing system may arise on a deployed system with a different hardware architecture resulting in untested and potentially unsafe behaviour. %When considering the development of autonomous vehicles, untested code could lead to dangerous behaviours not being identified and fatal road accidents may occur.
+%For game engines to be useful as a verification tool then they must be deterministic. -> any sim tool must be deterministic, not just game engines ;)
+Determinism is a key prerequisite for simulation during AV development and testing. 
 %
-Also, if the simulation is non-deterministic, variance in actor positions may lead to subsequent assessment errors, e.g. assertion checking.
+A deterministic simulation environment guarantees that tests are repeatable. 
+%
+Thus, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy. 
+%
+%Any software defects that are detected but not repeatable at a later time or by another party does not allow for suitable resolution. Furthermore, defects not found on the verification testing system may arise on a deployed system with a different hardware architecture resulting in untested and potentially unsafe behaviour. 
+%When considering the development of autonomous vehicles, untested code could lead to dangerous behaviours not being identified and fatal road accidents may occur.
+%
+If the simulation is not deterministic, however, variance in actor positions, for instance, may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation are left undetected, resulting in false confidence in the safety of the AV's control software.
 
 % Challenges of SBV
-Our main research question is to what extent are gaming engines deterministic so that they can provide a reliable and repeatable testing environment for CAV verification? The game engine, in this context, must also comply with the requirements to provide a suitably realistic environment and real-time processing for perception and security analysis.
+Gaming engines do not need to be deterministic when used for gaming; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. Because the situation is very different for AV development and testing, our main research question is: 
+how can one assess the extent to which a simulation environment is deterministic? 
+%
+In pursuit of an answer to this question we have developed a method to determine the simulation variance for a given simulation environment. 
+%
+Knowing the simulation variance will help developers and testers understand the impact of using a gaming engine for AV simulation, especially how potentially existing non-determinism affects repeatability and reliability.\todo{review and potentially summarize results from case study}
+%
+%The game engine, in this context, must also comply with the requirements to provide a suitably realistic environment and real-time processing for perception and security analysis.\todo{next}
 
-This paper is structured as follows. In Section~\ref{s:background} a background on gaming engines and sources of potential non-determinism are explored. Section~\ref{s:methodology} presents a method to design and execute an experiment to assess suitability of a system for CAV verification. A case study to illustrate how the simulation variance vary for a number of scenarios is explored in Section~\ref{s:case-study}. We conclude in Section~\ref{s:conclusion} and give an outlook on future work.
+This paper is structured as follows. In Section~\ref{s:background} gaming engines and sources of potential non-determinism in gaming engines are investigated. Section~\ref{s:methodology} presents a method to assess the suitability of a simulation system for AV verification. 
+%
+A case study to illustrate how the simulation variance observed for a number of scenarios is presented in Section~\ref{s:case-study}. We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\todo{review at end}
 
 
-% \noindent \IEEEPARstart{T}{}he evolution and inevitable implementation of connected and autonomous vehicles (CAVs) on roads is a delicate if not utterly fascinating subject. Such systems operate in environments marked by inaccessibility, unexpected weather conditions, or unpredictable behavior by surrounding humans\cite{RobustnessAutonomy}. 
+% \noindent \IEEEPARstart{T}{}he evolution and inevitable implementation of connected and autonomous vehicles (AVs) on roads is a delicate if not utterly fascinating subject. Such systems operate in environments marked by inaccessibility, unexpected weather conditions, or unpredictable behavior by surrounding humans\cite{RobustnessAutonomy}. 
 
 % Public safety is clearly a prime concern for putting autonomous vehicles into play, which means the meticulous and thorough process of developing, training, verifying, validating and certifying the artificial intelligence (AI) and software of the vehicle is a task to be handled with care. 
 
@@ -98,26 +140,26 @@ This paper is structured as follows. In Section~\ref{s:background} a background 
 
 % ======================
 % This is all from "FrameworkAndChallenges" without using quotes 
-% \noindent Existing vehicle manufacturers use vehicle dynamic simulators to model the physics of each component in a system. Similarly, the use of simulation for traffic modelling is well established. Despite these proven simulation tools, non of them provide all of the required functionalities together to fully simulate CAVs\cite{FrameworkAndChallenges}.\\\\
+% \noindent Existing vehicle manufacturers use vehicle dynamic simulators to model the physics of each component in a system. Similarly, the use of simulation for traffic modelling is well established. Despite these proven simulation tools, non of them provide all of the required functionalities together to fully simulate AVs\cite{FrameworkAndChallenges}.\\\\
 
-% While traffic-level simulators can model road layouts, they do not require as much realism or detail as CAVs require. On the other side, vehicle dynamics simulators include some of the high fidelity physics functionalities needed for CAV testing, but they only consider the vehicle itself and perhaps the road surface and gradient; they do not model any of the road layout, signs, traffic/street lights, other street furniture or surrounding infrastructure. 
+% While traffic-level simulators can model road layouts, they do not require as much realism or detail as AVs require. On the other side, vehicle dynamics simulators include some of the high fidelity physics functionalities needed for AV testing, but they only consider the vehicle itself and perhaps the road surface and gradient; they do not model any of the road layout, signs, traffic/street lights, other street furniture or surrounding infrastructure. 
 % Most critically, neither types of simulators model sensors such as cameras, lidars or radars\cite{FrameworkAndChallenges}.\\\\ 
-% Consequently, one of the major routes CAVs developers are moving towards is using physics engines, these are often games engine development frameworks, since they tick all of the boxes needed to fully simulate CAVs \cite{FrameworkAndChallenges}.  
+% Consequently, one of the major routes AVs developers are moving towards is using physics engines, these are often games engine development frameworks, since they tick all of the boxes needed to fully simulate AVs \cite{FrameworkAndChallenges}.  
 % ======================
 
 % Robopilot, Capri, Carla, Apollo, Airsim, Udacity etc. are all examples of driving simulator projects that use physics engines to support development, training, and validation of autonomous driving systems software\cite{ListOfSimulators}. \\\\
 % Test-retest reliability, is a key factor in V\&V of software. Tests need to be repeatable in order for one to eliminate bugs. 
-% In other words physics engines has to be deterministic, or the level of non-determinism of the engine should be low and clearly defined, for them to be used in the context of V\&V of CAV software.\\\\
+% In other words physics engines has to be deterministic, or the level of non-determinism of the engine should be low and clearly defined, for them to be used in the context of V\&V of AV software.\\\\
 % \TODO{Remove this paragraph?} Determinism of gaming (physics) engines has not attracted much attention by engines' developers nor researchers. This previously was not important since in gaming, determinism is not critical. 
 % Performance, on the other hand, is a subject of more interest in that field, where developers want games to work on all platforms and still be fast to provide a positive user experience. 
 % On the contrary, determinism becomes vital and performance not when such engines are used in autonomous vehicles' AI development and testing. \\\\
 
-% This paper aims to investigate how deterministic physics engines are for usage in V\&V for CAV simulations; and will cover the list of following points:
+% This paper aims to investigate how deterministic physics engines are for usage in V\&V for AV simulations; and will cover the list of following points:
 % \begin{itemize}[leftmargin=*]
-%     \item Necessary background on gaming engines used in CAV simulations.
+%     \item Necessary background on gaming engines used in AV simulations.
 %     \item Review of sources of non-determinism in such engines.
 %     \item Provide a method of how the level of non-determinism can be investigated and defined.
-%     \item A case study showing the implementation of this methodology in an engine widely used in CAVs simulations (Unreal Engine).
+%     \item A case study showing the implementation of this methodology in an engine widely used in AVs simulations (Unreal Engine).
 % \end{itemize}
  
 % ***************************************************
@@ -125,12 +167,12 @@ This paper is structured as follows. In Section~\ref{s:background} a background 
 % ***************************************************
 \section{Background} \label{s:background}
 
-There are numerous game engines with their associated development environments which could be suitable for CAV development, e.g. Unreal~\footnote{\url{https://www.unrealengine.com/}}, Unity~\footnote{\url{https://unity.com/}}, CryEngine~\footnote{\url{https://www.cryengine.com/}}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing engines, e.g. Carla~\footnote{\url{http://carla.org/}}, AirSim~\footnote{\url{https://microsoft.github.io/AirSim/}}, Apollo~\footnote{\url{http://apollo.auto/}}, and some have been developed for cloud based simulation, e.g. Nvidia Drive Constellation~\footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
+There are numerous game engines with their associated development environments which could be suitable for AV development, e.g. Unreal~\footnote{\url{https://www.unrealengine.com/}}, Unity~\footnote{\url{https://unity.com/}}, CryEngine~\footnote{\url{https://www.cryengine.com/}}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing engines, e.g. Carla~\footnote{\url{http://carla.org/}}, AirSim~\footnote{\url{https://microsoft.github.io/AirSim/}}, Apollo~\footnote{\url{http://apollo.auto/}}, and some have been developed for cloud based simulation, e.g. Nvidia Drive Constellation~\footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
 
-Investigating the determinism of gaming engines has not attracted much research interest since performance is more critical for playing games than accurate and repeatable runtime execution. %However, when these engines are used for CAV development then deterministic behaviour is required. 
+Investigating the determinism of gaming engines has not attracted much research interest since performance is more critical for playing games than accurate and repeatable runtime execution. %However, when these engines are used for AV development then deterministic behaviour is required. 
 This section gives an overview of a gaming engine and what sources or settings in the engine may affect \textit{simulation variance}.
 %
-% \noindent This section overviews important information and concepts in physics engines, which are relevant to their usage in CAV simulations. Particularly, on how physics engines operate and the sources of non-determinism in these engines necessary to understand the contribution of this paper.
+% \noindent This section overviews important information and concepts in physics engines, which are relevant to their usage in AV simulations. Particularly, on how physics engines operate and the sources of non-determinism in these engines necessary to understand the contribution of this paper.
 
 % ======= Overview of a Game Loop
 \subsection{Overview of a Game Loop} \label{GameLoopSection}
@@ -142,7 +184,7 @@ The game loop is responsible for the interaction between the physics and renderi
 \caption{Game engine loop block diagram~\cite{GameProgPatternsBook}}
 \label{GameEngineLoopDiagram}
 \end{figure}
-The first part of the game loop is to process the user inputs which may take the form of user keyed inputs or, in the case of CAV development, the resultant actions of the autonomous vehicle given the current state of the environment. For example, the throttle and steering inputs from the vehicle controller of an AV. The update interprets the intended actions of all dynamic actors in the scene, performs any necessary physics calculations and updates the actor states. The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. 
+The first part of the game loop is to process the user inputs which may take the form of user keyed inputs or, in the case of AV development, the resultant actions of the autonomous vehicle given the current state of the environment. For example, the throttle and steering inputs from the vehicle controller of an AV. The update interprets the intended actions of all dynamic actors in the scene, performs any necessary physics calculations and updates the actor states. The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. 
 % 
 % It is necessary to have an understanding of how the game loop operates in order to understand potential sources of non-determinism that are discussed below. 
 % 
@@ -172,7 +214,7 @@ and the simulation will exhibit lag between input commands and rendered states r
 \begin{figure*}[b]
     \centering
     \includegraphics[width=0.99\linewidth]{Other/Figures/MethodologyDiagram.pdf}
-    \caption{Shows a flow diagram of the methodology proposed to define the simulation variance of a gaming engine for usage in CAV simulations.}
+    \caption{Shows a flow diagram of the methodology proposed to define the simulation variance of a gaming engine for usage in AV simulations.}
 
     \label{method_diagram}
 \end{figure*}
@@ -186,12 +228,12 @@ The following points form a hypothesis around the potential sources of non-deter
 \noindent\underline{\textit{Floating Point Representation:}}
 Floating point representation of real numbers is limited with fixed register sizes resulting in errors of \textit{rounding} where loss of bits occur which are rounded or truncated and \textit{cancellation} which happens where two similar values are subtracted~\cite{FloatingPointsBook,goldberg1991every}. 
 %
-% Translating to the usage of CAV simulations in physics engines,
+% Translating to the usage of AV simulations in physics engines,
 This could result in precision issues of, for example, actor position within the environment and falsely satisfying or failing assertions. Such reasons could  make one jump to the conclusion that floating point errors could result in non-deterministic behaviour of repeated tests, but these precision issues should be referred to as \textit{incorrectness} and not be confused with determinism. Assuming hardware is deterministic and a rounding error occurs, then the same hardware should produce the same \textit{incorrect} output for the same initial conditions. So, even if the output is incorrect due to floating point precision it should always produce the same \textit{incorrect} output, given the same logical registers which conform to the same IEEE floating point standard~\cite{8766229}. Therefore, it is unlikely that floating point representation will contribute to \textit{simulation variance} for repeated tests on the same hardware.
 %
 % A generic issue with computers are floating points precision. 
 %Various errors occur when doing arithmetic manipulations using floating points, especially when operating between large and small numbers due to rounding, memory limitations and so forth.\cite{FloatingPointArithmeticArticle}\cite{FloatingPointsBook}. 
-%Translating to the usage of CAV simulations for V\&V in physics engines, this could result in many precision issues resulting in complex non deterministic behaviours.
+%Translating to the usage of AV simulations for V\&V in physics engines, this could result in many precision issues resulting in complex non deterministic behaviours.
 %
 % For instance, consider a simulation where the world is infinite and progressively  generated in the physics engine. 
 % After a few hundred meters, precision issues will start to occur, and will get progressively worse the further from the origin the simulation gets. 
@@ -201,7 +243,7 @@ This could result in precision issues of, for example, actor position within the
 % There are many scenarios that could be addressed, and solutions to them will entirely depend on the characteristics of that specific scenario. There is no generalised solution for the floating problem, regardless of how good computers get there will always be a limitation. However, floating points as they stand could just be sufficient for V\&V testing purposes. Whenever they are not, smart solutions can be found to accommodate for these limitations.
 \\\\
 \noindent\underline{\textit{Error Correcting Code (ECC) Memory:}}
-ECC Memory can detect and correct for single bit errors in DRAM memory. Single bit errors may occur due to malfunctioning hardware, ionising radiation (background cosmic or environmental sources) or from electromagnetic radiation~\cite{dodd2003basic}. If single bit errors go uncorrected then subsequent computational processing will produce incorrect and non-deterministic results. Estimating the rate of error is difficult and dependent on hardware, environment and computer cycles~\cite{mielke2008bit} but CAV verification tasks are likely to incur significant CPU hours and therefore increase exposure to such risks.
+ECC Memory can detect and correct for single bit errors in DRAM memory. Single bit errors may occur due to malfunctioning hardware, ionising radiation (background cosmic or environmental sources) or from electromagnetic radiation~\cite{dodd2003basic}. If single bit errors go uncorrected then subsequent computational processing will produce incorrect and non-deterministic results. Estimating the rate of error is difficult and dependent on hardware, environment and computer cycles~\cite{mielke2008bit} but AV verification tasks are likely to incur significant CPU hours and therefore increase exposure to such risks.
 \\\\
 \noindent\underline{\textit{Game Engine Code:}}
 The type and version of the engine code executed should be considered, paying attention to the control of pseudo-random numbers, fixed physics calculation steps ($dt$), fixed actor navigation mesh, deterministic ego vehicle controllers and engine texture loading rates especially for perception stack testing. %
@@ -241,12 +283,12 @@ Game engines can often have a variable game loop update rate but a fixed physics
 %
 A variable frame rate could contribute to \textit{simulation variance} if the variation in the frame rate is temporally inconsistent between repeated tests and hardware. Given that variable frame rate is designed for optimising performance across differing hardware then inconsistencies across different systems may occur. Repeated tests on the same system should result in similar frame rates unless there are additional competition for resources. 
 %
-CAV specific platforms, such as Carla, can be operated with fixed frame rates which should provide maximum stability as long as the frame rate during execution (FPS) is monitored and observed to adhered to this rate.
+AV specific platforms, such as Carla, can be operated with fixed frame rates which should provide maximum stability as long as the frame rate during execution (FPS) is monitored and observed to adhered to this rate.
 %
 That is to say, if the frame rate is allowed to vary then it has to be controlled to give the same variability through out a given test in order for the test results to be repeatable. This issue might be of negligible significance if the frame rate is consistent and the time steps are small enough. 
 \\\\
 \noindent\underline{\textit{Actor Navigation:}}
-Navigation meshes are used in game engines for actor path planning, and could be considered as a potential source of non-deterministic behaviour, e.g.%. Some CAV simulator developers claim that the built-in physics engines' AI is non-deterministic
+Navigation meshes are used in game engines for actor path planning, and could be considered as a potential source of non-deterministic behaviour, e.g.%. Some AV simulator developers claim that the built-in physics engines' AI is non-deterministic
 ~\cite{CARLABenchmark}. 
 This may depend on the algorithms used by the engine which typically use the A* algorithm\cite{AStarBook} and should give deterministic outcomes as long as the environment is deterministic\cite{AirsimUnrealArticle}\cite{UnrealAIDocumentation}. 
 Therefore, the determinism of the actor path planning depends on the environment and the update to actor states within it and how navigation meshes are created or modelled, e.g. shape, granularity. 
@@ -271,7 +313,7 @@ The user must specify the level of variance acceptable for their application whi
 \subsection{Scenario Description}
 The experiment should be a short scenario that can be easily repeated with the same initial conditions. Data logging should be used to record the actor positions at fixed time intervals throughout the simulation in order to determine the variance in actor path. The maximum deviation in actor path with respect to the mean for $n$-repeated tests will indicate at what dimensional scale deterministic results are achieved. For example, if 100 tests are executed and the maximum deviation in actor path is $<1cm$, then this scenario could be interpreted as being deterministic above this scale. 
 
-Tests should be sufficiently repeated using statistical power~\cite{cohen2013statistical} to reveal any outlier errors that occur with low probability. Initial testing\footnote{\label{note1}Experiments using the Unreal Engine not reported here for brevity but code and experimental results can be found at \url{https://github.com/TSL-UOB/CAV-Determinism/tree/master/UnrealEngineTests}} indicated an actor path deviation of $1\times10^{-13} cm$ for 997 out of 1000 tests but with 3 tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10cm$. While executing 100 repeats may seem sufficient, in this case the sample size may fail to observe these events that occur with low probability, inferring a false confidence in the results. To ensure outlier data points are not hidden in the average of a large number of tests, the maximum deviation should be reported rather than the average when summarising.
+Tests should be sufficiently repeated using statistical power~\cite{cohen2013statistical} to reveal any outlier errors that occur with low probability. Initial testing\footnote{\label{note1}Experiments using the Unreal Engine not reported here for brevity but code and experimental results can be found at \url{https://github.com/TSL-UOB/AV-Determinism/tree/master/UnrealEngineTests}} indicated an actor path deviation of $1\times10^{-13} cm$ for 997 out of 1000 tests but with 3 tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10cm$. While executing 100 repeats may seem sufficient, in this case the sample size may fail to observe these events that occur with low probability, inferring a false confidence in the results. To ensure outlier data points are not hidden in the average of a large number of tests, the maximum deviation should be reported rather than the average when summarising.
 
 Game engine actors can be used to simulate the AV and other vehicles and pedestrians. For the experiment, actors should follow a series of trajectory waypoints which are hard-coded for each test type. In our experiments, hard-coded target location goals regularly spaced at $1m$ intervals were used for pedestrians and vehicles ensuring all actors were given the same initial conditions and any variation comes from execution of the simulator at runtime. Initial testing also indicated that when actors collide there is a significant change in \textit{simulation variance}, therefore the experiment should include some scenarios where collision callbacks are activated. 
 
@@ -294,7 +336,7 @@ To simulate the demands of taxing simulations, potentially requiring realistic r
 % \subsection{Other Considerations}
 % \noindent When designing the experiment(s) one needs to bare in mind the following two questions: i) Is the engine deterministic? ii) If not, how does its simulation variance vary? In simulation, actors can either follow a series of trajectory way points or they get given the destination and their AI path plans to that destination. Thus, given that an engine has a high level of simulation variance, then one needs to set up an experiment that would stress the engine in order to determine how its simulation variance vary. 
 % This is best done by generating collision callbacks, because that is when engines' do a lot of calculations to determine the response after the collision. Another approach, if AI is used for path planning instead of just following predefined trajectory way points, is to introduce a decision point for the AI.\\\\
-% The user should set a deviation threshold, beyond which simulation results deemed unacceptable or non-deterministic. For the majority of CAV navigation on major roads and highways a limit of $1m$ may be acceptable but in denser urban environments a value of $1cm$ may be more appropriate. 
+% The user should set a deviation threshold, beyond which simulation results deemed unacceptable or non-deterministic. For the majority of AV navigation on major roads and highways a limit of $1m$ may be acceptable but in denser urban environments a value of $1cm$ may be more appropriate. 
 
 
 \subsection{Internal settings}
@@ -305,7 +347,7 @@ Within Unreal Engine there are numerous internal settings relating to the moveme
 % By doing various inspections around them we did not notice much improvement or worsening in the simulation variance between test runs, therefore the internal settings option was disregarded. However, one of the options we used is synchronous mode with a fixed time step that is available in CARLA. This would make the simulator proceed to the next tick only when commanded to do so by our script, which makes runs' flow more consistently.  
 
 % There are several error and physics collision internal settings in physics engines that can be tweaked to enhance the simulation variance of the engine.
-% Increasing the physics time-step calculations, which is increasing the number of calculations per unit time, would improve the simulation variance since the physics sequence will be more finely defined; but on the other hand this would be more computationally expensive. However, in such applications of V\&V of CAV simulations, the computational cost should be of less concern compared to the importance of repeatability of tests.
+% Increasing the physics time-step calculations, which is increasing the number of calculations per unit time, would improve the simulation variance since the physics sequence will be more finely defined; but on the other hand this would be more computationally expensive. However, in such applications of V\&V of AV simulations, the computational cost should be of less concern compared to the importance of repeatability of tests.
 % If the experiment setup includes the usage of the physics engine's AI then altering the navigation mesh settings in the engine, like increasing the granularity of the mesh or changing the mesh type; can improve the simulation variance as a result of allowing the AI to navigate in a more well defined space. 
 % Disabling rendering or running in headless mode is a way of attempting to entirely decouple the rendering engine from the physics engine, which theoretically should affect positively the repeatablility of tests. 
 % The downside of most physics engines is that they do not provide a headless mode in the editor setup, thus this could make running in headless mode a real challenge for verification engineers.
@@ -383,10 +425,10 @@ These tests were carried out on an Alienware Area 51 R5 with an i9 9960X process
     \item Non-uniform memory access: \texttt{numactl}\footnote{\url{https://linux.die.net/man/8/numactl}} was used to fix the simulator and test script to single cores but only a minor (2\%) improvement in simulation variance was observed and therefore not used for subsequent testing.
 \end{itemize}
 
-% Given that our interest is on CAV simulations, this study presents a number of experiments run on typical agents used in CAV simulations and their interactions with each other. These agents are classified into two, either vehicles(cars, motorcycles, bikes etc.) or pedestrians (can include animals). Here we will walk through our hypothesis, description of our tests and the analysis of results from the different tests. We will point out at each stage where we sit in Figure~\ref{method_diagram} as we go through this case study.    
+% Given that our interest is on AV simulations, this study presents a number of experiments run on typical agents used in AV simulations and their interactions with each other. These agents are classified into two, either vehicles(cars, motorcycles, bikes etc.) or pedestrians (can include animals). Here we will walk through our hypothesis, description of our tests and the analysis of results from the different tests. We will point out at each stage where we sit in Figure~\ref{method_diagram} as we go through this case study.    
 
 % \subsection{Problem And Hypothesis}
-% We want to see whether using Unreal Engine 4 (UE4) along with CARLA \cite{CARLA_paper} for V\&V of CAV simulations is deterministic or not; if not then what is the simulation variance that we will operate with, is it acceptable or not, and whether it worsens with stressing GPU and CPU.
+% We want to see whether using Unreal Engine 4 (UE4) along with CARLA \cite{CARLA_paper} for V\&V of AV simulations is deterministic or not; if not then what is the simulation variance that we will operate with, is it acceptable or not, and whether it worsens with stressing GPU and CPU.
 
 % Our hypothesis is that since UE4 is a gaming engine it is not deterministic, however, the simulation variance would be very low to acceptable limits that allows verification engineers to use it confidently and assume that tests would be repeatable. This behaviour is expected not to hold as the level of computing stress increases.     
 
@@ -436,7 +478,7 @@ The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover a
 % Tests 6,7 and 8 are tests with pedetrians having the same trajectory waypoints but walking in opposite directions to each other (see Figure~\ref{Test_b}). 
 % Pedestrians have the functionality of dynamic path planning i.e. they can avoid obstacles to reach their waypoints and so they can avoid bumping into each other. Hence, to make sure they intersect (collide) with each other then we  have set tests 6,7 and 8 to be the same but with different look ahead distances; the smaller the look ahead distance the less chance they will get to path plan around each other, and thus making sure they intersect.
 
-% In V\&V of CAV simulations, collisions of pedestrians together is not of much interest, nevertheless we decided to include these tests for the sake of completeness and to obtain a full image of the simulation variance of the simulator.
+% In V\&V of AV simulations, collisions of pedestrians together is not of much interest, nevertheless we decided to include these tests for the sake of completeness and to obtain a full image of the simulation variance of the simulator.
 
 % Test 4, is where a vehicle hits a pedestrian and runs over it on a zebra line, as shown in Figure~\ref{Test_a}.
 
@@ -466,7 +508,7 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
 
 % Scenarios that include both collisions and vehicle actors were not deterministic. However, when observing the deviation in actor paths against simulation time, Fig.~\ref{CarsCollisionCG25}, the simulation is deterministic prior to collision but not afterwards. 
 
-% This was calculated by averaging the variance between all of the different runs through out the simulation time for all of the agents, then taking the square root to obtain the total mean devaiton. Note the dotted red line in the plot shows the millimeter (mm) level. Below this level we assume that the simulation variance is low enough that it would not affect our assertion checking for V\&V of CAV simulations purposes, that it is sufficient to assume the tests are deterministic and repeatable. This line can be moved up or down and it is entirely up to verification engineers where they want to define the level below which tests' variance is negligibale and it is suffcient to assume that tests are deterministic.
+% This was calculated by averaging the variance between all of the different runs through out the simulation time for all of the agents, then taking the square root to obtain the total mean devaiton. Note the dotted red line in the plot shows the millimeter (mm) level. Below this level we assume that the simulation variance is low enough that it would not affect our assertion checking for V\&V of AV simulations purposes, that it is sufficient to assume the tests are deterministic and repeatable. This line can be moved up or down and it is entirely up to verification engineers where they want to define the level below which tests' variance is negligibale and it is suffcient to assume that tests are deterministic.
 
 
 
@@ -508,7 +550,7 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
 
 % Thus, we resorted to plotting the mean deviation over the number of runs of these two tests vs simulation time with stress level \%25 chosen arbitrarily (see Figure~\ref{CarsCollisionCG25} and \ref{CarsPeopleCollsionsCG25}). Doing that we discovered that after collisions occur there is a jump in the mean deviation, which is what causes the averaged mean deviation through the whole simulation time in Figure~\ref{ExperimentsStressSummary} to always surpass our red line.
 
-% Plotting Figures~\ref{CarsCollisionPrePost} and \ref{CarsPeopleCollisionPrePost}, which shows the mean deviation pre and post collision for the different stress levels; it can be seen that there is two discrete levels for the pre and post collison devaition from these plots and as the stress increases these two discrete levels start to merge. However, in V\&V of CAV simualtions we  are normally interested in the point until a collision occur after which the simulation will be terminated. Thus, the post collision effect should not be of much concern in the context of CAVs. 
+% Plotting Figures~\ref{CarsCollisionPrePost} and \ref{CarsPeopleCollisionPrePost}, which shows the mean deviation pre and post collision for the different stress levels; it can be seen that there is two discrete levels for the pre and post collison devaition from these plots and as the stress increases these two discrete levels start to merge. However, in V\&V of AV simualtions we  are normally interested in the point until a collision occur after which the simulation will be terminated. Thus, the post collision effect should not be of much concern in the context of AVs. 
 
 % It is important to note, however, that in test 4 a delayed effect of increase in simulation variance was noticed to Car ID 1, which interestingly was not involved in the collision, this was attributed to how the physics engine was programmed to calculate collisions which might cause other obscure behaviours to other agents. The importance of this outcome is that it shows even if an ego vehicle is not involved in a collision, but other agents are, this will still have effects on the simulation variance of the ego vehicle. Thus failing to stay below our red line and the test should be terminated. In summary, from the tests carried out we can deduce that for a computer of the following specifications, an Alienware Area 51 R5 with an i9 9960X CPU chip, NVIDIA GeForce RTX 2080 graphics card and 64GB of RAM, that all tests carried out using CARLA in UE4 are gauranteed to be deterministic and repeatable (according to our definition by the red line) as long as the CPU + GPU stress does not exceed 50\% and tests are terminated as soon as a collision of any type is detected in the simulation. 
 
@@ -518,7 +560,7 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
 \section{Conclusions}\label{s:conclusion}
 Practitioners in this field can resolve the non-deterministic operational domains of their simulation by following the method outlined in this paper. Potential sources of non-deterministic simulation behaviour have been discussed such as floating point rounding error and scheduling policy. A case study was used to ascertain the boundary between deterministic and non-deterministic operation of the Carla driving simulator. Results suggest non-deterministic outcomes when resource utilisation levels exceeded 75\% or when vehicle collisions occur for the particular hardware used in this study. Furthermore it was found that all actors, even those not involved directly in a collision, will behave non-deterministically if a collision callback to the game engine is made. Best operating practice follows that the simulation should be stopped as soon as a collision callback is detected or resource utilisation levels exceed 75\% although this value may be system specific. 
 
-% We have provided a summary of the sources of non-determinisim in game engines. This was followed by presenting a method by which one can determine the simulation variance of a gaming engine used in V\&V application of CAV simulations. The method consists of five stages, starting with designing the experiment, then suggesting the various settings that can improve or worsen the performance, and finally focuses on running the experiment and analysing the output.
+% We have provided a summary of the sources of non-determinisim in game engines. This was followed by presenting a method by which one can determine the simulation variance of a gaming engine used in V\&V application of AV simulations. The method consists of five stages, starting with designing the experiment, then suggesting the various settings that can improve or worsen the performance, and finally focuses on running the experiment and analysing the output.
 
 % A case study is then used to show the implementation of the method introduced, where several tests were setup and run to explore the different interactions between the different agents in a simulator called CARLA. It was found that for the computer used (with specs of an i9 9960X CPU chip, NVIDIA GeForce RTX 2080 graphics card and 64GB of RAM) the simulation variance was sufficiently low to assume the simulator to be deterministic as long as the CPU + GPU utilisation is below 50\% and that tests are terminated as soon as a collision of any type is detected. %since it was noticed that collisions cause the level of non determinism to jump remarkable invalidating the assumption of the simulator is deterministic.
 
