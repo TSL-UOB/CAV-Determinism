@@ -54,7 +54,7 @@ However, game engines do not need to be deterministic per se. % when used for ga
 %
 This work identifies the requirements these engines need to fulfil when used for AV development and testing, and proposes a method to determine the \textit{simulation variance} for specific configurations and utilisation of the software and hardware, respectively. 
 %
-A case study using Carla, an open-source simulation environment powered by Unreal Engine, illustrates the proposed method and results from a small scenario indicate the presence of deterministic operational domains. \todo{KIE: review at end}
+A case study using Carla, an open-source simulation environment powered by Unreal Engine, illustrates the proposed method and results from a small scenario indicate the presence of deterministic operational domains. \todo[inline]{KIE: review at end}
 
 % The industry and certification bodies for connected autonomous vehicles is adopting the use of physics and gaming engines to develop, train, verify, validate and certify the software of these autonomous systems in simulation. It is important for these engines to be deterministic in order for one to carry out these different processes. However, such engines are inherently non-deterministic. We propose a method by which one can identify the region where they can operate in these engines and guarantee that the level of non determinism is sufficiently low that it can be assumed to be deterministic. We also implement this method on a case study and show how we identified the region (encompassing computational utilisation and behaviours in simulation) at which one can guarantee performance to be sufficiently deterministic.          
 \end{abstract}
@@ -96,7 +96,7 @@ Deterministic, in this context, refers to the property of causality given a temp
 %
 Herein the term \textit{simulation variance} is used to refer to how simulation traces and outputs vary, when the same stimulus is provided repeatedly under identical conditions. Specifically, we focus on the variance of actor paths within a given scenario. 
 
-We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time; these are considered actors and may include other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific goals and values.\todo{values - Does this mean stimulus or other parameters?} A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
+We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time; these are considered actors and may include other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific goals and values.\todo[inline]{values - Does this mean stimulus or other parameters?} A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
 
 % Verification and Determinism 
 % Why is determinism important for verification
@@ -118,13 +118,13 @@ how can one assess the extent to which a simulation environment is deterministic
 %
 In pursuit of an answer to this question we have developed a method to determine the simulation variance for a given simulation environment. 
 %
-Knowing the simulation variance will help developers and testers understand the impact of using a game engine for AV simulation, especially how potentially existing non-determinism affects repeatability and reliability.\todo{review and potentially summarize results from case study}
+Knowing the simulation variance will help developers and testers understand the impact of using a game engine for AV simulation, especially how potentially existing non-determinism affects repeatability and reliability.\todo[inline]{review and potentially summarize results from case study}
 %
-%The game engine, in this context, must also comply with the requirements to provide a suitably realistic environment and real-time processing for perception and security analysis.\todo{next}
+%The game engine, in this context, must also comply with the requirements to provide a suitably realistic environment and real-time processing for perception and security analysis.\todo[inline]{next}
 
 This paper is structured as follows. In Section~\ref{s:background} game engines and sources of potential non-determinism in game engines are investigated. Section~\ref{s:methodology} presents a method to assess the suitability of a simulation system for AV verification. 
 %
-A case study to illustrate how the simulation variance observed for a number of scenarios is presented in Section~\ref{s:case-study}.\todo{point to UE4} We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\todo{review at end}
+A case study to illustrate how the simulation variance observed for a number of scenarios is presented in Section~\ref{s:case-study}.\todo[inline]{point to UE4} We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\todo[inline]{review at end}
 
 
 % \noindent \IEEEPARstart{T}{}he evolution and inevitable implementation of connected and autonomous vehicles (AVs) on roads is a delicate if not utterly fascinating subject. Such systems operate in environments marked by inaccessibility, unexpected weather conditions, or unpredictable behavior by surrounding humans\cite{RobustnessAutonomy}. 
@@ -187,14 +187,14 @@ The game loop is responsible for the interaction between the physics and renderi
 \label{GameEngineLoopDiagram}
 \end{figure}
 
-The first part of the game loop is to process the user inputs which may take the form of user keyed inputs or, in the case of AV development, the response of the AV to the current state of its environment. For example, the throttle and steering angle from the controller of an AV. The update stage interprets the input from all dynamic actors in the scene, performs any necessary physics calculations and updates the actor states. The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. \todo{Fig 1: update rates of which clock?}\todo{Should there not also be a clock in the overall loop?}
+The first part of the game loop is to process the user inputs which may take the form of user keyed inputs or, in the case of AV development, the response of the AV to the current state of its environment. For example, the throttle and steering angle from the controller of an AV. The update stage interprets the input from all dynamic actors in the scene, performs any necessary physics calculations and updates the actor states. The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. \todo[inline]{Fig 1: update rates of which clock?}\todo[inline]{Should there not also be a clock in the overall loop?}
 
 % 
 % It is necessary to have an understanding of how the game loop operates in order to understand potential sources of non-determinism that are discussed below. 
 
-As the game progresses, the game loop runs continuously according to the game clock.\todo{introduce the different clocks and what they govern, real world, game, physics and render}
+As the game progresses, the game loop runs continuously according to the game clock.\todo[inline]{introduce the different clocks and what they govern, real world, game, physics and render}
 %
-At the beginning of each game clock tick, the lag\todo{first explain where the lag comes from} between the game clock and the real world is updated based on how much real time has passed. This measures how far the game's clock is behind compared to the real world. 
+At the beginning of each game clock tick, the lag\todo[inline]{first explain where the lag comes from} between the game clock and the real world is updated based on how much real time has passed. This measures how far the game's clock is behind compared to the real world. 
 %
 Then the user inputs are processed.
 %
@@ -213,7 +213,7 @@ To use a fixed physics time step the user's display refresh rate needs to be kno
 %
 Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined limit to meet a minimum standard of physical representation but allows computational headroom for slower hardware. Some engines provide sub-stepping which processes multiple physics calculations per frame at a greater CPU cost, e.g.\ Unreal Engine\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Physics/Substepping/}}. 
 %
-If the engine tries to render between physics updates, \textit{residual lag} can occur and extrapolation between frames needs to be performed to smooth transition between scenes. This is depicted in the lower part of Fig.~\ref{GameEngineLoopDiagram}. \cite{GameEngineArchBook}\cite{GameProgPatternsBook}\todo{Should this still be cited?}\todo{Why is this part of the figure? It would be clearer if it was in a separate figure that shows all the clocks involved and how they interact - depend on each other.}
+If the engine tries to render between physics updates, \textit{residual lag} can occur and extrapolation between frames needs to be performed to smooth transition between scenes. This is depicted in the lower part of Fig.~\ref{GameEngineLoopDiagram}. \cite{GameEngineArchBook}\cite{GameProgPatternsBook}\todo[inline]{Should this still be cited?}\todo[inline]{Why is this part of the figure? It would be clearer if it was in a separate figure that shows all the clocks involved and how they interact - depend on each other.}
 %
 % Ideally the time step should be as short as possible, so that the simulation returns better accuracy of complex physical processes. %runs with high fidelity on fast machines. 
 In exceptional cases where resources are scarce, the fixed time step can be greater than the time between render ticks %it takes to process an ``Update" inner loop on some (slow) machines, 
@@ -247,7 +247,7 @@ Thus, the results of arithmetic operations must fit into the given bit with. Thi
 % Floating-point representation of real numbers is limited with fixed register sizes resulting in errors of rounding where loss of bits occur which are rounded or truncated and cancellation which happens where two similar values are subtracted.
 %
 % Translating to the usage of AV simulations in physics engines,
-In the context of AV simulation, this could result in precision issues of, for example, actor position within the environment leading to falsely satisfied or failed assertions.\todo{state what assertions are (used for)} 
+In the context of AV simulation, this could result in precision issues of, for example, actor position within the environment leading to falsely satisfied or failed assertions.\todo[inline]{state what assertions are (used for)} 
 %
 One could jump to the conclusion that floating-point errors cause non-deterministic behaviour, resulting in loss of repeatability. However, these precision issues are better described as \textit{incorrectness}, rather than them being a source of non-determinism. 
 %
@@ -275,25 +275,25 @@ Therefore, it can be concluded that floating point representation does not contr
 % There are many scenarios that could be addressed, and solutions to them will entirely depend on the characteristics of that specific scenario. There is no generalised solution for the floating problem, regardless of how good computers get there will always be a limitation. However, floating points as they stand could just be sufficient for V\&V testing purposes. Whenever they are not, smart solutions can be found to accommodate for these limitations.
 \\\\
 \noindent\underline{\textit{Error Correcting Code (ECC) Memory:}}
-ECC Memory can detect and correct single bit errors in DRAM memory. Single bit errors may occur due to malfunctioning hardware, ionising radiation (background cosmic or environmental sources) or from electromagnetic radiation~\cite{dodd2003basic}. If single bit errors go uncorrected then subsequent computational processing will produce incorrect results, potentially giving rise to non-determinism due to the probabilistic nature of such errors occurring. Estimating the rate of error is difficult and dependent on hardware, environment and computer cycles~\cite{mielke2008bit}. AV verification tasks are likely to incur significant CPU hours and therefore are subject to increased exposure to these errors.\todo{that said, HW simulation is deterministic, uses long simulation runs and thousands of CPU hours - I've not heard that this is an issue, but I can ask. ;)}
+ECC Memory can detect and correct single bit errors in DRAM memory. Single bit errors may occur due to malfunctioning hardware, ionising radiation (background cosmic or environmental sources) or from electromagnetic radiation~\cite{dodd2003basic}. If single bit errors go uncorrected then subsequent computational processing will produce incorrect results, potentially giving rise to non-determinism due to the probabilistic nature of such errors occurring. Estimating the rate of error is difficult and dependent on hardware, environment and computer cycles~\cite{mielke2008bit}. AV verification tasks are likely to incur significant CPU hours and therefore are subject to increased exposure to these errors.\todo[inline]{that said, HW simulation is deterministic, uses long simulation runs and thousands of CPU hours - I've not heard that this is an issue, but I can ask. ;)}
 \\\\
 \noindent\underline{\textit{Game Engine Code:}}
-The type and version of the engine code executed should be considered, paying attention to the control of pseudo-random numbers, fixed physics calculation steps ($dt$), fixed actor navigation mesh\todo{introduce actor navigation mesh}, deterministic ego vehicle\todo{introduce ego vehicle earlier on} controllers and engine texture loading rates especially for perception stack testing. %
-For example, in Unreal Editor the \textit{unit}\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Performance/StatCommands/}} command can be used to determine processing bottlenecks by indicating\todo{what does indicating mean?} the total time spent generating a frame, executing the game loop or render thread.
+The type and version of the engine code executed should be considered, paying attention to the control of pseudo-random numbers, fixed physics calculation steps ($dt$), fixed actor navigation mesh\todo[inline]{introduce actor navigation mesh}, deterministic ego vehicle\todo[inline]{introduce ego vehicle earlier on} controllers and engine texture loading rates especially for perception stack testing. %
+For example, in Unreal Editor the \textit{unit}\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Performance/StatCommands/}} command can be used to determine processing bottlenecks by indicating\todo[inline]{what does indicating mean?} the total time spent generating a frame, executing the game loop or render thread.
 \\\\
-\noindent\underline{\textit{Scheduling:}}\todo{is this at runtime?} %
+\noindent\underline{\textit{Scheduling:}}\todo[inline]{is this at runtime?} %
 % info at:
 % http://www.informit.com/articles/article.aspx?p=169479&seqNum=3
 % https://www.os-book.com/OS8/os8c/slide-dir/PDF-dir/ch5.pdf
 % https://en.wikipedia.org/wiki/Concurrency_(computer_science)
 % https://en.wikipedia.org/wiki/Concurrent_computing
 % https://en.wikipedia.org/wiki/Race_condition#cite_note-1
-Scheduling is a resource management method for sharing computational resources between tasks of different or equal priority where tasks are executed dependent on the scheduler policy. A scheduler policy may be optimised in many ways such as for task throughput, deadline delivery or minimum latency~\cite{liu1973scheduling}. \todo{is this the scheduling that is done by the operating system, i.e. at runtime?}
+Scheduling is a resource management method for sharing computational resources between tasks of different or equal priority where tasks are executed dependent on the scheduler policy. A scheduler policy may be optimised in many ways such as for task throughput, deadline delivery or minimum latency~\cite{liu1973scheduling}. \todo[inline]{is this the scheduling that is done by the operating system, i.e. at runtime?}
 %
-If during simulation the scheduling policy was updated or thread priority was inconsistently handled, then a high variance in output may result. It is, however, unlikely that such events would occur on repeated controlled tests for the same hardware and operating system configuration.\todo{justify - WHY?}
+If during simulation the scheduling policy was updated or thread priority was inconsistently handled, then a high variance in output may result. It is, however, unlikely that such events would occur on repeated controlled tests for the same hardware and operating system configuration.\todo[inline]{justify - WHY?}
 % KIE: If all threads have the same priority, then the scheduler is free to select one, this can give rise to non-det - or not?
 
-Similar to thread scheduling, the CPU scheduling policy determines on which processor core to execute processes in the ready queue and this is maybe ordered by factors such as throughput, latency and CPU utilisation. If the same single-threaded script executes multiple times across different physical cores due to the CPU utilisation policy then should you expect deterministic behaviour? Processor core designs should be identical although impurity inconsistency across the bulk silicon and minor perturbations in the semiconductor processing across the chip may exist. End users expect such minor variations to be controlled for in architecture tolerances and factory testing.\todo{not clear, what is the difference between scheduling cores and threads - are both done by the operating system?}
+Similar to thread scheduling, the CPU scheduling policy determines on which processor core to execute processes in the ready queue and this is maybe ordered by factors such as throughput, latency and CPU utilisation. If the same single-threaded script executes multiple times across different physical cores due to the CPU utilisation policy then should you expect deterministic behaviour? Processor core designs should be identical although impurity inconsistency across the bulk silicon and minor perturbations in the semiconductor processing across the chip may exist. End users expect such minor variations to be controlled for in architecture tolerances and factory testing.\todo[inline]{not clear, what is the difference between scheduling cores and threads - are both done by the operating system?}
 
 Overall, scheduling of cores or threads at runtime may be a reason for increased \textit{simulation variance}. 
 %
@@ -303,8 +303,8 @@ Overall, scheduling of cores or threads at runtime may be a reason for increased
 % and consider methods to move towards a fixed scheduling sequence if possible.
 \\\\
 \noindent\underline{\textit{Concurrency:}}
-\todo{Say what concurrency is and how executing concurrently running code can lead to non-determinism. Consider also parallelism, e.g. in GPUs. Focus on the order in which the execution occurs, i.e.\ the timing of events, which can cause non-determinism. Say which parts of a game engine could reasonably be expected to run concurrently.}
-Another issue to consider is concurrency, where sequential tasks can be executed out of order to improve speed by utilising parallelisation depending on the decomposability of the program. This technique can lead to issues such as shared resource access conflicts and RACE conditions~\cite{huffman1954synthesis}. A game engine may use such techniques to improve performance.\todo{how?}
+\todo[inline]{Say what concurrency is and how executing concurrently running code can lead to non-determinism. Consider also parallelism, e.g. in GPUs. Focus on the order in which the execution occurs, i.e.\ the timing of events, which can cause non-determinism. Say which parts of a game engine could reasonably be expected to run concurrently.}
+Another issue to consider is concurrency, where sequential tasks can be executed out of order to improve speed by utilising parallelisation depending on the decomposability of the program. This technique can lead to issues such as shared resource access conflicts and RACE conditions~\cite{huffman1954synthesis}. A game engine may use such techniques to improve performance.\todo[inline]{how?}
 % KIE: We only list the potential sources of non-det, I therefore removed this. 
 % although monitoring and detecting such events falls outside of the scope for this work. 
 \\\\
@@ -322,15 +322,15 @@ By binding a process to a specific core for the duration of its execution, the v
 %
 % To solve the scheduling of threads problem, one would have to control all of the threads during runtime, which is very involved. To achieve that one would need to replace or control the whole run-time system to allocate tasks to the same threads in the same order. This is beyond the scope of our work and will not be covered in this paper.
 \noindent\underline{\textit{Physics and Rendering clocks:}}
-\todo{I'm not sure how VFR impacts on simulation variance, Unity claim that physics will be consistent but 'real-time' is just slowed down.}
+\todo[inline]{I'm not sure how VFR impacts on simulation variance, Unity claim that physics will be consistent but 'real-time' is just slowed down.}
 % The inherent way of how these physics engines operate (i.e.game loops) causes the engine to be non-deterministic.  A follow up from section \ref{GameLoopSection}, these
-Game engines can often have a variable game loop update rate but a fixed physics update rate, e.g.\ Unity\footnote{\url{https://docs.unity3d.com/Manual/TimeFrameManagement.html}}. This is good\todo{how?} for hardware scalability but creates a challenge for the physics calculations which provide the most consistent results with a small fixed time step. 
+Game engines can often have a variable game loop update rate but a fixed physics update rate, e.g.\ Unity\footnote{\url{https://docs.unity3d.com/Manual/TimeFrameManagement.html}}. This is good\todo[inline]{how?} for hardware scalability but creates a challenge for the physics calculations which provide the most consistent results with a small fixed time step. 
 %
-A variable frame rate\todo{Is this the game loop update rate?} could contribute to \textit{simulation variance} if the variation in the frame rate is temporally inconsistent between repeated tests and hardware.\todo{what does the hardware have to do with this? Do we not assume the same HW at this stage?} Given that variable frame rate is designed for optimising performance across differing hardware then inconsistencies across different systems may occur. Repeated tests on the same system should result in similar frame rates unless there is additional competition for resources. 
+A variable frame rate\todo[inline]{Is this the game loop update rate?} could contribute to \textit{simulation variance} if the variation in the frame rate is temporally inconsistent between repeated tests and hardware.\todo[inline]{what does the hardware have to do with this? Do we not assume the same HW at this stage?} Given that variable frame rate is designed for optimising performance across differing hardware then inconsistencies across different systems may occur. Repeated tests on the same system should result in similar frame rates unless there is additional competition for resources. 
 %
 AV specific platforms, such as Carla, can be operated with fixed frame rates which should provide maximum stability as long as the frame rate during execution (FPS) is monitored and observed to adhere to this rate.
 %
-That is to say, if the frame rate is allowed to vary, then this variation has to be controlled to give the same variability throughout a given test in order for the test results to be repeatable. This issue might be of negligible significance if the frame rate is consistent and the time steps\todo{of which clock} are small enough. 
+That is to say, if the frame rate is allowed to vary, then this variation has to be controlled to give the same variability throughout a given test in order for the test results to be repeatable. This issue might be of negligible significance if the frame rate is consistent and the time steps\todo[inline]{of which clock} are small enough. 
 \\\\
 \noindent\underline{\textit{Actor Navigation:}}
 Navigation meshes are used in game engines for actor path planning, and could be considered as a potential source of non-deterministic behaviour, e.g.%. Some AV simulator developers claim that the built-in physics engines' AI is non-deterministic
@@ -338,7 +338,7 @@ Navigation meshes are used in game engines for actor path planning, and could be
 This may depend on the algorithms used by the engine which typically use the A* algorithm~\cite{AStarBook} and should give deterministic outcomes as long as the environment is deterministic~\cite{AirsimUnrealArticle}\cite{UnrealAIDocumentation}. 
 Therefore, the determinism of the actor path planning depends on the environment and the update to actor states within it and how navigation meshes are created or modelled, e.g. shape, granularity. 
 %
-It is interesting to note that changes could occur to navigation meshes if they are dynamically loaded as the simulation proceeds which can reduce computational load for large area maps\footnote{\url{https://docs.unrealengine.com/en-US/BlueprintAPI/AI/Navigation/RegisterNavigationInvoker/}}.\todo{unclear :(}
+It is interesting to note that changes could occur to navigation meshes if they are dynamically loaded as the simulation proceeds which can reduce computational load for large area maps\footnote{\url{https://docs.unrealengine.com/en-US/BlueprintAPI/AI/Navigation/RegisterNavigationInvoker/}}.\todo[inline]{unclear :(}
 % This non-deterministic behaviour can be also resorted to the different scheduling of threads, hence giving variations in meshes every time they are loaded.
 
 \todo[inline]{Add a summary/conclusion?}
@@ -367,9 +367,9 @@ Game engine actors can be used to simulate the AV and other vehicles and pedestr
 It is also important to control any pseudo-random numbers that are called in any external during the simulation with fixed seeds to ensure repeatable testing, e.g. external vehicle control programs or other clients connected to the simulator. 
 
 
-% \todo{Abanoub: what is the distance between your hard-coded waypoints, are they regularly spaced? Might need to talk about interpolation code and give link to github}
+% \todo[inline]{Abanoub: what is the distance between your hard-coded waypoints, are they regularly spaced? Might need to talk about interpolation code and give link to github}
 
-% \todo{In our experiment, gross waypoints were interpolated to give a regularly spaced set of coordinates approximately $1m$ apart, and this interpolated set of waypoints were used as "target location goals" (AB: not sure what the correct terminology is here) for the pedestrian actors. %
+% \todo[inline]{In our experiment, gross waypoints were interpolated to give a regularly spaced set of coordinates approximately $1m$ apart, and this interpolated set of waypoints were used as "target location goals" (AB: not sure what the correct terminology is here) for the pedestrian actors. %
 % For the vehicles in the simulation, waypoints are generated and interpolated in the same way but execution at runtime is slightly different where a PID controller is used to generate a velocity profile and steering angle requests to reach the destination targets.}
 
 % We use game engine actors to simulate the AVs and other agents (vehicles and pedestrians). Actors can either follow a series of trajectory waypoints or can plan a route to a further destination using some path planning and obstacle avoidance algorithms, e.g. A* search algorithm. 
