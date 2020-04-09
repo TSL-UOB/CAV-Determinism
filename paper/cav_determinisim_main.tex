@@ -275,7 +275,7 @@ Therefore, it can be concluded that floating point representation does not contr
 % There are many scenarios that could be addressed, and solutions to them will entirely depend on the characteristics of that specific scenario. There is no generalised solution for the floating problem, regardless of how good computers get there will always be a limitation. However, floating points as they stand could just be sufficient for V\&V testing purposes. Whenever they are not, smart solutions can be found to accommodate for these limitations.
 \\\\
 \noindent\underline{\textit{Error Correcting Code (ECC) Memory:}}
-ECC Memory can detect and correct single bit errors in DRAM memory. Single bit errors may occur due to malfunctioning hardware, ionising radiation (background cosmic or environmental sources) or from electromagnetic radiation~\cite{dodd2003basic}. If single bit errors go uncorrected then subsequent computational processing will produce incorrect results, potentially giving rise to non-determinism due to the probabilistic nature of such errors occurring. Estimating the rate of error is difficult and dependent on hardware, environment and computer cycles~\cite{mielke2008bit}. AV verification tasks are likely to incur significant CPU hours and therefore are subject to increased exposure to these errors.\todo[inline]{that said, HW simulation is deterministic, uses long simulation runs and thousands of CPU hours - I've not heard that this is an issue, but I can ask. ;)}
+ECC Memory can detect and correct single bit errors in DRAM memory. Single bit errors may occur due to malfunctioning hardware, ionising radiation (background cosmic or environmental sources) or from electromagnetic radiation~\cite{dodd2003basic}. If single bit errors go uncorrected then subsequent computational processing will produce incorrect results, potentially giving rise to non-determinism due to the probabilistic nature of such errors occurring. Estimating the rate of error is difficult and dependent on hardware, environment and computer cycles~\cite{mielke2008bit}.\todo[inline]{that said, HW simulation is deterministic, uses long simulation runs and thousands of CPU hours - I've not heard that this is an issue, but I can ask. ;)} AV verification tasks are likely to incur significant CPU hours and therefore are subject to increased exposure to these errors.
 \\\\
 \noindent\underline{\textit{Game Engine Code:}}
 The type and version of the engine code executed should be considered, paying attention to the control of pseudo-random numbers, fixed physics calculation steps ($dt$), fixed actor navigation mesh\todo[inline]{introduce actor navigation mesh}, deterministic ego vehicle\todo[inline]{introduce ego vehicle earlier on} controllers and engine texture loading rates especially for perception stack testing. %
@@ -301,20 +301,20 @@ Overall, scheduling of cores or threads at runtime may be a reason for increased
 % but controlling for this falls outside of the scope of this work and no attempt to control 
 % these parameter have been made here. However, users should be aware of this potential issue 
 % and consider methods to move towards a fixed scheduling sequence if possible.
-\\\\
+
 \noindent\underline{\textit{Concurrency:}}
 \todo[inline]{Say what concurrency is and how executing concurrently running code can lead to non-determinism. Consider also parallelism, e.g. in GPUs. Focus on the order in which the execution occurs, i.e.\ the timing of events, which can cause non-determinism. Say which parts of a game engine could reasonably be expected to run concurrently.}
 Another issue to consider is concurrency, where sequential tasks can be executed out of order to improve speed by utilising parallelisation depending on the decomposability of the program. This technique can lead to issues such as shared resource access conflicts and RACE conditions~\cite{huffman1954synthesis}. A game engine may use such techniques to improve performance.\todo[inline]{how?}
 % KIE: We only list the potential sources of non-det, I therefore removed this. 
 % although monitoring and detecting such events falls outside of the scope for this work. 
-\\\\
+
 \noindent\underline{\textit{NUMA Non-Uniform Memory Access:}}
 For a repeated test that operates over a number of cores based on a CPU scheduling policy, memory access time may vary depending on the memory location relative to the processor. Typically a core can access its own memory with lower latency than that of another core resulting in lower interprocessor data transfer cost~\cite{nieplocha1996global}. 
 %
 Changes in latency between repeated tests may, in the worst case, cause the game engine to operate non-deterministically, or, perhaps, simply with an increased data transfer cost. 
 %
 By binding a process to a specific core for the duration of its execution, the variations in data transfer time can be minimised.
-\\\\
+
 % these may. Given the same hardware the output should always be the same, unless scheduling of the threads change. 
 % i.e. the utilisation of hardware is manipulated differently each time. This would then result in non-deterministic behaviours especially if it is combined with the floating point problem discussed earlier. 
 %
@@ -331,7 +331,7 @@ A variable frame rate\todo[inline]{Is this the game loop update rate?} could con
 AV specific platforms, such as Carla, can be operated with fixed frame rates which should provide maximum stability as long as the frame rate during execution (FPS) is monitored and observed to adhere to this rate.
 %
 That is to say, if the frame rate is allowed to vary, then this variation has to be controlled to give the same variability throughout a given test in order for the test results to be repeatable. This issue might be of negligible significance if the frame rate is consistent and the time steps\todo[inline]{of which clock} are small enough. 
-\\\\
+
 \noindent\underline{\textit{Actor Navigation:}}
 Navigation meshes are used in game engines for actor path planning, and could be considered as a potential source of non-deterministic behaviour, e.g.%. Some AV simulator developers claim that the built-in physics engines' AI is non-deterministic
 ~\cite{CARLABenchmark}. 
