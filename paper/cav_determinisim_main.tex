@@ -187,7 +187,7 @@ The game loop is responsible for the interaction between the physics and renderi
 \label{GameEngineLoopDiagram}
 \end{figure}
 
-The first part of the game loop is to process the user inputs which may take the form of user keyed inputs or, in the case of AV development, the response of the AV to the current state of its environment. For example, the throttle and steering angle from the controller of an AV. The update stage interprets the input from all dynamic actors in the scene, performs any necessary physics calculations and updates the actor states. The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. \todo[inline]{Fig 1: update rates of which clock?}\todo[inline]{Should there not also be a clock in the overall loop?}
+The first part of the game loop is to process the user inputs which may take the form of user keyed inputs or, in the case of AV development, the response of the AV to the current state of its environment. For example, the throttle and steering angle from the controller of an AV. The update stage interprets the input from all dynamic actors in the scene, performs any necessary physics calculations and updates the actor states. The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. \todo[inline]{Fig 1: update rates of which clock?}\todo[inline]{Should there not also be a clock in the overall loop?}\todo[inline]{Greg to look up Unity wrt concurrently running processes and clocks.}
 
 % 
 % It is necessary to have an understanding of how the game loop operates in order to understand potential sources of non-determinism that are discussed below. 
