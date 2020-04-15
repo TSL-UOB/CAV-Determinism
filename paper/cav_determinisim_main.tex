@@ -80,7 +80,7 @@ Increasingly, the autonomous vehicle (AV) community is adopting game engines as 
 Carla\footnote{http://carla.org/}, for instance, is an open-source simulator for autonomous driving that is implemented as a layer over the Unreal Engine (UE4), a  real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
 
 % Requirements of simulation based verification SBV
-The benefit of using state-of-the-art game engines as simulators is that they offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes suitable for perception stack testing. 
+The benefit of using state-of-the-art game engines as simulators is that they offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes, potentially suitable for perception stack testing and visual inspection of accidents or near misses. 
 %
 Furthermore, they are easy to setup and run; they also are simple to control and observe, both with respect to the environment the AV operates in as well as the temporal development of actors~\cite{Ulbrich2015}. 
 %
@@ -168,7 +168,7 @@ A case study to illustrate how the simulation variance observed for a number of 
 
 There are numerous game engines with their associated development environments which could be suitable for AV development, e.g. Unreal\footnote{\url{https://www.unrealengine.com/}}, Unity\footnote{\url{https://unity.com/}}, CryEngine\footnote{\url{https://www.cryengine.com/}}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing engines, e.g.\ Carla\footnote{\url{http://carla.org/}}, AirSim\footnote{\url{https://microsoft.github.io/AirSim/}}, Apollo\footnote{\url{http://apollo.auto/}}, and some have been developed for cloud based simulation, e.g.\ Nvidia Drive Constellation\footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
 
-Investigating the determinism of game engines has not attracted much research interest since performance is more critical for playing games than accurate and repeatable execution. %However, when these engines are used for AV development then deterministic behaviour is required. 
+Investigating the determinism of game engines has not attracted much research interest since performance is more critical for game developers than accurate and repeatable execution.  %However, when these engines are used for AV development then deterministic behaviour is required. 
 This section gives an overview of the internal structure of a game engine and what sources or settings in the engine may affect \textit{simulation variance}.
 %
 % \noindent This section overviews important information and concepts in physics engines, which are relevant to their usage in AV simulations. Particularly, on how physics engines operate and the sources of non-determinism in these engines necessary to understand the contribution of this paper.
@@ -217,7 +217,7 @@ If the engine tries to render between physics updates, \textit{residual lag} can
 %
 % Ideally the time step should be as short as possible, so that the simulation returns better accuracy of complex physical processes. %runs with high fidelity on fast machines. 
 In exceptional cases where resources are scarce, the fixed time step can be greater than the time between render ticks %it takes to process an ``Update" inner loop on some (slow) machines, 
-and the simulation will exhibit lag between input commands and rendered states, resulting in unsynchronised and unrealistic behaviour.
+and the simulation will exhibit lag between input commands and rendered states, resulting in unsynchronised and unrealistic behaviour.\todo[inline]{Wrt the figure, is ``lag'' not a delay, i.e.\ should happen after the tick, rather than before?}
 
 % The time step, $dt$, in the physics calculation is important and the smaller the value the more realistic the simulation will be. If $dt$ is too large or irregularly spaced then the rendered motion may not be smooth and interpolation may be required at additional computational cost. 
 
@@ -230,6 +230,13 @@ and the simulation will exhibit lag between input commands and rendered states, 
 
     \label{method_diagram}
 \end{figure*}
+
+\todo[inline]{THIS IS IMPORTANT: Spell out the conflicting objectives (i.e.\ the fundamental differences) of gaming vs AV V\&V in terms of providing a real-time user experience at the cost of realism (for gaming) vs the need for realism potentially at the cost of losing real-time performance. This is particularly important for perception-stack testing (the sensors need to get input that is as close to the real input as possible, ideally without extrapolation or lag) and visual inspection of accidents or near misses (same is true for a human observer). For instance, see below, but I'm not sure whether this is the right place.}
+In addition, providing game players with a responsive real-time experience is often achieved at the cost of realism.\todo[inline]{Do we have a ref for this, Unity vs UE4?}
+%
+In contrast, realism is essential in AV simulation, especially for perception stack testing, but also for visual inspection. If necessary, it is acceptable to achieve the required level of realism at the cost of the real-time user experience. 
+
+
 
 % ======= Sources of non-determinism
 \subsection{Potential Sources of Non-Determinism} \label{s:nondeterminisimSources}
@@ -303,6 +310,7 @@ Overall, scheduling of cores or threads at runtime may be a reason for increased
 % and consider methods to move towards a fixed scheduling sequence if possible.
 
 \noindent\underline{\textit{Concurrency:}}
+% Concurrency is a natural source of nondeterminism since the order and timings of independent processes can vary
 \todo[inline]{Say what concurrency is and how executing concurrently running code can lead to non-determinism. Consider also parallelism, e.g. in GPUs. Focus on the order in which the execution occurs, i.e.\ the timing of events, which can cause non-determinism. Say which parts of a game engine could reasonably be expected to run concurrently.}
 Another issue to consider is concurrency, where sequential tasks can be executed out of order to improve speed by utilising parallelisation depending on the decomposability of the program. This technique can lead to issues such as shared resource access conflicts and RACE conditions~\cite{huffman1954synthesis}. A game engine may use such techniques to improve performance.\todo[inline]{how?}
 % KIE: We only list the potential sources of non-det, I therefore removed this. 
