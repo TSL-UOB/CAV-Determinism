@@ -226,7 +226,7 @@ and the simulation will exhibit lag between input commands and rendered states, 
 \begin{figure*}[b]
     \centering
     \includegraphics[width=0.99\linewidth]{Other/Figures/MethodologyDiagram.pdf}
-    \caption{Shows a flow diagram of the methodology proposed to define the simulation variance of a game engine for usage in AV simulations.}
+    \caption{Flow diagram of the methodology proposed to determine the simulation variance of a simulation environment.}
 
     \label{method_diagram}
 \end{figure*}
@@ -355,13 +355,22 @@ It is interesting to note that changes could occur to navigation meshes if they 
 %  METHOD
 % ***************************************************
 \section{Methodology} \label{s:methodology}
-In this section a method for determining \textit{simulation variance} of an end-user system is presented along with experimental parameters that may influence it, see Fig.~\ref{method_diagram}. The method includes scenarios that exercise different actor types and functional callbacks of the game engine that may tax different aspects of the engine as outlined in Section~\ref{s:background}, such as actor navigation and collision callbacks. To replicate high computational loads that may be experienced in high realism simulations, software that artificially utilises resources is used at runtime for both central and graphical processing units. 
+In this section a method for determining the variance of a simulation environment, termed \textit{simulation variance} is presented. We have identified a number of experimental parameters that may influence the simulation variance of a game engine, see Fig.~\ref{method_diagram}. These need to be considered at different stages in the process.  
+%
+The method requires the assessment of scenarios that exercise different actor types and functional callbacks of the game engine. These may affect different aspects of the engine as outlined in Section~\ref{s:background}, such as actor navigation and collision callbacks.
+\todo[inline]{Introduce the concept of a ``callback'' as part of the background section, especially ``collision callback''.} 
+%
+To replicate and control the high computational loads that may be experienced in high performance simulations, software that artificially utilises resources is executed alongside the simulation on both central and graphical processing units. 
+\todo[inline]{Introduce the need to use CPU and GPU HW in a game engine or any simulation HW.}
 % The following section outlines a guide that may be used to determine the \textit{simulation variance} of an end user system. The aim of the experiment is to determine if the simulation is deterministic. This is achieved by monitoring actors in repeated tests and examining the deviation in path trajectories. Actors are observed in a number of different scenarios involving a mixture of vehicles and pedestrians exercising the demands outlined in Section~\ref{s:background}. 
 
-\subsection{Deterministic Threshold}
-We use the term \textit{deterministic threshold} to refer to the acceptable level of actor path variance ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. This threshold is analogous to the analogue signal level associated with a binary state in a logical processor. At some low analogue voltage the signal is interpreted as binary $0$ which may be below 0.5V and is considered binary $1$ when the same signal is above 3.5v.
+\subsection{Setting a Determinism  Threshold}
+We use the term \textit{determinism threshold} to refer to the acceptable level of actor path variance ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. This threshold is analogous to the analogue signal level associated with each of the binary states of the signals in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be below 0.5V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above 3.5V.
 
-The user must specify the level of variance acceptable for their application which is used as a threshold for deterministic execution. In our case study, Section~\ref{s:case-study}, a threshold must be chosen for our given application which reflects the scale at which repeatability of simulation execution is required. This value must be sufficiently small to allow accurate \textit{assertion checking} of the ego vehicle in the environment but a larger value may be acceptable for non-urban environments, e.g. motorway or highway. Similarly, the threshold value should not be so small as to fail with minor computational bottlenecks, e.g. $1\mu m$. Two autonomous vehicle projects this group are involved in, Robopilot and Capri, are looking at urban mobility and last mile delivery solutions which are predominantly concerned with urban environments rather than highway or motorway scenarios. Because of this, a deterministic threshold of $1m$ is insufficient when considering potentially dangerous close passing of cyclists and pedestrians and therefore a threshold of $1cm$ is more suitable.  
+The level of variance acceptable for the simulation must first be set. It serves as a threshold for deterministic execution. This level depends on the objectives of the simulation and the granularity at which the simulation environment operates. 
+%
+\todo{KIE HERE}
+In our case study, presented in Section~\ref{s:case-study}, a threshold must be chosen for our given application which reflects the scale at which repeatability of simulation execution is required. This value must be sufficiently small to allow accurate \textit{assertion checking} of the ego vehicle in the environment but a larger value may be acceptable for non-urban environments, e.g. motorway or highway. Similarly, the threshold value should not be so small as to fail with minor computational bottlenecks, e.g. $1\mu m$. Two autonomous vehicle projects this group are involved in, Robopilot and Capri, are looking at urban mobility and last mile delivery solutions which are predominantly concerned with urban environments rather than highway or motorway scenarios. Because of this, a deterministic threshold of $1m$ is insufficient when considering potentially dangerous close passing of cyclists and pedestrians and therefore a threshold of $1cm$ is more suitable.  
 
 % Depending on the number of repeated tests and the average deviation reported from the experiment, a maximum rather than average may be required if the results are close to the user-specified threshold. This is to ensure that an outlier data-point is not hidden in the average of $n$-tests.
 
