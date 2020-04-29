@@ -84,12 +84,16 @@ The benefit of using state-of-the-art game engines as simulators is that they of
 %
 Furthermore, they are easy to setup and run; they also are simple to control and observe, both with respect to the environment the AV operates in as well as the temporal development of actors~\cite{Ulbrich2015}. 
 %
+\todo[inline]{These game engines provide a convenient route to testing ego control and perception stack in a realistic environment}
+%
 For game engines to be used in simulation-based testing of AVs, they must offer sensors that operate at an accuracy equivalent to those on the AV, e.g.\ video cameras, LIDAR, IR, etc., or interfaces for developers to integrate their own sensor models. Carla currently offers various basic types of cameras and ray-case based lidar; extensions are still under development. 
 %
 Finally, support for hardware-in-the-loop development or a real-time test-bed for cyber-security testing~\cite{Javaid2013} may also be required. 
 
 % Game engines for SBV
-Compared to the vehicle dynamics simulators and traffic-level simulators used by manufacturers~\cite{FrameworkAndChallenges}, game engines offer a convenient simulation solution that meets many of the requirements for the development and functional safety testing of AVs in simulation. However, several challenges remain; one of these is determinism.
+Compared to the vehicle dynamics simulators and traffic-level simulators used by manufacturers~\cite{FrameworkAndChallenges}, game engines offer a convenient simulation solution that meets many of the requirements for the development and functional safety testing of AVs in simulation. 
+%
+\todo[inline]{GC Replace: However, several challenges remain; one of these is determinism. with: However, game engines are designed principally for user experience whereas the requirements for CAV verification is not user experience but determinism.}
 %
 % What is a deterministic system
 Deterministic, in this context, refers to the property of causality given a temporal development of events such that any state is completely determined by prior states.
@@ -543,7 +547,7 @@ Resource utilisation was artificially increased for both CPU and GPU devices to 
 % ***************************************************
 %  System Configuration and Screening
 % ***************************************************
-\subsection{System Configuration and Screening}\label{screening}
+\subsection{System Configuration and Screening}\label{s:screening}
 These tests were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB non-ECC DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 graphics card with 8GB GDDR6 RAM at 1515 MHz. Operating systems was Linux Ubuntu 18.04.4 LTS. To ensure reliability of results, each test was repeated 1000 times. Tests were carried out in Carla (v0.9.6 and Unreal Engine v4.22) using synchronous mode with a fixed $dt$ of $0.05$s. To eliminate some of the potential sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests were performed on our system. These were:
 
 \begin{itemize}[leftmargin=*]
@@ -696,12 +700,14 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
 \end{figure*}
 
 \todo[inline]{Sum this up and lead on to the Methodology - assuming that this section is placed before the Methodology section. This should cover that our results are clearly specific to our HW and provide evidence of non-determinism, but the results are not transferable. Thus, we present a general Methodology that others can re-use/apply to determine whether or not their sim is deterministic - in the next section.}
-
-The main findings of this work suggest a working practice for this specific hardware configuration that would minimise the non-deterministic effects observed in this investigation. By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the deterministic threshold of $1$cm is achievable as shown in the restricted column in Table.~\ref{TableOfExperiments}.
+ 
+The main findings of this work suggest a working practice that would minimise the non-deterministic effects observed in this investigation. By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the deterministic threshold of $1$cm is achievable as shown in the restricted column in Table.~\ref{TableOfExperiments}.
 
 \subsection{Investigation Summary} \label{s:empirical_summary}
 
 % \todo[inline]{GC-need to reference the 'restricted' set of results here too}
+
+\todo[inline]{Do we need to say here why we think certain results are non-det, what the reasons might be?? The results indicate that actor type, resource utilisation and collision events all affect the determinism in the Carla simulator. Collision events may utilise more computational resources than simulations without such events, i.e. the physics loop takes longer to process as there are complex physical interactions to resolve. This may coincide with the second observation that higher resource levels also lead to non-deterministic results. We hypothesise that both these observations are due to improper management of thread scheduling within the engine. When resources are occupied there may be a delay in processing critical calculations for the simulator, which may arrive out of an expected sequence or the engine compensates for this delay by reducing the number of physics loops that can be performed within a render cycle. (is this 2nd one true, or does carla ignore render requests?)}
 
 This empirical investigation has highlighted the shortcomings of using a games engine for simulation based verification and advice for best working practice. However, these results are specific to the hardware and software used in the study and may not be transferable to other systems directly. Therefore we present a general methodology that practitioners can follow to find the deterministic domains of operation for any hardware configuration.
 
@@ -775,52 +781,49 @@ The version number of the Carla and Unreal environment has also be shown to affe
 
 \subsubsection{Resource Utilisation}
 % To simulate the demands of taxing simulations, potentially requiring realistic rendering or complex physics calculations in an otherwise simple scenario, stress programs should be used to artificially occupy system resources. 
-CPU utilisation software, such as the linux \texttt{stress} tool which is a workload generator program can be used spawn workers on any number of cores or virtual threads on a system. This can be used to artificially increased the load on the system to explore at what point your system may become unstable leading to \textit{simulation variance}. For GPU utilisation \texttt{gpu-burn} was employed using the \texttt{fur test} where different resolutions and multiple instances can be used to tune graphical utilisation levels~\cite{GPU_stress}. 
+The resources available to the simulator have been shown to have a significant effect on the determinism of simulated vehicles and exploring this as a variable the analysis is required. 
+CPU utilisation software, such as the linux \texttt{stress} tool which is a workload generator program can be used spawn workers on any number of cores or virtual threads on a system. This can be used to artificially increased the load on the system to explore at what point your system may become unstable leading to \textit{simulation variance}. For GPU utilisation \texttt{gpu-burn} was employed using the \texttt{fur test} where different resolutions and multiple instances can be used to tune graphical utilisation levels~\cite{GPU_stress}. Reported values of resource utilisation can be obtained using the system monitors \texttt{htop} and \texttt{nvidia-smi} for CPU and GPU respectively. These values can also be written into the data logging for completeness.
 
-Reported values of resource utilisation can be obtained using the system monitors \texttt{htop} and \texttt{nvidia-smi} for CPU and GPU respectively. These values can also be written into the data logging for completeness.
+Alternatively, in place of artificial resource utilisation multiple instances of the simulation could be executed simultaneously. However, the granularity of control with this approach may be reduced.
 
 % \todo[inline]{Again, this sounds as if having the case study first makes more sense. That way we can explain wrt the experiments and then generalise to obtain the Methodology.}
 
 % \todo[inline]{This should be ``External Settings'' - from flow diagram?}
 
 \subsubsection{Memory Testing}
-
-See~\ref{screening}
-\texttt{memtest86}\
-\texttt{cuda\_memtest}
+Prior to experimental execution the system hardware should be tested for memory conformity and to ensure no single bit errors are occurring, see~\ref{s:screening}. For mainboard memory \texttt{memtest86}\ can be used on most platforms to run a series of pre-defined memory test patterns. This memory testing software can also be used for ECC enabled hardware. Similarly to test memory on Nvidia based graphical adaptors \texttt{cuda\_memtest} can be used to ensure no memory errors exist.
 
 
-\subsubsection{Sheduling Policy}
--thread sceduling
--reduce uncecessary tasks
+\subsubsection{Scheduling Policy}
+We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, fine control over the scheduling policy and thread execution order may be non-trivial. Such policies are defined by the operating system and may execute threads with equal priority. In such a case, all tasks non-essential to the simulator should be terminated to prevent interruption to the simulator. 
 
+% If the policy or operating system cannot be changed then s
+Setting the simulator program to a higher priority may help to alleviate conflicting tasks that cannot be shutdown, such as \texttt{TaskSettings.Priority} in Windows\footnote{\url{https://docs.microsoft.com/en-us/windows/win32/taskschd/tasksettings-priority}} or \texttt{nice} in Linux\footnote{\url{https://linux.die.net/man/1/nice}}.
 
 \subsubsection{NUMA Control}
-
+Control over Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multiprocessors with shared memory. This control allows the simulator program to be fixed on a single core reducing memory access time.
+%
+Initial screening tests done with NUMA control gave moderate improvements in simulation variance of the order of a few percent, see Section~\ref{s:screening}. This control may assist if simulation variance is borderline to the deterministic threshold but not seen as essential.
 
 \subsubsection{Ego Vehicle Controller}
-
-
-
-
+No ego vehicle was used in the empirical investigation but this should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner.
 
 \subsection{Execution}
 
-\subsubsection{Sample Size}
 
-Tests should be sufficiently repeated using statistical power~\cite{cohen2013statistical} to reveal any outlier errors that occur with low probability.\todo[inline]{Explain what this means.} Initial testing\footnote{\label{note1}Experiments using the Unreal Engine not reported here for brevity but code and experimental results can be found at \url{https://github.com/TSL-UOB/AV-Determinism/tree/master/UnrealEngineTests}} indicated an actor path deviation of $1\times10^{-13} cm$ for 997 out of 1000 tests but with 3 tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10cm$. While executing 100 repeats may seem sufficient, in this case the sample size may fail to observe these events that occur with low probability, inferring a false confidence in the results. To ensure outlier data points are not hidden in the average of a large number of tests, the maximum deviation should be reported rather than the average when summarising.
+\subsubsection{Sample Size}
+% Tests should be sufficiently repeated using statistical power~\cite{cohen2013statistical} to reveal any outlier errors that occur with low probability.\todo[inline]{Explain what this means.} 
+% Histogram to show how sampling with position binning varies?
+% \footnote{\label{note1}Experiments using the Unreal Engine not reported here for brevity but code and experimental results can be found at \url{https://github.com/TSL-UOB/AV-Determinism/tree/master/UnrealEngineTests}}
+Initial testing~\cite{TSLUnrealEngineTesting} indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests but with 3 tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10$cm. While executing 100 repeats may seem sufficient, this sample size may fail to observe these events that occur with low probability, inferring a false confidence in the results. It is therefore recommended that the sample size is found empirically dependent on the number of results that exceed the deterministic threshold. 
+% To ensure outlier data points are not hidden in the average of a large number of tests, the maximum deviation should be reported rather than the average when summarising.
 
 \subsubsection{Data Logging}
-
-Data logging should be used to record the actor positions at fixed time intervals throughout the simulation in order to determine the variance in actor path. The maximum deviation in actor path with respect to the mean for $n$ repeated tests will indicate at what dimensional scale deterministic results are achieved. For example, if 100 tests are executed and the maximum deviation in actor path is $<1cm$, then this scenario could be interpreted as being deterministic above this scale. 
-
-Regular time for easier results analysis.
-
-Link to TSL github for our data logging code?
-
+Data logging should be used to record the actor positions at fixed time intervals throughout the simulation in order to determine the variance in actor path. Additional information can also be logged such as the CPU and GPU utilisation levels. For the subsequent analysis, the actor should have an identifier and the repeat number and simulation time should also be captured. 
+% The maximum deviation in actor path with respect to the mean for $n$ repeated tests will indicate at what dimensional scale deterministic results are achieved. For example, if 100 tests are executed and the maximum deviation in actor path is $<1$cm, then this scenario could be interpreted as being deterministic above this scale. 
 
 \subsection{Analysis}
-
+The maximum value of simulation variance over all time samples and actors, $\max\sigma$, should be analysed to identify which of the candidate sources of non-determinism require restriction or control for deterministic operation. Finding these boundaries will identify the deterministic operational domain for the user specific hardware.
 
 
 
