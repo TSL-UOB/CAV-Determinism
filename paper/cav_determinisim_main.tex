@@ -694,7 +694,7 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
 %
 \begin{figure*}[b]
     \centering
-    \includegraphics[width=0.99\linewidth]{Other/Figures/MethodologyDiagram.pdf}
+    \includegraphics[width=0.99\linewidth]{Other/Figures/Methodology_Diagram_v4.pdf}
     \caption{Flow diagram of the methodology proposed to determine the simulation variance of a simulation.}
     \label{method_diagram}
 \end{figure*}
@@ -736,10 +736,11 @@ This methodology has been refined several times over the course of our investiga
 %
 \subsection{Design Experiment}\label{s:design_experiment}
 
-\subsubsection{Simulated Actors} \label{s:actors}
+\subsubsection{Actors} \label{s:actors}
 
 Different actor types may be handled differntly by the game engine and our investigation indicated that Carla pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However the introduction of Carla vehicles increased the simulation variance of the pedestrian-only test by 12 orders of magnitude. As such, all actors that could be included in any future simulation should be tested, including any non-standard Carla or bespoke actors.
 %
+\subsubsection{Trajectories and Collisions} 
 Actor paths should hard-coded in a number of different tests that explore; no collisions, collisions between actors, and potentially collisions between actors and static scenery if this is likely to occur in the simulation.
 
 \subsubsection{Setting a Deterministic Threshold} \label{s:threshold}
@@ -764,7 +765,7 @@ The simulation time should be sufficient to record interactions between actors b
 % Depending on the number of repeated tests and the average deviation reported from the experiment, a maximum rather than average may be required if the results are close to the user-specified threshold. This is to ensure that an outlier data-point is not hidden in the average of $n$-tests.
 
 
-\subsection{Internal Settings}
+\subsection{Simulator Settings}
 The settings internal to the game engine or other simulation environment should be set to ensure a fixed physics time step, $dt$. If using Carla a small fixed value, say $0.05s$, can be set by using the following: \texttt{setting.fixed\_delta\_seconds = 0.05}, whereas in Unity the default fixed time step is set to $0.02s$\footnote{\url{https://docs.unity3d.com/ScriptReference/MonoBehaviour.FixedUpdate.html}}. In Carla, synchronous mode must be used to allow communication to external controllers which ensures no sensor data are passed out of order to the simulator which is particularly important if a complex ego controller is used~\cite{carla_sim_config}. 
 %
 The use of random numbers must be controlled through the use of fixed seeds which might be used to control variations of background effects, e.g. weather patterns, or the navigation of random pedestrian actors, external vehicle controllers or other clients connected to the simulation environment. 
@@ -794,7 +795,7 @@ Alternatively, in place of artificial resource utilisation multiple instances of
 Prior to experimental execution the system hardware should be tested for memory conformity and to ensure no single bit errors are occurring, see~\ref{s:screening}. For mainboard memory \texttt{memtest86}\ can be used on most platforms to run a series of pre-defined memory test patterns. This memory testing software can also be used for ECC enabled hardware. Similarly to test memory on Nvidia based graphical adaptors \texttt{cuda\_memtest} can be used to ensure no memory errors exist.
 
 
-\subsubsection{Scheduling Policy}
+\subsubsection{Scheduling}
 We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, fine control over the scheduling policy and thread execution order may be non-trivial. Such policies are defined by the operating system and may execute threads with equal priority. In such a case, all tasks non-essential to the simulator should be terminated to prevent interruption to the simulator. 
 
 % If the policy or operating system cannot be changed then s
