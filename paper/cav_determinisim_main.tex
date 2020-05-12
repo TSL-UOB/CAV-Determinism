@@ -87,6 +87,7 @@ Furthermore, they are easy to setup and run; they also are simple to control and
 \todo[inline]{These game engines provide a convenient route to testing ego control and perception stack in a realistic environment}
 %
 For game engines to be used in simulation-based testing of AVs, they must offer sensors that operate at an accuracy equivalent to those on the AV, e.g.\ video cameras, LIDAR, IR, etc., or interfaces for developers to integrate their own sensor models. Carla currently offers various basic types of cameras and ray-case based lidar; extensions are still under development. 
+\todo[inline]{GC: what is ray-case?}
 %
 Finally, support for hardware-in-the-loop development or a real-time test-bed for cyber-security testing~\cite{Javaid2013} may also be required. 
 
@@ -128,13 +129,17 @@ In pursuit of an answer to this question we have developed a method to determine
 Knowing the simulation variance will help developers and testers understand the impact of using a game engine for AV simulation, especially how potentially existing non-determinism affects repeatability and reliability. 
 
 % \todo[inline]{review and potentially summarize results from case study GC - added see below.}
-A case study to highlight the non-deterministic effects in a game engine are presented where scenarios between pedestrian and vehicle actors are used to illustrate conditions that result in high simulation variance. By limiting the the level of system utilisation to less than 75\% and terminating scenarios when any collision callback is made, a deterministic operational domain was found.
+A case study to highlight the non-deterministic effects in a game engine are presented where scenarios between pedestrian and vehicle actors are used to illustrate conditions that result in high simulation variance. By limiting the the level of system utilisation to less than 75\% and terminating scenarios when any collision is detected, a deterministic operational domain was found.
 %
 %The game engine, in this context, must also comply with the requirements to provide a suitably realistic environment and real-time processing for perception and security analysis.\todo[inline]{next}
 
-This paper is structured as follows. In Section~\ref{s:background} game engines and sources of potential non-determinism in game engines are investigated. Section~\ref{s:methodology} presents a method to assess the suitability of a simulation system for AV verification. 
+This paper is structured as follows. In Section~\ref{s:background} game engines and sources of potential non-determinism in game engines are investigated. 
 %
-A case study to illustrate how the simulation variance observed for a number of scenarios is presented in Section~\ref{s:case-study}.\todo[inline]{point to UE4 GC - ??} We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\todo[inline]{review at end}
+A case study to illustrate the observed simulation variance for a number of scenarios is presented in Section~\ref{s:case-study}.\todo[inline]{point to UE4 GC - ??} 
+%
+Section~\ref{s:methodology} presents a method to assess the suitability of a simulation system for AV verification. 
+%
+We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\todo[inline]{review at end}
 
 
 % \noindent \IEEEPARstart{T}{}he evolution and inevitable implementation of connected and autonomous vehicles (AVs) on roads is a delicate if not utterly fascinating subject. Such systems operate in environments marked by inaccessibility, unexpected weather conditions, or unpredictable behavior by surrounding humans\cite{RobustnessAutonomy}. 
@@ -193,9 +198,11 @@ The game loop is responsible for the interaction between the physics and renderi
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{Other/Figures/GameEngineLoopv2.pdf}
-\caption{Game engine loop block diagram~\cite{GameProgPatternsBook} \todo[inline]{AG: remove the clock symbol, possibly remove the ticks chart as this is confusing given they are not ticks but event markers.}}
+\caption{Game engine loop block diagram~\cite{GameProgPatternsBook}.}
 \label{GameEngineLoopDiagram}
 \end{figure}
+
+% \todo[inline]{AG: remove the clock symbol, possibly remove the ticks chart as this is confusing given they are not ticks but event markers}
 
 % The first part of the game loop is to process the user inputs which may take the form of user keyed inputs or, in the case of AV development, the response of the AV to the current state of its environment. For example, the throttle and steering angle from the controller of an AV. The update stage interprets the input from all dynamic actors in the scene, performs any necessary physics calculations and updates the actor states. The rendering engine then takes the updated actor states and renders the scene~\cite{GameProgPatternsBook}. 
 
@@ -225,20 +232,22 @@ The game loop cycle starts with initialising the scene and actors. Input events 
 The physics engine operates according to a time step, $dt$. %, because it makes everything simpler and more stable for physics and AI.
 The shorter this time step is, the smoother the interpretation of the physical dynamics will be. %processing time it takes to catch up to game clock. % and the more deterministic the engine becomes and vice versa, as will be explained in section \ref{s:nondeterminisimSources}. 
 %
-Fixing the physics time step to a constant $dt$ results in simpler and more stable physics simulation and AI. 
+% Fixing the physics time step to a constant $dt$ results in simpler and more stable physics simulation and AI. 
 %
 To use a fixed physics time step the user's display refresh rate needs to be known in advance. This requires an update loop to take less than one render tick (one frame of real world time). Given the range of different hardware capabilities, a variable delta time is often implemented for game playing, taking the previous frame time as the next $dt$. However, variable $dt$ can lead to different outcomes in repeated tests and in some cases unrealistic physical representations~\cite{gaffer}. 
 %
 Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined limit to meet a minimum standard of physical representation but allows computational headroom for slower hardware. Some engines provide sub-stepping which processes multiple physics calculations per frame at a greater CPU cost, e.g.\ Unreal Engine\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Physics/Substepping/}}. 
 %
-If the engine tries to render between physics updates, \textit{residual lag} can occur and extrapolation between frames needs to be performed to smooth transition between scenes. This is depicted in the lower part of Fig.~\ref{GameEngineLoopDiagram}. 
+If the engine tries to render between physics updates, \textit{residual lag} can occur and extrapolation between frames needs to be performed to smooth transition between scenes. This residual lag may result in frames arriving with a delay to the simulated physics which could be result in errors for perception stack testing.
+% This is depicted in the lower part of Fig.~\ref{GameEngineLoopDiagram}. 
 % \cite{GameEngineArchBook}\cite{GameProgPatternsBook}\todo[inline]{Should this still be cited? GC-No, it is cited elsewhere.}
 
 % \todo[inline]{Why is this part of the figure? It would be clearer if it was in a separate figure that shows all the clocks involved and how they interact - depend on each other. GC-suggest we remove as the ticks are not relevant to the main argument or discussion.}
 %
 % Ideally the time step should be as short as possible, so that the simulation returns better accuracy of complex physical processes. %runs with high fidelity on fast machines. 
 In exceptional cases where resources are scarce, the fixed time step can be greater than the time between render ticks %it takes to process an ``Update" inner loop on some (slow) machines, 
-and the simulation will exhibit lag between input commands and rendered states, resulting in unsynchronised and unrealistic behaviour. \todo[inline]{Explain how this lag may affect perception stack testing}
+and the simulation will exhibit lag between input commands and rendered states, resulting in unsynchronised and unrealistic behaviour. 
+% \todo[inline]{Explain how this lag may affect perception stack testing}
 
 % \todo[inline]{Wrt the figure, is ``lag'' not a delay, i.e.\ should happen after the tick, rather than before? GC-suggest remove this part of the diagram, too confusing as there are not really any clocks or ticks - we should remove all mention of ticks too.}
 
