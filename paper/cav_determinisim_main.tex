@@ -314,7 +314,7 @@ Therefore, it can be concluded that floating point representation does not contr
 \noindent\underline{\textit{Error Correcting Code (ECC) Memory:}}
 ECC Memory can detect and correct single bit errors in DRAM memory. Single bit errors may occur due to malfunctioning hardware, ionising radiation (background cosmic or environmental sources) or from electromagnetic radiation~\cite{dodd2003basic}. If single bit errors go uncorrected then subsequent computational processing will produce incorrect results, potentially giving rise to non-determinism due to the probabilistic nature of such errors occurring. Estimating the rate of error is difficult and dependent on hardware, environment and computer cycles~\cite{mielke2008bit}.\todo[inline]{that said, HW simulation is deterministic, uses long simulation runs and thousands of CPU hours - I've not heard that this is an issue, but I can ask. ;) GC-yes although most commercial systems and servers will use ECC, although some development SMEs may use non-ECC and therefore should be aware of this issue.} 
 
-Any hardware simulation that runs for 1000's hours, such as AV verification tasks, are likely to incur significant CPU hours and therefore are subject to increased exposure to these errors.
+Any simulation hardware not using ECC memory that runs for 1000's hours, typical in AV verification, are likely to incur significant CPU hours and therefore are subject to increased exposure to these errors.
 
 
 \noindent\underline{\textit{Actor Navigation:}}
@@ -324,7 +324,7 @@ Unreal Engine is the underlying framework for the Carla simulator which uses the
 %
 The A* algorithm~\cite{AStarBook} will give deterministic outcomes as long as the environment is deterministic~\cite{AirsimUnrealArticle}\cite{UnrealAIDocumentation}. 
 %
-Navigation meshes are used by the path planning algorithm to find the shortest distance between navigable points in the environment and could be considered as a potential source of non-determinism if the navigation mesh is not a fixed entity.%. Some AV simulator developers claim that the built-in physics engines' AI is non-deterministic
+Navigation meshes are used by the path planning algorithm to find the shortest distance between navigable points in the environment and could be considered as a potential source of non-determinism if the navigation mesh is not a fixed entity. %. Some AV simulator developers claim that the built-in physics engines' AI is non-deterministic
 %
 However, the environment management in Carla implements fixed binary files for navigation meshes that are linked to each driving scene and cannot be unknowingly modified and therefore can be considered fixed. 
 %
@@ -338,11 +338,9 @@ The navigation mesh is a fixed area of the environment where actors are free to 
 % \todo[inline]{unclear :( GC- re-written}
 \\\\
 \noindent\underline{\textit{Game Engine Code:}}
-The type and version of the engine code executed should be considered, paying attention to the control of pseudo-random numbers, fixed physics calculation steps ($dt$), fixed actor navigation mesh 
+The type and version of the engine code executed should be considered, paying attention to the control of pseudo-random numbers, fixed physics calculation steps ($dt$), fixed actor navigation mesh, deterministic ego vehicle controllers and engine texture loading rates especially for perception stack testing. %
 % \todo[inline]{introduce actor navigation mesh GC-section on actor navigation brought forward}
-, deterministic ego vehicle
 % \todo[inline]{introduce ego vehicle earlier on GC added line 99}
- controllers and engine texture loading rates especially for perception stack testing. %
 For example, in Unreal Editor the \textit{unit}\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Performance/StatCommands/}} command can be used to monitor performance metrics such as \textit{game} which reports 
 % to determine processing bottlenecks by indicating\todo[inline]{what does indicating mean? GC-displaying, returning or showing} 
 the total time spent generating a frame, executing the game loop or render thread.
@@ -391,7 +389,7 @@ Changes in latency between repeated tests may, in the worst case, cause the game
 By binding a process to a specific core for the duration of its execution, the variations in data transfer time can be minimised.
 \\\\
 \noindent\underline{\textit{Ego Vehicle Controller:}}
-The ego vehicle controller may be a source of non-determinism if using complex control algorithms such as neural networks for visual processing and perception. A neural network can only be deterministic within in the bounds of the training data that was used to construct it. If the network is exposed to unseen data it may incorrectly classify perfectly legitimate scenes due to lack of training data. In the simulation domain, if the environment, and hence the data the network is exposed to, is controlled then the perception stack will behave deterministically. In this sense, control over weather and lighting in the game engine should be considered and controlled as well as any other dynamic elements to the environment, e.g. reflections from surface water. 
+The ego vehicle controller may be a source of non-determinism if using complex control algorithms such as neural networks for visual processing and perception. A neural network can only be deterministic within in the bounds of the training data that was used to construct it. If the network is exposed to unseen data it may incorrectly classify perfectly legitimate scenes due to lack of training data. In the simulation domain, if the environment, and hence the data the network is exposed to, is controlled then the perception stack will behave deterministically, assuming no \textit{residual lag}. In this sense, control over weather and lighting in the game engine should be considered and controlled as well as any other dynamic elements to the environment, e.g. reflections from surface water. 
 % these may. Given the same hardware the output should always be the same, unless scheduling of the threads change. 
 % i.e. the utilisation of hardware is manipulated differently each time. This would then result in non-deterministic behaviours especially if it is combined with the floating point problem discussed earlier. 
 %
@@ -418,7 +416,7 @@ Thread scheduling should not affect the simulation determinism unless changing s
 %
 The issue of concurrency should be minimised if good software development practice has been followed during the development of the simulation software. 
 %
-NUMA should only affect interprocessor data transfer cost and only make computations longer. relative times between access different caches is likely to be small although may impact on high throughput, e.g. HPC. 
+NUMA should only affect interprocessor data transfer cost and without control measures will only make the computation cycle longer. Relative access times between different caches are likely to be small although may have a more pronounced impact on high throughput systems, e.g. HPC. 
 %
 The ego vehicle controller can be considered deterministic if dynamic elements to the simulation environment are controlled, such as weather and lighting that may be on random cycles. 
 %
@@ -429,7 +427,7 @@ The ego vehicle controller can be considered deterministic if dynamic elements t
 %  Empirical Investigation
 % ***************************************************
 \section{Empirical Investigation} \label{s:case-study}
-We present an empirical investigation to illustrate some the challenges of simulation based verification outlined in Section~\ref{s:introduction}. The simulation must be deterministic and by our definition this should mean that the overall level of simulation variance %$\sigma^2$
+We present an empirical investigation to illustrate some the challenges of simulation based verification outlined in Section~\ref{s:introduction} and including the potential sources of non-determinism from Section~\ref{s:nondeterminisimSources}. The simulation must be deterministic and by our definition this should mean that the overall level of simulation variance %$\sigma^2$
 for any actor should be less than a user-defined threshold. 
 
 % \todo[inline]{Introduce the Scenario - see my comment later.}
@@ -474,7 +472,7 @@ Collisions and the subsequent physics calculations that are processed, termed \t
 
 The tests are listed in Table~\ref{TableOfExperiments} and were chosen to cover a range of interactions between actor types. 
 %
-Tests 1 \& 2 involve 2 vehicles meeting at a junction where they do not collide (test 1) and when they do tiggering a collision callback in the game engine (test 2). In both cases the trajectories of the vehicles are hard-coded to follow a set of waypoints spaced at $0.1$m intervals using a PID controller. In test 3 a mixture of different actor types are introduced where two vehicles drive without collision and a pedestrian walks across the road at a crossing point. In test 4 this pedestrian collides with one of the vehicles at the crossing, triggering a collision callback in the game engine, see Fig~\ref{Test_a}. Similar to vehicles, pedestrians navigate via a set of regularly spaced waypoints at $0.1$m intervals using the A* algorithm which is the default controller for the Carla pedestrian actors. Tests 5 \& 6 involve only pedestrians that do not collide (test 5) and that do collide (test 6), see Fig.~\ref{Test_b}. 
+Tests 1 \& 2 involve 2 vehicles meeting at a junction where they do not collide (test 1) and when they do tiggering a \textit{event hit} callback in the game engine (test 2). In both cases the trajectories of the vehicles are hard-coded to follow a set of waypoints spaced at $0.1$m \todo[inline]{AG: is this value correct or should it be 2.0m?} intervals using a PID controller. In test 3 a mixture of different actor types are introduced where two vehicles drive without collision and a pedestrian walks across the road at a crossing point. In test 4 this pedestrian collides with one of the vehicles at the crossing, triggering a \textit{event hit} callback, see Fig~\ref{Test_a}. Similar to vehicles, pedestrians navigate via a set of regularly spaced waypoints at $0.1$m intervals using the A* algorithm which is the default controller for the Carla pedestrian actors. Tests 5 \& 6 involve only pedestrians that do not collide (test 5) and that do collide (test 6), see Fig.~\ref{Test_b}. 
 
 \todo[inline]{Again, match the flow diagram steps in the subsections, but here wrt the case study steps.}
 
@@ -507,12 +505,8 @@ The $\max\sigma$ value was analysed against the different scenarios and settings
 % ***************************************************
 \subsection{Internal Settings}
 
-Within Unreal Engine there are numerous internal settings relating to the movement and interaction of physical bodies in the simulation. Settings can be adjusted to alter how actors interact and path plan via the navigation mesh of the environment, e.g. \textit{Contact Offset} and \textit{Navmesh Voxel Size}, or can be changed to improve the fidelity of physics calculations between game update steps, e.g. \textit{Physics Sub-Stepping} and \textit{Max Physics Delta Time}. 
-
-Other options such as \textit{Enable Enhanced Determinism} were investigated along with running the engine from the command line with options for more deterministic behaviour \texttt{-deterministic}, floating point control \texttt{/fp:strict} and headless mode \texttt{-nullrhi} along with running the test as a packaged release by building and cooking\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Deployment/Releasing/}}. 
-
-\todo[inline]{Maybe we can introduce our initial study here? Picture of the man and moving bloack and a result showing the path traces in x,y etc?}
-
+Within Unreal Engine there are numerous internal settings relating to the movement and interaction of physical bodies in the simulation. Settings can be adjusted to alter how actors interact and path plan via the navigation mesh of the environment, e.g. \textit{Contact Offset} and \textit{Navmesh Voxel Size}, or can be changed to improve the fidelity of physics calculations between game update steps, e.g. \textit{Physics Sub-Stepping} and \textit{Max Physics Delta Time}. Other options such as \textit{Enable Enhanced Determinism} were investigated along with running the engine from the command line with options for more deterministic behaviour \texttt{-deterministic}, floating point control \texttt{/fp:strict} and headless mode \texttt{-nullrhi} along with running the test as a packaged release by building and cooking\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Deployment/Releasing/}}. 
+% \todo[inline]{Maybe we can introduce our initial study here? Picture of the man and moving bloack and a result showing the path traces in x,y etc?}
 An initial study into the Unreal Engine using a pedestrian and a moving block was used to investigate simulation variance against these settings. The results were compared to a baseline of the default engine settings. 
 %
 However, none of these options improved simulation variance significantly and all internal setting were set restored to the default values. Details on this previous investigation can be found on the Trustworthy Systems github~\cite{TSLUnrealEngineTesting}.
@@ -667,10 +661,9 @@ A general pattern in the results indicates that; some scenarios fail to produce 
 
 
 
-However, the non-deterministic results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per definition \ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation time.
+However, the non-deterministic results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per definition \ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
 %
-Examining specifically the results from tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from deterministic prior to the vehicle collision to non-deterministic post-collision. This pattern of deterministic behaviour prior to collision is maintained up to a resource utilisation level of approximately 75\%, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates deterministic pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-deterministic. % \todo{Why ``not reliable''.} 
-
+Examining specifically the results from tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from deterministic prior to the vehicle collision to non-deterministic post-collision. This pattern of deterministic behaviour prior to collision and non-deterministic post-collision is maintained up to a resource utilisation level of approximately 75\%, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates deterministic pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding of this work; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-deterministic. % \todo{Why ``not reliable''.} 
 
 \begin{figure*}[h]
     \centering
@@ -687,7 +680,7 @@ Examining specifically the results from tests 2 \& 4 as a function of simulation
     \caption{Vehicle to pedestrian collision (test 4) showing (a) mean deviation against simulation time for 25\% stress and (b) mean deviation pre- and post-collision for different resource utilisation.}
 \end{figure*}
 
-The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three key observations here; firstly that the vehicle directly involved in the collision (Car ID 2) displays non-deterministic actor position post-collision as described above. Secondly, that the pedestrian involved in the collision (Ped ID 3) displays deterministic behaviour throughout the test\footnote{Note that in Carla the pedestrian object is destroyed post-collision hence the flat line following the collision.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers and research practitioners in the field as it implies that any collision between actors can affect the simulation variance of all actors in the simulation and could potentially result in  erroneous assertion checking.
+The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three key observations here; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision as described above. Secondly, that the pedestrian involved in the collision (Ped ID 3) displays deterministic behaviour throughout the test\footnote{Note that in Carla the pedestrian object is destroyed post-collision hence the flat line following the collision.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers and research practitioners in the field as it implies that \textit{any collision between actors can affect the determinism of the entire actor population} and could potentially result in  erroneous assertion checking.
 
 % \todo[inline]{Make sure that assertion checking has been introduced before.}
 
@@ -718,7 +711,7 @@ The main findings of this work suggest a working practice that would minimise th
 
 \todo[inline]{Do we need to say here why we think certain results are non-det, what the reasons might be?? The results indicate that actor type, resource utilisation and collision events all affect the determinism in the Carla simulator. Collision events may utilise more computational resources than simulations without such events, i.e. the physics loop takes longer to process as there are complex physical interactions to resolve. This may coincide with the second observation that higher resource levels also lead to non-deterministic results. We hypothesise that both these observations are due to improper management of thread scheduling within the engine. When resources are occupied there may be a delay in processing critical calculations for the simulator, which may arrive out of an expected sequence or the engine compensates for this delay by reducing the number of physics loops that can be performed within a render cycle. (is this 2nd one true, or does carla ignore render requests?)}
 
-This empirical investigation has highlighted the shortcomings of using a games engine for simulation based verification and advice for best working practice. However, these results are specific to the hardware and software used in the study and may not be transferable to other systems directly. Therefore we present a general methodology that practitioners can follow to find the deterministic domains of operation for any hardware configuration.
+This empirical investigation has highlighted the shortcomings of using a games engine for simulation based verification and advice for best working practice. However, these results are specific to the hardware and software used in the study and may not be transferable to other systems directly. Therefore we present a general methodology that practitioners can follow to find the \textit{deterministic domains of operation} for any hardware configuration.
 
 
 % First, the tests with no collisions are considered, these represent tests 1, 3 and 5. Tests 1 and 3, which involves vehicles only and vehicles with pedestrians respectively, shows very low simulation variance for stress levels below 50\% and as the stress level increases they surpass the red line crossing our defined deterministic level but still being sufficiently low (i.e. with in the centimeter level). This clearly shows how the load on a computer (i.e. stressing CPU and GPU) can have drastic effects on the repeatablitiy of tests. This is more specific to vehicle agents rather than pedestrians since the behaviour of pedestrians is consistent and remarkably below the mm level for all of the different levels of stress shown by test 5, where only pedestrians are involved with no collisions, from which it can be deduced that the mean deviation change with the stress level in test 3 was solely due to the vehicles.
@@ -747,13 +740,13 @@ This methodology has been refined several times over the course of our investiga
 
 \subsubsection{Actors} \label{s:actors}
 
-Different actor types may be handled differntly by the game engine and our investigation indicated that Carla pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However the introduction of Carla vehicles increased the simulation variance of the pedestrian-only test by 12 orders of magnitude. As such, all actors that could be included in any future simulation should be tested, including any non-standard Carla or bespoke actors.
+Different actor types may be handled differently by the game engine and our investigation indicated that Carla pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However the introduction of Carla vehicles increased the simulation variance of the pedestrian-only test by 12 orders of magnitude. As such, all actors that could be included in any future simulation should be tested, including any non-standard Carla or bespoke actors.
 %
 \subsubsection{Trajectories and Collisions} 
 Actor paths should hard-coded in a number of different tests that explore; no collisions, collisions between actors, and potentially collisions between actors and static scenery if this is likely to occur in the simulation.
 
 \subsubsection{Setting a Deterministic Threshold} \label{s:threshold}
-The verification engineer should set the \textit{deterministic threshold} based on their specific requirements which refers to the acceptable level of actor path variance ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. This threshold is analogous to the analogue signal level associated with each of the binary states of the signals in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the physical signal values that are analogue voltages into the digital domain with binary representation. 
+The verification engineer should set the \textit{deterministic threshold} based on their specific requirements which refers to the acceptable level of actor path variance ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. This threshold is analogous to the analogue signal level associated with each of the binary states of the signals in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be, for example, any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the physical signal values that are analogue voltages into the digital domain with binary representation. 
 %
 The deterministic threshold that the user must set depends on the objectives of the simulation and the granularity at which the simulation environment operates. In particular, this threshold must be sufficiently small to enable accurate assertion checking. In our empirical investigation we set a threshold of $1$cm which is sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this threshold experimentally. 
 
@@ -769,7 +762,7 @@ The deterministic threshold that the user must set depends on the objectives of 
 
 
 \subsubsection{Simulation Length} 
-The simulation time should be sufficient to record interactions between actors but not so long that 100's or 1000's of repeated tests take a considerable time to complete. In our empirical investigation a simulation time of $10-20$s was sufficient to monitor the distinct change in events such as the pre- and post-collision including the delayed effect seen by other actors, shown in Fig.~\ref{CarsPeopleCollsionsCG25}.
+The simulation time should be sufficient to record interactions between actors but not so long that 100's or 1000's of repeated tests take an inconvenient time to complete. In our empirical investigation a simulation time of $10-20$s was sufficient to monitor the distinct change in events such as the pre- and post-collision including the delayed effect seen by other actors, shown in Fig.~\ref{CarsPeopleCollsionsCG25}.
 
 % Depending on the number of repeated tests and the average deviation reported from the experiment, a maximum rather than average may be required if the results are close to the user-specified threshold. This is to ensure that an outlier data-point is not hidden in the average of $n$-tests.
 
@@ -792,7 +785,7 @@ The version number of the Carla and Unreal environment has also be shown to affe
 \subsubsection{Resource Utilisation}
 % To simulate the demands of taxing simulations, potentially requiring realistic rendering or complex physics calculations in an otherwise simple scenario, stress programs should be used to artificially occupy system resources. 
 The resources available to the simulator have been shown to have a significant effect on the determinism of simulated vehicles and exploring this as a variable the analysis is required. 
-CPU utilisation software, such as the linux \texttt{stress} tool which is a workload generator program can be used spawn workers on any number of cores or virtual threads on a system. This can be used to artificially increased the load on the system to explore at what point your system may become unstable leading to \textit{simulation variance}. For GPU utilisation \texttt{gpu-burn} was employed using the \texttt{fur test} where different resolutions and multiple instances can be used to tune graphical utilisation levels~\cite{GPU_stress}. Reported values of resource utilisation can be obtained using the system monitors \texttt{htop} and \texttt{nvidia-smi} for CPU and GPU respectively. These values can also be written into the data logging for completeness.
+CPU utilisation software, such as the linux \texttt{stress} tool which is a workload generator program can be used spawn workers on any number of cores or virtual threads on a system. This can be used to artificially increased the load on the system to explore at what point your system may become susceptible to \textit{simulation variance}. For GPU utilisation \texttt{gpu-burn} was employed using the \texttt{fur test} where different resolutions and multiple instances can be used to tune graphical utilisation levels~\cite{GPU_stress}. Reported values of resource utilisation can be obtained using the system monitors \texttt{htop} and \texttt{nvidia-smi} for CPU and GPU respectively. These values can also be written into the data logging for completeness.
 
 Alternatively, in place of artificial resource utilisation multiple instances of the simulation could be executed simultaneously. However, the granularity of control with this approach may be reduced.
 
@@ -833,7 +826,7 @@ Data logging should be used to record the actor positions at fixed time interval
 % The maximum deviation in actor path with respect to the mean for $n$ repeated tests will indicate at what dimensional scale deterministic results are achieved. For example, if 100 tests are executed and the maximum deviation in actor path is $<1$cm, then this scenario could be interpreted as being deterministic above this scale. 
 
 \subsection{Analysis}
-The maximum value of simulation variance over all time samples and actors, $\max\sigma$, should be analysed to identify which of the candidate sources of non-determinism require restriction or control for deterministic operation. Finding these boundaries will identify the deterministic operational domain for the user specific hardware.
+The maximum value of simulation variance over all time samples and actors, $\max\sigma$, should be analysed to identify which of the candidate sources of non-determinism require restriction or control for deterministic operation. Finding these boundaries will identify the \textit{deterministic operational domain} for the user specific hardware.
 
 
 
