@@ -909,6 +909,20 @@ The maximum value of simulation variance over all time samples and actors, $\max
 \todo[inline]{Point out (again) that all data and scripts etc are on github.}
 
 \todo[inline]{Future work...}
+In this paper we presented an investigation (based on Carla driving simulator) to show whether game engines are deterministic or not. 
+Hence assess their suitablility for usage in development and verification of AVs, where determinisim is key in order for one to eliminate bugs. 
+We found two main outcomes from our investigation: 
+1) Game engines are non-deterministic and we outlined potential sources for non-determisnitc behaviours in section \ref{s:background}. 
+2) The level of simulation variance changes significantly depending on several settings relating internally and externally to the game engine used; the main two factors being CPU and GPU resource utilisation. 
+Thus, by altering these settings one can achieve sufficiently low levels of simulation varince that can allow users to assume the simulation is deterministic. 
+We phrased the level below which the simulation is to be assumed determinisitic as the \textit{determinisitic threshold}, which is up to the user to define where it exactly lies. 
+This allows for one to use these game engines knowing that their simulation will be sufficiently deterministic provided that they bound their simulation within a certain configuration.  
+
+The configuration presented in here is specific to the hardware and software used in our investigation. 
+Therefore, we outlined a methodology in this paper to allow practitioners in this field of AVs to resolve the non-deterministic operational domains of their simulation.
+
+Future work; experts in the field of game engines' architecture can use our empirical investigation and the potential sources of non-determisnim outlined in our work to investigate and develop plugins that can switch priority between performance and determinisim in game engines. Hence allowing its extensive usgae by both the AVs and the gaming community.
+
 
 % We have provided a summary of the sources of non-determinisim in game engines. This was followed by presenting a method by which one can determine the simulation variance of a game engine used in V\&V application of AV simulations. The method consists of five stages, starting with designing the experiment, then suggesting the various settings that can improve or worsen the performance, and finally focuses on running the experiment and analysing the output.
 
