@@ -912,7 +912,7 @@ The maximum value of simulation variance over all time samples and actors, $\max
 In this paper we presented an investigation (based on Carla driving simulator) to show whether game engines are deterministic or not. 
 Hence assess their suitablility for usage in development and verification of AVs, where determinisim is key in order for one to eliminate bugs. 
 We found two main outcomes from our investigation: 
-1) Game engines are non-deterministic and we outlined potential sources for non-determisnitc behaviours in section \ref{s:background}. 
+1) Game engines are non-deterministic and we outlined potential sources for non-determisnitc behaviours in section \ref{s:background}, e.g. runtime scheduling. 
 2) The level of simulation variance changes significantly depending on several settings relating internally and externally to the game engine used; the main two factors being CPU and GPU resource utilisation. 
 Thus, by altering these settings one can achieve sufficiently low levels of simulation varince that can allow users to assume the simulation is deterministic. 
 We phrased the level below which the simulation is to be assumed determinisitic as the \textit{determinisitic threshold}, which is up to the user to define where it exactly lies. 
