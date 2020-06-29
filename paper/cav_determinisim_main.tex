@@ -77,7 +77,7 @@ There have been a number of fatalities with AVs, some of which could be attribut
 % The use of game engines for AV testing
 Increasingly, the autonomous vehicle community is adopting game engines as simulation platforms to support the development and testing of vehicle control software. 
 %
-Carla\footnote{http://carla.org/}, for instance, is an open-source simulator for autonomous driving that is implemented as a layer over the Unreal Engine (UE4), a  real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
+Carla\footnote{\url{http://carla.org/}}, for instance, is an open-source simulator for autonomous driving that is implemented as a layer over the Unreal Engine (UE4), a  real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
 
 % Requirements of simulation based verification SBV
 The benefit of using state-of-the-art game engines as simulators is that they offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes, potentially suitable for perception stack testing and visual inspection of accidents or near misses. 
@@ -181,7 +181,8 @@ We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\to
 % ***************************************************
 \section{Background} \label{s:background}
 
-There are numerous game engines with their associated development environments which could be suitable for AV development, e.g. Unreal\footnote{\url{https://www.unrealengine.com/}}, Unity\footnote{\url{https://unity.com/}}, CryEngine\footnote{\url{https://www.cryengine.com/}}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing engines, e.g.\ Carla\footnote{\url{http://carla.org/}}, AirSim\footnote{\url{https://microsoft.github.io/AirSim/}}, Apollo\footnote{\url{http://apollo.auto/}}, and some have been developed for cloud based simulation, e.g.\ Nvidia Drive Constellation\footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
+There are numerous game engines with their associated development environments which could be suitable for AV development, e.g. Unreal\footnote{\url{https://www.unrealengine.com/}}, Unity\footnote{\url{https://unity.com/}}, CryEngine\footnote{\url{https://www.cryengine.com/}}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing engines, e.g.\ Carla\footnote{\url{http://carla.org/}}, AirSim\footnote{\url{https://microsoft.github.io/AirSim/}}, Apollo\footnote{\url{http://apollo.auto/}}, and some have been developed for cloud based simulation, e.g.\ Nvidia Drive Constellation~\cite{nvidia_constellation}.
+% \footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
 
 Investigating the determinism of game engines has not attracted much research interest since performance is more critical for game developers than accurate and repeatable execution.  %However, when these engines are used for AV development then deterministic behaviour is required. 
 This section gives an overview of the internal structure of a game engine and what sources or settings in the engine may affect \textit{simulation variance}.
@@ -193,7 +194,9 @@ This section gives an overview of the internal structure of a game engine and wh
 
 Central to a game engine are the main game logic, the artificial intelligence (AI) component, the audio engine, and the physics and rendering engines. For AV simulation, we focus on the latter two.
 %
-The game loop is responsible for the interaction between the physics and rendering engines. Fig.~\ref{GameEngineLoopDiagram} depicts a simplified representation of the process flow in a game engine loop, where  initialisation, game logic and decommissioning have been removed\footnote{\url{https://docs.unity3d.com/Manual/ExecutionOrder.html}}. A game loop is broken up into three distinct phases: processing the inputs, updating the game world (Physics Engine), and generating outputs (Rendering)~\cite{GameEngineArchBook}.
+The game loop is responsible for the interaction between the physics and rendering engines. Fig.~\ref{GameEngineLoopDiagram} depicts a simplified representation of the process flow in a game engine loop, where  initialisation, game logic and decommissioning have been removed~\cite{unity_event_execution}.
+% \footnote{\url{https://docs.unity3d.com/Manual/ExecutionOrder.html}}. 
+A game loop is broken up into three distinct phases: processing the inputs, updating the game world (Physics Engine), and generating outputs (Rendering)~\cite{GameEngineArchBook}.
 
 \begin{figure}[h]
 \centering
@@ -223,7 +226,9 @@ The game loop is responsible for the interaction between the physics and renderi
 %
 % At the beginning of each game clock tick, the lag\todo[inline]{first explain where the lag comes from} between the game clock and the real world is updated based on how much real time has passed. This measures how far the game's clock is behind compared to the real world. 
 
-The game loop cycle starts with initialising the scene and actors. Input events from the User or AI are then processed followed by a physics cycle which may repeat more than once per rendered frame if the physics time step, $dt$, is less than the render update rate (loop in physics update in Fig.~\ref{GameEngineLoopDiagram}). The render update will process frames as fast as the computational processing will allow up to the maximum monitor refresh rate\footnote{\url{https://blogs.unity3d.com/2019/06/03/precise-framerates-in-unity/}}. When the frame is rendered the game loop cycle returns to processing inputs. And a good description of the interplay between the physics and render cycles are given here~\cite{JohnAustinUnity}.
+The game loop cycle starts with initialising the scene and actors. Input events from the User or AI are then processed followed by a physics cycle which may repeat more than once per rendered frame if the physics time step, $dt$, is less than the render update rate (loop in physics update in Fig.~\ref{GameEngineLoopDiagram}). The render update will process frames as fast as the computational processing will allow up to the maximum monitor refresh rate\cite{unity_framerates}.
+% \footnote{\url{https://blogs.unity3d.com/2019/06/03/precise-framerates-in-unity/}}. 
+When the frame is rendered the game loop cycle returns to processing inputs. And a good description of the interplay between the physics and render cycles are given here~\cite{JohnAustinUnity}.
 
 % \todo[inline]{GC maybe replace this entire section with a briefer account: The game loop cycle starts with initialising the scene and actors. Input events from the User or AI are then processed followed by a physics cycle which may repeat more than once per rendered frame if the physics time step, $dt$, is less than the render update rate. The render update will process frames as fast as the computational processing will allow up to the maximum monitor refresh rate\footnote{\url{https://blogs.unity3d.com/2019/06/03/precise-framerates-in-unity/}}. When the frame is rendered the game loop cycle returns to processing inputs.}
 %
@@ -916,19 +921,44 @@ The maximum value of simulation variance over all time samples and actors, $\max
 \todo[inline]{Point out (again) that all data and scripts etc are on github.}
 
 \todo[inline]{Future work...}
-In this paper we presented an investigation (based on Carla driving simulator) to show whether game engines are deterministic or not. 
-Hence assess their suitablility for usage in development and verification of AVs, where determinisim is key in order for one to eliminate bugs. 
-We found two main outcomes from our investigation: 
-1) Game engines are non-deterministic and we outlined potential sources for non-determisnitc behaviours in section \ref{s:background}, e.g. runtime scheduling. 
-2) The level of simulation variance changes significantly depending on several settings relating internally and externally to the game engine used; the main two factors being CPU and GPU resource utilisation. 
-Thus, by altering these settings one can achieve sufficiently low levels of simulation varince that can allow users to assume the simulation is deterministic. 
-We phrased the level below which the simulation is to be assumed determinisitic as the \textit{determinisitic threshold}, which is up to the user to define where it exactly lies. 
-This allows for one to use these game engines knowing that their simulation will be sufficiently deterministic provided that they bound their simulation within a certain configuration.  
 
-The configuration presented in here is specific to the hardware and software used in our investigation. 
-Therefore, we outlined a methodology in this paper to allow practitioners in this field of AVs to resolve the non-deterministic operational domains of their simulation.
+In this paper we explored the determinisim of game engines. This is important for autonomous vehicles' development and verification of vehicle control systems in simulation. Simulations must be deterministic or practitioners should at least be aware of the operational domains for reliable results and repeatability of tests.
 
-Future work; experts in the field of game engines' architecture can use our empirical investigation and the potential sources of non-determisnim outlined in our work to investigate and develop plugins that can switch priority between performance and determinisim in game engines. Hence allowing its extensive usgae by both the AVs and the gaming community.
+An empirical investigation based on Unreal Engine running Carla driving simulator, uncovered several parameters that contributed to simulation variance. These parameters include numerous internal settings based in Unreal Engine, and others that are external mainly dependant on CPU and GPU utilisation.
+
+Changes in CPU and GPU resource utlisation has shown to be the main influencer for the non-deterministic behaviour of game engines. This is clearly demonstrated in the results (see section \ref{s:case-study}), where the max deviation between runs increased from the orders of $10^{-12}$m to devaitons of up to 1m as the CPU and GPU resource utilisation increased above 50\%.   
+
+The term \textit{deterministic operational domain} was given to the range of system resource utlisations that provides low simulation variances that is insignificant for development and verifcation of autonomous vehicles. 
+The deterministic operational domain specified herein is specific to our hardware configuration.
+
+This led to the design of a methodology allowing `users' to determine the deterministic operational domain for a specific hardware configuration. This will help guide specialists in the field of AVs to setup their custom experiments for their specific simulators and identify their specific deterministic operational domains.
+
+Future work; experts in the field of game engines' architecture can use our empirical investigation and the potential sources of non-determisnim outlined in our work to investigate and develop plugins that can switch priority between performance and determinisim in game engines. Hence allowing its extensive usgae by both the autonmous vehicles' and the gaming community.
+
+% presented an investigation (based on Carla driving simulator) to show whether game engines are deterministic or not. 
+% Hence assess their suitablility for usage in development and verification of AVs, where determinisim is key in order for one to eliminate bugs. 
+
+% An empirical investigation based on Unreal Engine running Carla driving simulator, was used to illustrate the challenges of determinisim faced by game engines. 
+% % It was found that game engines are non-deterministic. 
+
+% We reviewed possible sources of non-determinisim in section \ref{s:background} and investigated the effect of each on the simulation variance.  
+
+% We found that the sources of non determinsim that had a significant effect on simulation variance were attributed to CPU and GPU resource utilisation. 
+% The case study clearly shows how the max simulation variance changes from very low simulation varicances, below picometer level ($10^-12$), to centimeter level when the CPU and GPU resource utilisation increases above 50\%.
+
+
+
+% We found two main outcomes from our investigation: 
+% 1) Game engines are non-deterministic and we outlined potential sources for non-determisnitc behaviours in section \ref{s:background}, e.g. runtime scheduling. 
+% 2) The level of simulation variance changes significantly depending on several settings relating internally and externally to the game engine used; the main two factors being CPU and GPU resource utilisation. 
+% Thus, by altering these settings one can achieve sufficiently low levels of simulation varince that can allow users to assume the simulation is deterministic. 
+% We phrased the level below which the simulation is to be assumed determinisitic as the \textit{determinisitic threshold}, which is up to the user to define where it exactly lies. 
+% This allows for one to use these game engines knowing that their simulation will be sufficiently deterministic provided that they bound their simulation within a certain configuration.  
+
+% The configuration presented in here is specific to the hardware and software used in our investigation. 
+% Therefore, we outlined a methodology in this paper to allow practitioners in this field of AVs to resolve the non-deterministic operational domains of their simulation.
+
+
 
 
 % We have provided a summary of the sources of non-determinisim in game engines. This was followed by presenting a method by which one can determine the simulation variance of a game engine used in V\&V application of AV simulations. The method consists of five stages, starting with designing the experiment, then suggesting the various settings that can improve or worsen the performance, and finally focuses on running the experiment and analysing the output.
