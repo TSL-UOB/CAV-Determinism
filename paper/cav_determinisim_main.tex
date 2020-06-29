@@ -891,8 +891,6 @@ The maximum value of simulation variance over all time samples and actors, $\max
 % The user should set a deviation threshold, beyond which simulation results deemed unacceptable or non-deterministic. For the majority of AV navigation on major roads and highways a limit of $1m$ may be acceptable but in denser urban environments a value of $1cm$ may be more appropriate. 
 
 
-
-
 % \subsection{External settings}
 % Running other programs in the background, like having a web browser open, or running the physics engine in the background while performing other tasks on the same machine does also have an effect; because it alters the CPU and GPU utilisation of tasks. Trying to run stress experiments on computers by running other programs makes it difficult to control experiments since the utilisation would be inconsistent, nonetheless, there exists dedicated stress utilisation programs which provide consistent CPU and GPU stressing. Note that during running these tests computers should be left alone and not to be used for any other purposes apart from running the experiments, else the CPU + GPU stressing will lose its consistency through out a given test. 
 
@@ -905,35 +903,35 @@ The maximum value of simulation variance over all time samples and actors, $\max
 % ***************************************************
 %  CONCLUSION
 % ***************************************************
-\section{Conclusions and Future Work}\label{s:conclusion}
+% \section{Conclusions and Future Work}\label{s:conclusion}
+\section{Conclusions}\label{s:conclusion}
 
-\todo[inline]{Say what the paper investigated and what we aimed to achieve, why this is important and how we went about it. Then point out the derivation of a re-usable methodology based on the knowledge and understanding we gained from the case study.}
+% \todo[inline]{Say what the paper investigated and what we aimed to achieve, why this is important and how we went about it. Then point out the derivation of a re-usable methodology based on the knowledge and understanding we gained from the case study.}
 
-\todo[inline]{GC: we need to say what we set out to achieve and why that is important, then say how our investigation led us to several theories which resulted in understanding several key parameters which directly affect simulation variance. From this we developed a methodology that the community can use to understand the deterministic operational domains of their own specific hardware:  Autonomous vehicle testing is adopting the use of game engines for development and verification of vehicle control systems in simulation. Simulations must be deterministic or practitioners should at least be aware of the operational domains for reliable results and repeatability of tests. An empirical investigation uncovered several parameters that contributed to simulation variance ... explain results ... This led to the design of a methodology allowing 'users' to determine the deterministic operational domains for a specific hardware/platform configuration ... }
+% \todo[inline]{GC: we need to say what we set out to achieve and why that is important, then say how our investigation led us to several theories which resulted in understanding several key parameters which directly affect simulation variance. From this we developed a methodology that the community can use to understand the deterministic operational domains of their own specific hardware:  Autonomous vehicle testing is adopting the use of game engines for development and verification of vehicle control systems in simulation. Simulations must be deterministic or practitioners should at least be aware of the operational domains for reliable results and repeatability of tests. An empirical investigation uncovered several parameters that contributed to simulation variance ... explain results ... This led to the design of a methodology allowing 'users' to determine the deterministic operational domains for a specific hardware/platform configuration ... }
 
-
-\todo[inline]{Review/rewrite this to match the earlier changes in the paper. Practitioners in this field can resolve the non-deterministic operational domains of their simulation by following the method outlined in this paper. Potential sources of non-deterministic simulation behaviour have been discussed such as floating point rounding error and scheduling policy. A case study was used to ascertain the boundary between deterministic and non-deterministic operational domains of the Carla driving simulator. Results suggest non-deterministic outcomes when resource utilisation levels exceeded 75\% or when vehicle collisions occur for the particular hardware used in this study. Furthermore it was found that all actors, even those not involved directly in a collision, will behave non-deterministically if a collision callback to the game engine is made. Best operating practice follows that the simulation should be stopped as soon as a collision callback is detected or resource utilisation levels exceed 75\% although this value may be system specific. }
-
-\todo[inline]{GC: think we should put more emphasis on the outcomes of the method rather than the cast study.}
+The autonomous vehicle community are adopting game engine simulators for such purposes as control system development and verification. Having a deterministic simulator is required for reliable and repeatable results, to find and fix software bugs and ensure results are trustworthy. If a simulator is non-deterministic then practitioners should at least be aware of, and how to find, the operational domains where reliable results can be found. During an investigation into the Carla simulator, a \textit{simulation variance} was observed for repeated tests with the same initial conditions indicating non-deterministic execution. During the study we hypothesized and uncovered several parameters that contribute towards greater simulation variance and hence non-deterministic execution, such as actor collisions and system resource utilisation. The results of the investigation are hardware and software version specific, so we present a universal methodology that can be used to find the \textit{deterministic operational domain} for any given configuration. This methodology will allow the AV verification community using simulation tools to ensure their results are reliable and trustworthy.
 
 
+% \todo[inline]{Review/rewrite this to match the earlier changes in the paper. Practitioners in this field can resolve the non-deterministic operational domains of their simulation by following the method outlined in this paper. Potential sources of non-deterministic simulation behaviour have been discussed such as floating point rounding error and scheduling policy. A case study was used to ascertain the boundary between deterministic and non-deterministic operational domains of the Carla driving simulator. Results suggest non-deterministic outcomes when resource utilisation levels exceeded 75\% or when vehicle collisions occur for the particular hardware used in this study. Furthermore it was found that all actors, even those not involved directly in a collision, will behave non-deterministically if a collision callback to the game engine is made. Best operating practice follows that the simulation should be stopped as soon as a collision callback is detected or resource utilisation levels exceed 75\% although this value may be system specific. }
 
-\todo[inline]{Point out (again) that all data and scripts etc are on github.}
+% \todo[inline]{GC: think we should put more emphasis on the outcomes of the method rather than the cast study.}
+% \todo[inline]{Point out (again) that all data and scripts etc are on github.}
 
-\todo[inline]{Future work...}
+% \todo[inline]{Future work...}
 
-In this paper we explored the determinisim of game engines. This is important for autonomous vehicles' development and verification of vehicle control systems in simulation. Simulations must be deterministic or practitioners should at least be aware of the operational domains for reliable results and repeatability of tests.
+% In this paper we explored the determinisim of game engines. This is important for autonomous vehicles' development and verification of vehicle control systems in simulation. Simulations must be deterministic or practitioners should at least be aware of the operational domains for reliable results and repeatability of tests.
 
-An empirical investigation based on Unreal Engine running Carla driving simulator, uncovered several parameters that contributed to simulation variance. These parameters include numerous internal settings based in Unreal Engine, and others that are external mainly dependant on CPU and GPU utilisation.
+% An empirical investigation based on Unreal Engine running Carla driving simulator, uncovered several parameters that contributed to simulation variance. These parameters include numerous internal settings based in Unreal Engine, and others that are external mainly dependant on CPU and GPU utilisation.
 
-Changes in CPU and GPU resource utlisation has shown to be the main influencer for the non-deterministic behaviour of game engines. This is clearly demonstrated in the results (see section \ref{s:case-study}), where the max deviation between runs increased from the orders of $10^{-12}$m to devaitons of up to 1m as the CPU and GPU resource utilisation increased above 50\%.   
+% Changes in CPU and GPU resource utlisation has shown to be the main influencer for the non-deterministic behaviour of game engines. This is clearly demonstrated in the results (see section \ref{s:case-study}), where the max deviation between runs increased from the orders of $10^{-12}$m to devaitons of up to 1m as the CPU and GPU resource utilisation increased above 50\%.   
 
-The term \textit{deterministic operational domain} was given to the range of system resource utlisations that provides low simulation variances that is insignificant for development and verifcation of autonomous vehicles. 
-The deterministic operational domain specified herein is specific to our hardware configuration.
+% The term \textit{deterministic operational domain} was given to the range of system resource utlisations that provides low simulation variances that is insignificant for development and verifcation of autonomous vehicles. 
+% The deterministic operational domain specified herein is specific to our hardware configuration.
 
-This led to the design of a methodology allowing `users' to determine the deterministic operational domain for a specific hardware configuration. This will help guide specialists in the field of AVs to setup their custom experiments for their specific simulators and identify their specific deterministic operational domains.
+% This led to the design of a methodology allowing `users' to determine the deterministic operational domain for a specific hardware configuration. This will help guide specialists in the field of AVs to setup their custom experiments for their specific simulators and identify their specific deterministic operational domains.
 
-Future work; experts in the field of game engines' architecture can use our empirical investigation and the potential sources of non-determisnim outlined in our work to investigate and develop plugins that can switch priority between performance and determinisim in game engines. Hence allowing its extensive usgae by both the autonmous vehicles' and the gaming community.
+% Future work; experts in the field of game engines' architecture can use our empirical investigation and the potential sources of non-determisnim outlined in our work to investigate and develop plugins that can switch priority between performance and determinisim in game engines. Hence allowing its extensive usgae by both the autonmous vehicles' and the gaming community.
 
 % presented an investigation (based on Carla driving simulator) to show whether game engines are deterministic or not. 
 % Hence assess their suitablility for usage in development and verification of AVs, where determinisim is key in order for one to eliminate bugs. 
