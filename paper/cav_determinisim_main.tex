@@ -299,6 +299,11 @@ Considering the objectives for gaming and comparing them to these for AV develop
 \subsection{Potential Sources of Non-Determinism} \label{s:nondeterminisimSources}
 
 The following discussion reflects the results of our investigation into the potential sources of non-determinism that could affect game engines. We have examined hardware- as well as software-borne sources of non-determinism that occur at different layers of abstraction. 
+\todo[inline]{We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
+\todo[inline]{We should also refer to literature like:\\
+Making System User Interactive Tests Repeatable: When and What Should We Control?~\cite{when-and-what-should-we-control} and
+Intermittently Failing Tests in the Embedded Systems Domain~\cite{intermittently-failing-tests}.
+}}
 
 \medskip
 
@@ -306,6 +311,7 @@ The following discussion reflects the results of our investigation into the pote
 
 % ======= Floating-Point Numbers
 \noindent\underline{\textit{Floating-Point Arithmetic:}}
+\todo[inline]{Check the points on floating point operations in An Empirical Analysis of Flaky Tests~\cite{empirical-analysis-of-flaky-tests}.}
 Floating-point representation of real numbers is limited by the fixed bit width available in the hardware, resulting in the finite precision with which numbers can be represented in a computation. 
 Thus, the results of arithmetic operations must fit into the given bit width, which is achieved through rounding to the nearest representable value. This gives rise to rounding errors~\cite{FloatingPointsBook,goldberg1991every}. 
 %
