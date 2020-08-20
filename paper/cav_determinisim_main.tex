@@ -122,7 +122,7 @@ We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene
 Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. Thus, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy. 
 
 % GC Text
-\todo[inline]{GC Edit: Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable, or more formally, are \textit{precise}. This is not to be confused with \textit{accuracy} that describes the extent to which the simulation complies to a known standard, which could be considered a level of realism that faithfully describes the real world. The \textit{precision} of the process is the ability of the simulation to repeat the same execution and find no, or a \textit{tolerable}, difference in the outcome. Therefore \textit{tolerance} is the acceptable degree of variability between execution outputs. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy. }
+\todo[inline]{GC Edit: Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable, or more formally, are \textit{precise}. This is not to be confused with \textit{accuracy} that describes the extent to which the simulation complies to a known standard, which could be considered a level of realism that faithfully describes the real world. The \textit{precision} of the process is the ability of the simulation to repeat the same execution and find no, or a \textit{tolerable}, difference in the outcome. \textit{Tolerance} is the acceptable degree of variability between repeated execution outputs. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy. }
 %
 %Any software defects that are detected but not repeatable at a later time or by another party does not allow for suitable resolution. Furthermore, defects not found on the verification testing system may arise on a deployed system with a different hardware architecture resulting in untested and potentially unsafe behaviour. 
 %When considering the development of autonomous vehicles, untested code could lead to dangerous behaviours not being identified and fatal road accidents may occur.
@@ -298,6 +298,11 @@ Considering the objectives for gaming and comparing them to these for AV develop
 \subsection{Potential Sources of Non-Determinism} \label{s:nondeterminisimSources}
 
 The following discussion reflects the results of our investigation into the potential sources of non-determinism that could affect game engines. We have examined hardware- as well as software-borne sources of non-determinism that occur at different layers of abstraction. 
+\todo[inline]{We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
+\todo[inline]{We should also refer to literature like:\\
+Making System User Interactive Tests Repeatable: When and What Should We Control?~\cite{when-and-what-should-we-control} and
+Intermittently Failing Tests in the Embedded Systems Domain~\cite{intermittently-failing-tests}.
+}}
 
 \medskip
 
@@ -305,6 +310,7 @@ The following discussion reflects the results of our investigation into the pote
 
 % ======= Floating-Point Numbers
 \noindent\underline{\textit{Floating-Point Arithmetic:}}
+\todo[inline]{Check the points on floating point operations in An Empirical Analysis of Flaky Tests~\cite{empirical-analysis-of-flaky-tests}.}
 Floating-point representation of real numbers is limited by the fixed bit width available in the hardware, resulting in the finite precision with which numbers can be represented in a computation. 
 Thus, the results of arithmetic operations must fit into the given bit width, which is achieved through rounding to the nearest representable value. This gives rise to rounding errors~\cite{FloatingPointsBook,goldberg1991every}. 
 %
@@ -464,21 +470,90 @@ However, should new and unexpected threads start during the simulation, then the
 % ***************************************************
 %  Empirical Investigation
 % ***************************************************
-\section{Empirical Investigation} \label{s:case-study}
-We present an empirical investigation to illustrate some the challenges of simulation based verification outlined in Section~\ref{s:introduction} and including the potential sources of non-determinism from Section~\ref{s:nondeterminisimSources}. The simulation must be deterministic and by our definition this should mean that the overall level of simulation variance %$\sigma^2$
-for any actor should be less than a user-defined threshold. 
+\section{Case Study of Simulation Variance} \label{s:case-study}
 
-% \todo[inline]{Introduce the Scenario - see my comment later.}
-\todo[inline]{Set the threshold, explain what a good threshold is, available options and what was selected and why.}
+We present an empirical investigation into using game engines for
+simulation-based verification of autonomous vehicles with a focus on
+characterising sources of non-determinism in order to understand  the impact
+they have on simulation variance. 
+%
+Ultimately, our objective is to control non-determinisim to minimise simulation variance.
 
-Autonomous vehicles operating as mobility and last mile delivery solutions will predominantly operate within urban rather than highway or motorway environments. To determine if the ego vehicle performs correctly, i.e. does not violate assertions, the precision of the simulated actor states must be repeatable to within a defined tolerance or threshold.
+We first describe the context, scene and scenario of interest before discussing and defining a threshold for what is considered an acceptable simulation variance in this context.
+%
+\todo{Complete the section structure as this is a very long section.}
 
-% \todo[inline]{KIE: Move this to the Case Study section and justify the values.}
-This threshold, termed here as the \textit{deterministic threshold}, must be chosen to reflect the scale at which repeatability of simulation execution is required, see Section~\ref{s:threshold}. This value must be sufficiently small to allow accurate \textit{assertion checking} of the ego vehicle in the environment.
+\todo[inline]{First describe the scenario(s), WHAT happens, HOW does it happen and WHY is this scenario interesting for this investigation, i.e.\ what are the features this scenario has? Then say how this has been implemented, referring to test numbers and the GC - think ive done this, take a look at first para below.}
+
+% ***************************************************
+%  Scenario Description
+% ***************************************************
+\subsection{Context, Scene and Scenario}\label{TestsDescriptionAndTechnicalities}\todo{Need to stick to scene, scenario definitions as in Intro section.}
+
+This case study draws on a setup used to verify an urban last-mile mobility and transport solution, where the primary verification objective is to test the behaviour of an ego vehicle in an urban environment at a T-junction in response to pedestrians and other vehicles.
+%
+Thus, the scene for our investigation is the T-junction shown in Figure~\ref{f:test_a_and_b}.
+
+This scene was used to create a number of scenarios involving pedestrians and vehicles in order to identify any changes in the actor trajectories over repeated tests executed under a variety of systematically designed conditions and hence study any simulation variance.
+%
+The vehicles and pedestrians were given trajectories, via pre-defined waypoints, that will result in either colliding with or avoiding other actors.
+\todo{Decide past or present tense and be consistent throughout.}
+
+\begin{figure}[!t]
+    \centering
+    \begin{subfigure}{.24\textwidth}
+        \includegraphics[width=1\textwidth]{Other/Figures/TestCasesDiagramV2_a.pdf}
+        \caption{}
+        \label{Test_a}
+    \end{subfigure}
+    \begin{subfigure}{.24\textwidth}
+        \includegraphics[width=1\textwidth]{Other/Figures/TestCasesDiagramV2_b.pdf}
+        \caption{}
+        \label{Test_b}
+    \end{subfigure}
+    \caption{Schematic of test scenarios for (a) Tests 1-4, (b) Tests 5-6. Descriptions are given in Table~\ref{TableOfExperiments}.}\label{f:test_a_and_b}
+\end{figure}
+
+\todo{Set the threshold, explain what a good threshold is, available options and what was selected and why.}
+
+\subsection{Tolerable Simulation Variance}
+
+\todo[inline]{Terminology:\\
+{\bf Accuracy} is the degree of closeness/conformance to a known value.
+\\
+{\bf Precision} is the ability to get a particular value several times, i.e.\ repeatability of a measurement.
+\\
+{\bf Tolerance} is the allowable or predictable deviation from a known/desired value, e.g.\ $\pm 1cm$. 
+\\
+See {\small\url{https://www.starrapid.com/blog/designing-for-manufacturing-accuracy-precision-and-tolerance/}} for further details.
+}
+
+To achieve stable verification results over repeated test runs, the simulated actor states must be precise to a specific tolerance.
+%
+This tolerance must be appropriate to allow accurate assertion checking and coverage collection in the simulation environment.
+%
+Thus, a tolerance must be defined to reflect the precision at which repeatability of simulation execution is required. 
+
+
+
+
+tolerances are controlled to within a small, acceptable degree of variability from one part to another.
+
+
 %
 % but a larger value may be acceptable for non-urban environments, e.g. motorway or highway. Similarly, the threshold value should not be so small as to fail with minor computational bottlenecks, e.g. $1\mu m$.
+
+To determine if the ego vehicle performs correctly, i.e.\ does not violate assertions, t
+
+
+
+
+
+The autonomous vehicles operating in the last-mile mobility and delivery sector as considered in this case study will predominantly operate within urban rather than highway or motorway environments. 
 %
-A deterministic threshold of $1$m is insufficient when considering the spacial resolution required to resolve scenarios such as potentially dangerous close passing of cyclists and pedestrians, and a very small value, e.g. $1\times10^{-12}$, may result in false positives due to the simulation \textit{noise floor}\footnote{see Fig.~\ref{CarsCollisionCG25}.} Therefore a threshold of $1$cm is chosen which is sufficient for assertion checking in urban environments. 
+In particular, in this case study a determinism threshold of $1$m would be insufficient when considering the spacial resolution required to resolve situations such as potentially dangerous close passing of cyclists and pedestrians. A very small value, e.g.\ $1\times10^{-12}$,\todo{units for this - m(etres)?} may result in false positives due to the simulation \textit{noise floor}\footnote{See Fig.~\ref{CarsCollisionCG25}.} Therefore, for this case study, a threshold of $1$cm has been selected. Thus any variation of less than $1$cm is tolerable 
+
+considered to be sufficient for assertion checking in urban environments. 
 %
 % A value larger than this, e.g. $1m$ will not be sufficient to spatially resolve these scenarios and a smaller value, e.g. $1mm$ may result in false positives.
 
@@ -488,17 +563,9 @@ where any value higher than the deterministic threshold is considered non-determ
 % \todo[inline]{Move to Case Study, rewrite with justification: Two autonomous vehicle projects this group are involved in, Robopilot and Capri, are looking at urban mobility and last mile delivery solutions which are predominantly concerned with urban environments rather than highway or motorway scenarios. Because of this, a deterministic threshold of $1m$ is insufficient when considering potentially dangerous close passing of cyclists and pedestrians and therefore a threshold of $1cm$ is more suitable.} \todo[inline]{Formal writing, no reference to the group or project, please.}
 
 
-\todo[inline]{First describe the scenario(s), WHAT happens, HOW does it happen and WHY is this scenario interesting for this investigation, i.e.\ what are the features this scenario has? Then say how this has been implemented, referring to test numbers and the GC - think ive done this, take a look at first para below.}
-
-% ***************************************************
-%  Scenario Description
-% ***************************************************
-\subsection{Scenario Description}\label{TestsDescriptionAndTechnicalities}
-A T-junction scene was used to create a number of scenarios involving pedestrians and vehicles. 
+For the simulation to be considered repeatable, the overall level of simulation variance 
+for any actor should be less than a user-defined threshold for a given scenario and verification objective. 
 %
-These scenarios were created in order to identify any changes in the actor trajectories over repeated tests under different conditions and hence observe any change in \textit{simulation variance}.
-%
-The vehicles and pedestrians were given trajectories, via pre-defined waypoints, that will result in either colliding with or avoiding other actors. 
 
 % ***************************************************
 %  Actor Collisions
@@ -617,21 +684,6 @@ These tests were carried out on an Alienware Area 51 R5 with an i9 9960X process
 
 % The list of tests shown in Table \ref{TableOfExperiments} were chosen to cover the mandatory interactions between the different types of agents. These are summed up in the following: \textbf{i)}Agents (vehicles and pedestrians) moving with no collisions or interactions with each other \textbf{ii)}Collision between vehicles \textbf{iii)}Collision (intersection) between pedestrians \textbf{iv)}Collision between vehicles and pedestrians.
 
-
-\begin{figure}[!t]
-    \centering
-    \begin{subfigure}{.24\textwidth}
-        \includegraphics[width=1\textwidth]{Other/Figures/TestCasesDiagramV2_a.pdf}
-        \caption{}
-        \label{Test_a}
-    \end{subfigure}
-    \begin{subfigure}{.24\textwidth}
-        \includegraphics[width=1\textwidth]{Other/Figures/TestCasesDiagramV2_b.pdf}
-        \caption{}
-        \label{Test_b}
-    \end{subfigure}
-    \caption{Schematic of test scenarios for (a) Tests 1-4, (b) Tests 5-6. Descriptions are given in Table~\ref{TableOfExperiments}.}
-\end{figure}
 
 % Tests 1, 3and 5 are similar and there are no collisions in them, they were done as separate tests (instead of combining them into one) for the sake of simplicity and to use them as base lines for the tests-collision versions of them. The tests for collisions and non-collisions differ by a very slight change in the trajectory of the agents just to make them avoid colliding or intersecting with each other.
 
