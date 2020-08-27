@@ -148,14 +148,15 @@ Determinism is a key prerequisite for simulation during AV development and testi
 %Any software defects that are detected but not repeatable at a later time or by another party does not allow for suitable resolution. Furthermore, defects not found on the verification testing system may arise on a deployed system with a different hardware architecture resulting in untested and potentially unsafe behaviour. 
 %When considering the development of autonomous vehicles, untested code could lead to dangerous behaviours not being identified and fatal road accidents may occur.
 %
-If the simulation is not deterministic or has a non-permissible variance in the tolerance of, for example, actor positions, this may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software. The term \texit{simulation variance} refers to a measure of tolerance in the simulation and actor position is used as an example throughout this paper.
+
+If the simulation is not deterministic or has a non-permissible variance in the tolerance of, for example, actor positions, this may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software. The term \textit{simulation variance} refers to a measure of tolerance in the simulation and actor position is used as an example throughout this paper.
 
 % \todo[inline]{GC Edit: If the simulation is not deterministic, it lacks the appropriate precision for this application and the error between output traces exceeds the acceptable tolerance however, variance in actor positions, for instance, may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software.}
 
 % Challenges of SBV
 When used for gaming, game engines do not need to be deterministic nor do they even have any requirements on the limits of permissible tolerance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions is:
 How can one assess the extent to which a simulation environment is deterministic? 
-/todo{GC: How can one assess the extent to which a simulation environment is deterministic or has permissible tolerance?} 
+/todo{GC: How can one assess the extent to which a simulation environment is deterministic or has a permissible tolerance?} 
 
 In pursuit of an answer to this question we have investigated how non-determinism of a game engine, namely Unreal Engine that powers CARLA, when used for simulation-based AV verification affects the simulation results. 
 %
