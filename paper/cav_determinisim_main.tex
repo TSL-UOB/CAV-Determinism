@@ -23,7 +23,7 @@
 \usepackage{balance} %balance columns
 \usepackage{todonotes}
 \usepackage{siunitx}
-\usepackage{draftwatermark}
+% \usepackage{draftwatermark}
 
 %-------------------------------------------------------------------------------
 
@@ -160,13 +160,17 @@ How can one assess the extent to which a simulation environment is deterministic
 
 In pursuit of an answer to this question we have investigated how non-determinism of a game engine, namely Unreal Engine that powers CARLA, when used for simulation-based AV verification affects the simulation results. 
 %
-In our case study, scenarios between pedestrian and vehicle actors have been analysed to identify conditions that result in non-deterministic simulation traces as a result of non-permissible actor position variance.
+In our case study, scenarios between pedestrian and vehicle actors have been analysed to identify conditions that result in non-deterministic simulation traces by analysis of actor position variance.
 %
 By limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a deterministic operational simulation setup could be identified.
+
+\todo[inline]{GC: By analysing actor position variance we find that the Carla simulator is not deterministic under certain conditions. However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.}
 
 The insights gained from this case study have motivated the development of a general step-by-step method for AV developers and verification engineers to determine the simulation variance for a given simulation environment. 
 %
 Knowing the simulation variance will help them assess the impact that using a game engine for AV simulation may have. In particular, they can gain a better understanding of how potentially existing non-determinism affects repeatability and reliability of the simulation results. 
+%
+\todo[inline]{Knowing the simulation variance will help them assess the impact that using a game engine for AV simulation may have. In particular, they can gain a better understanding of how potentially existing non-determinism affects simulation precision and any verification results that are interpreted from this. }
 %
 % \todo[inline]{review and potentially summarize results from case study GC - added see below.}
 %We present a case study to illustrate the use of this method. The study highlights the effects of non-determinism of a game engine on simulation results. Scenarios between pedestrian and vehicle actors are used to identify conditions that result in high simulation variance.
@@ -228,6 +232,13 @@ There are numerous game engines with their associated development environments w
 % \footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
 
 Investigating the determinism of game engines has not attracted much research interest since performance is more critical for game developers than accurate and repeatable execution.  %However, when these engines are used for AV development then deterministic behaviour is required. 
+
+\todo[inline]{We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
+
+Ensuring software operates deterministically is a non-trivial task and catching intermittent failures in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}. 
+
+
+
 This section gives an overview of the internal structure of a game engine and what sources or settings in the engine may affect \textit{simulation variance}.
 %
 % \noindent This section overviews important information and concepts in physics engines, which are relevant to their usage in AV simulations. Particularly, on how physics engines operate and the sources of non-determinism in these engines necessary to understand the contribution of this paper.
@@ -309,7 +320,7 @@ and the simulation will exhibit lag between input commands and rendered states, 
 
 Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy. In contrast, simulation accuracy is essential in AV development and testing, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of accuracy at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that is as close as possible to what the real input would be, i.e.\ with no or minimal extrapolation or lag. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations. 
 
-\todo[inline]{GC Edit: Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither wishes a faithful representation of reality, i.e. can be low accuracy, nor do they require for repeated actions to result in the same outcome to particular tolerance, i.e. can be low precision. In contrast, the precision required for AV development and testing is much higher, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of tolerance on the precision at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that is as close as possible to what the real input would be, i.e.\ with no or minimal extrapolation or lag. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.}
+\todo[inline]{GC Edit: Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither wishes a faithful representation of reality, i.e. can be low accuracy, nor do they require for repeated actions to result in the same outcome to a particular tolerance, i.e. can be low precision. In contrast, the precision required for AV development and testing is much higher, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of tolerance on the precision at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that repeatable so that if any software bugs are found they can be re-played and the issue resolved. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.}
 
 \todo{KIE: ... by slowing down the simulation to enable more extensive physics calculations?}
 
@@ -317,11 +328,17 @@ Considering the objectives for gaming and comparing them to these for AV develop
 
 
 
+
+
 % ======= Sources of non-determinism
 \subsection{Potential Sources of Non-Determinism} \label{s:nondeterminisimSources}
 
 The following discussion reflects the results of our investigation into the potential sources of non-determinism that could affect game engines. We have examined hardware- as well as software-borne sources of non-determinism that occur at different layers of abstraction. 
-\todo[inline]{We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
+
+
+
+% MOVED TO INTRO \todo[inline]{We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
+
 \todo[inline]{We should also refer to literature like:\\
 Making System User Interactive Tests Repeatable: When and What Should We Control?~\cite{when-and-what-should-we-control} and
 Intermittently Failing Tests in the Embedded Systems Domain~\cite{intermittently-failing-tests}.
@@ -417,10 +434,14 @@ Runtime scheduling is a resource management method for sharing computational res
 % \todo[inline]{is this the scheduling that is done by the operating system, i.e. at runtime? GC - runtime, added to 1st para.}
 %
 Changing the scheduling policy and thread priorities may increase simulation variance. 
-%
+
+Indeed, the developers of the de-bugging program \texttt{RR} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core which avoids data races, as single threads cannot access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}.
+
 It is, however, unlikely that these would occur during repeated controlled tests for the same hardware and operating system configuration. Given that hardware is considered deterministic and if the thread execution order does not change between tests, then for the same hardware and operating system configuration the same output should be given. 
 
 However, if some aspects of the game loop are multi-threaded\footnote{\url{https://docs.unity3d.com/Manual/JobSystemMultithreading.html}}, then, even with a clear thread scheduling order, any background process may interrupt the otherwise deterministic sequence of events. This may, for example, alter the number of physics calculations that can be performed within the game loop and hence result in simulation variance.
+%
+\todo[inline]{add the ref from the google paper on using multiple threads and initialisation ordering for training ML models leads to unpredictable ordering of training data \cite{Sculley2015,Breck2017}}
 %
 Interference may also occur when a scheduler simply randomly selects from a set of threads with equal priority, resulting in variation of the thread execution order.
 
