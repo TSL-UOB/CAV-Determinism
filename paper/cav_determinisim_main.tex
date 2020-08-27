@@ -1,7 +1,8 @@
 \documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
-% \input{main.config.tex}
-\usepackage[maxnames=6,firstinits=true,doi=false,url=true,isbn=false]{biblatex}
+% \input{archive/main.config.tex}
+\usepackage[maxnames=6,firstinits=true,doi=false,url=false,isbn=false]{biblatex}
 % \addbibresource{IROS.bib}
+\addbibresource{cav_determinism.bib}
 \usepackage{array}
 \usepackage{graphicx}
 \usepackage{amsmath}
@@ -19,7 +20,6 @@
 \usepackage{authblk}
 \newcommand{\TODO}[1]{{\color{red}\textbf{TODO: #1}}}
 % \pagenumbering{gobble} %suppresses page numbers
-\addbibresource{cav_determinism.bib}
 \usepackage{balance} %balance columns
 \usepackage{todonotes}
 \usepackage{siunitx}
@@ -32,6 +32,7 @@
 %  TITLE
 % ***************************************************
 \title{On Determinism of Game Engines used for Simulation-based Autonomous Vehicle Verification}
+% \title{On the Precision of Game Engines used for Simulation-based Autonomous Vehicle Verification}
 \author[1,3]{Abanoub Ghobrial\thanks{$^{1}${\footnotesize \{abanoub.ghobrial, greg.chance, kerstin.eder\}@bristol.ac.uk}}}
 \author[1,3]{Greg Chance}
 \author[2,3]{Severin Lemaignan\thanks{$^{2}${\footnotesize \{severin.lemaignan, tony.pipe\}@brl.ac.uk}}}
@@ -54,9 +55,12 @@ Determinism is a key requirement for simulation-based development and verificati
 %
 However, game engines do not need to be deterministic per se. % when used for games. 
 %
-This paper identifies the requirements these engines need to fulfil when used for AV development and testing, and proposes a method to determine the \textit{simulation variance} for specific configurations and utilisation of the software and hardware, respectively. 
+This paper identifies the requirements these engines need to fulfil when used for AV development and testing, and proposes a method to determine the \textit{simulation precision} for specific configurations and utilisation of the software and hardware, respectively. 
 %
 A case study using CARLA, an open-source simulation environment powered by Unreal Engine, illustrates the proposed method and results from an example scenario indicate the presence of a deterministic operational simulation setup. \todo{Review again at end. Potentially give away more on results to motivate the reader to continue.}
+
+\todo[inline]{A case study using CARLA, an open-source simulation environment powered by Unreal Engine, illustrates the proposed method and results from an example scenario demonstrate simulation precision to an acceptable tolerance. }
+\todo{Review again at end. Potentially give away more on results to motivate the reader to continue.}
 
 % The industry and certification bodies for connected autonomous vehicles is adopting the use of physics and gaming engines to develop, train, verify, validate and certify the software of these autonomous systems in simulation. It is important for these engines to be deterministic in order for one to carry out these different processes. However, such engines are inherently non-deterministic. We propose a method by which one can identify the region where they can operate in these engines and guarantee that the level of non determinism is sufficiently low that it can be assumed to be deterministic. We also implement this method on a case study and show how we identified the region (encompassing computational utilisation and behaviours in simulation) at which one can guarantee performance to be sufficiently deterministic.          
 \end{abstract}
@@ -91,8 +95,9 @@ Furthermore, they are easy to setup and run; they also are simple to control and
 %
 %\todo[inline]{These game engines provide a convenient route to testing ego control and perception stack in a realistic environment}
 
-For game engines to be used in simulation-based testing of AVs, they must offer sensors that operate at an accuracy equivalent to those on the AV, e.g.\ video cameras, LIDAR, IR, etc., or interfaces for developers to integrate their own sensor models. CARLA currently offers various basic types of cameras and ray-case based lidar; extensions are still under development. 
-\todo{GC: what is ray-case? KIE: Not sure. :(}
+For game engines to be used in simulation-based testing of AVs, they must offer sensors that operate at an accuracy equivalent to those on the AV, e.g.\ video cameras, LIDAR, IR, etc., or interfaces for developers to integrate their own sensor models. CARLA currently offers various basic types of cameras and %ray-case based 
+lidar; extensions are still under development. 
+% \todo{GC: what is ray-case? KIE: Not sure. :(}
 %
 Finally, support for hardware-in-the-loop development or a real-time test-bed for cyber-security testing~\cite{Javaid2013,cyres} may also be required. 
 %
@@ -107,8 +112,21 @@ However, while game engines are designed primarily for performance to achieve a 
 %
 % What is a deterministic system
 In this context, deterministic refers to the property of causality given a temporal development of events such that any state is completely determined by prior states~\cite{Schumann2010}.
+% 
+% Herein the term \textit{simulation variance} is used to refer to how simulation traces and outputs vary, when the same stimulus is provided repeatedly to the simulation environment under identical initial conditions. Specifically, we focus on the variance of actor paths within a given scenario. 
 %
-Herein the term \textit{simulation variance} is used to refer to how simulation traces and outputs vary, when the same stimulus is provided repeatedly to the simulation environment under identical initial conditions. Specifically, we focus on the variance of actor paths within a given scenario. 
+Herein we adopt the engineering terms of \textit{precision} and \textit{tolerance} to describe how simulation traces and outputs vary, when the same stimulus is provided repeatedly to the simulation environment under identical initial conditions. %
+%
+As an analogy, the simulator can be thought of as manufacturing a product, producing data traces and if tasked to repeatedly make the same product we must ask how \textit{precise} can it be and what will the \textit{tolerance} be when comparing any differences between products. The precision of any computer based task is casually assumed to be absolute, but technically this is equivalent to the representation of numbers within it, e.g. 64-bit floating point \textbf{[ref]}. %
+%
+Real manufacturing can only aspire to achieve such precision and hence the need for tolerances on design specifications to account for the variance in real-world processes. If a simulator is deterministic then it will produce results with some degree of floating point precision and zero tolerance, i.e. with zero variance on any measure of distinction between simulation output traces. 
+%
+This is not to be confused with \textit{accuracy} which describes the extent to which the simulation complies to a known standard, in many cases a simulation is held to the standard of the real world, where any divergence from this standard is termed the \textit{reality gap}.  
+
+However, if the simulator is not deterministic then we must firstly ask what is the permissible limit of tolerance on the simulation output traces without affecting the verification process, and secondly how this can be measured to better inform engineers. 
+
+We focus on a measure of the \textit{tolerance} given by the statistical variance of actor paths within a given scenario. If the variance is zero then the simulation is deterministic to the precision of the numerical representations within it. Actor path variance is chosen over other measures as this distance based metric forms the basis for many downstream verification tests such as assertion checking. 
+
 
 We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time; these are considered actors and may include the AV or \textit{ego vehicle}, other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific parameters. A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
 
@@ -122,22 +140,25 @@ We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene
 Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. Thus, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy. 
 
 % GC Text
-\todo[inline]{GC Edit: Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable, or more formally, are \textit{precise}. This is not to be confused with \textit{accuracy} that describes the extent to which the simulation complies to a known standard, which could be considered a level of realism that faithfully describes the real world. The \textit{precision} of the process is the ability of the simulation to repeat the same execution and find no, or a \textit{tolerable}, difference in the outcome. \textit{Tolerance} is the acceptable degree of variability between repeated execution outputs. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy. }
+\todo[inline]{GC Edit: Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. In conventional engineering terms a deterministic simulator can be considered to have zero \textit{tolerance}. If the tolerance is non-zero it can no longer be considered deterministic but this may be sufficient for certain applications as long as it is \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated execution outputs. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.}
+
+% This is not to be confused with \textit{accuracy} that describes the extent to which the simulation complies to a known standard, which could be considered a level of realism that faithfully describes the real world. The \textit{precision} of the process is the ability of the simulation to repeat the same execution and find no, or a \textit{tolerable}, difference in the outcome. \textit{Tolerance} is the acceptable degree of variability between repeated execution outputs. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy. }
 %
 %Any software defects that are detected but not repeatable at a later time or by another party does not allow for suitable resolution. Furthermore, defects not found on the verification testing system may arise on a deployed system with a different hardware architecture resulting in untested and potentially unsafe behaviour. 
 %When considering the development of autonomous vehicles, untested code could lead to dangerous behaviours not being identified and fatal road accidents may occur.
 %
-If the simulation is not deterministic, however, variance in actor positions, for instance, may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software.
+If the simulation is not deterministic or has a non-permissible variance in the tolerance of, for example, actor positions, this may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software. The term \texit{simulation variance} refers to a measure of tolerance in the simulation and actor position is used as an example throughout this paper.
 
-\todo[inline]{GC Edit: If the simulation is not deterministic, it lacks the appropriate precision for this application and the error between output traces exceeds the acceptable tolerance however, variance in actor positions, for instance, may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software.}
+% \todo[inline]{GC Edit: If the simulation is not deterministic, it lacks the appropriate precision for this application and the error between output traces exceeds the acceptable tolerance however, variance in actor positions, for instance, may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software.}
 
 % Challenges of SBV
-When used for gaming, game engines do not need to be deterministic; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions is:
+When used for gaming, game engines do not need to be deterministic nor do they even have any requirements on the limits of permissible tolerance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions is:
 How can one assess the extent to which a simulation environment is deterministic? 
+/todo{GC: How can one assess the extent to which a simulation environment is deterministic or has permissible tolerance?} 
 
 In pursuit of an answer to this question we have investigated how non-determinism of a game engine, namely Unreal Engine that powers CARLA, when used for simulation-based AV verification affects the simulation results. 
 %
-In our case study, scenarios between pedestrian and vehicle actors have been analysed to identify conditions that result in high simulation variance.
+In our case study, scenarios between pedestrian and vehicle actors have been analysed to identify conditions that result in non-deterministic simulation traces as a result of non-permissible actor position variance.
 %
 By limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a deterministic operational simulation setup could be identified.
 
@@ -302,7 +323,7 @@ The following discussion reflects the results of our investigation into the pote
 \todo[inline]{We should also refer to literature like:\\
 Making System User Interactive Tests Repeatable: When and What Should We Control?~\cite{when-and-what-should-we-control} and
 Intermittently Failing Tests in the Embedded Systems Domain~\cite{intermittently-failing-tests}.
-}}
+}
 
 \medskip
 
