@@ -608,9 +608,8 @@ where any value higher than the specified tolerance is considered non-permissibl
 % \todo[inline]{Move to Case Study, rewrite with justification: Two autonomous vehicle projects this group are involved in, Robopilot and Capri, are looking at urban mobility and last mile delivery solutions which are predominantly concerned with urban environments rather than highway or motorway scenarios. Because of this, a deterministic threshold of $1m$ is insufficient when considering potentially dangerous close passing of cyclists and pedestrians and therefore a threshold of $1cm$ is more suitable.} \todo[inline]{Formal writing, no reference to the group or project, please.}
 
 
-\todo[inline,color=green!40]{GC question: should we remove this line now as it is repeating above statement?}
-For the simulation to be considered repeatable, the overall level of simulation variance 
-for any actor should be less than a user-defined threshold for a given scenario and verification objective. 
+% \todo[inline,color=green!40]{GC question: should we remove this line below as it is repeating above statement?}
+For the simulation to be considered repeatable, the overall level of simulation variance for any actor should be less than a user-defined threshold, or \textit{permissible tolerance}, for a given scenario and verification objective. 
 %
 
 % ***************************************************
@@ -623,7 +622,9 @@ Collisions and the subsequent physics calculations that are processed, termed \t
 
 The tests are listed in Table~\ref{TableOfExperiments} and were chosen to cover a range of interactions between actor types. 
 %
-Tests 1 \& 2 involve 2 vehicles meeting at a junction where they do not collide (test 1) and when they do tiggering a \textit{event hit} callback in the game engine (test 2). In both cases the trajectories of the vehicles are hard-coded to follow a set of waypoints spaced at $0.1$m \todo[inline]{AG: is this value correct or should it be 2.0m? AG-reply: The granularity of the trajectory waypoints is 0.1m, but the lookahead distance that the actors use is 2m ... actors would ignore trajectory waypoints that are less than 2.0m away from them.} intervals using a PID controller. In test 3 a mixture of different actor types are introduced where two vehicles drive without collision and a pedestrian walks across the road at a crossing point. In test 4 this pedestrian collides with one of the vehicles at the crossing, triggering a \textit{event hit} callback, see Fig~\ref{Test_a}. Similar to vehicles, pedestrians navigate via a set of regularly spaced waypoints at $0.1$m intervals using the A* algorithm which is the default controller for the CARLA pedestrian actors. Tests 5 \& 6 involve only pedestrians that do not collide (test 5) and that do collide (test 6), see Fig.~\ref{Test_b}. 
+Tests 1 \& 2 involve 2 vehicles meeting at a junction where they do not collide (test 1) and when they do tiggering an \textit{event hit} callback in the game engine (test 2). In both cases the trajectories of the vehicles are hard-coded to follow a set of waypoints spaced at $0.1$m 
+% \todo[inline]{AG: is this value correct or should it be 2.0m? AG-reply: The granularity of the trajectory waypoints is 0.1m, but the lookahead distance that the actors use is 2m ... actors would ignore trajectory waypoints that are less than 2.0m away from them.} 
+intervals using a PID controller. In test 3 a mixture of different actor types are introduced where two vehicles drive without collision and a pedestrian walks across the road at a crossing point. In test 4 this pedestrian collides with one of the vehicles at the crossing, triggering a \textit{event hit} callback, see Fig~\ref{Test_a}. Similar to vehicles, pedestrians navigate via a set of regularly spaced waypoints at $0.1$m intervals using the A* algorithm which is the default controller for the CARLA pedestrian actors. Tests 5 \& 6 involve only pedestrians that do not collide (test 5) and that do collide (test 6), see Fig.~\ref{Test_b}. 
 
 \todo[inline]{Again, match the flow diagram steps in the subsections, but here wrt the case study steps.}
 
@@ -631,18 +632,26 @@ Tests 1 \& 2 involve 2 vehicles meeting at a junction where they do not collide 
 %  Experiment Description
 % ***************************************************
 \subsection{Experiment Description}\label{s:Experiment_Description}
-\todo[inline]{Say what needs to be logged, what needs to be calculated based on these logs and what one should be looking for and why.}
-For each test the position of each actor was logged at $0.1s$ intervals providing a trace of that actor's trajectory with respect to simulation time. Repeated traces are compared at the same time index to provide a value for the variance of actor $a$ with respect to time $t$, $\sigma_a(t)$. The maximum variance over the entire set of $n$ simulations is therefore defined as the largest variance of any actor at any time in the simulation, 
+% \todo[inline]{Say what needs to be logged, what needs to be calculated based on these logs and what one should be looking for and why.}
+\todo[inline,color=green!40]{GC Edit: For each test the position of each actor was logged at $0.1s$ intervals providing a trace of that actor's trajectory with respect to simulation time. 
+%
+Repeated traces are compared at the same time index $t$ for actor $a$ to provide a value for the variance of actor position $\sigma_a^{2}(t)$. 
+%
+Herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor position data relative to the mean and is helpfully in the same units as actor position, $m$, for ease of interpretation. }
+%
+The maximum variance over the entire set of $n$ simulations is therefore defined as the largest variance of any actor at any time in the simulation, 
 \begin{equation} \label{eq:max_sigma}
-\max_{a,t}\sigma_a(t), 
+\max_{a,t}\sigma_a^{2}(t), 
 \end{equation}
-herein referred to as $\max\sigma$ for brevity.
+and therefore the maximum deviation is simply square root of the maximum variance and herein referred to as ${\max\sigma}$ for brevity. 
+
+
 % The output for each experiment can therefore be summarised as the \textit{maximum variance} of any actor over the $n$ repeated tests. 
 % The maximum, rather than average, variance is chosen to indicate the worst case where an average could obscure outlier data points when a high number of repeated tests are performed. 
-The $\max\sigma$ value was analysed against the different scenarios and settings that were identified as potential sources of simulation variance, and compared against the \textit{deterministic threshold} to indicate if the simulation was deterministic or not. 
+\todo[inline,color=green!40]{GC Edit: The maximum deviation, $\max\sigma$, was analysed against the different scenarios and settings that were identified as potential sources of non-determinism, and compared against the threshold of \textit{permissible tolerance} to indicate if the simulation was reliable for verification purposes. } 
 %
 % Preliminary work\footnote{see footnote 14} suggested that adding stress to the CPU or GPU will contribute towards increased . 
-\todo[inline]{Introduce the need to use CPU and GPU HW in a game engine or any simulation HW. GC done}
+% \todo[inline]{Introduce the need to use CPU and GPU HW in a game engine or any simulation HW. GC done}
 
 
 % Once the experiments are run, the logged data is post processed to find the variance in the logged data between the different runs. Note that bifurcation effects can cause a jump in the variance, so it is worth plotting the different logged paths in order to determine if there are any bifurcation effects.
@@ -661,7 +670,6 @@ Within Unreal Engine there are numerous internal settings relating to the moveme
 An initial study into the Unreal Engine using a pedestrian and a moving block was used to investigate simulation variance against these settings. The results were compared to a baseline of the default engine settings. 
 %
 However, none of these options improved simulation variance significantly and all internal setting were set restored to the default values. Details on this previous investigation can be found on the Trustworthy Systems github~\cite{TSLUnrealEngineTesting}.
-
 
 \begin{table*}[b]
 \centering
@@ -684,9 +692,13 @@ Test & Actors 					 	  & Collision 	 & Collision Type 			 & $n$  & $\max\sigma$ 
 % ***************************************************
 %  External Settings
 % ***************************************************
-\subsection{External Settings}\todo[inline]{This would be ``External Settings'' and can be introduced after finding that internal settings alone did not tame the non-determinism. :(}
+\subsection{External Settings}
+% \todo[inline]{This would be ``External Settings'' and can be introduced after finding that internal settings alone did not tame the non-determinism. :(}
 
-After discovering that internal engine settings could not achieve a simulation variance that met the required \textit{deterministic threshold}, settings external to the game engine were explored. 
+After discovering that internal engine settings could not achieve a simulation variance that met the required 
+% \textit{deterministic threshold}, 
+\textit{permissible tolerance}, 
+settings external to the game engine were explored. 
 %
 Game engines, and simulation hardware more generally, will utilise available system resources such as central and graphical processing units (CPU and GPU respectively), to perform physics calculations and run the simulation environment. 
 %
@@ -702,7 +714,7 @@ Resource utilisation was artificially increased for both CPU and GPU devices to 
 %  System Configuration and Screening
 % ***************************************************
 \subsection{System Configuration and Screening}\label{s:screening}
-These tests were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB non-ECC DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 graphics card with 8GB GDDR6 RAM at 1515 MHz. Operating systems was Linux Ubuntu 18.04.4 LTS. To ensure reliability of results, each test was repeated 1000 times. Tests were carried out in CARLA (v0.9.6 and Unreal Engine v4.22) using synchronous mode with a fixed $dt$ of $0.05$s. To eliminate some of the potential sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests were performed on our system. These were:
+These tests were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB non-ECC DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 GPU with 8GB GDDR6 RAM at 1515 MHz. Operating systems was Linux Ubuntu 18.04.4 LTS. To ensure reliability of results, each test was repeated 1000 times. Tests were carried out in CARLA (v0.9.6 and Unreal Engine v4.22) using synchronous mode with a fixed $dt$ of $0.05$s. To eliminate some of the potential sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests were performed on our system. These were:
 
 \begin{itemize}[leftmargin=*]
     \item System memory: \texttt{memtest86}\footnote{\url{https://www.memtest86.com/}} full suite of tests ran, all passed.
@@ -758,13 +770,13 @@ These tests were carried out on an Alienware Area 51 R5 with an i9 9960X process
 \subsection{Results and Discussion}\label{ResultsSection}
 A summary of all the results are shown Table~\ref{TableOfExperiments} in the column $\max\sigma$ (unrestricted), where the value reported is the maximum deviation across all resource utilisation levels, i.e. the worst case for a given scenario.  
 %
-From these  results it is clear that scenarios with only pedestrian actors (tests 5-6) are consistently deterministic over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. However, all other scenarios involving vehicles or a mixture of actor types breach the deterministic threshold that has been set, with some deviation in actor path as large as $59$cm. 
+\todo[inline,color=green!40]{GC Edit: From these  results it is clear that scenarios with only pedestrian actors (tests 5-6) display results within the permissible tolerance over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. However, all other scenarios involving vehicles or a mixture of actor types breach the permissible tolerance that has been set, with some deviation in actor path as large as $59$cm. }
 %
 Clearly a deviation in results of such a large amount is unacceptable if simulation is to be used as a reliable verification tool.
 
 Resource utilisation level was found to have a significant impact on \textit{simulation variance}.
 %
-Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against the artificially increased resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (for CPU \& GPU). In this figure, anything above the $1$cm threshold (dashed line) is considered non-deterministic according to our specific threshold level informed from our verification requirements.
+Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against the artificially increased resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (for CPU \& GPU). In this figure, anything above the $1$cm threshold (dashed line) is considered non-permissible according to our specific threshold level informed from our verification requirements.
 %
 \todo[inline]{Where are the verification requirements listed? They should be part of the scenario description. GC- added to the start of section 3.} 
 %
@@ -797,9 +809,12 @@ A general pattern in the results indicates that; some scenarios fail to produce 
 
 
 
-However, the non-deterministic results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per definition \ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
+However, the non-permissible results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per definition \ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
 %
-Examining specifically the results from tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from deterministic prior to the vehicle collision to non-deterministic post-collision. This pattern of deterministic behaviour prior to collision and non-deterministic post-collision is maintained up to a resource utilisation level of approximately 75\%, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates deterministic pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding of this work; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-deterministic. % \todo{Why ``not reliable''.} 
+\todo[inline,color=green!40]{GC Edit: Examining specifically the results from tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible post-collision. 
+%
+This pattern of permissible results prior to collision and non-permissible post-collision is maintained up to a resource utilisation level of approximately 75\%, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates permissible pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding of this work; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-permissible. }
+% \todo{Why ``not reliable''.} 
 
 \begin{figure*}[h]
     \centering
@@ -813,10 +828,11 @@ Examining specifically the results from tests 2 \& 4 as a function of simulation
         \caption{}
         \label{CarsPeopleCollisionPrePost}
     \end{subfigure}
-    \caption{Vehicle to pedestrian collision (test 4) showing (a) mean deviation against simulation time for 25\% stress and (b) mean deviation pre- and post-collision for different resource utilisation.}
+    \caption{Vehicle to pedestrian collision (test 4) showing (a) maximum deviation against simulation time for 25\% stress and (b) maximum deviation pre- and post-collision for different resource utilisation levels.}
 \end{figure*}
 
-The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three key observations here; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision as described above. Secondly, that the pedestrian involved in the collision (Ped ID 3) displays deterministic behaviour throughout the test\footnote{Note that in CARLA the pedestrian object is destroyed post-collision hence the flat line following the collision.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers and research practitioners in the field as it implies that \textit{any collision between actors can affect the determinism of the entire actor population} and could potentially result in  erroneous assertion checking.
+The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three key observations here; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision.% as described above. 
+Secondly, that the maximum deviation of the pedestrian involved in the collision (Ped ID 3) is at a tolerable level throughout the test\footnote{However, please note that in CARLA the pedestrian object is destroyed post-collision hence the flat line from $t=6s$ onwards.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers and research practitioners in the field as it implies that \textit{any collision between actors can affect the simulation variance of the entire actor population} and could potentially result in  erroneous assertion checking.
 
 % \todo[inline]{Make sure that assertion checking has been introduced before.}
 
@@ -839,7 +855,9 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
 
 \todo[inline]{Sum this up and lead on to the Methodology - assuming that this section is placed before the Methodology section. This should cover that our results are clearly specific to our HW and provide evidence of non-determinism, but the results are not transferable. Thus, we present a general Methodology that others can re-use/apply to determine whether or not their sim is deterministic - in the next section.}
  
-The main findings of this work suggest a working practice that would minimise the non-deterministic effects observed in this investigation. By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the deterministic threshold of $1$cm is achievable as shown in the restricted column in Table.~\ref{TableOfExperiments}.
+The main findings of this work suggest a working practice that would minimise the non-deterministic effects observed in this investigation. By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the permissible tolerance threshold of $1$cm is achievable as shown in the \textit{restricted} column in Table.~\ref{TableOfExperiments}. By applying this set of restrictions upon the simulation the maximum observed deviation across all experiments was $0.98cm$ which is within the target tolerance we set out to achieve. 
+%
+\todo[inline,color=green!40]{GC Addition: Practitioners may wish to set a stricter resource utilisation level, such as less than 50\% to further reduce the potential dispersion of results if this is required for their chosen application. For this case study a 50\% restriction of resource utilisation would reduce deviation across all experiments to XXX.XXXmm. }
 
 \subsection{Investigation Summary} \label{s:empirical_summary}
 
@@ -847,7 +865,10 @@ The main findings of this work suggest a working practice that would minimise th
 
 \todo[inline]{Do we need to say here why we think certain results are non-det, what the reasons might be?? The results indicate that actor type, resource utilisation and collision events all affect the determinism in the CARLA simulator. Collision events may utilise more computational resources than simulations without such events, i.e. the physics loop takes longer to process as there are complex physical interactions to resolve. This may coincide with the second observation that higher resource levels also lead to non-deterministic results. We hypothesise that both these observations are due to improper management of thread scheduling within the engine. When resources are occupied there may be a delay in processing critical calculations for the simulator, which may arrive out of an expected sequence or the engine compensates for this delay by reducing the number of physics loops that can be performed within a render cycle. (is this 2nd one true, or does carla ignore render requests?)}
 
-This empirical investigation has highlighted the shortcomings of using a games engine for simulation based verification and advice for best working practice. However, these results are specific to the hardware and software used in the study and may not be transferable to other systems directly. Therefore we present a general methodology that practitioners can follow to find the \textit{deterministic domains of operation} for any hardware configuration.
+This empirical investigation has highlighted the shortcomings of using a games engine for simulation based verification and advice for best working practice. However, these results are specific to the hardware and software used in the study and may not be transferable to other systems directly. Therefore we present a general methodology that practitioners can follow to find the 
+% \textit{deterministic domains of operation} 
+\textit{operational domains of permissible tolerance} 
+for any hardware configuration.
 
 
 % First, the tests with no collisions are considered, these represent tests 1, 3 and 5. Tests 1 and 3, which involves vehicles only and vehicles with pedestrians respectively, shows very low simulation variance for stress levels below 50\% and as the stress level increases they surpass the red line crossing our defined deterministic level but still being sufficiently low (i.e. with in the centimeter level). This clearly shows how the load on a computer (i.e. stressing CPU and GPU) can have drastic effects on the repeatablitiy of tests. This is more specific to vehicle agents rather than pedestrians since the behaviour of pedestrians is consistent and remarkably below the mm level for all of the different levels of stress shown by test 5, where only pedestrians are involved with no collisions, from which it can be deduced that the mean deviation change with the stress level in test 3 was solely due to the vehicles.
