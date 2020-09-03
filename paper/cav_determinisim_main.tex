@@ -350,7 +350,12 @@ Floating-point representation of real numbers is limited by the fixed bit width 
 Thus, the results of arithmetic operations must fit into the given bit width, which is achieved through rounding to the nearest representable value. This gives rise to rounding errors~\cite{FloatingPointsBook,goldberg1991every}. %
 %
 % SEE BELOW \todo[inline]{Check the points on floating point operations in An Empirical Analysis of Flaky Tests~\cite{empirical-analysis-of-flaky-tests}.}
-Even operations such as the average of an array can result in issues with overflows, underflows and non-associative addition which may result in non-deterministic behaviour, and some authors suggest avoiding the use of floating point entirely for assertion testing due to imprecision~\cite{empirical-analysis-of-flaky-tests}.
+\todo[inline,color=green!40]{GC Addition (added reference on non-associative fp addition Kapre2007, Whitehead2011, empirical-analysis-of-flaky-tests, see para below:)
+
+Even operations such as the average of an array can result in issues with overflows, underflows and non-associative addition~\cite{Kapre2007} which may result in non-deterministic behaviour. Calculation results may differ due to the nature of non-associative floating point arithmetic if there is a change in compiler, a change in the execution order or even if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. Some authors even suggest avoiding the use of floating point entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}. 
+%
+Here we are assuming these calculations are performed on a single core and therefore concurrency of multiple threads is not an issue which is discussed in the section below titled Scheduling, Concurrency and Parallelisation.}
+
 %
 % Floating-point representation of real numbers is limited with fixed register sizes resulting in errors of rounding where loss of bits occur which are rounded or truncated and cancellation which happens where two similar values are subtracted.
 
@@ -359,7 +364,6 @@ In the context of AV simulation, such rounding errors could result in precision 
 % \todo[inline]{state what assertions are (used for) GC-see below} 
 %In the field of AV verification, assertions are the immutable rules and regulations that describe safe and legal driving. 
 %
-\todo[inline,color=red!40]{GC I think all this need re-write now as we should be saying that fp could lead to non-det if issues such as non-associative addition are not controlled....
 Thus, one could jump to the conclusion that floating-point errors cause non-deterministic behaviour, resulting in loss of repeatability. 
 
 However, these precision issues are better described as \textit{incorrectness}, rather than them being a source of non-determinism. 
@@ -373,9 +377,7 @@ be equally \textit{incorrect} as long as the implementation conforms to the IEEE
 
 Beyond hardware limitations, aggressive optimisations by the compiler can also introduce incorrectness in floating-point arithmetic~\cite{llvm-floating-point}. However, the same executable should still return the same output for identical input. 
 %
-Therefore, it can be concluded that floating-point arithmetic does not contribute to \textit{simulation variance} for repeated tests using the same executable on the same hardware.
-}
-
+Therefore, it can be concluded that floating-point arithmetic does not contribute to \textit{simulation variance} for repeated tests using the same executable on the same hardware with the same configuration.
 
 
 \noindent\underline{\textit{Error Correcting Code (ECC) Memory:}}
@@ -452,7 +454,7 @@ This is because the processor cores are identical and any impurities across the 
 %
 However, scheduling multiple processes across several processing cores, where the number of cores is smaller than the number of processes, can result in variation of the execution order and cause simulation variance unless explicitly constrained or statically allocated prior to execution. 
 
-\todo[inline,color=green!40]{GC addition:Indeed, the developers of the de-bugging program \texttt{RR} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}. }
+\todo[inline,color=green!40]{GC addition:Indeed, the developers of the de-bugging program \texttt{RR} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}. }
 
 Likewise, simulation variance may be observed for game engines that use GPU parallelisation to improve performance by offloading time-critical calculations to several dedicated computing resources simultaneously. While this would be faster than a serial execution, the order of execution arising from program-level concurrency is often not guaranteed. 
 
@@ -492,7 +494,7 @@ Overall, scheduling, concurrency and parallelisation may be reasons for \textit{
 We have investigated the potential sources of non-determinism affecting game engines 
 and explored the impact they may have on simulation variance. 
 %
-\todo[inline,color=red!40]{GC need to decide if fp is a source or not: Assuming deterministic hardware, there is no contribution to simulation variance due to floating-point representation and any rounding errors due to bit width limits should be repeatable. }
+% \todo[inline,color=red!40]{GC need to decide if fp is a source or not: Assuming deterministic hardware, there is no contribution to simulation variance due to floating-point representation and any rounding errors due to bit width limits should be repeatable. }
 %
 Memory checking not withstanding, errors associated with the lack of ECC are likely to be minimal unless there is significant background radiation or 1000's of hours of computation are expected.
 \todo[inline]{So, do commercial HPC facilities have ECC memory?}
@@ -710,6 +712,11 @@ To replicate in a controlled manner the high computational loads that may be ant
 Resource utilisation was artificially increased for both CPU and GPU devices to include a range of values from 0-95\% (see Section \ref{s:methodology}) using reported values of the system monitors \texttt{htop} and \texttt{nvidia-smi} respectively. Resource utilisation figures reported here should be considered approximate values.
 % The level of additional resource utilisation, above that of the needs of the simulation, was increased from $0\%$ (no additional resource load) in $25\%$ increments up to a maximum of $95\%$ for both CPU and GPU as reported by system monitors (\texttt{htop} and \texttt{nvidia-smi} respectively). 
 
+\todo[inline,color=green!40]{GC Addition (para below):} 
+%Issues around floating point precision and concurrency as previously mentioned notwithstanding, 
+Practitioners should also be away that many libraries for calculating variance itself may require attention to get precise results. For example the \texttt{numpy} method of variance is sensitive to the input precision and will return an incorrect answer if the wrong parameters are set~\cite{NumpyVar}. Even in \texttt{matlab}, the calculation of variance may switch from single thread to a multi-threaded execution not obviously apparent to the user when the input data size becomes large enough, opening up the potential for concurrency imprecision\footnote{\url{https://uk.mathworks.com/matlabcentral/answers/317128-does-matlab-use-all-cores-by-default-when-running-a-program}}. 
+
+	
 % ***************************************************
 %  System Configuration and Screening
 % ***************************************************
@@ -832,7 +839,7 @@ This pattern of permissible results prior to collision and non-permissible post-
 \end{figure*}
 
 The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three key observations here; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision.% as described above. 
-Secondly, that the maximum deviation of the pedestrian involved in the collision (Ped ID 3) is at a tolerable level throughout the test\footnote{However, please note that in CARLA the pedestrian object is destroyed post-collision hence the flat line from $t=6s$ onwards.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers and research practitioners in the field as it implies that \textit{any collision between actors can affect the simulation variance of the entire actor population} and could potentially result in  erroneous assertion checking.
+Secondly, that the maximum deviation of the pedestrian involved in the collision (Ped ID 3) is at a tolerable level throughout the test\footnote{However, please note that in CARLA the pedestrian object is destroyed post-collision hence the flat line from $t=6$s onwards.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers and research practitioners in the field as it implies that \textit{any collision between actors can affect the simulation variance of the entire actor population} and could potentially result in  erroneous assertion checking.
 
 % \todo[inline]{Make sure that assertion checking has been introduced before.}
 
@@ -855,7 +862,7 @@ Secondly, that the maximum deviation of the pedestrian involved in the collision
 
 \todo[inline]{Sum this up and lead on to the Methodology - assuming that this section is placed before the Methodology section. This should cover that our results are clearly specific to our HW and provide evidence of non-determinism, but the results are not transferable. Thus, we present a general Methodology that others can re-use/apply to determine whether or not their sim is deterministic - in the next section.}
  
-The main findings of this work suggest a working practice that would minimise the non-deterministic effects observed in this investigation. By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the permissible tolerance threshold of $1$cm is achievable as shown in the \textit{restricted} column in Table.~\ref{TableOfExperiments}. By applying this set of restrictions upon the simulation the maximum observed deviation across all experiments was $0.98cm$ which is within the target tolerance we set out to achieve. 
+The main findings of this work suggest a working practice that would minimise the non-deterministic effects observed in this investigation. By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the permissible tolerance threshold of $1$cm is achievable as shown in the \textit{restricted} column in Table.~\ref{TableOfExperiments}. By applying this set of restrictions upon the simulation the maximum observed deviation across all experiments was $0.98$cm which is within the target tolerance we set out to achieve. 
 %
 \todo[inline,color=green!40]{GC Addition: Practitioners may wish to set a stricter resource utilisation level, such as less than 50\% to further reduce the potential dispersion of results if this is required for their chosen application. For this case study a 50\% restriction of resource utilisation would reduce deviation across all experiments to XXX.XXXmm. }
 
@@ -888,7 +895,7 @@ for any hardware configuration.
 %  METHOD
 % ***************************************************
 \section{Methodology} \label{s:methodology}
-In this section a method for determining the variance of simulated actor path trajectories, termed \textit{simulation variance}, and resolving the deterministic operational domains of the simulation are presented. 
+In this section a method for determining the variance of simulated actor path trajectories, termed \textit{simulation variance}, and resolving the operational domains of permissible tolerance of the simulation are presented. 
 %
 % A number of parameters have been identified either theoretically or from the empirical investigation that influence simulation variance. 
 This methodology has been refined several times over the course of our investigations into both Unreal Engine and CARLA and is presented here as a work flow, see Fig.~\ref{method_diagram}. %These need to be considered at different stages in the process.  
@@ -900,12 +907,14 @@ This methodology has been refined several times over the course of our investiga
 Different actor types may be handled differently by the game engine and our investigation indicated that CARLA pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However the introduction of CARLA vehicles increased the simulation variance of the pedestrian-only test by 12 orders of magnitude. As such, all actors that could be included in any future simulation should be tested, including any non-standard CARLA or bespoke actors.
 %
 \subsubsection{Trajectories and Collisions} 
-Actor paths should hard-coded in a number of different tests that explore; no collisions, collisions between actors, and potentially collisions between actors and static scenery if this is likely to occur in the simulation.
+Actor paths should be hard-coded in a number of different tests that explore; no collisions, collisions between actors, and potentially collisions between actors and static scenery if this is likely to occur in the simulation.
 
-\subsubsection{Setting a Deterministic Threshold} \label{s:threshold}
-The verification engineer should set the \textit{deterministic threshold} based on their specific requirements which refers to the acceptable level of actor path variance ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. This threshold is analogous to the analogue signal level associated with each of the binary states of the signals in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be, for example, any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the physical signal values that are analogue voltages into the digital domain with binary representation. 
+\subsubsection{Setting a Permissible Tolerance} \label{s:threshold}
+The verification engineer should set the \textit{permissible tolerance} based on their specific requirements which refers to the acceptable level of actor path variance. % ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. 
+This tolerance level is analogous to the analogue signal level associated with each of the binary states %of the signals 
+in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be, for example, any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the noisy physical signal values that are analogue voltages into the digital domain with binary representation. 
 %
-The deterministic threshold that the user must set depends on the objectives of the simulation and the granularity at which the simulation environment operates. In particular, this threshold must be sufficiently small to enable accurate assertion checking. In our empirical investigation we set a threshold of $1$cm which is sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this threshold experimentally. 
+The permissible tolerance that the user must set depends on the objectives of the simulation and the granularity at which the simulation environment operates. For example, this threshold must be sufficiently small to enable accurate assertion checking. In our empirical investigation we set a threshold of $1$cm which is sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this threshold experimentally. 
 
 % \todo[inline]{Make sure assertion checking has previously been introduced.}
 
@@ -919,7 +928,10 @@ The deterministic threshold that the user must set depends on the objectives of 
 
 
 \subsubsection{Simulation Length} 
-The simulation time should be sufficient to record interactions between actors but not so long that 100's or 1000's of repeated tests take an inconvenient time to complete. In our empirical investigation a simulation time of $10-20$s was sufficient to monitor the distinct change in events such as the pre- and post-collision including the delayed effect seen by other actors, shown in Fig.~\ref{CarsPeopleCollsionsCG25}.
+The simulation time should be sufficient to record interactions between actors but not so long that 
+%100's or 1000's 
+a statistically significant number 
+of repeated tests take an inconvenient time to complete. In our empirical investigation a simulation time of $10-20$s was sufficient to monitor the distinct change in events such as the pre- and post-collision including the delayed effect seen by other actors, shown in Fig.~\ref{CarsPeopleCollsionsCG25}.
 
 % Depending on the number of repeated tests and the average deviation reported from the experiment, a maximum rather than average may be required if the results are close to the user-specified threshold. This is to ensure that an outlier data-point is not hidden in the average of $n$-tests.
 
@@ -941,7 +953,7 @@ The version number of the CARLA and Unreal environment has also be shown to affe
 
 \subsubsection{Resource Utilisation}
 % To simulate the demands of taxing simulations, potentially requiring realistic rendering or complex physics calculations in an otherwise simple scenario, stress programs should be used to artificially occupy system resources. 
-The resources available to the simulator have been shown to have a significant effect on the determinism of simulated vehicles and exploring this as a variable the analysis is required. 
+The resources available to the simulator have been shown to have a significant effect on the simulation variance of simulated vehicles and exploring this as a variable the analysis is required. 
 CPU utilisation software, such as the linux \texttt{stress} tool which is a workload generator program can be used spawn workers on any number of cores or virtual threads on a system. This can be used to artificially increased the load on the system to explore at what point your system may become susceptible to \textit{simulation variance}. For GPU utilisation \texttt{gpu-burn} was employed using the \texttt{fur test} where different resolutions and multiple instances can be used to tune graphical utilisation levels~\cite{GPU_stress}. Reported values of resource utilisation can be obtained using the system monitors \texttt{htop} and \texttt{nvidia-smi} for CPU and GPU respectively. These values can also be written into the data logging for completeness.
 
 Alternatively, in place of artificial resource utilisation multiple instances of the simulation could be executed simultaneously. However, the granularity of control with this approach may be reduced.
