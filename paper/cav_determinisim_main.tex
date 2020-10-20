@@ -242,7 +242,7 @@ There are numerous game engines with their associated development environments w
 
 Investigating the determinism of game engines has not attracted much research interest since performance is more critical for game developers than accurate and repeatable execution.  %However, when these engines are used for AV development then deterministic behaviour is required. 
 %
-Ensuring software operates deterministically is a non-trivial task and catching intermittent failures in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}.
+Ensuring software operates deterministically is a non-trivial task and catching intermittent failures, or flaky tests~\cite{intermittently-failing-tests}, in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}.
 %
 \todo[inline]{GC line added to introduction. We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
 %
@@ -344,6 +344,10 @@ Considering the objectives for gaming and comparing them to these for AV develop
 \subsection{Potential Sources of Non-Determinism} \label{s:nondeterminisimSources}
 
 The following discussion reflects the results of our investigation into the potential sources of non-determinism that could affect game engines. We have examined hardware- as well as software-borne sources of non-determinism that occur at different layers of abstraction. 
+%
+\todo[inline,color=green!40]{GC Addition below}%
+%
+A good analysis of potential sources is given by Strandberg et al.~\cite{intermittently-failing-tests} although the CAV simulation domain introduces it's own unique challenges that are not considered in this paper.
 
 % MOVED TO INTRO \todo[inline]{We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
 
@@ -547,10 +551,16 @@ simulation-based verification of autonomous vehicles with a focus on
 characterising sources of non-determinism in order to understand  the impact
 they have on simulation variance. 
 %
+\todo[inline,color=green!40]{GC new: line below.}
+%
+Gao et al.~\cite{when-and-what-should-we-control} took a similar approach investigating Java applications, where a set of sources of non-determinism (termed factors) were shown to impact on repeatability of testing and recommended that results of repeated tests must be quoted in averages and ranges as their testing configuration was not possible to execute deterministically. 
+%
 Ultimately, our objective is to control non-determinisim to minimise simulation variance.
 
 \todo[inline,color=red!40]{old:  We first describe the context, scene and scenario of interest before discussing and defining a threshold for what is considered an acceptable simulation variance in this context.}
+%
 We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context.
+%
 \todo[inline,color=green!40]{GC alternative: We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context.}
 %
 \todo[inline]{Complete the section structure as this is a very long section.}
