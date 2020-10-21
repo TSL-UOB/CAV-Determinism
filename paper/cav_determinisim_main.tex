@@ -21,8 +21,8 @@
 \newcommand{\TODO}[1]{{\color{red}\textbf{TODO: #1}}}
 % \pagenumbering{gobble} %suppresses page numbers
 \usepackage{balance} %balance columns
-\usepackage{todonotes}
-% \usepackage[disable]{todonotes}
+% \usepackage{todonotes}
+\usepackage[disable]{todonotes}
 \usepackage{siunitx}
 % \usepackage{draftwatermark}
 
@@ -104,7 +104,7 @@ For game engines to be used in simulation-based testing of AVs, they must offer 
 lidar; extensions are still under development. 
 % \todo{GC: what is ray-case? KIE: Not sure. :(}
 %
-Finally, support for hardware-in-the-loop development or a real-time test-bed for cyber-security testing~\cite{Javaid2013,cyres} may also be required. 
+Finally, support for hardware-in-the-loop development or a real-time test-bed for cyber-security testing~\cite{Javaid2013} may also be required. %~\cite{Javaid2013,cyres}
 %
 % The game engine, in this context, must also comply with the requirements to provide a suitably realistic environment and real-time processing for perception and security analysis.\todo[inline]{next}
 
@@ -120,7 +120,7 @@ In this context, deterministic refers to the property of causality given a tempo
 %
 Herein we adopt the engineering terms of \textit{precision} and \textit{tolerance} to describe how simulation traces and outputs vary, when the same stimulus is provided repeatedly to the simulation environment under identical initial conditions~\cite{ADictionaryofMechanicalEngineering}. %
 %
-As an analogy, the simulator can be thought of as manufacturing a product, producing data traces and if tasked to repeatedly make the same product we must ask how \textit{precise} can it be and what will the \textit{tolerance} be when comparing any differences between products. The precision of any computer based task is casually assumed to be absolute, but technically this is equivalent to the representation of numbers within it, e.g. 64-bit floating point \textbf{[ref]}. %
+As an analogy, the simulator can be thought of as manufacturing a product, producing data traces and if tasked to repeatedly make the same product we must ask how \textit{precise} can it be and what will the \textit{tolerance} be when comparing any differences between products. The precision of any computer based task is casually assumed to be absolute, but technically this is equivalent to the representation of numbers within it, e.g. 64-bit floating point. %\textbf{[ref]}. %
 %
 Real manufacturing can only aspire to achieve such precision and hence the need for tolerances on design specifications to account for the variance in real-world processes. If a simulator is deterministic then it will produce results with some degree of floating point precision and zero tolerance, i.e. with zero variance on any measure of distinction between simulation output traces. 
 %
