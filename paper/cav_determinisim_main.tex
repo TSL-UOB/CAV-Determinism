@@ -49,6 +49,8 @@
 \noindent 
 Game engines are increasingly used as simulation platforms by the autonomous vehicle (AV) community to develop vehicle control systems and test environments. 
 %
+A deterministic process has no randomness and will always produce the same output with the same initial conditions and event history. 
+%
 Determinism is a key requirement for simulation-based development and verification; it ensures tests are repeatable, so that software bugs can be found and fixed, and simulation results are trustworthy.
 \todo[inline,color=green!40]{GC Alternative: Determinism is a key requirement for simulation-based development and verification; it ensures the simulation is precise and that tests are repeatable, so that software bugs can be found and fixed, and simulation results are trustworthy.}
 %
@@ -86,50 +88,89 @@ Autonomous Driving, Autonomous Vehicles, Determinism, Physics Engines,  Verifica
 \IEEEPARstart{S}{}imulation-based techniques can be used to verify autonomous driving functions under development benefiting from full control over the road network and the actors within it. Simulated tests aim to provide evidence to developers and regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988} which form a body of safe and legal driving rules, termed assertions, that must not be violated. 
 
 Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules, e.g.\ through assertion checking during simulation. 
-There have been a number of fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. Simulation environments offer a means to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without millions of miles of costly on-road testing~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
+There have been a number of fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. Simulation environments offer a means to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without the need for millions of miles of costly on-road testing~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
 
 % The use of game engines for AV testing
 Increasingly, the autonomous vehicle community is adopting game engines as simulation platforms to support the development and testing of vehicle control software. 
 %
-CARLA\footnote{\url{http://carla.org/}}, for instance, is an open-source simulator for autonomous driving that is implemented as a layer over the Unreal Engine\footnote{\url{https://www.unrealengine.com/}}, a  real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
+CARLA\footnote{\url{http://carla.org/}}, for instance, is an open-source simulator for autonomous driving that is implemented in the Unreal Engine\footnote{\url{https://www.unrealengine.com/}}, a real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
 
 % Requirements of simulation based verification SBV
 State-of-the-art game engines provide a convenient option for simulation-based testing. They offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes, potentially suitable for perception stack testing and visual inspection of accidents or near misses. 
 %
-Furthermore, they are easy to setup and run; they also are simple to control and observe, both with respect to the environment the AV operates in as well as the temporal development of actors~\cite{Ulbrich2015}. 
+Furthermore, they are easy to setup and run with respect to on-road testing and are simple to control and observe, both with respect to the environment the AV operates in as well as the temporal development of actors~\cite{Ulbrich2015}. 
 %
 %\todo[inline]{These game engines provide a convenient route to testing ego control and perception stack in a realistic environment}
-
-For game engines to be used in simulation-based testing of AVs, they must offer sensors that operate at an accuracy equivalent to those on the AV, e.g.\ video cameras, LIDAR, IR, etc., or interfaces for developers to integrate their own sensor models. CARLA currently offers various basic types of cameras and %ray-case based 
-lidar; extensions are still under development. 
+% 
+% GC Removing the following para:
+%For game engines to be used in simulation-based testing of AVs, they must offer sensors that operate at an accuracy equivalent to those on the AV, e.g.\ video cameras, LIDAR, IR, etc., or interfaces for developers to integrate their own sensor models. CARLA currently offers various basic types of cameras and %ray-case based 
+% lidar; extensions are still under development. 
 % \todo{GC: what is ray-case? KIE: Not sure. :(}
 %
 Finally, support for hardware-in-the-loop development or a real-time test-bed for cyber-security testing~\cite{Javaid2013} may also be required. %~\cite{Javaid2013,cyres}
 %
 % The game engine, in this context, must also comply with the requirements to provide a suitably realistic environment and real-time processing for perception and security analysis.\todo[inline]{next}
-
+%
 % Game engines for SBV
 Compared to the vehicle dynamics simulators and traffic-level simulators used by manufacturers~\cite{FrameworkAndChallenges}, game engines offer a simulation solution that meets many of the requirements for the development and functional safety testing of AVs in simulation. 
 %
 However, while game engines are designed primarily for performance to achieve a good user experience, the requirements for AV verification go beyond that and include determinism.
-%
+
+\todo[inline,color=green!40]{GC New below}
+
+\subsection{Definition: Determinism}
 % What is a deterministic system
-In this context, deterministic refers to the property of causality given a temporal development of events such that any state is completely determined by prior states~\cite{Schumann2010}.
+Schumann describes determinism as the property of causality given a temporal development of events such that any state is completely determined by prior states~\cite{Schumann2010}. However, in the context of simulation this should be expanded to include not just prior states but also the history of actions taken by all actors. Therefore, a deterministic simulation will always produce the same result given the same history of prior states and actions.
 % 
 % Herein the term \textit{simulation variance} is used to refer to how simulation traces and outputs vary, when the same stimulus is provided repeatedly to the simulation environment under identical initial conditions. Specifically, we focus on the variance of actor paths within a given scenario. 
-%
-Herein we adopt the engineering terms of \textit{precision} and \textit{tolerance} to describe how simulation traces and outputs vary, when the same stimulus is provided repeatedly to the simulation environment under identical initial conditions~\cite{ADictionaryofMechanicalEngineering}. %
-%
-As an analogy, the simulator can be thought of as manufacturing a product, producing data traces and if tasked to repeatedly make the same product we must ask how \textit{precise} can it be and what will the \textit{tolerance} be when comparing any differences between products. The precision of any computer based task is casually assumed to be absolute, but technically this is equivalent to the representation of numbers within it, e.g. 64-bit floating point. %\textbf{[ref]}. %
-%
-Real manufacturing can only aspire to achieve such precision and hence the need for tolerances on design specifications to account for the variance in real-world processes. If a simulator is deterministic then it will produce results with some degree of floating point precision and zero tolerance, i.e. with zero variance on any measure of distinction between simulation output traces. 
-%
-This is not to be confused with \textit{accuracy} which describes the extent to which the simulation complies to a known standard, in many cases a simulation is held to the standard of the real world, where any divergence from this standard is termed the \textit{reality gap}.  
 
-However, if the simulator is not deterministic then we must firstly ask what is the permissible limit of tolerance on the simulation output traces without affecting the verification process, and secondly how this can be measured to better inform engineers. 
+A simulation can be thought of as the generation or production of experimental data. 
+%
+In the case of a driving simulator, kinematics will describe future states of actors given the current conditions and actions taken, thereby generating new data. 
+%
+If a simulation is deterministic then there will be no variation in the generated output data, i.e. all future states are perfectly reproducible from prior states and actions. 
+%
+However, if a simulation is not deterministic then then there will be a variation in the generated output data. 
 
-We focus on a measure of the \textit{tolerance} given by the statistical variance of actor paths within a given scenario. If the variance is zero then the simulation is deterministic to the precision of the numerical representations within it. Actor path variance is chosen over other measures as this distance based metric forms the basis for many downstream verification tests such as assertion checking. 
+\subsection{Definitions: Precision, Variance \& Tolerance}
 
+We adopt some terms from the mechanical engineering and statistics domain that best describe this situation~\cite{ADictionaryofMechanicalEngineering}.
+%
+\textit{Precision} is therefore defined as the degree to which a simulation can repeatedly generate the same result when executed with the same conditions and actions taken. 
+%
+\textit{Variance} is used here to define the spread (distribution) of the generated output data with respect to the mean value. 
+%
+\textit{Tolerance} is defined as the permissible limit of the variance. 
+
+% The engineering terms \textit{precision} and \textit{tolerance} suitably describe how the simulation data vary when the same repeated stimulus is provided to the simulation environment under identical initial conditions~\cite{ADictionaryofMechanicalEngineering}. %
+%
+% As an analogy, the simulator can be thought of as a manufacturing process, producing data and if tasked to repeatedly execute the same process we must ask how \textit{precise} can this process be and what, if any, will the \textit{variance} be? % when comparing the differences between multiple products. 
+As an analogy, the simulator can be thought of as a manufacturing process, producing data and to find the value of the precision then the output must be measured for differences. Those differences describe the spread or variance in the process output and a hard limit on the variance can be defined, beyond which the output fails to meet the required tolerance, e.g. rejected for quality control.
+%
+% In relation to manufacturing, the precision of any computer based task is casually assumed to be absolute, for example one may question the manufactured precision of a physical component but not the computer assisted drawing that it was made from. 
+%but technically this is equivalent to the representation of numbers within it, e.g. 64-bit floating point. %\textbf{[ref]}. %
+%
+Real manufacturing fails to achieve absolute precision and hence the need for tolerances on design specifications to account for the variance in real-world processes. 
+
+If a simulator is deterministic then it will produce results with absolute precision or zero variance and hence will be within acceptable tolerance. If the simulator is non-deterministic then there will be a variance in the output which can be measured.
+%
+
+\subsection{Definition: Accuracy}
+
+Precision and tolerance are not to be confused with \textit{accuracy} which describes how closely the generated output of a process aligns to a known standard. We therefore define accuracy as the difference between the true value (or reference value) and what has been achieved in the simulation or generation process. 
+%
+For a driving simulation the reference value, for which accuracy can be measured against, may be the real world that it seeks to emulate, where any divergence from this standard is termed the \textit{reality gap}. In most cases such accuracy will not be possible due to computational demands of such an exact replica and in most cases is unnecessary, where some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. 
+
+
+\subsection{Definition: Variance Measurement}
+
+If the simulator is not deterministic then how can this variance be measured?
+%
+This can be achieved from the actor state, or more specifically from the statistical variance of actor paths within a given scenario with a fixed set of actions. Actor path variance is chosen over other measures as this distance based metric forms the basis for many downstream verification tests such as assertion checking. 
+%
+% Within this paper the term tolerance is a synonym for the permissible limit of variance.
+
+\subsection{Definition: Scene, Scenario \& Situation}
 
 We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time; these are considered actors and may include the AV or \textit{ego vehicle}, other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific parameters. A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
 
@@ -142,6 +183,8 @@ We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene
 % KE Text
 \todo[inline,color=red!40]{old: Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. Thus, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.  }
 %
+
+\subsection{Why is Determinism needed?}
 Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. In conventional engineering terms a deterministic simulator can be considered to have zero \textit{tolerance}. If the tolerance is non-zero it can no longer be considered deterministic but this may be sufficient for certain applications as long as it is \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated execution outputs. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
 
 % GC Text
