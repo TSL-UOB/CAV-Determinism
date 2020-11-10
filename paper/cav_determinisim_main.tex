@@ -1,6 +1,6 @@
 \documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
 % \input{archive/main.config.tex}
-\usepackage[maxnames=6,firstinits=true,doi=false,url=false,isbn=false]{biblatex}
+\usepackage[maxnames=6,firstinits=true,doi=false,url=true,isbn=false]{biblatex}
 % \addbibresource{IROS.bib}
 \addbibresource{cav_determinism.bib}
 \usepackage{array}
@@ -130,7 +130,7 @@ In the case of a driving simulator, kinematics will describe future states of ac
 %
 If a simulation is deterministic then there will be no variation in the generated output data, i.e. all future states are perfectly reproducible from prior states and actions. 
 %
-However, if a simulation is not deterministic then then there will be a variation in the generated output data. 
+However, if a simulation is non-deterministic then then there will be a variation in the generated output data. 
 
 \subsection{Definitions: Precision, Variance \& Tolerance}
 
@@ -164,9 +164,12 @@ For a driving simulation the reference value, for which accuracy can be measured
 
 \subsection{Definition: Variance Measurement}
 
-If the simulator is not deterministic then how can this variance be measured?
+If the simulator is non-deterministic then how can this variance be measured?
 %
 This can be achieved from the actor state, or more specifically from the statistical variance of actor paths within a given scenario with a fixed set of actions. Actor path variance is chosen over other measures as this distance based metric forms the basis for many downstream verification tests such as assertion checking. 
+
+The term \textit{simulation variance} refers to a measure of actor state variance in the simulation assuming fixed actions. Results are referred to in terms of deviation, rather than variance, as this is a more intuitive dimension to comprehend when considering verification tests, e.g. vehicle close-passing. Moreover, the maximum observed value of deviation was chosen over a mean value to ensure sufficient sensitivity.
+
 %
 % Within this paper the term tolerance is a synonym for the permissible limit of variance.
 
@@ -184,8 +187,10 @@ We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene
 \todo[inline,color=red!40]{old: Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. Thus, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.  }
 %
 
-\subsection{Why is Determinism needed?}
-Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. In conventional engineering terms a deterministic simulator can be considered to have zero \textit{tolerance}. If the tolerance is non-zero it can no longer be considered deterministic but this may be sufficient for certain applications as long as it is \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated execution outputs. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
+\subsection{When is Determinism needed?}
+Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. Using mechanical engineering terms, a deterministic simulator can be considered to have zero \textit{variance}. 
+%
+If the variance is non-zero it can no longer be considered deterministic but this may be sufficient for certain applications as long as it is \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated execution outputs. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
 
 % GC Text
 \todo[inline,color=green!40]{GC Alternative: Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. In conventional engineering terms a deterministic simulator can be considered to have zero \textit{tolerance}. If the tolerance is non-zero it can no longer be considered deterministic but this may be sufficient for certain applications as long as it is \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated execution outputs. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.}
@@ -196,33 +201,41 @@ Determinism is a key prerequisite for simulation during AV development and testi
 %When considering the development of autonomous vehicles, untested code could lead to dangerous behaviours not being identified and fatal road accidents may occur.
 %
 
-If the simulation is not deterministic or has a non-permissible variance in the tolerance of, for example, actor positions, this may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software. The term \textit{simulation variance} refers to a measure of tolerance in the simulation and actor position is used as an example throughout this paper.
+If the simulation is non-deterministic and has a non-permissible variance in, for example, actor positions, this may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software. 
+%
 
-% \todo[inline]{GC Edit: If the simulation is not deterministic, it lacks the appropriate precision for this application and the error between output traces exceeds the acceptable tolerance however, variance in actor positions, for instance, may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software.}
+% \todo[inline]{GC Edit: If the simulation is non-deterministic, it lacks the appropriate precision for this application and the error between output traces exceeds the acceptable tolerance however, variance in actor positions, for instance, may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software.}
 
 % Challenges of SBV
-When used for gaming, game engines do not need to be deterministic nor do they even have any requirements on the limits of permissible tolerance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions is:
+When used for gaming, game engines do not need to be deterministic nor do they even have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions is:
+%
 \todo[inline,color=red!40]{old: How can one assess the extent to which a simulation environment is deterministic?  }
-How can one assess the extent to which a simulation environment is deterministic or has a permissible tolerance?
+%
+How can one assess the extent to which a simulation environment is deterministic or has a permissible variance?
 \todo[inline,color=green!40]{GC Alternative: How can one assess the extent to which a simulation environment is deterministic or has a permissible tolerance?} 
 
-In pursuit of an answer to this question we have investigated how non-determinism of a game engine, namely Unreal Engine that powers CARLA, when used for simulation-based AV verification affects the simulation results. 
+% In pursuit of an answer to this question we
+In this paper we investigated how the non-determinism of Carla, based on the Unreal game engine, when used for simulation-based AV verification affects the simulation results. 
 %
-In our case study, scenarios between pedestrian and vehicle actors have been analysed to identify conditions that result in non-deterministic simulation traces by analysis of actor position variance.
+In our case study, scenarios between pedestrian and vehicle actors have been analysed to identify conditions that result in non-deterministic simulation output by analysis of actor position variance.
 %
 \todo[inline,color=red!40]{old: By limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a deterministic operational simulation setup could be identified. }
 %
-By analysing actor position variance we find that the Carla simulator is not deterministic under certain conditions. However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.
+By analysing actor position variance we find that the Carla simulator is non-deterministic under certain conditions. 
+% However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.
 %
-\todo[inline,color=green!40]{GC Alternative: By analysing actor position variance we find that the Carla simulator is not deterministic under certain conditions. However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.}
+Carla exhibits a permissible level of variance when system utilisation is restricted to 75\% or less and ensuring termination of scenarios once a vehicle collision has been detected.
+%
+\todo[inline,color=green!40]{GC Alternative: By analysing actor position variance we find that the Carla simulator is non-deterministic under certain conditions. 
+However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.}
 
-The insights gained from this case study have motivated the development of a general step-by-step method for AV developers and verification engineers to determine the simulation variance for a given simulation environment. 
+The insights gained from this case study motivated the development of a general step-by-step method for AV developers and verification engineers to determine the simulation variance for a given simulation environment. 
 %
 \todo[inline,color=red!40]{old: Knowing the simulation variance will help them assess the impact that using a game engine for AV simulation may have. In particular, they can gain a better understanding of how potentially existing non-determinism affects repeatability and reliability of the simulation results.  }
 %
-Knowing the simulation variance will help verifcation engineers assess the impact that using a game engine for AV simulation may have. In particular, this can give a better understanding of how potentially existing non-determinism affects simulation precision and any verification results that are interpreted from this.
+Knowing the simulation variance will help assess the impact that using a game engine for AV simulation may have on verification tasks. In particular, this can give a better understanding of the effects of non-determinism and to what extent simulation precision may impact on verification results.
 %
-\todo[inline,color=green!40]{GC Alternative: Knowing the simulation variance will help verifcation engineers assess the impact that using a game engine for AV simulation may have. In particular, this can give a better understanding of how potentially existing non-determinism affects simulation precision and any verification results that are interpreted from this. }
+\todo[inline,color=green!40]{GC Alternative: Knowing the simulation variance will help verification engineers assess the impact that using a game engine for AV simulation may have. In particular, this can give a better understanding of how potentially existing non-determinism affects simulation precision and any verification results that are interpreted from this. }
 %
 % \todo[inline]{review and potentially summarize results from case study GC - added see below.}
 %We present a case study to illustrate the use of this method. The study highlights the effects of non-determinism of a game engine on simulation results. Scenarios between pedestrian and vehicle actors are used to identify conditions that result in high simulation variance.
@@ -296,7 +309,7 @@ This section gives an overview of the internal structure of a game engine and wh
 % \noindent This section overviews important information and concepts in physics engines, which are relevant to their usage in AV simulations. Particularly, on how physics engines operate and the sources of non-determinism in these engines necessary to understand the contribution of this paper.
 
 % ======= Overview of a Game Loop
-\subsection{Overview of a Game Loop} \label{GameLoopSection}
+\subsection{Game Engine Overview} \label{GameLoopSection}
 
 Central to a game engine are the main game logic, the artificial intelligence (AI) component, the audio engine, and the physics and rendering engines. For AV simulation, we focus on the latter two.
 %
@@ -372,7 +385,10 @@ and the simulation will exhibit lag between input commands and rendered states, 
 %
 \todo[inline,color=red!40]{old: Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy. In contrast, simulation accuracy is essential in AV development and testing, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of accuracy at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that is as close as possible to what the real input would be, i.e.\ with no or minimal extrapolation or lag. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.  }
 %
-Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither wishes a faithful representation of reality, i.e. can be low accuracy, nor do they require for repeated actions to result in the same outcome to a particular tolerance, i.e. can be low precision. In contrast, the precision required for AV development and testing is much higher, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of tolerance on the precision at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that repeatable so that if any software bugs are found they can be re-played and the issue resolved. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.
+Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither wishes a faithful representation of reality, i.e. the gamer will accept low \textit{accuracy}, nor do they require for repeated actions to result in the same outcome to a particular tolerance, i.e. can be low \textit{precision}.
+%
+In contrast, the precision required for AV development and testing is much higher, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of tolerance on the precision at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that is repeatable so that if any software bugs are found they can be re-played and the issue resolved. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.
+%
 \todo[inline,color=green!40]{GC Edit: Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither wishes a faithful representation of reality, i.e. can be low accuracy, nor do they require for repeated actions to result in the same outcome to a particular tolerance, i.e. can be low precision. In contrast, the precision required for AV development and testing is much higher, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of tolerance on the precision at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that repeatable so that if any software bugs are found they can be re-played and the issue resolved. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.}
 %
 \todo[inline]{KIE: ... by slowing down the simulation to enable more extensive physics calculations?}
@@ -386,11 +402,12 @@ Considering the objectives for gaming and comparing them to these for AV develop
 % ======= Sources of non-determinism
 \subsection{Potential Sources of Non-Determinism} \label{s:nondeterminisimSources}
 
-The following discussion reflects the results of our investigation into the potential sources of non-determinism that could affect game engines. We have examined hardware- as well as software-borne sources of non-determinism that occur at different layers of abstraction. 
+% The following discussion reflects the results of our investigation into the potential sources of non-determinism that could affect game engines. We have examined hardware- as well as software-borne sources of non-determinism that occur at different layers of abstraction. 
+The following review discusses the potential sources of non-determinism that were found in the literature or found as part of our investigation into game engines. We have examined hardware- as well as software-borne sources of non-determinism that occur at different layers of abstraction. 
 %
 \todo[inline,color=green!40]{GC Addition below}%
 %
-A good analysis of potential sources is given by Strandberg et al.~\cite{intermittently-failing-tests} although the CAV simulation domain introduces it's own unique challenges that are not considered in this paper.
+A good analysis of potential sources is given by Strandberg et al.~\cite{intermittently-failing-tests} although the AV simulation domain introduces it's own unique challenges that are not considered in this paper.
 
 % MOVED TO INTRO \todo[inline]{We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
 
@@ -411,7 +428,7 @@ Thus, the results of arithmetic operations must fit into the given bit width, wh
 % SEE BELOW \todo[inline]{Check the points on floating point operations in An Empirical Analysis of Flaky Tests~\cite{empirical-analysis-of-flaky-tests}.}
 Even operations such as the average of an array can result in issues with overflows, underflows and non-associative addition~\cite{Kapre2007} which may result in non-deterministic behaviour. Calculation results may differ due to the nature of non-associative floating point arithmetic if there is a change in compiler, a change in the execution order or even if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. Some authors even suggest avoiding the use of floating point entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}. 
 %
-If calculations are perofrmed on a single core, then concurrency of multiple threads is not an issue.
+If calculations are performed on a single core, then concurrency of multiple threads is not an issue.
 \todo[inline,color=green!40]{GC Addition (added reference on non-associative fp addition Kapre2007, Whitehead2011, empirical-analysis-of-flaky-tests, see para below:)
 
 Even operations such as the average of an array can result in issues with overflows, underflows and non-associative addition~\cite{Kapre2007} which may result in non-deterministic behaviour. Calculation results may differ due to the nature of non-associative floating point arithmetic if there is a change in compiler, a change in the execution order or even if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. Some authors even suggest avoiding the use of floating point entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}. 
@@ -519,7 +536,7 @@ This is because the processor cores are identical and any impurities across the 
 %
 However, scheduling multiple processes across several processing cores, where the number of cores is smaller than the number of processes, can result in variation of the execution order and cause simulation variance unless explicitly constrained or statically allocated prior to execution. 
 
-Indeed, the developers of the de-bugging program \texttt{RR} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}.
+Indeed, the developers of the de-bugging program \texttt{RR}\footnote{\url{https://github.com/mozilla/rr}} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}.
 %
 \todo[inline,color=green!40]{GC addition:Indeed, the developers of the de-bugging program \texttt{RR} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}. }
 
@@ -583,6 +600,24 @@ However, should new and unexpected threads start during the simulation, then the
 %
 % ECC: unless you live in radiation heavy area or doing significant repeated tests unlikely to see errors unless there is specific hardware faults - can be checked with memory testing software. Actor navigation not a problem if navigation meshes are fixed. Game engine, ensuring fixed $dt$ and control of random numbers. Core or thread scheduling will not be issue unless changing scheduling policy or migrating between machines that have different policies. Concurrency is really down to the development of the simulation software and reputable companies should have good control over these potential issues following good software development practice. NUMA should only affect interprocessor data transfer cost, at wrt only make computations longer. relative times between access different caches is likely to be small although may impact on high throughput, e.g. HPC. VFR - want to remove this section. EGO vehicle deterministic? Can't control library change, perception stack
 
+\begin{table*}[b]
+\centering
+\begin{tabular}{clclccc}
+\toprule
+Test & Actors 					 	  & Collision 	 & Collision Type 			 & $n$  & $\max\sigma$ (m) & $\max\sigma$ (m) \\ 
+	 & 								  & 			 & 							 &	    & (unrestricted)  & (restricted)	\\ \midrule
+1    & Two vehicles                   & No  		 & N/A 			  			 & 1000 & 0.03 & $7.0{\times}10^{-3}$ \\
+2    & Two vehicles                   & Yes 		 & Vehicle and Vehicle 		 & 1000 & 0.31 & $9.8{\times}10^{-3}$ \\
+3    & Two vehicles and a pedestrian  & No  		 & N/A 			  			 & 1000 & 0.07 & $5.2{\times}10^{-4}$ \\
+4    & Two vehicles and a pedestrian  & Yes 		 & Vehicle and Pedestrian 	 & 1000 & 0.59 & $1.5{\times}10^{-12}$ \\
+5    & Two pedestrians                & No  		 & N/A 			  			 & 1000 & $5.6{\times}10^{-13}$ & $5.6{\times}10^{-13}$ \\
+6    & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 1000 & $5.6{\times}10^{-13}$ & $5.6{\times}10^{-13}$ \\
+\bottomrule
+\end{tabular}
+\caption{A description of the test scenarios showing the test number, the actors included, if a collision occurred and between which actors. Where $n$ is the number of repeats and $\max\sigma$ is the maximum simulation deviation. The term \textit{unrestricted} refers to an unrestricted account of the results including results of any resource utilisation, whereas \textit{restricted} restricts simulation time to pre-collision and limits system resource utilisation levels to 75\%.}
+\label{TableOfExperiments}
+\end{table*}
+
 
 % ***************************************************
 %  Empirical Investigation
@@ -596,7 +631,7 @@ they have on simulation variance.
 %
 \todo[inline,color=green!40]{GC new: line below.}
 %
-Gao et al.~\cite{when-and-what-should-we-control} took a similar approach investigating Java applications, where a set of sources of non-determinism (termed factors) were shown to impact on repeatability of testing and recommended that results of repeated tests must be quoted in averages and ranges as their testing configuration was not possible to execute deterministically. 
+Gao et al.~\cite{when-and-what-should-we-control} took a similar approach investigating Java applications, where a set of sources of non-determinism (termed factors) were shown to impact on repeatability of testing. %and recommended that results of repeated tests must be quoted in averages and ranges as their testing configuration was not possible to execute deterministically. 
 %
 Ultimately, our objective is to control non-determinisim to minimise simulation variance.
 
@@ -616,15 +651,6 @@ We first describe the context, scene and scenario of interest before discussing 
 \subsection{Context, Scene and Scenario}\label{TestsDescriptionAndTechnicalities}
 \todo[inline]{Need to stick to scene, scenario definitions as in Intro section.}
 
-This case study draws on a setup used to verify an urban last-mile mobility and transport solution, where the primary verification objective is to test the behaviour of an ego vehicle in an urban environment at a T-junction in response to pedestrians and other vehicles.
-%
-Thus, the scene for our investigation is the T-junction and the scenarios are shown in Figure~\ref{f:test_a_and_b}.
-
-This scene was used to create a number of scenarios involving pedestrians and vehicles in order to identify any changes in the actor trajectories over repeated tests executed under a variety of systematically designed conditions and hence study any simulation variance.
-%
-The vehicles and pedestrians were given trajectories, via pre-defined waypoints, that would result in either colliding with or avoiding other actors.
-\todo[inline]{Decide past or present tense and be consistent throughout.}
-
 \begin{figure}[!t]
     \centering
     \begin{subfigure}{.24\textwidth}
@@ -640,7 +666,19 @@ The vehicles and pedestrians were given trajectories, via pre-defined waypoints,
     \caption{Schematic of test scenarios for (a) Tests 1-4, (b) Tests 5-6. Descriptions are given in Table~\ref{TableOfExperiments}.}\label{f:test_a_and_b}
 \end{figure}
 
+This case study draws on a setup used to verify an urban mobility and transport solution, where the primary verification objective is to test the behaviour of an ego vehicle in an urban environment at a T-junction in response to pedestrians and other vehicles.
+%
+Thus, the scene for our investigation is the T-junction (T-intersection) and the scenarios are shown in Figure~\ref{f:test_a_and_b}.
+
+This scene was used to create a number of scenarios involving pedestrians and vehicles in order to identify any changes in the actor trajectories over repeated tests executed under a variety of systematically designed conditions and hence study any simulation variance.
+%
+The vehicles and pedestrians were given trajectories, via pre-defined waypoints, that would result in either colliding with or avoiding other actors.
+\todo[inline]{Decide past or present tense and be consistent throughout.}
+
+
 \todo[inline]{Set the threshold, explain what a good threshold is, available options and what was selected and why.}
+
+
 
 \subsection{Tolerable Simulation Variance}
 
@@ -658,9 +696,9 @@ See {\small\url{https://www.starrapid.com/blog/designing-for-manufacturing-accur
 
 To achieve stable verification results over repeated test runs, the simulated actor states must be precise to a specific tolerance.
 %
-Deterministic behaviour would result in zero tolerance of the simulated actor states but if this cannot be achieved then what is a permissible tolerance?
+Deterministic behaviour would result in zero variance of the simulated actor states but if this cannot be achieved then what is permissible?
 %
-\todo[inline,color=green!40]{GC addition: Deterministic behaviour would result in zero tolerance of the simulated actor states but if this cannot be achieved then what is a permissible tolerance? }
+% \todo[inline,color=green!40]{GC addition: Deterministic behaviour would result in zero tolerance of the simulated actor states but if this cannot be achieved then what is a permissible tolerance? }
 %
 This tolerance must be appropriate to allow accurate assertion checking and coverage collection in the simulation environment.
 %
@@ -676,7 +714,10 @@ Thus, a tolerance must be defined to reflect the precision at which repeatabilit
 %
 For this case study a tolerance on actor position of $1$m would be insufficient when considering the spacial resolution required to distinguish situations such as potentially dangerous close passing of a cyclist. A very small value, e.g.\ $1\times10^{-12}m$, may be overly-sensitive to minor computational perturbations and generate false positives. 
 % due to the simulation \textit{noise floor}\footnote{See Fig.~\ref{CarsCollisionCG25}.} 
-Therefore, for this case study and more broadly our general verifcation requirements, a threshold of $1$cm has been selected. Thus any variation of less than $1$cm is tolerable. 
+Therefore, for this case study and more broadly our general verifcation requirements, a threshold of $1$cm has been selected. 
+% Thus any variation of less than $1$cm is tolerable. 
+Thus any variance of less than $1$cm is permissible. To put this another way, we can accept a precision with a tolerance of $\leq$$\pm$1$cm$. 
+
 
 % considered to be sufficient for assertion checking in urban environments. 
 %
@@ -695,6 +736,8 @@ where any value higher than the specified tolerance is considered non-permissibl
 % ***************************************************
 %  Actor Collisions
 % ***************************************************
+
+
 \subsection{Actor Collisions}\label{S:Actor_Collisions}
 Previous investigations into the Unreal Engine indicated that collisions between dynamic actors and solid objects, termed \textit{blocking physics bodies} in Unreal Engine documentation\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Physics/Collision/Overview/index.html}}, can lead to high simulation variance, \cite{TSLUnrealEngineTesting}. 
 %
@@ -750,29 +793,13 @@ The maximum deviation, $\max\sigma$, was analysed against the different scenario
 % ***************************************************
 \subsection{Internal Settings}
 
-Within Unreal Engine there are numerous internal settings relating to the movement and interaction of physical bodies in the simulation. Settings can be adjusted to alter how actors interact and path plan via the navigation mesh of the environment, e.g. \textit{Contact Offset} and \textit{Navmesh Voxel Size}, or can be changed to improve the fidelity of physics calculations between game update steps, e.g. \textit{Physics Sub-Stepping} and \textit{Max Physics Delta Time}. Other options such as \textit{Enable Enhanced Determinism} were investigated along with running the engine from the command line with options for more deterministic behaviour \texttt{-deterministic}, floating point control \texttt{/fp:strict} and headless mode \texttt{-nullrhi} along with running the test as a packaged release by building and cooking\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Deployment/Releasing/}}. 
+Within Unreal Engine there are numerous internal settings relating to the movement and interaction of physical bodies in the simulation. Settings can be adjusted to alter how actors interact and path plan via the navigation mesh of the environment, e.g. \textit{Contact Offset} and \textit{Navmesh Voxel Size}, or can be changed to improve the fidelity of physics calculations between game update steps, e.g. \textit{Physics Sub-Stepping} and \textit{Max Physics Delta Time}. Other options such as \textit{Enable Enhanced Determinism} were investigated along with running the engine from the command line with options for more deterministic behaviour \texttt{-deterministic}, floating point control \texttt{/fp:strict} and headless mode \texttt{-nullrhi} along with running the test as a packaged release by building and cooking.\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Deployment/Releasing/}} 
 % \todo[inline]{Maybe we can introduce our initial study here? Picture of the man and moving bloack and a result showing the path traces in x,y etc?}
 An initial study into the Unreal Engine using a pedestrian and a moving block was used to investigate simulation variance against these settings. The results were compared to a baseline of the default engine settings. 
 %
-However, none of these options improved simulation variance significantly and all internal setting were set restored to the default values. Details on this previous investigation can be found on the Trustworthy Systems github~\cite{TSLUnrealEngineTesting}.
+However, none of these options improved simulation variance significantly and all internal setting were set restored to the default values. Details on this previous investigation can be found on the Trustworthy Systems GitHub~\cite{TSLUnrealEngineTesting}.
 
-\begin{table*}[b]
-\centering
-\begin{tabular}{clclccc}
-\toprule
-Test & Actors 					 	  & Collision 	 & Collision Type 			 & $n$  & $\max\sigma$ (m) & $\max\sigma$ (m) \\ 
-	 & 								  & 			 & 							 &	    & (unrestricted)  & (restricted)	\\ \midrule
-1    & Two vehicles                   & No  		 & N/A 			  			 & 1000 & 0.03 & $7.0{\times}10^{-3}$ \\
-2    & Two vehicles                   & Yes 		 & Vehicle and Vehicle 		 & 1000 & 0.31 & $9.8{\times}10^{-3}$ \\
-3    & Two vehicles and a pedestrian  & No  		 & N/A 			  			 & 1000 & 0.07 & $5.2{\times}10^{-4}$ \\
-4    & Two vehicles and a pedestrian  & Yes 		 & Vehicle and Pedestrian 	 & 1000 & 0.59 & $1.5{\times}10^{-12}$ \\
-5    & Two pedestrians                & No  		 & N/A 			  			 & 1000 & $5.6{\times}10^{-13}$ & $5.6{\times}10^{-13}$ \\
-6    & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 1000 & $5.6{\times}10^{-13}$ & $5.6{\times}10^{-13}$ \\
-\bottomrule
-\end{tabular}
-\caption{A description of the test scenarios showing the test number, the actors included, if a collision occurred and between which actors. Where $n$ is the number of repeats and $\max\sigma$ is the maximum simulation deviation. The term \textit{unrestricted} refers to an unrestricted account of the results including results of any resource utilisation, whereas \textit{restricted} restricts simulation time to pre-collision and limits system resource utilisation levels to 75\%.}
-\label{TableOfExperiments}
-\end{table*}
+
 
 % ***************************************************
 %  External Settings
@@ -797,7 +824,23 @@ Resource utilisation was artificially increased for both CPU and GPU devices to 
 
 \todo[inline,color=green!40]{GC Addition (para below):} 
 %Issues around floating point precision and concurrency as previously mentioned notwithstanding, 
-Practitioners should also be away that many libraries for calculating variance itself may require attention to get precise results. For example the \texttt{numpy} method of variance is sensitive to the input precision and will return an incorrect answer if the wrong parameters are set~\cite{NumpyVar}. Even in \texttt{matlab}, the calculation of variance may switch from single thread to a multi-threaded execution not obviously apparent to the user when the input data size becomes large enough, opening up the potential for concurrency imprecision\footnote{\url{https://uk.mathworks.com/matlabcentral/answers/317128-does-matlab-use-all-cores-by-default-when-running-a-program}}. 
+Practitioners should also be aware that many libraries for calculating variance itself may require attention to get precise results. For example the \texttt{numpy} method of variance is sensitive to the input precision and will return an incorrect answer if the wrong parameters are set~\cite{NumpyVar}. In \texttt{matlab}, the calculation of variance may switch from single thread to a multi-threaded execution not obviously apparent to the user when the input data size becomes large enough, opening up the potential for concurrency imprecision.\footnote{\url{https://uk.mathworks.com/matlabcentral/answers/317128-does-matlab-use-all-cores-by-default-when-running-a-program}} 
+
+
+\begin{figure*}[b]
+    \centering
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=1\textwidth]{Other/Figures/CarsCollisionCG25_V4.pdf}
+        \caption{}
+        \label{CarsCollisionCG25}
+    \end{subfigure}
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=1\textwidth]{Other/Figures/CarsCollisionPrePostV3.pdf}
+        \caption{}
+        \label{CarsCollisionPrePost}
+    \end{subfigure}
+    \caption{Vehicle to vehicle collision (test 2) showing (a) mean deviation against simulation time for 25\% resource utilisation and (b) mean deviation pre- and post-collision against resource utilisation. The simulation noise floor is shown in (a) which is the empirical lower limit of deviation for the hardware reported in this study.}
+\end{figure*}
 
 	
 % ***************************************************
@@ -812,12 +855,21 @@ These tests were carried out on an Alienware Area 51 R5 with an i9 9960X process
     \item Non-uniform memory access: \texttt{numactl}\footnote{\url{https://linux.die.net/man/8/numactl}} was used to fix the simulator and test script to single cores but only a minor (2\%) improvement in simulation variance was observed and therefore not used for subsequent testing.
 \end{itemize}
 
+
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=0.48\textwidth]{Other/Figures/ExperimentsStressSummaryV4.pdf}
+    \caption{Summary of results showing maximum deviation for each scenario against different resource utilisation levels. Tests 5 and 6 overlap having almost identical results.}
+    \label{ExperimentsStressSummary}
+\end{figure}
+
 % Given that our interest is on AV simulations, this study presents a number of experiments run on typical agents used in AV simulations and their interactions with each other. These agents are classified into two, either vehicles(cars, motorcycles, bikes etc.) or pedestrians (can include animals). Here we will walk through our hypothesis, description of our tests and the analysis of results from the different tests. We will point out at each stage where we sit in Figure~\ref{method_diagram} as we go through this case study.    
 
 % \subsection{Problem And Hypothesis}
 % We want to see whether using Unreal Engine 4 (UE4) along with CARLA \cite{CARLA_paper} for V\&V of AV simulations is deterministic or not; if not then what is the simulation variance that we will operate with, is it acceptable or not, and whether it worsens with stressing GPU and CPU.
 
-% Our hypothesis is that since UE4 is a game engine it is not deterministic, however, the simulation variance would be very low to acceptable limits that allows verification engineers to use it confidently and assume that tests would be repeatable. This behaviour is expected not to hold as the level of computing stress increases.     
+% Our hypothesis is that since UE4 is a game engine it is non-deterministic, however, the simulation variance would be very low to acceptable limits that allows verification engineers to use it confidently and assume that tests would be repeatable. This behaviour is expected not to hold as the level of computing stress increases.     
 
 
  % targetting the closest waypoint but ignoring any waypoints closer than a fixed \textit{look-ahead distance} ($d_l$)\footnote{Targeting waypoints with $d_l<0.4$ tend to cause improper navigation with the implemented PID controller}.
@@ -872,35 +924,14 @@ Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against the artificiall
 \todo[inline]{Where are the verification requirements listed? They should be part of the scenario description. GC- added to the start of section 3.} 
 %
 
-\begin{figure}[!t]
-    \centering
-    \includegraphics[width=0.48\textwidth]{Other/Figures/ExperimentsStressSummaryV4.pdf}
-    \caption{Summary of results showing maximum deviation for each scenario against different resource utilisation levels. Tests 5 and 6 overlap having almost identical results.}
-    \label{ExperimentsStressSummary}
-\end{figure}
-
 A general pattern in the results indicates that; some scenarios fail to produce deterministic results consistently against any resource utilisation level (Fig.~\ref{ExperimentsStressSummary} Test ID 2 \& 4 above the dashed cm threshold), some are consistently below the threshold (Test ID 5 \& 6 with pedestrians only), and that some cases only fail at higher utilisation levels, breaching the threshold above 75\% resource utilisation (Test ID 1 \& 3).
 
 \todo[inline]{Help the reader see what you can see by explaining exactly where this can be seen in the figure(s). GC text added above}
 
-\begin{figure*}[h]
-    \centering
-    \begin{subfigure}{.49\textwidth}
-        \includegraphics[width=1\textwidth]{Other/Figures/CarsCollisionCG25_V4.pdf}
-        \caption{}
-        \label{CarsCollisionCG25}
-    \end{subfigure}
-    \begin{subfigure}{.49\textwidth}
-        \includegraphics[width=1\textwidth]{Other/Figures/CarsCollisionPrePostV3.pdf}
-        \caption{}
-        \label{CarsCollisionPrePost}
-    \end{subfigure}
-    \caption{Vehicle to vehicle collision (test 2) showing (a) mean deviation against simulation time for 25\% resource utilisation and (b) mean deviation pre- and post-collision against resource utilisation. The simulation noise floor is shown in (a) which is the empirical lower limit of deviation for the hardware reported in this study.}
-\end{figure*}
 
 
 
-However, the non-permissible results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per definition \ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
+However, the non-permissible results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per Equation~\ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
 
 Examining specifically the results from tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible post-collision. 
 %
@@ -937,7 +968,7 @@ Secondly, that the maximum deviation of the pedestrian involved in the collision
 
 % \todo[inline]{Big question why does high-RU influence simulation variance?? Can we tie this to thread scheduling and will NUMAclt change this conclusion?'}
 
-% Scenarios that include both collisions and vehicle actors were not deterministic. However, when observing the deviation in actor paths against simulation time, Fig.~\ref{CarsCollisionCG25}, the simulation is deterministic prior to collision but not afterwards. 
+% Scenarios that include both collisions and vehicle actors were non-deterministic. However, when observing the deviation in actor paths against simulation time, Fig.~\ref{CarsCollisionCG25}, the simulation is deterministic prior to collision but not afterwards. 
 
 % This was calculated by averaging the variance between all of the different runs through out the simulation time for all of the agents, then taking the square root to obtain the total mean devaiton. Note the dotted red line in the plot shows the millimeter (mm) level. Below this level we assume that the simulation variance is low enough that it would not affect our assertion checking for V\&V of AV simulations purposes, that it is sufficient to assume the tests are deterministic and repeatable. This line can be moved up or down and it is entirely up to verification engineers where they want to define the level below which tests' variance is negligibale and it is suffcient to assume that tests are deterministic.
 %
