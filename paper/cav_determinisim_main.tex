@@ -135,6 +135,24 @@ If a simulation is deterministic then there will be no variation in the generate
 %
 However, if a simulation is non-deterministic then then there will be a variation in the generated output data. 
 
+\begin{figure}[!t]
+    \centering
+    \begin{subfigure}{.48\textwidth}
+        \includegraphics[width=1\textwidth]{Other/Figures/Variance_predicition_tolerance_definition_diagram_a.pdf}
+        \caption{}
+        \label{variance_description_a}
+    \end{subfigure}
+    
+    \begin{subfigure}{.48\textwidth}
+        \includegraphics[width=1\textwidth]{Other/Figures/Variance_predicition_tolerance_definition_diagram_b.pdf}
+        \caption{}
+        \label{variance_description_b}
+    \end{subfigure}
+    \caption{Demonstration of variance, precision, tolderance and determinism}
+    \label{variance_description}
+\end{figure}
+
+
 \subsection{Definitions: Precision, Variance \& Tolerance}
 
 We adopt some terms from the mechanical engineering and statistics domain that best describe this situation~\cite{ADictionaryofMechanicalEngineering}.
@@ -962,6 +980,13 @@ This pattern of permissible results prior to collision and non-permissible post-
     \caption{Vehicle to pedestrian collision (test 4) showing (a) maximum deviation against simulation time for 25\% stress and (b) maximum deviation pre- and post-collision for different resource utilisation levels.}
 \end{figure*}
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.48\textwidth]{Other/Figures/NICE_analysis_summary.pdf}
+    \caption{Summary of investigating the effect of NICE priority setting for 0\% and 75\% CPU \& GPU Resource Utilisation.}
+    \label{NICEExperimentStressSummary}
+\end{figure}
+
 The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three observations here; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision.
 % as described above. 
 Secondly, that the maximum deviation of the pedestrian involved in the collision (Ped ID 3) is at a tolerable level throughout the test\footnote{However, please note that in CARLA the pedestrian object is destroyed post-collision hence the flat line from $t=6$s onwards.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers and research practitioners in the field as it implies that \textit{any collision between actors can affect the simulation variance of the entire actor population} and could potentially result in  erroneous assertion checking.
@@ -1223,7 +1248,7 @@ This methodology will allow the AV verification community using simulation tools
 \subsection{Future Work}
 A potential avenue of exploration is developing a version of the simulator which has been designed specifically for verification. In this version the simulator would be deterministic because the execution is suitably controlled along with sources of randomness and scheduling. A similar task was achieved with the \texttt{RR} program.\footnote{\url{https://github.com/mozilla/rr}} 
 
-With the advent of more AI systems becoming adaptive, meaning that the system may change it's response to the same stimulus over time, the notion of repeatability will need reassessing in the context of verification. The main research question here is what will constitute `the same' which will be important for passing or failing verificatin tests but also for determining coverage. 
+With the advent of more AI systems becoming adaptive, meaning that the system may change it's response to the same stimulus over time, the notion of repeatability will need reassessing in the context of verification. The main research question here is what will constitute `the same' which will be important for passing or failing verification tests but also for determining coverage. 
 
 % \todo[inline]{Review/rewrite this to match the earlier changes in the paper. Practitioners in this field can resolve the non-deterministic operational domains of their simulation by following the method outlined in this paper. Potential sources of non-deterministic simulation behaviour have been discussed such as floating point rounding error and scheduling policy. A case study was used to ascertain the boundary between deterministic and non-deterministic operational domains of the CARLA driving simulator. Results suggest non-deterministic outcomes when resource utilisation levels exceeded 75\% or when vehicle collisions occur for the particular hardware used in this study. Furthermore it was found that all actors, even those not involved directly in a collision, will behave non-deterministically if a collision callback to the game engine is made. Best operating practice follows that the simulation should be stopped as soon as a collision callback is detected or resource utilisation levels exceed 75\% although this value may be system specific. }
 
