@@ -1139,7 +1139,7 @@ Prior to experimental execution the system hardware should be tested for memory 
 We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, fine control over the scheduling policy and thread execution order may be non-trivial. Such policies are defined by the operating system and may execute threads with equal priority. In such a case, all tasks non-essential to the simulator should be terminated to prevent interruption to the simulator. 
 
 % If the policy or operating system cannot be changed then s
-Setting the simulator program to a higher priority may help to alleviate conflicting tasks that cannot be shutdown, such as \texttt{TaskSettings.Priority} in Windows\footnote{\url{https://docs.microsoft.com/en-us/windows/win32/taskschd/tasksettings-priority}} or \texttt{nice} in Linux\footnote{\url{https://linux.die.net/man/1/nice}}.
+Setting the simulator process to a higher priority may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows\footnote{\url{https://docs.microsoft.com/en-us/windows/win32/taskschd/tasksettings-priority}} or \texttt{NICE} in Linux\footnote{\url{https://linux.die.net/man/1/nice}}.
 
 \subsubsection{NUMA Control}
 Control over Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multiprocessors with shared memory. This control allows the simulator program to be fixed on a single core reducing memory access time.
