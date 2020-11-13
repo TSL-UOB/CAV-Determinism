@@ -37,7 +37,7 @@
 % \title{On the Precision of Game Engines used for Simulation-based Autonomous Vehicle Verification}
 \author[1,3]{Abanoub Ghobrial\thanks{$^{1}${\footnotesize \{abanoub.ghobrial, greg.chance, kerstin.eder\}@bristol.ac.uk}}}
 \author[1,3]{Greg Chance}
-\author[2,3]{Severin Lemaignan\thanks{$^{2}${\footnotesize \{severin.lemaignan, tony.pipe\}@brl.ac.uk}}}
+\author[2,3]{S\'everin Lemaignan\thanks{$^{2}${\footnotesize \{severin.lemaignan, tony.pipe\}@brl.ac.uk}}}
 \author[2,3]{Tony Pipe}
 \author[1,3]{Kerstin Eder}
 \affil[1]{Trustworthy Systems Laboratory, University of Bristol, Bristol, UK}
@@ -423,7 +423,7 @@ In contrast, the precision required for AV development and testing is much highe
 
 
 % ======= Sources of non-determinism
-\subsection{Potential Sources of Non-Determinism} \label{s:nondeterminisimSources}
+\section{Potential Sources of Non-Determinism} \label{s:nondeterminisimSources}
 
 % The following discussion reflects the results of our investigation into the potential sources of non-determinism that could affect game engines. We have examined hardware- as well as software-borne sources of non-determinism that occur at different layers of abstraction. 
 The following review discusses the potential sources of non-determinism that were found in the literature or found as part of our investigation into game engines. We have examined hardware- as well as software-borne sources of non-determinism that occur at different layers of abstraction. 
@@ -443,7 +443,7 @@ Intermittently Failing Tests in the Embedded Systems Domain~\cite{intermittently
 % \noindent After establishing an understanding of how physics engines work, the focus will now be on what causes these engines to be non-deterministic. The main reasons that we think are causes of these engines' non-determinism are discussed below. \\\\
 
 % ======= Floating-Point Numbers
-\noindent\underline{\textit{Floating-Point Arithmetic:}}
+\subsection{Floating-Point Arithmetic}
 
 Floating-point representation of real numbers is limited by the fixed bit width available in the hardware, resulting in the finite precision with which numbers can be represented in a computation. 
 Thus, the results of arithmetic operations must fit into the given bit width, which is achieved through rounding to the nearest representable value. This gives rise to rounding errors~\cite{FloatingPointsBook,goldberg1991every}. %
@@ -463,7 +463,7 @@ If calculations are perofrmed on a single core, then concurrency of multiple thr
 % Floating-point representation of real numbers is limited with fixed register sizes resulting in errors of rounding where loss of bits occur which are rounded or truncated and cancellation which happens where two similar values are subtracted.
 
 % Translating to the usage of AV simulations in physics engines,
-In the context of AV simulation, such rounding errors could result in precision issues of, for example, actor positions within the environment, leading to falsely satisfied or failed assertions.
+In the context of AV simulation, such rounding errors could result in accuracy issues of, for example, actor positions within the environment, leading to falsely satisfied or failed assertions.
 % \todo[inline]{state what assertions are (used for) GC-see below} 
 %In the field of AV verification, assertions are the immutable rules and regulations that describe safe and legal driving. 
 %
@@ -482,53 +482,7 @@ Beyond hardware limitations, aggressive optimisations by the compiler can also i
 %
 Therefore, it can be concluded that floating-point arithmetic does not contribute to \textit{simulation variance} for repeated tests using the same executable on the same hardware with the same configuration.
 
-
-\noindent\underline{\textit{Error Correcting Code (ECC) Memory:}}
-ECC Memory is used ubiquitously in commercial simulation facilities and servers to detect and correct single bit errors in DRAM memory~\cite{Dell1997}. Single bit errors may occur due to malfunctioning hardware, ionising radiation (background cosmic or environmental sources) or from electromagnetic radiation~\cite{dodd2003basic}. If single bit errors go uncorrected then subsequent computational processing will produce incorrect results, potentially giving rise to non-determinism due to the probabilistic nature of such errors occurring. Estimating the rate of error is difficult and dependent on hardware, environment and computer cycles~\cite{mielke2008bit}.
-
-Any simulation hardware not using ECC memory that runs for 1000's of hours, typical in AV verification, is likely to incur significant CPU hours and is therefore subject to increased exposure to these errors. To counter this, commercial HPC and simulation facilities typically employ ECC memory as standard.\todo{Check this, please.}
-
-%\todo[inline]{That said, HW design simulation is deterministic, uses long simulation runs and thousands of CPU hours, but I've not heard that this is an issue. I can ask, though. ;) GC-yes although most commercial systems and servers will use ECC, although some development SMEs may use non-ECC and therefore should be aware of this issue.} 
-
-
-\noindent\underline{\textit{Actor Navigation:}}
-There is existing evidence to suggest actor navigation, typically pedestrians, could be the cause of non-deterministic simulation behaviour~\cite{CARLABenchmark}.
-% 
-Unreal Engine is the underlying framework for the CARLA simulator which uses the A* algorithm for actor navigation\footnote{\url{https://www.oreilly.com/library/view/unreal-engine-4/9781784393120/ch04s03.html} from~\cite{newton2016unreal}}.
-%
-The A* algorithm~\cite{AStarBook} will give deterministic outcomes as long as the environment is deterministic~\cite{AirsimUnrealArticle, UnrealAIDocumentation}. 
-
-A navigation mesh is a fixed area of the environment where actors are free to navigate.
-%
-Navigation meshes are used by the path planning algorithm to find the shortest distance between navigable points in the environment and could be considered as a potential source of non-determinism if the navigation mesh is not a fixed entity. %. Some AV simulator developers claim that the built-in physics engines' AI is non-deterministic
-%
-However, the environment management in CARLA implements fixed binary files for navigation meshes that are linked to each road scene or driving environment and cannot be unknowingly modified and therefore can be considered fixed. 
-
-Unless other sources that can alter the fixed environment exist, the A* algorithm should give deterministic results. Thus, actor navigation should not be considered a source of non-determinism.
-%
-% Therefore, the determinism of the actor path planning depends on the environment and the update to actor states within it and how navigation meshes are created or modelled, e.g. shape, granularity. 
-%
-% It is interesting to note that changes could occur to navigation meshes if they are dynamically loaded as the simulation proceeds which can reduce computational load for large area maps\footnote{\url{https://docs.unrealengine.com/en-US/BlueprintAPI/AI/Navigation/RegisterNavigationInvoker/}}.
-% \todo[inline]{unclear :( GC- re-written}
-\\\\
-\noindent\underline{\textit{Game Engine Setup:}}
-The type and version of the engine code executed should be considered, paying attention to the control of pseudo-random numbers, fixed physics calculation steps ($dt$), fixed actor navigation mesh, deterministic ego vehicle controllers and engine texture loading rates especially for perception stack testing. %
-% \todo[inline]{introduce actor navigation mesh GC-section on actor navigation brought forward}
-% \todo[inline]{introduce ego vehicle earlier on GC added line 99}
-For example, in Unreal Editor the \textit{unit}\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Performance/StatCommands/}} command can be used to monitor performance metrics such as \textit{Frame} which reports 
-% to determine processing bottlenecks by indicating\todo[inline]{what does indicating mean? GC-displaying, returning or showing} 
-the total time spent generating one frame, \textit{Game} for game loop execution time and \textit{Draw} for render thread time. 
-%
-Wrt.\ perception stack testing, weather and lighting conditions in the game engine should be controlled as well as any other dynamic elements to the simulation environment, e.g.\ reflections from surface water. 
-\\\\
-\noindent\underline{\textit{NUMA Non-Uniform Memory Access:}}
-For a repeated test that operates over a number of cores based on a CPU scheduling policy, memory access time may vary depending on the physical memory location relative to the processor. Typically a core can access its own memory with lower latency than that of another core resulting in lower interprocessor data transfer cost~\cite{nieplocha1996global}. 
-%
-Changes in latency between repeated tests may, in the worst case, cause the game engine to operate non-deterministically, or, perhaps, simply with an increased data transfer cost, i.e.\ slower. 
-%
-By binding a process to a specific core for the duration of its execution, the variations in data transfer time can be minimised.
-\\\\
-\noindent\underline{\textit{Scheduling, Concurrency and Parallelisation:}}
+\subsection{Scheduling, Concurrency and Parallelisation}
 % \todo[inline]{is this at runtime?} %
 % info at:
 % http://www.informit.com/articles/article.aspx?p=169479&seqNum=3
@@ -541,7 +495,7 @@ Runtime scheduling is a resource management method for sharing computational res
 %
 Changing the scheduling policy and thread priorities may increase simulation variance. 
 
-It is, however, unlikely that thread priorities or scheduling policy would occur during repeated controlled tests for the same hardware and operating system configuration. Given that hardware is considered deterministic and if the thread execution order does not change between tests, then for the same hardware and operating system configuration the same output should be given. 
+It is, however, unlikely that changes to thread priorities or scheduling policy would occur during repeated controlled tests for the same hardware and operating system configuration. Given that hardware is considered deterministic and if the thread execution order does not change between tests, then for the same hardware and operating system configuration the same output should be given. 
 
 However, if some aspects of the game loop are multi-threaded\footnote{\url{https://docs.unity3d.com/Manual/JobSystemMultithreading.html}}, then, even with a clear thread scheduling order, any background process may interrupt the otherwise deterministic sequence of events. This may, for example, alter the number of physics calculations that can be performed within the game loop and hence result in simulation variance.
 %
@@ -566,7 +520,6 @@ Indeed, the developers of the de-bugging program \texttt{RR}\footnote{\url{https
 Likewise, simulation variance may be observed for game engines that use GPU parallelisation to improve performance by offloading time-critical calculations to several dedicated computing resources simultaneously. While this would be faster than a serial execution, the order of execution arising from program-level concurrency is often not guaranteed. 
 
 Overall, scheduling, concurrency and parallelisation may be reasons for \textit{simulation variance}. 
-\\\\
 %\noindent\underline{\textit{Concurrency:}}
 % Concurrency is a natural source of nondeterminism since the order and timings of independent processes can vary
 %\todo[inline]{Say what concurrency is and how executing concurrently running code can lead to non-determinism. Consider also parallelism, e.g. in GPUs. Focus on the order in which the execution occurs, i.e.\ the timing of events, which can cause non-determinism. Say which parts of a game engine could reasonably be expected to run concurrently.}
@@ -597,7 +550,59 @@ Overall, scheduling, concurrency and parallelisation may be reasons for \textit{
 % AV specific platforms, such as CARLA, can be operated with fixed frame rates which should provide maximum stability as long as the frame rate during execution (FPS) is monitored and observed to adhere to this rate.
 % \todo[inline]{Add a summary/conclusion?}
 %\\\\
-\noindent\underline{\textit{Summary:}}
+
+\subsection{NUMA Non-Uniform Memory Access}
+For a repeated test that operates over a number of cores based on a CPU scheduling policy, memory access time may vary depending on the physical memory location relative to the processor. Typically a core can access its own memory with lower latency than that of another core resulting in lower interprocessor data transfer cost~\cite{nieplocha1996global}. 
+%
+Changes in latency between repeated tests may, in the worst case, cause the game engine to operate non-deterministically if tasks are processed out of sequence using equal priority scheduling, or, perhaps, simply with an increased data transfer cost, i.e.\ slower. 
+%
+By binding a process to a specific core for the duration of its execution, the variations in data transfer time can be minimised.
+
+
+\subsection{Error Correcting Code (ECC) Memory}
+ECC Memory is used ubiquitously in commercial simulation facilities and servers to detect and correct single bit errors in DRAM memory~\cite{Dell1997}. Single bit errors may occur due to malfunctioning hardware, ionising radiation (background cosmic or environmental sources) or from electromagnetic radiation~\cite{dodd2003basic}. If single bit errors go uncorrected then subsequent computational processing will produce incorrect results, potentially giving rise to non-determinism due to the probabilistic nature of such errors occurring. Estimating the rate of error is difficult and dependent on hardware, environment and computer cycles~\cite{mielke2008bit}.
+
+Any simulation hardware not using ECC memory that runs for 1000's of hours, typical in AV verification, is likely to incur significant CPU hours and is therefore subject to increased exposure to these errors. To counter this, commercial HPC and simulation facilities typically employ ECC memory as standard.\todo{Check this, please.}
+
+%\todo[inline]{That said, HW design simulation is deterministic, uses long simulation runs and thousands of CPU hours, but I've not heard that this is an issue. I can ask, though. ;) GC-yes although most commercial systems and servers will use ECC, although some development SMEs may use non-ECC and therefore should be aware of this issue.} 
+
+
+\subsection{Game Engine Setup}
+The type and version of the engine code executed should be considered, paying attention to the control of pseudo-random numbers, fixed physics calculation steps ($dt$), fixed actor navigation mesh, deterministic ego vehicle controllers and engine texture loading rates especially for perception stack testing. %
+%
+% It must be noted that if $dt$ cannot be fixed then deterministic results are unlikely.
+% \todo[inline]{introduce actor navigation mesh GC-section on actor navigation brought forward}
+% \todo[inline]{introduce ego vehicle earlier on GC added line 99}
+For example, in Unreal Editor the \textit{unit}\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Performance/StatCommands/}} command can be used to monitor performance metrics such as \textit{Frame} which reports 
+% to determine processing bottlenecks by indicating\todo[inline]{what does indicating mean? GC-displaying, returning or showing} 
+the total time spent generating one frame, \textit{Game} for game loop execution time and \textit{Draw} for render thread time. 
+%
+With respect to perception stack testing, weather and lighting conditions in the game engine should be controlled as well as any other dynamic elements to the simulation environment, e.g.\ reflections from surface water, ensuring textures are not randomly generated. 
+
+
+
+
+\subsection{Actor Navigation}
+There is existing evidence to suggest actor navigation, typically pedestrians, could be the cause of non-deterministic simulation behaviour~\cite{CARLABenchmark}.
+% 
+Unreal Engine is the underlying framework for the CARLA simulator which uses the A* algorithm for actor navigation\footnote{\url{https://www.oreilly.com/library/view/unreal-engine-4/9781784393120/ch04s03.html} from~\cite{newton2016unreal}}.
+%
+The A* algorithm~\cite{AStarBook} will give deterministic outcomes as long as the environment is deterministic~\cite{AirsimUnrealArticle, UnrealAIDocumentation}. 
+
+A navigation mesh is a fixed area of the environment where actors are free to navigate.
+%
+Navigation meshes are used by the path planning algorithm to find the shortest distance between navigable points in the environment and could be considered as a potential source of non-determinism if the navigation mesh is not a fixed entity. %. Some AV simulator developers claim that the built-in physics engines' AI is non-deterministic
+%
+However, the environment management in CARLA implements fixed binary files for navigation meshes that are linked to each road scene or driving environment and cannot be unknowingly modified and therefore can be considered fixed. 
+
+Unless other sources that can alter the fixed environment exist, the A* algorithm should give deterministic results. Thus, actor navigation should not be considered a source of non-determinism.
+%
+% Therefore, the determinism of the actor path planning depends on the environment and the update to actor states within it and how navigation meshes are created or modelled, e.g. shape, granularity. 
+%
+% It is interesting to note that changes could occur to navigation meshes if they are dynamically loaded as the simulation proceeds which can reduce computational load for large area maps\footnote{\url{https://docs.unrealengine.com/en-US/BlueprintAPI/AI/Navigation/RegisterNavigationInvoker/}}.
+% \todo[inline]{unclear :( GC- re-written}
+
+\subsection{Summary}
 We have investigated the potential sources of non-determinism affecting game engines 
 and explored the impact they may have on simulation variance. 
 %
@@ -1019,6 +1024,15 @@ Practitioners may wish to set a stricter resource utilisation level, such as les
 \todo[inline,color=green!40]{GC Addition: Practitioners may wish to set a stricter resource utilisation level, such as less than 50\% to further reduce the potential dispersion of results if this is required for their chosen application. 
 %For this case study a 50\% restriction of resource utilisation would reduce deviation across all experiments to XXX.XXXmm. 
 }
+
+\subsection{Process Scheduling Priority}
+An investigation into the response of process scheduling on the simulation variance was undertaken. The experiment was repeated using test 1 but altering the process scheduling priority using the Ubuntu program \texttt{NICE}. Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under stress.
+%
+To give a process a high priority a negative NICE value is set with the lowest being -20. To decrease the priority a positive value is set, up to +19. The default NICE value is 0.
+
+The results presented in a box and whisker format, Fig.~\ref{NICEExperimentStressSummary}, show that decreasing the priority (right hand side of plot) has little effect on simulation variance when compared to a 0 NICE value (central plot bars). Increasing priority (left hand side of plot) reduced variance for the 75\% resource utilisation  but this did not account for all the difference in the observed results. 
+%
+This unaccounted difference in the variance may be due to the lack of  control that \texttt{NICE} has over the processes~\cite{Abanoub can you cite that quote you found here please}.
 
 \subsection{Investigation Summary} \label{s:empirical_summary}
 
