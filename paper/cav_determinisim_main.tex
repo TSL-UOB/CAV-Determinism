@@ -121,7 +121,8 @@ However, while game engines are designed primarily for performance to achieve a 
 
 \todo[inline,color=green!40]{GC New below}
 
-\subsection{Definition: Determinism}
+\subsection{Definitions}
+\subsubsection{Determinism}
 % What is a deterministic system
 Schumann describes determinism as the property of causality given a temporal development of events such that any state is completely determined by prior states~\cite{Schumann2010}. However, in the context of simulation this should be expanded to include not just prior states but also the history of actions taken by all actors. Therefore, a deterministic simulation will always produce the same result given the same history of prior states and actions.
 % 
@@ -133,7 +134,7 @@ In the case of a driving simulator, kinematics will describe future states of ac
 %
 If a simulation is deterministic then there will be no variation in the generated output data, i.e. all future states are perfectly reproducible from prior states and actions. 
 %
-However, if a simulation is non-deterministic then then there will be a variation in the generated output data. 
+However, if a simulation is non-deterministic then then there will be a variation in the generated output data. \\
 
 \begin{figure}[!t]
     \centering
@@ -153,7 +154,8 @@ However, if a simulation is non-deterministic then then there will be a variatio
 \end{figure}
 
 
-\subsection{Definitions: Precision, Variance \& Tolerance}
+% \subsection{Definitions: Precision, Variance \& Tolerance}
+\subsubsection{Precision, Variance \& Tolerance}
 
 We adopt some terms from the mechanical engineering and statistics domain that best describe this situation~\cite{ADictionaryofMechanicalEngineering}.
 %
@@ -173,31 +175,31 @@ As an analogy, the simulator can be thought of as a manufacturing process, produ
 %
 Real manufacturing fails to achieve absolute precision and hence the need for tolerances on design specifications to account for the variance in real-world processes. 
 
-If a simulator is deterministic then it will produce results with absolute precision or zero variance and hence will be within acceptable tolerance. If the simulator is non-deterministic then there will be a variance in the output which can be measured.
+If a simulator is deterministic then it will produce results with absolute precision or zero variance and hence will be within acceptable tolerance. If the simulator is non-deterministic then there will be a variance in the output which can be measured.\\
 %
 
-\subsection{Definition: Accuracy}
-
+% \subsection{Definition: Accuracy}
+\subsubsection{Accuracy}
 Precision and tolerance are not to be confused with \textit{accuracy} which describes how closely the generated output of a process aligns to a known standard. We therefore define accuracy as the difference between the true value (or reference value) and what has been achieved in the simulation or generation process. 
 %
-For a driving simulation the reference value, for which accuracy can be measured against, may be the real world that it seeks to emulate, where any divergence from this standard is termed the \textit{reality gap}. In most cases such accuracy will not be possible due to computational demands of such an exact replica and in most cases is unnecessary, where some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. 
+For a driving simulation the reference value, for which accuracy can be measured against, may be the real world that it seeks to emulate, where any divergence from this standard is termed the \textit{reality gap}. In most cases such accuracy will not be possible due to computational demands of such an exact replica and in most cases is unnecessary, where some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. \\
 
 
-\subsection{Definition: Variance Measurement}
-
+% \subsection{Definition: Variance Measurement}
+\subsubsection{Variance Measurement}
 If the simulator is non-deterministic then how can this variance be measured?
 %
 This can be achieved from the actor state, or more specifically from the statistical variance of actor paths within a given scenario with a fixed set of actions. Actor path variance is chosen over other measures as this distance based metric forms the basis for many downstream verification tests such as assertion checking. 
 
-The term \textit{simulation variance} refers to a measure of actor state variance in the simulation assuming fixed actions. Results are referred to in terms of deviation, rather than variance, as this is a more intuitive dimension to comprehend when considering verification tests, e.g. vehicle close-passing. Moreover, the maximum observed value of deviation was chosen over a mean value to ensure sufficient sensitivity.
+The term \textit{simulation variance} refers to a measure of actor state variance in the simulation assuming fixed actions. Results are referred to in terms of deviation, rather than variance, as this is a more intuitive dimension to comprehend when considering verification tests, e.g. vehicle close-passing. Moreover, the maximum observed value of deviation was chosen over a mean value to ensure sufficient sensitivity.\\
 
-\subsection{Definition: Simulation Trace}
+% \subsection{Definition: Simulation Trace}
+\subsubsection{Simulation Trace}
+A simulation trace is the output log from the simulator which is a time series of all actor positions ($x,y,z$) at regular intervals based on the time-step $dt$. This definition could be extended to include other variables, but position is sufficient for this analysis.\\
 
-A simulation trace is the output log from the simulator which is a time series of all actor positions ($x,y,z$) at regular intervals based on the time-step $dt$. This definition could be extended to include other variables, but position is sufficient for this analysis.
 
-
-\subsection{Definition: Scene, Scenario \& Situation}
-
+% \subsection{Definition: Scene, Scenario \& Situation}
+\subsubsection{Scene, Scenario \& Situation}
 We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time; these are considered actors and may include the AV or \textit{ego vehicle}, other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific parameters. A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
 
 % \todo[inline]{values - Does this mean stimulus or other parameters? GC - changed to parameters}
@@ -1259,7 +1261,7 @@ The results of the investigation are hardware and software version specific, so 
 %
 This methodology will allow the AV verification community using simulation tools to ensure their results are reliable and trustworthy.
 
-\subsection{Future Work}
+% \subsection{Future Work}
 A potential avenue of exploration is developing a version of the simulator which has been designed specifically for verification. In this version the simulator would be deterministic because the execution is suitably controlled along with sources of randomness and scheduling. A similar task was achieved with the \texttt{RR} program.\footnote{\url{https://github.com/mozilla/rr}} 
 
 With the advent of more AI systems becoming adaptive, meaning that the system may change it's response to the same stimulus over time, the notion of repeatability will need reassessing in the context of verification. The main research question here is what will constitute `the same' which will be important for passing or failing verification tests but also for determining coverage. 
