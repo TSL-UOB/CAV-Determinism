@@ -1,0 +1,16 @@
+AgentNo,AgentType,X,Y,V,Colour
+1,vehicle.carlamotors.carlacola,            -109.09, 33.47, 10,yellow
+1,vehicle.carlamotors.carlacola,            -93.58,  24.84, 10,yellow
+2,walker.pedestrian.0001,                 -83.78,  15.88, 1.7,white
+2,walker.pedestrian.0001,                 -91.68,  20.48, 1.7,white
+2,walker.pedestrian.0001,                 -87.14,  28.40, 1.7,white
+3,vehicle.mercedes-benz.coupe,            -83.93,  22.84, 10,red
+3,vehicle.mercedes-benz.coupe,            -115.83, 39.78, 10,red
+4,vehicle.mercedes-benz.coupe,            -90.63,  26.88, 10,red
+4,vehicle.mercedes-benz.coupe,            -115.83, 39.78, 10,red
+5,walker.pedestrian.0001,                 -103.88, 23.35, 1.7,white
+5,walker.pedestrian.0001,                 -83.78,  15.88, 1.7,white
+6,walker.pedestrian.0001,                 -96.05,  33.90, 1.7,white
+6,walker.pedestrian.0001,                 -77.37,  23.21, 1.7,white
+7,walker.pedestrian.0001,                 -77.37,  23.21, 1.7,white
+7,walker.pedestrian.0001,                 -96.05,  33.90, 1.7,white

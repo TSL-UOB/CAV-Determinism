@@ -1,0 +1,19 @@
+AgentNo,AgentType,X,Y,V
+1,vehicle.tesla.model3,            1230.20,  1647.60, 4
+1,vehicle.tesla.model3,            1223.50,  1709.90, 4
+2,vehicle.mercedes-benz.coupe,     1217.70,  1724.20, 4
+2,vehicle.mercedes-benz.coupe,     1229.80,  1616.00, 4
+3,vehicle.mercedes-benz.coupe,     1215.00,  1744.60, 4
+3,vehicle.mercedes-benz.coupe,     1229.80,  1616.00, 4
+4,vehicle.mercedes-benz.coupe,     1221.20,  1694.20, 4
+4,vehicle.mercedes-benz.coupe,     1229.80,  1616.00, 4
+5,walker.pedestrian.0001,          1224.50,  1743.00, 4
+5,walker.pedestrian.0001,          1226.80,  1726.80, 4
+5,walker.pedestrian.0001,          1220.30,  1723.90, 4
+6,walker.pedestrian.0001,          1229.10,  1691.40, 4
+6,walker.pedestrian.0001,          1221.70,  1764.10, 4
+7,walker.pedestrian.0001,          1210.00,  1758.40, 4
+7,walker.pedestrian.0001,          1224.90,  1636.70, 4
+8,walker.pedestrian.0001,          1224.90,  1636.70, 4
+8,walker.pedestrian.0001,          1210.00,  1758.40, 4
+

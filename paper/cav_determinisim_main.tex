@@ -96,7 +96,7 @@ There have been a number of fatalities with AVs, some of which could be attribut
 % The use of game engines for AV testing
 Increasingly, the autonomous vehicle community is adopting game engines as simulation platforms to support the development and testing of vehicle control software. 
 %
-CARLA\footnote{\url{http://carla.org/}}, for instance, is an open-source simulator for autonomous driving that is implemented in the Unreal Engine\footnote{\url{https://www.unrealengine.com/}}, a real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
+CARLA~\cite{carla_main_website}, for instance, is an open-source simulator for autonomous driving that is implemented in the Unreal Engine~\cite{UE4_main_website} a real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
 
 % Requirements of simulation based verification SBV
 State-of-the-art game engines provide a convenient option for simulation-based testing. They offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes, potentially suitable for perception stack testing and visual inspection of accidents or near misses. 
@@ -121,7 +121,7 @@ However, while game engines are designed primarily for performance to achieve a 
 
 \todo[inline,color=green!40]{GC New below}
 
-\subsection{Definitions}
+\subsection{Definitions (Refer to Fig.~\ref{variance_description} throughout this section)}
 \subsubsection{Determinism}
 % What is a deterministic system
 Schumann describes determinism as the property of causality given a temporal development of events such that any state is completely determined by prior states~\cite{Schumann2010}. However, in the context of simulation this should be expanded to include not just prior states but also the history of actions taken by all actors. Therefore, a deterministic simulation will always produce the same result given the same history of prior states and actions.
@@ -318,7 +318,7 @@ We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\to
 % ***************************************************
 \section{Background} \label{s:background}
 
-There are numerous game engines with their associated development environments which could be considered suitable for AV development, e.g. Unreal Engine\footnote{\url{https://www.unrealengine.com/}}, Unity\footnote{\url{https://unity.com/}}, CryEngine\footnote{\url{https://www.cryengine.com/}}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing game engines, e.g.\ CARLA\footnote{\url{http://carla.org/}}, AirSim\footnote{\url{https://microsoft.github.io/AirSim/}}, Apollo\footnote{\url{http://apollo.auto/}}, and some have been developed for cloud based simulation, e.g.\ Nvidia Drive Constellation~\cite{nvidia_constellation}.
+There are numerous game engines with their associated development environments which could be considered suitable for AV development, e.g. Unreal Engine~\cite{UE4_main_website}, Unity~\cite{Unity_main_website}, CryEngine~\cite{CryEngine_main_website}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing game engines, e.g.\ CARLA~\cite{carla_main_website}, AirSim~\cite{AirSim_main_website}, Apollo~\cite{Apollo_main_website}, and some have been developed for cloud based simulation, e.g.\ Nvidia Drive Constellation~\cite{nvidia_constellation}.
 % \footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
 
 Investigating the determinism of game engines has not attracted much research interest since performance is more critical for game developers than accurate and repeatable execution.  %However, when these engines are used for AV development then deterministic behaviour is required. 
@@ -334,7 +334,7 @@ This section gives an overview of the internal structure of a game engine and wh
 % \noindent This section overviews important information and concepts in physics engines, which are relevant to their usage in AV simulations. Particularly, on how physics engines operate and the sources of non-determinism in these engines necessary to understand the contribution of this paper.
 
 % ======= Overview of a Game Loop
-\subsection{Game Engine Overview} \label{GameLoopSection}
+% \subsection{Game Engine Overview} \label{GameLoopSection}
 
 Central to a game engine are the main game logic, the artificial intelligence (AI) component, the audio engine, and the physics and rendering engines. For AV simulation, we focus on the latter two.
 %
@@ -385,7 +385,7 @@ The shorter this time step is, the smoother the interpretation of the physical d
 %
 To use a fixed physics time step, the user's display refresh rate needs to be known in advance. This requires an update loop to take less than one render tick (one frame of real world time). Given the range of different hardware capabilities, a variable delta time is often implemented for game playing, taking the previous frame time as the next $dt$. However, variable $dt$ can lead to different outcomes in repeated tests and in some cases unrealistic physical representations~\cite{gaffer}. 
 %
-Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined limit to meet a minimum standard of physical representation but allow computational headroom for slower hardware. Some engines provide sub-stepping which processes multiple physics calculations per frame at a greater CPU cost, e.g.\ Unreal Engine\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Physics/Substepping/}}. 
+Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined limit to meet a minimum standard of physical representation but allow computational headroom for slower hardware. Some engines provide sub-stepping which processes multiple physics calculations per frame at a greater CPU cost, e.g.\ Unreal Engine~\cite{UE4_substepping}. 
 %
 If the engine tries to render between physics updates, \textit{residual lag} can occur, which may result in frames arriving with a delay to the simulated physics.
 %
@@ -499,7 +499,7 @@ Changing the scheduling policy and thread priorities may increase simulation var
 
 It is, however, unlikely that changes to thread priorities or scheduling policy would occur during repeated controlled tests for the same hardware and operating system configuration. Given that hardware is considered deterministic and if the thread execution order does not change between tests, then for the same hardware and operating system configuration the same output should be given. 
 
-However, if some aspects of the game loop are multi-threaded\footnote{\url{https://docs.unity3d.com/Manual/JobSystemMultithreading.html}}, then, even with a clear thread scheduling order, any background process may interrupt the otherwise deterministic sequence of events. This may, for example, alter the number of physics calculations that can be performed within the game loop and hence result in simulation variance.
+However, if some aspects of the game loop are multi-threaded~\cite{unity_multithreading}, then, even with a clear thread scheduling order, any background process may interrupt the otherwise deterministic sequence of events. This may, for example, alter the number of physics calculations that can be performed within the game loop and hence result in simulation variance.
 %
 Using multiple threads has been found to affect initialisation ordering for training machine learning models which can lead to unpredictable ordering of training data and non-deterministic behaviour~\cite{Sculley2015,Breck2017}.
 %
@@ -515,7 +515,7 @@ This is because the processor cores are identical and any impurities across the 
 %
 However, scheduling multiple processes across several processing cores, where the number of cores is smaller than the number of processes, can result in variation of the execution order and cause simulation variance unless explicitly constrained or statically allocated prior to execution. 
 
-Indeed, the developers of the de-bugging program \texttt{RR}\footnote{\url{https://github.com/mozilla/rr}} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}.
+Indeed, the developers of the de-bugging program \texttt{RR}~\cite{RR_link} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}.
 %
 \todo[inline,color=green!40]{GC addition:Indeed, the developers of the de-bugging program \texttt{RR} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}. }
 
@@ -575,7 +575,7 @@ The type and version of the engine code executed should be considered, paying at
 % It must be noted that if $dt$ cannot be fixed then deterministic results are unlikely.
 % \todo[inline]{introduce actor navigation mesh GC-section on actor navigation brought forward}
 % \todo[inline]{introduce ego vehicle earlier on GC added line 99}
-For example, in Unreal Editor the \textit{unit}\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Performance/StatCommands/}} command can be used to monitor performance metrics such as \textit{Frame} which reports 
+For example, in Unreal Editor the \textit{unit}\cite{stat_commands} command can be used to monitor performance metrics such as \textit{Frame} which reports 
 % to determine processing bottlenecks by indicating\todo[inline]{what does indicating mean? GC-displaying, returning or showing} 
 the total time spent generating one frame, \textit{Game} for game loop execution time and \textit{Draw} for render thread time. 
 %
@@ -587,7 +587,7 @@ With respect to perception stack testing, weather and lighting conditions in the
 \subsection{Actor Navigation}
 There is existing evidence to suggest actor navigation, typically pedestrians, could be the cause of non-deterministic simulation behaviour~\cite{CARLABenchmark}.
 % 
-Unreal Engine is the underlying framework for the CARLA simulator which uses the A* algorithm for actor navigation\footnote{\url{https://www.oreilly.com/library/view/unreal-engine-4/9781784393120/ch04s03.html} from~\cite{newton2016unreal}}.
+Unreal Engine is the underlying framework for the CARLA simulator which uses the A* algorithm for actor navigation~\cite{a_Star_oreilly}.
 %
 The A* algorithm~\cite{AStarBook} will give deterministic outcomes as long as the environment is deterministic~\cite{AirsimUnrealArticle, UnrealAIDocumentation}. 
 
@@ -771,7 +771,7 @@ where any value higher than the specified tolerance is considered non-permissibl
 
 
 \subsection{Actor Collisions}\label{S:Actor_Collisions}
-Previous investigations into the Unreal Engine indicated that collisions between dynamic actors and solid objects, termed \textit{blocking physics bodies} in Unreal Engine documentation\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Physics/Collision/Overview/index.html}}, can lead to high simulation variance, \cite{TSLUnrealEngineTesting}. 
+Previous investigations into the Unreal Engine indicated that collisions between dynamic actors and solid objects, termed \textit{blocking physics bodies} in Unreal Engine documentation~\cite{collision_overview}, can lead to high simulation variance, \cite{TSLUnrealEngineTesting}. 
 %
 Collisions and the subsequent physics calculations that are processed, termed \textit{event hit} callback in Unreal Engine, were seen as potentially key aspects to the investigation into simulation variance.
 
@@ -825,7 +825,7 @@ The maximum deviation, $\max\sigma$, was analysed against the different scenario
 % ***************************************************
 \subsection{Internal Settings}
 
-Within Unreal Engine there are numerous internal settings relating to the movement and interaction of physical bodies in the simulation. Settings can be adjusted to alter how actors interact and path plan via the navigation mesh of the environment, e.g. \textit{Contact Offset} and \textit{Navmesh Voxel Size}, or can be changed to improve the fidelity of physics calculations between game update steps, e.g. \textit{Physics Sub-Stepping} and \textit{Max Physics Delta Time}. Other options such as \textit{Enable Enhanced Determinism} were investigated along with running the engine from the command line with options for more deterministic behaviour \texttt{-deterministic}, floating point control \texttt{/fp:strict} and headless mode \texttt{-nullrhi} along with running the test as a packaged release by building and cooking.\footnote{\url{https://docs.unrealengine.com/en-US/Engine/Deployment/Releasing/}} 
+Within Unreal Engine there are numerous internal settings relating to the movement and interaction of physical bodies in the simulation. Settings can be adjusted to alter how actors interact and path plan via the navigation mesh of the environment, e.g. \textit{Contact Offset} and \textit{Navmesh Voxel Size}, or can be changed to improve the fidelity of physics calculations between game update steps, e.g. \textit{Physics Sub-Stepping} and \textit{Max Physics Delta Time}. Other options such as \textit{Enable Enhanced Determinism} were investigated along with running the engine from the command line with options for more deterministic behaviour \texttt{-deterministic}, floating point control \texttt{/fp:strict} and headless mode \texttt{-nullrhi} along with running the test as a packaged release by building and cooking~\cite{releasing_project}.
 % \todo[inline]{Maybe we can introduce our initial study here? Picture of the man and moving bloack and a result showing the path traces in x,y etc?}
 An initial study into the Unreal Engine using a pedestrian and a moving block was used to investigate simulation variance against these settings. The results were compared to a baseline of the default engine settings. 
 %
@@ -856,7 +856,7 @@ Resource utilisation was artificially increased for both CPU and GPU devices to 
 
 \todo[inline,color=green!40]{GC Addition (para below):} 
 %Issues around floating point precision and concurrency as previously mentioned notwithstanding, 
-Practitioners should also be aware that many libraries for calculating variance itself may require attention to get precise results. For example the \texttt{numpy} method of variance is sensitive to the input precision and will return an incorrect answer if the wrong parameters are set~\cite{NumpyVar}. In \texttt{matlab}, the calculation of variance may switch from single thread to a multi-threaded execution not obviously apparent to the user when the input data size becomes large enough, opening up the potential for concurrency imprecision.\footnote{\url{https://uk.mathworks.com/matlabcentral/answers/317128-does-matlab-use-all-cores-by-default-when-running-a-program}} 
+Practitioners should also be aware that many libraries for calculating variance itself may require attention to get precise results. For example the \texttt{numpy} method of variance is sensitive to the input precision and will return an incorrect answer if the wrong parameters are set~\cite{NumpyVar}. In \texttt{matlab}, the calculation of variance may switch from single thread to a multi-threaded execution not obviously apparent to the user when the input data size becomes large enough, opening up the potential for concurrency imprecision~\cite{matlab_parallel_computing}. 
 
 \begin{figure}[t]
     \centering
@@ -869,12 +869,20 @@ Practitioners should also be aware that many libraries for calculating variance 
 %  System Configuration and Screening
 % ***************************************************
 \subsection{System Configuration and Screening}\label{s:screening}
-These tests were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB non-ECC DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 GPU with 8GB GDDR6 RAM at 1515 MHz. Operating systems was Linux Ubuntu 18.04.4 LTS. To ensure reliability of results, each test was repeated 1000 times. Tests were carried out in CARLA (v0.9.6 and Unreal Engine v4.22) using synchronous mode with a fixed $dt$ of $0.05$s. To eliminate some of the potential sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests and analyses were performed on our system. These were:
+These tests were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB non-ECC DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 GPU with 8GB GDDR6 RAM at 1515 MHz. 
+%
+Operating systems was Linux Ubuntu 18.04.4 LTS. To ensure reliability of results, each test was repeated 1000 times. 
+%
+Tests were carried out in CARLA (v0.9.6 and Unreal Engine v4.22) using synchronous mode with a fixed $dt$ of $0.05$s. 
+%
+A detailed guide for reproducing these experiments along with the scripts used are provided on github\footnote{\url{https://github.com/TSL-UOB/CAV-Determinism/tree/master/CARLA_Tests_setup_guide}}.
+%
+To eliminate some of the potential sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests and analyses were performed on our system. These were:
 
 \begin{itemize}[leftmargin=*]
-    \item System memory: \texttt{memtest86}\footnote{\url{https://www.memtest86.com/}} full suite of tests ran, all passed.
-    \item Graphical memory: \texttt{cuda\_memtest}\footnote{see \url{https://github.com/ComputationalRadiationPhysics/cuda_memtest}} full details of tests found here~\cite{shi2009testing}, all tests passed.
-    \item Non-uniform memory access: \texttt{numactl}\footnote{\url{https://linux.die.net/man/8/numactl}} was used to fix the simulator and test script to single cores but only a minor (2\%) improvement in simulation variance was observed and therefore not used for subsequent testing.
+    \item System memory: \texttt{memtest86}~\cite{MemTest86} full suite of tests ran, all passed.
+    \item Graphical memory: \texttt{cuda\_memtest}~\cite{cuda_memtest}\cite{shi2009testing}.
+    \item Non-uniform memory access: \texttt{numactl}~\cite{numactl_NUMA} was used to fix the simulator and test script to single cores but only a minor (2\%) improvement in simulation variance was observed and therefore not used for subsequent testing.
 \end{itemize}
 
 
@@ -933,7 +941,7 @@ These tests were carried out on an Alienware Area 51 R5 with an i9 9960X process
         \caption{}
         \label{CarsCollisionPrePost}
     \end{subfigure}
-    \caption{Vehicle to vehicle collision (test 2) showing (a) mean deviation against simulation time for 25\% resource utilisation and (b) mean deviation pre- and post-collision against resource utilisation. The simulation noise floor is shown in (a) which is the empirical lower limit of deviation for the hardware reported in this study.}
+    \caption{Vehicle to vehicle collision (test 2) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision against resource utilisation. The simulation noise floor is shown in (a) which is the empirical lower limit of deviation for the hardware reported in this study.}
 \end{figure*}
 
 
@@ -984,15 +992,16 @@ This pattern of permissible results prior to collision and non-permissible post-
         \caption{}
         \label{CarsPeopleCollisionPrePost}
     \end{subfigure}
-    \caption{Vehicle to pedestrian collision (test 4) showing (a) maximum deviation against simulation time for 25\% stress and (b) maximum deviation pre- and post-collision for different resource utilisation levels.}
+    \caption{Vehicle to pedestrian collision (test 4) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision for different resource utilisation levels.}
 \end{figure*}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.48\textwidth]{Other/Figures/NICE_analysis_summary_V3.pdf}
+    \includegraphics[width=0.48\textwidth]{Other/Figures/NICE_analysis_summary_V4.pdf}
     \caption{Summary of investigating the effect of NICE priority setting for 0\% and 75\% additonal CPU \& GPU resource utilisation.}
     \label{NICEExperimentStressSummary}
 \end{figure}
+
 
 The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three observations here; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision.
 % as described above. 
@@ -1028,13 +1037,14 @@ Practitioners may wish to set a stricter resource utilisation level, such as les
 }
 
 \subsection{Process Scheduling Priority}
-An investigation into the response of process scheduling on the simulation variance was undertaken. The experiment was repeated using test 1 but altering the process scheduling priority using the Ubuntu program \texttt{NICE}. Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under stress.
+An investigation into the response of process scheduling on the simulation variance was undertaken. The experiment was repeated using test 1 but altering the process scheduling priority using the Ubuntu program \texttt{NICE}. Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under high resource utilisation.
 %
 To give a process a high priority a negative NICE value is set with the lowest being -20. To decrease the priority a positive value is set, up to +19. The default NICE value is 0.
 
-The results presented in a box and whisker format, Fig.~\ref{NICEExperimentStressSummary}, show that decreasing the priority (right hand side of plot) has little effect on simulation variance when compared to a 0 NICE value (central plot bars). Increasing priority (left hand side of plot) reduced variance for the 75\% resource utilisation  but this did not account for all the difference in the observed results. 
+The results presented in a box and whisker format, Fig.~\ref{NICEExperimentStressSummary}, show that decreasing the priority (right hand side of plot) has little effect on simulation variance when compared to a 0 NICE value (central plot bars). Increasing priority (left hand side of plot) reduced variance for the 75\% resource utilisation but this did not account for all the difference in the observed results. 
 %
-This unaccounted difference in the variance may be due to the lack of  control that \texttt{NICE} has over the processes~\cite{Abanoub can you cite that quote you found here please}.
+This unaccounted difference in the variance may be due to the lack of  control that \texttt{NICE} has over the processes\footnote{\url{https://askubuntu.com/questions/656771/process-niceness-vs-priority}}.
+%~\cite{Abanoub can you cite that quote you found here please}.
 
 \subsection{Investigation Summary} \label{s:empirical_summary}
 
@@ -1106,7 +1116,7 @@ The simulation time should be sufficient to record an interaction between actors
 
 
 \subsection{Simulator Settings}
-The settings internal to the game engine or other simulation environment should be set to ensure a fixed physics time step, $dt$. If using CARLA a small fixed value, say $0.05s$, can be set by using the following: \texttt{setting.fixed\_delta\_seconds = 0.05}, whereas in Unity the default fixed time step is set to $0.02s$\footnote{\url{https://docs.unity3d.com/ScriptReference/MonoBehaviour.FixedUpdate.html}}. In CARLA, synchronous mode must be used to allow communication to external controllers which ensures no sensor data are passed out of order to the simulator which is particularly important if a complex ego controller is used~\cite{carla_sim_config}. 
+The settings internal to the game engine or other simulation environment should be set to ensure a fixed physics time step, $dt$. If using CARLA a small fixed value, say $0.05s$, can be set by using the following: \texttt{setting.fixed\_delta\_seconds = 0.05}, whereas in Unity the default fixed time step is set to $0.02s$~\cite{MonoBehaviour_unity}. In CARLA, synchronous mode must be used to allow communication to external controllers which ensures no sensor data are passed out of order to the simulator which is particularly important if a complex ego controller is used~\cite{carla_sim_config}. 
 %
 The use of random numbers must be controlled through the use of fixed seeds which might be used to control variations of background effects, e.g. weather patterns, or the navigation of random pedestrian actors, external vehicle controllers or other clients connected to the simulation environment. 
 %
@@ -1139,7 +1149,7 @@ Prior to experimental execution the system hardware should be tested for memory 
 We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, fine control over the scheduling policy and thread execution order may be non-trivial. Such policies are defined by the operating system and may execute threads with equal priority. In such a case, all tasks non-essential to the simulator should be terminated to prevent interruption to the simulator. 
 
 % If the policy or operating system cannot be changed then s
-Setting the simulator process to a higher priority may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows\footnote{\url{https://docs.microsoft.com/en-us/windows/win32/taskschd/tasksettings-priority}} or \texttt{NICE} in Linux\footnote{\url{https://linux.die.net/man/1/nice}}.
+Setting the simulator process to a higher priority may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows~\cite{TaskSettingWindows} or \texttt{NICE} in Linux~\cite{Nice_linux}.
 
 \subsubsection{NUMA Control}
 Control over Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multiprocessors with shared memory. This control allows the simulator program to be fixed on a single core reducing memory access time.
@@ -1262,7 +1272,7 @@ The results of the investigation are hardware and software version specific, so 
 This methodology will allow the AV verification community using simulation tools to ensure their results are reliable and trustworthy.
 
 % \subsection{Future Work}
-A potential avenue of exploration is developing a version of the simulator which has been designed specifically for verification. In this version the simulator would be deterministic because the execution is suitably controlled along with sources of randomness and scheduling. A similar task was achieved with the \texttt{RR} program.\footnote{\url{https://github.com/mozilla/rr}} 
+A potential avenue of exploration is developing a version of the simulator which has been designed specifically for verification. In this version the simulator would be deterministic because the execution is suitably controlled along with sources of randomness and scheduling. A similar task was achieved with the \texttt{RR} program~\cite{RR_link}. 
 
 With the advent of more AI systems becoming adaptive, meaning that the system may change it's response to the same stimulus over time, the notion of repeatability will need reassessing in the context of verification. The main research question here is what will constitute `the same' which will be important for passing or failing verification tests but also for determining coverage. 
 
@@ -1330,7 +1340,6 @@ This research has in part been funded by the ROBOPILOT and CAPRI projects. Both
 projects are part-funded by the Centre for Connected and Autonomous
 Vehicles (CCAV), delivered in partnership with Innovate UK under grant numbers
 103703 (CAPRI) and 103288 (ROBOPILOT), respectively.
-\balance
 \printbibliography
 
 \end{document}

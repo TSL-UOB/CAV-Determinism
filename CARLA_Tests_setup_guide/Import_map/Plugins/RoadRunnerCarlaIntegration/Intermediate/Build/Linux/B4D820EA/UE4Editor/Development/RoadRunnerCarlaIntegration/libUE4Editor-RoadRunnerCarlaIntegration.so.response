@@ -1,0 +1,14 @@
+"/home/abanoub_g/carla/Unreal/CarlaUE4/Plugins/RoadRunnerCarlaIntegration/Intermediate/Build/Linux/B4D820EA/UE4Editor/Development/RoadRunnerCarlaIntegration/Module.RoadRunnerCarlaIntegration.cpp.o"
+ -soname="libUE4Editor-RoadRunnerCarlaIntegration.so"
+ -rpath="${ORIGIN}/../../../Carla/CarlaDependencies/lib"
+ -rpath="${ORIGIN}/../../../Carla/Binaries/Linux"
+ -rpath="${ORIGIN}/../../../RoadRunnerImporter/Binaries/Linux"
+ -rpath-link="/home/abanoub_g/carla/Unreal/CarlaUE4/Plugins/RoadRunnerCarlaIntegration/Binaries/Linux"
+ -L"/home/abanoub_g/carla/Unreal/CarlaUE4/Plugins/Carla/CarlaDependencies/lib"
+ -L"/home/abanoub_g/UnrealEngine_4.22/Engine/Binaries/Linux"
+ -L"/home/abanoub_g/carla/Unreal/CarlaUE4/Plugins/Carla/Binaries/Linux"
+ -L"/home/abanoub_g/carla/Unreal/CarlaUE4/Plugins/RoadRunnerImporter/Binaries/Linux"
+ --start-group
+ /home/abanoub_g/carla/Unreal/CarlaUE4/Plugins/Carla/CarlaDependencies/lib/librpc.a
+ /home/abanoub_g/carla/Unreal/CarlaUE4/Plugins/Carla/CarlaDependencies/lib/libcarla_server.a
+ --end-group

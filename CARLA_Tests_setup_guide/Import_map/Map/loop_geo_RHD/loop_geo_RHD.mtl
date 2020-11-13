@@ -1,0 +1,46 @@
+# RoadRunner MTL Export
+# www.vectorzeroinc.com
+
+newmtl Grass1
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.039216 0.039216 0.039216
+Ns 800.200012
+Tr 0.000000
+map_Kd Grass1_Diff.png
+map_bump Grass1_Norm.png
+map_Ks Grass1_Spec.png
+
+newmtl Asphalt1
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.058824 0.058824 0.058824
+Ns 850.150024
+Tr 0.000000
+map_Kd Asphalt1_Diff.png
+map_bump Asphalt1_Norm.png
+map_Ks Asphalt1_Spec.png
+
+newmtl LaneMarking1
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.196078 0.196078 0.196078
+Ns 900.099976
+Tr 0.000000
+map_Kd LaneMarking1_Diff.png
+map_bump LaneMarking1_Norm.png
+map_Ks LaneMarking1_Spec.png
+
+newmtl Concrete1
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.039216 0.039216 0.039216
+Ns 800.200012
+Tr 0.000000
+map_Kd Concrete1_Diff.png
+map_bump Concrete1_Norm.png
+map_Ks Concrete1_Spec.png

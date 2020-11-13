@@ -1,0 +1,3 @@
+AgentNo,AgentType,X,Y,V
+1,walker.pedestrian.0001,         -56.34,  -20.84, 4
+1,walker.pedestrian.0001,          -6.54,   -6.64, 4

@@ -1,0 +1,11 @@
+AgentNo,AgentType,X,Y,V
+1,vehicle.mercedes-benz.coupe,     13.21,  -32.41, 4
+1,vehicle.mercedes-benz.coupe,     50.61,  -52.21, 4
+2,vehicle.tesla.model3,             2.01,  -26.61, 4
+2,vehicle.tesla.model3,            32.30,  -42.71, 4
+3,vehicle.mercedes-benz.coupe,    -4.99,  -23.51, 4
+3,vehicle.mercedes-benz.coupe,    -0.09,  -25.51, 4
+3,vehicle.mercedes-benz.coupe,     4.71,  -24.21, 4
+3,vehicle.mercedes-benz.coupe,     19.71, -32.12, 4
+3,vehicle.mercedes-benz.coupe,     24.61, -38.41, 4
+3,vehicle.mercedes-benz.coupe,     42.51, -47.91, 4

@@ -1,0 +1,8 @@
+AgentNo,AgentType,X,Y,V
+1,vehicle.mercedes-benz.coupe,    0,  0, 0
+1,vehicle.mercedes-benz.coupe,    1,  0, 0
+2,vehicle.mercedes-benz.coupe,    15.65,   -33.94, 0
+2,vehicle.mercedes-benz.coupe,    16.65,   -33.94, 0
+3,walker.pedestrian.0001,         -56.34,  -20.84, 0
+3,walker.pedestrian.0001,         -57.34,  -20.84, 0
+

@@ -1,0 +1,7 @@
+AgentNo,AgentType,X,Y,V
+1,vehicle.tesla.model3,            1230.20,  1647.60, 4
+1,vehicle.tesla.model3,            1223.50,  1709.90, 4
+2,walker.pedestrian.0001,          1224.50,  1743.00, 4
+2,walker.pedestrian.0001,          1226.80,  1726.80, 4
+2,walker.pedestrian.0001,          1220.30,  1723.90, 4
+

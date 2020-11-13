@@ -1,0 +1,24 @@
+AgentNo,AgentType,X,Y,V,Colour
+1,vehicle.mercedes-benz.coupe,    -61.54,  -22.64, 4,red
+1,vehicle.mercedes-benz.coupe,    -56.34,  -20.84, 4,red
+1,vehicle.mercedes-benz.coupe,    -48.94,  -18.14, 4,red
+1,vehicle.mercedes-benz.coupe,    -44.14,  -16.24, 4,red
+1,vehicle.mercedes-benz.coupe,    -39.64,  -14.54, 4,red
+1,vehicle.mercedes-benz.coupe,    -35.44,  -14.84, 4,red
+1,vehicle.mercedes-benz.coupe,    -30.64,  -13.74, 4,red
+1,vehicle.mercedes-benz.coupe,    -23.74,  -15.34, 4,red
+1,vehicle.mercedes-benz.coupe,    -18.94,  -15.04, 4,red
+1,vehicle.mercedes-benz.coupe,    -13.24,   -9.44, 4,red
+1,vehicle.mercedes-benz.coupe,     -6.54,   -6.64, 4,red
+1,vehicle.mercedes-benz.coupe,     13.85,    2.35, 4,red
+2,vehicle.mercedes-benz.coupe,    -51.74,    2.15, 4,red
+2,vehicle.mercedes-benz.coupe,    -46.84,   -2.34, 4,red
+2,vehicle.mercedes-benz.coupe,    -43.34,   -6.34, 4,red
+2,vehicle.mercedes-benz.coupe,    -38.74,   -13.04, 4,red
+2,vehicle.mercedes-benz.coupe,    -32.74,   -13.24, 4,red
+2,vehicle.mercedes-benz.coupe,    -27.44,   -14.84, 4,red
+2,vehicle.mercedes-benz.coupe,    -23.64,   -18.34, 4,red
+2,vehicle.mercedes-benz.coupe,    -17.94,   -18.24, 4,red
+2,vehicle.mercedes-benz.coupe,     15.65,   -33.94, 4,red
+
+
