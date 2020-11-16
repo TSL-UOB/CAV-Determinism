@@ -122,7 +122,10 @@ However, while game engines are designed primarily for performance to achieve a 
 
 \todo[inline,color=green!40]{GC New below}
 
-\subsection{Definitions (Refer to Fig.~\ref{variance_description} throughout this section)}
+\subsection{Definitions}
+
+A list of definitions are given here of the terms used in the subsequent discussion. Refer to Fig.~\ref{variance_description} throughout this section.
+
 \subsubsection{Determinism}
 % What is a deterministic system
 Schumann describes determinism as the property of causality given a temporal development of events such that any state is completely determined by prior states~\cite{Schumann2010}. However, in the context of simulation this should be expanded to include not just prior states but also the history of actions taken by all actors. Therefore, a deterministic simulation will always produce the same result given the same history of prior states and actions.
@@ -158,7 +161,7 @@ However, if a simulation is non-deterministic then then there will be a variatio
 % \subsection{Definitions: Precision, Variance \& Tolerance}
 \subsubsection{Precision, Variance \& Tolerance}
 
-We adopt some terms from the mechanical engineering and statistics domain that best describe this situation~\cite{ADictionaryofMechanicalEngineering}.
+We adopt some terms from the mechanical engineering and statistics domain that best describe when there is variation in the generated output data~\cite{ADictionaryofMechanicalEngineering}.
 %
 \textit{Precision} is therefore defined as the degree to which a simulation can repeatedly generate the same result when executed with the same conditions and actions taken. 
 %
@@ -169,34 +172,36 @@ We adopt some terms from the mechanical engineering and statistics domain that b
 % The engineering terms \textit{precision} and \textit{tolerance} suitably describe how the simulation data vary when the same repeated stimulus is provided to the simulation environment under identical initial conditions~\cite{ADictionaryofMechanicalEngineering}. %
 %
 % As an analogy, the simulator can be thought of as a manufacturing process, producing data and if tasked to repeatedly execute the same process we must ask how \textit{precise} can this process be and what, if any, will the \textit{variance} be? % when comparing the differences between multiple products. 
-As an analogy, the simulator can be thought of as a manufacturing process, producing data and to find the value of the precision then the output must be measured for differences. Those differences describe the spread or variance in the process output and a hard limit on the variance can be defined, beyond which the output fails to meet the required tolerance, e.g. rejected for quality control.
+As an analogy, the simulator can be thought of as a manufacturing process, producing data and to find the value of the precision then the output must be measured for differences when the process is repeated. Those differences describe the spread or variance in the process output and a hard limit on the variance can be defined, Fig.~\ref{variance_description}a, beyond which the output fails to meet the required tolerance, e.g. rejected for quality control.
 %
 % In relation to manufacturing, the precision of any computer based task is casually assumed to be absolute, for example one may question the manufactured precision of a physical component but not the computer assisted drawing that it was made from. 
 %but technically this is equivalent to the representation of numbers within it, e.g. 64-bit floating point. %\textbf{[ref]}. %
 %
 Real manufacturing fails to achieve absolute precision and hence the need for tolerances on design specifications to account for the variance in real-world processes. 
 
-If a simulator is deterministic then it will produce results with absolute precision or zero variance and hence will be within acceptable tolerance. If the simulator is non-deterministic then there will be a variance in the output which can be measured.\\
+If a simulator is deterministic then it will produce results with absolute precision or zero variance, Fig.~\ref{variance_description}b, and hence will be within acceptable tolerance. If the simulator is non-deterministic then there will be a variance in the output which can be measured.\\
 %
 
 % \subsection{Definition: Accuracy}
 \subsubsection{Accuracy}
-Precision and tolerance are not to be confused with \textit{accuracy} which describes how closely the generated output of a process aligns to a known standard. We therefore define accuracy as the difference between the true value (or reference value) and what has been achieved in the simulation or generation process. 
+Precision and tolerance are not to be confused with \textit{accuracy} which describes how closely the generated output of a process aligns to a known standard or reference value. We therefore define accuracy as the difference between the true value (or reference value) and what has been achieved in the simulation or generation process. 
 %
 For a driving simulation the reference value, for which accuracy can be measured against, may be the real world that it seeks to emulate, where any divergence from this standard is termed the \textit{reality gap}. In most cases such accuracy will not be possible due to computational demands of such an exact replica and in most cases is unnecessary, where some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. \\
 
 
 % \subsection{Definition: Variance Measurement}
-\subsubsection{Variance Measurement}
-If the simulator is non-deterministic then how can this variance be measured?
+\subsubsection{Simulation Variance}
+If the simulator is non-deterministic then how can this variance be measured? 
 %
-This can be achieved from the actor state, or more specifically from the statistical variance of actor paths within a given scenario with a fixed set of actions. Actor path variance is chosen over other measures as this distance based metric forms the basis for many downstream verification tests such as assertion checking. 
-
-The term \textit{simulation variance} refers to a measure of actor state variance in the simulation assuming fixed actions. Results are referred to in terms of deviation, rather than variance, as this is a more intuitive dimension to comprehend when considering verification tests, e.g. vehicle close-passing. Moreover, the maximum observed value of deviation was chosen over a mean value to ensure sufficient sensitivity.\\
+This can be achieved by monitoring any simulated output variables that should be consistent from run to run. 
+% In this study the actor state was chosen, or more specifically the statistical variance of actor paths within a given scenario using a fixed set of actions. 
+Actor path variance was chosen over other variables as this distance based metric forms the basis for many downstream verification tests such as assertion checking. 
+% 
+Therefore the term \textit{simulation variance} refers to a measure of actor position variance in the simulation with respect to time assuming fixed actions. Results are referred to in terms of deviation, rather than variance, as this is more intuitive to comprehend when considering verification tests, e.g. vehicle close-passing. Moreover, the maximum observed value of deviation was chosen over a mean value to ensure sufficient sensitivity.\\
 
 % \subsection{Definition: Simulation Trace}
 \subsubsection{Simulation Trace}
-A simulation trace is the output log from the simulator which is a time series of all actor positions ($x,y,z$) at regular intervals based on the time-step $dt$. This definition could be extended to include other variables, but position is sufficient for this analysis.\\
+A simulation trace is the output log from the simulator which is a time series of all actor positions ($x,y,z$) at regular intervals based on a regular time interval. This definition could be extended to include other variables, but position is sufficient for this analysis.\\
 
 
 % \subsection{Definition: Scene, Scenario \& Situation}
@@ -214,9 +219,7 @@ We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene
 %
 
 \subsection{When is Determinism needed?}
-Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. Using mechanical engineering terms, a deterministic simulator can be considered to have zero \textit{variance}. 
-%
-If the variance is non-zero it can no longer be considered deterministic but this may be sufficient for certain applications as long as it is \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated simulation traces. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
+Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. A deterministic simulator can be considered to have zero \textit{variance}. If the variance is non-zero it can no longer be considered deterministic but this may be sufficient for certain applications as long as it is \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated simulation traces. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
 
 % GC Text
 \todo[inline,color=green!40]{GC Alternative: Determinism is a key prerequisite for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable. In conventional engineering terms a deterministic simulator can be considered to have zero \textit{tolerance}. If the tolerance is non-zero it can no longer be considered deterministic but this may be sufficient for certain applications as long as it is \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated execution outputs. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.}
@@ -233,11 +236,11 @@ If the simulation is non-deterministic and has a non-permissible variance in, fo
 % \todo[inline]{GC Edit: If the simulation is non-deterministic, it lacks the appropriate precision for this application and the error between output traces exceeds the acceptable tolerance however, variance in actor positions, for instance, may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software.}
 
 % Challenges of SBV
-When used for gaming, game engines do not need to be deterministic nor do they even have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions is:
+When used for gaming, game engines do not need to be deterministic nor do they even have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs related to non-determinism a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research question is:
 %
 \todo[inline,color=red!40]{old: How can one assess the extent to which a simulation environment is deterministic?  }
 %
-How can one assess the extent to which a simulation environment is deterministic or has a permissible variance?
+How can one assess the extent to which a simulation environment is deterministic or has a permissible level of variance?
 \todo[inline,color=green!40]{GC Alternative: How can one assess the extent to which a simulation environment is deterministic or has a permissible tolerance?} 
 
 % In pursuit of an answer to this question we
@@ -645,7 +648,7 @@ Test & Actors 					 	  & Collision 	 & Collision Type 			 & $n$  & $\max\sigma$ 
 6    & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 1000 & $5.6{\times}10^{-13}$ & $5.6{\times}10^{-13}$ \\
 \bottomrule
 \end{tabular}
-\caption{A description of the test scenarios showing the test number, the actors included, if a collision occurred and between which actors. Where $n$ is the number of repeats and $\max\sigma$ is the maximum simulation deviation. The term \textit{unrestricted} refers to an unrestricted account of the results including results of any resource utilisation. To understand the impact of collisions and high resource utilisation the \textit{restricted} column shows a subset of the results where data post-collision has been removed and where data above a resource utilisation level of 75\% has also been removed.}
+\caption{A description of the test scenarios showing the test number, the actors included, if a collision occurred and between which actors. Where $n$ is the number of repeats and $\max\sigma$ is the maximum simulation deviation. The term \textit{unrestricted} refers to an unrestricted account of the results including results of any resource utilisation. To understand the impact of collisions and high resource utilisation, the \textit{restricted} column shows a subset of the results where post-collision data and experiments above 75\% resource utilisation have been removed.}
 \label{TableOfExperiments}
 \end{table*}
 
@@ -1038,14 +1041,13 @@ Practitioners may wish to set a stricter resource utilisation level, such as les
 }
 
 \subsection{Process Scheduling Priority}
-An investigation into the response of process scheduling on the simulation variance was undertaken. The experiment was repeated using test 1 but altering the process scheduling priority using the Ubuntu program \texttt{NICE}. Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under high resource utilisation.
+An investigation into the response of process scheduling on the simulation variance was undertaken. The experiment was repeated ($n=1000$) using test 1 but altering the process scheduling priority using the Ubuntu program \texttt{NICE}. Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under high resource utilisation.
 %
 To give a process a high priority a negative NICE value is set with the lowest being -20. To decrease the priority a positive value is set, up to +19. The default NICE value is 0.
 
-The results presented in a box and whisker format, Fig.~\ref{NICEExperimentStressSummary}, show that decreasing the priority (right hand side of plot) has little effect on simulation variance when compared to a 0 NICE value (central plot bars). Increasing priority (left hand side of plot) reduced variance for the 75\% resource utilisation but this did not account for all the difference in the observed results. 
+The results presented in a box and whisker format, Fig.~\ref{NICEExperimentStressSummary}, show that decreasing the priority (right hand side of plot) has little effect on simulation variance when compared to a 0 NICE value (central plot bars). Increasing priority (left hand side of plot) reduced variance for the 75\% resource utilisation but this did not account for all the difference in the observed results. This is demonstrated in the maximum priority setting where the bars in plot are not equal, indicating an additional contribution to variance not accounted for by the NICE scheduling. 
 %
-This unaccounted difference in the variance may be due to the lack of  control that \texttt{NICE} has over the processes\footnote{\url{https://askubuntu.com/questions/656771/process-niceness-vs-priority}}.
-%~\cite{Abanoub can you cite that quote you found here please}.
+This unaccounted difference in the variance may be due to the lack of absolute control that \texttt{NICE} has over the process scheduling.\footnote{\url{https://askubuntu.com/questions/656771/process-niceness-vs-priority}}
 
 \subsection{Investigation Summary} \label{s:empirical_summary}
 
