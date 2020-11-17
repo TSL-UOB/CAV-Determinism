@@ -50,23 +50,40 @@
 \noindent 
 Game engines are increasingly used as simulation platforms by the autonomous vehicle (AV) community to develop vehicle control systems and test environments. 
 %
-A deterministic process has no randomness and will always produce the same output with the same initial conditions and event history. 
+A key requirement for simulation-based development and verification is determinism.
 %
-Determinism is a key requirement for simulation-based development and verification; it ensures tests are repeatable, so that software bugs can be found and fixed, and simulation results are trustworthy.
-\todo[inline,color=green!40]{GC Alternative: Determinism is a key requirement for simulation-based development and verification; it ensures the simulation is precise and that tests are repeatable, so that software bugs can be found and fixed, and simulation results are trustworthy.}
+Whereby, a deterministic process will always produce the same output given the same initial conditions and event history.
 %
-% KIE: Ideally, these engines are deterministic, but we've found that they are not. :(
-% These engines must be deterministic for finding and resolving defects (bugs) in software and ensuring auditable and repeatable tests can be executed for verification and validation (V\&V). 
+Thus, making tests repeatable and yielding simulation results that are trustworthy and straightforward to debug.
 %
-However, game engines do not need to be deterministic per se. % when used for games. 
+However, game engines are seldom deterministic.
+
+This paper first reviews and identifies the potential causes of non-determinisitc behaviours in game engines. 
 %
-This paper identifies the requirements these engines need to fulfil when used for AV development and testing, and proposes a method to determine the \textit{simulation precision} for specific configurations and utilisation of the software and hardware, respectively. 
+This is then followed by a case study using CARLA, an open source autonomous driving simulation environment powered by Unreal Engine, which highlightes its inherent shortcomings in providing sufficient precision in experimental results.
 %
-\todo[inline,color=red!40]{old: A case study using CARLA, an open-source simulation environment powered by Unreal Engine, illustrates the proposed method and results from an example scenario indicate the presence of a deterministic operational simulation setup.}
-%
-A case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine has highlighted the shortcomings of using a games engine for simulation based verification. The proposed method and results from an example scenario demonstrate simulation precision to an acceptable tolerance.
-%
-% \textbf{ALTERNATIVE: This empirical investigation using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, has highlighted the shortcomings of using a games engine for simulation based verification and we present advice for best working practice.}
+Different configurations and utilisations of the software and hardware are explored to determine an opertional domain where the simulation precision is satisfactory low i.e. variance between repeats becomes negligible for development and testing work.  
+
+Finally a method of a general nature is proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
+% Game engines are increasingly used as simulation platforms by the autonomous vehicle (AV) community to develop vehicle control systems and test environments. 
+% %
+% A deterministic process has no randomness and will always produce the same output with the same initial conditions and event history. 
+% %
+% Determinism is a key requirement for simulation-based development and verification; it ensures tests are repeatable, so that software bugs can be found and fixed, and simulation results are trustworthy.
+% \todo[inline,color=green!40]{GC Alternative: Determinism is a key requirement for simulation-based development and verification; it ensures the simulation is precise and that tests are repeatable, so that software bugs can be found and fixed, and simulation results are trustworthy.}
+% %
+% % KIE: Ideally, these engines are deterministic, but we've found that they are not. :(
+% % These engines must be deterministic for finding and resolving defects (bugs) in software and ensuring auditable and repeatable tests can be executed for verification and validation (V\&V). 
+% %
+% However, game engines do not need to be deterministic per se. % when used for games. 
+% %
+% This paper identifies the requirements these engines need to fulfil when used for AV development and testing, and proposes a method to determine the \textit{simulation precision} for specific configurations and utilisation of the software and hardware, respectively. 
+% %
+% \todo[inline,color=red!40]{old: A case study using CARLA, an open-source simulation environment powered by Unreal Engine, illustrates the proposed method and results from an example scenario indicate the presence of a deterministic operational simulation setup.}
+% %
+% A case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine has highlighted the shortcomings of using a games engine for simulation based verification. The proposed method and results from an example scenario demonstrate simulation precision to an acceptable tolerance.
+% %
+% % \textbf{ALTERNATIVE: This empirical investigation using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, has highlighted the shortcomings of using a games engine for simulation based verification and we present advice for best working practice.}
 
 \todo[inline,color=green!40]{GC Alternative: A case study using CARLA, an open-source simulation environment powered by Unreal Engine, illustrates the proposed method and results from an example scenario demonstrate simulation precision to an acceptable tolerance. }
 \todo[inline,color=yellow!40]{AG Alternative: A case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine (game engine), illustrates the proposed method and results from an example scenario demonstrate simulation precision to an acceptable tolerance. }
