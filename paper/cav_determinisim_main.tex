@@ -89,7 +89,12 @@ Autonomous Driving, Autonomous Vehicles, Determinism, Physics Engines,  Verifica
 % Can't use this again as this is how the AI Test paper starts. -> Avoid self-plagiarism!
 %\IEEEPARstart{V}{}erification is the process used to gain confidence in the correctness of a system with respect to its requirements~\cite{bergeron2012writing}. 
 %
-\IEEEPARstart{S}{}imulation-based techniques can be used to verify autonomous driving functions under development benefiting from full control over the road network and the actors within it. Simulated tests aim to provide evidence to developers and regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988} which form a body of safe and legal driving rules, termed assertions, that must not be violated. 
+% Simulation-based verification of autonomous driving functionality is a promising counterpart to costly on-road testing, benefiting from complete control over (virtual) actors and their environment
+% , offering a relatively inexpensive means to explore test cases while also
+% \IEEEPARstart{S}{}imulation-based techniques can be used to verify autonomous driving functions under development benefiting from full control over the road network and the actors within it. 
+\IEEEPARstart{S}{}imulation-based verification of autonomous driving functionality is a promising counterpart to costly on-road testing, that benefits from complete control over (virtual) actors and their environment.
+%
+Simulated tests aim to provide evidence to developers and regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988} which form a body of safe and legal driving rules, termed assertions, that must not be violated. 
 
 Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules, e.g.\ through assertion checking during simulation. 
 There have been a number of fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. Simulation environments offer a means to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without the need for millions of miles of costly on-road testing~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
@@ -138,7 +143,7 @@ In the case of a driving simulator, kinematics will describe future states of ac
 %
 If a simulation is deterministic then there will be no variation in the generated output data, i.e. all future states are perfectly reproducible from prior states and actions. 
 %
-However, if a simulation is non-deterministic then then there will be a variation in the generated output data. \\
+However, if a simulation is non-deterministic then there will be a variation in the generated output data. \\
 
 \begin{figure}[!t]
     \centering
@@ -159,15 +164,19 @@ However, if a simulation is non-deterministic then then there will be a variatio
 
 
 % \subsection{Definitions: Precision, Variance \& Tolerance}
-\subsubsection{Precision, Variance \& Tolerance}
+\subsubsection{Variance, Precision \& Tolerance}
 
 We adopt some terms from the mechanical engineering and statistics domain that best describe when there is variation in the generated output data~\cite{ADictionaryofMechanicalEngineering}.
 %
-\textit{Precision} is therefore defined as the degree to which a simulation can repeatedly generate the same result when executed with the same conditions and actions taken. 
+% \textit{Precision} is therefore defined as the degree to which a simulation can repeatedly generate the same result when executed with the same conditions and actions taken. 
+% %
+% \textit{Variance} is used here to define the spread (distribution) of the generated output data with respect to the mean value. 
 %
-\textit{Variance} is used here to define the spread (distribution) of the generated output data with respect to the mean value. 
+\textit{Variance} (or \textit{precision}) is used here to define the spread (distribution) of the generated output data with respect to the mean value. 
 %
-\textit{Tolerance} is defined as the permissible limit of the variance. 
+Therefore, variance can indicate the degree to which a simulation can repeatedly generate the same result when executed with the same conditions and actions taken
+%
+\textit{Tolerance} is defined as the permissible limit of the variance, or in short the \textit{permissible variance}. 
 
 % The engineering terms \textit{precision} and \textit{tolerance} suitably describe how the simulation data vary when the same repeated stimulus is provided to the simulation environment under identical initial conditions~\cite{ADictionaryofMechanicalEngineering}. %
 %
@@ -184,24 +193,26 @@ If a simulator is deterministic then it will produce results with absolute preci
 
 % \subsection{Definition: Accuracy}
 \subsubsection{Accuracy}
-Precision and tolerance are not to be confused with \textit{accuracy} which describes how closely the generated output of a process aligns to a known standard or reference value. We therefore define accuracy as the difference between the true value (or reference value) and what has been achieved in the simulation or generation process. 
+Precision and tolerance should not to be confused with \textit{accuracy} which describes how closely the generated output of a process aligns to a known standard or reference value. We therefore define accuracy as the difference between the true value (or reference value) and what has been achieved in the simulation or generation process. 
 %
-For a driving simulation the reference value, for which accuracy can be measured against, may be the real world that it seeks to emulate, where any divergence from this standard is termed the \textit{reality gap}. In most cases such accuracy will not be possible due to computational demands of such an exact replica and in most cases is unnecessary, where some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. \\
+For a driving simulation the reference value, for which accuracy can be measured against, may be the real world that the simulation seeks to emulate, where any divergence from this standard is termed the \textit{reality gap}. In most cases such accuracy will not be possible due to computational demands of such an exact replica and in most cases is unnecessary, where some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. \\
 
+% \subsection{Definition: Simulation Trace}
+\subsubsection{Simulation Trace}
+A simulation trace is the output log from the simulator which, herein, is a time series of all actor positions ($x,y,z$) at regular time intervals. This definition could be extended to include other variables.\\%, but position is sufficient for this analysis.\\
 
 % \subsection{Definition: Variance Measurement}
-\subsubsection{Simulation Variance}
+\subsubsection{Simulation Variance and Deviation}
 If the simulator is non-deterministic then how can this variance be measured? 
 %
 This can be achieved by monitoring any simulated output variables that should be consistent from run to run. 
 % In this study the actor state was chosen, or more specifically the statistical variance of actor paths within a given scenario using a fixed set of actions. 
-Actor path variance was chosen over other variables as this distance based metric forms the basis for many downstream verification tests such as assertion checking. 
+Actor path variance, derived from the simulation trace, is chosen over other variables as this distance based metric forms the basis for many downstream verification tests.% such as assertion checking. 
 % 
-Therefore the term \textit{simulation variance} refers to a measure of actor position variance in the simulation with respect to time assuming fixed actions. Results are referred to in terms of deviation, rather than variance, as this is more intuitive to comprehend when considering verification tests, e.g. vehicle close-passing. Moreover, the maximum observed value of deviation was chosen over a mean value to ensure sufficient sensitivity.\\
+Therefore the term \textit{simulation variance} refers to a measure of actor position variance in the simulation with respect to time assuming fixed actions. 
 
-% \subsection{Definition: Simulation Trace}
-\subsubsection{Simulation Trace}
-A simulation trace is the output log from the simulator which is a time series of all actor positions ($x,y,z$) at regular intervals based on a regular time interval. This definition could be extended to include other variables, but position is sufficient for this analysis.\\
+Deviation is the square root of variance, which is more intuitive than variance to comprehend when considering verification tests.
+%Results are referred to in terms of deviation, rather than variance, as this is more intuitive to comprehend when considering verification tests, e.g. vehicle close-passing. Moreover, the maximum observed value of deviation was chosen over a mean value to ensure sufficient sensitivity.\\
 
 
 % \subsection{Definition: Scene, Scenario \& Situation}
@@ -274,7 +285,7 @@ Knowing the simulation variance will help assess the impact that using a game en
 
 This paper is structured as follows.
 %
-Section~\ref{s:background} briefly introduces how game engines work before investigating potential sources of non-determinism in game engines.
+Section~\ref{s:background} briefly introduces how game engines work before investigating in Section~\ref{s:nondeterminisimSources} the potential sources of non-determinism in game engines.
 %
 Our case study of simulation variance for a number of scenarios involving pedestrian and vehicle settings using CARLA is presented in Section~\ref{s:case-study}.
 %
@@ -436,7 +447,7 @@ The following review discusses the potential sources of non-determinism that wer
 %
 \todo[inline,color=green!40]{GC Addition below}%
 %
-A good analysis of potential sources is given by Strandberg et al.~\cite{intermittently-failing-tests} although the AV simulation domain introduces it's own unique challenges that are not considered in this paper.
+A good analysis of potential sources is given by Strandberg et al.~\cite{intermittently-failing-tests} although the AV simulation domain introduces it's own unique challenges that were not considered in that paper.
 
 % MOVED TO INTRO \todo[inline]{We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
 
@@ -457,7 +468,7 @@ Thus, the results of arithmetic operations must fit into the given bit width, wh
 % SEE BELOW \todo[inline]{Check the points on floating point operations in An Empirical Analysis of Flaky Tests~\cite{empirical-analysis-of-flaky-tests}.}
 Even operations such as the average of an array can result in issues with overflows, underflows and non-associative addition~\cite{Kapre2007} which may result in non-deterministic behaviour. Calculation results may differ due to the nature of non-associative floating point arithmetic if there is a change in compiler, a change in the execution order or even if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. Some authors even suggest avoiding the use of floating point entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}. 
 %
-If calculations are performed on a single core, then concurrency of multiple threads is not an issue.
+%If calculations are performed on a single core, then concurrency of multiple threads is not an issue.
 \todo[inline,color=green!40]{GC Addition (added reference on non-associative fp addition Kapre2007, Whitehead2011, empirical-analysis-of-flaky-tests, see para below:)
 
 Even operations such as the average of an array can result in issues with overflows, underflows and non-associative addition~\cite{Kapre2007} which may result in non-deterministic behaviour. Calculation results may differ due to the nature of non-associative floating point arithmetic if there is a change in compiler, a change in the execution order or even if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. Some authors even suggest avoiding the use of floating point entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}. 
@@ -1041,11 +1052,11 @@ Practitioners may wish to set a stricter resource utilisation level, such as les
 }
 
 \subsection{Process Scheduling Priority}
-An investigation into the response of process scheduling on the simulation variance was undertaken. The experiment was repeated ($n=1000$) using test 1 but altering the process scheduling priority using the Ubuntu program \texttt{NICE}. Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under high resource utilisation.
+An investigation into the response of process scheduling on the simulation variance was undertaken. The experiment was repeated ($n=1000$) using test 1 but altering the process scheduling priority using the program \texttt{NICE}. Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under high resource utilisation.
 %
 To give a process a high priority a negative NICE value is set with the lowest being -20. To decrease the priority a positive value is set, up to +19. The default NICE value is 0.
 
-The results presented in a box and whisker format, Fig.~\ref{NICEExperimentStressSummary}, show that decreasing the priority (right hand side of plot) has little effect on simulation variance when compared to a 0 NICE value (central plot bars). Increasing priority (left hand side of plot) reduced variance for the 75\% resource utilisation but this did not account for all the difference in the observed results. This is demonstrated in the maximum priority setting where the bars in plot are not equal, indicating an additional contribution to variance not accounted for by the NICE scheduling. 
+The results presented in a box and whisker format, Fig.~\ref{NICEExperimentStressSummary}, show that decreasing the priority (right hand side of plot) has little effect on simulation variance when compared to a NICE value of 0 (central plot bars). Increasing priority (left hand side of plot) reduced variance for the 75\% resource utilisation but this did not account for all the difference in the observed results. This is demonstrated in the maximum priority setting where the bars in plot are not equal, indicating an additional contribution to variance not accounted for by the NICE scheduling. 
 %
 This unaccounted difference in the variance may be due to the lack of absolute control that \texttt{NICE} has over the process scheduling.\footnote{\url{https://askubuntu.com/questions/656771/process-niceness-vs-priority}}
 
