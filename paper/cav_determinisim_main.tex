@@ -87,23 +87,43 @@ Digital Object Identifier ....
 %
 \begin{abstract}
 \noindent 
-Game engines are increasingly used as simulation platforms by the autonomous vehicle (AV) community to develop vehicle control systems and test environments.
+Game engines are increasingly used as simulation platforms by the autonomous vehicle (AV) community to develop vehicle control systems and test environments. 
 %
-A key requirement for simulation-based development and verification is determinism.
+A key requirement for simulation-based development and verification is determinism, since a deterministic process will always produce the same output given the same initial conditions and event history. 
 %
-Whereby, a deterministic process will always produce the same output given the same initial conditions and event history.
-%
-Thus, making tests repeatable and yielding simulation results that are trustworthy and straightforward to debug.
+Thus, tests are rendered repeatable and yield simulation results that are trustworthy and straightforward to debug. 
 %
 However, game engines are seldom deterministic.
 
-This paper first reviews and identifies the potential causes of non-deterministic behaviours in game engines.
+This paper first reviews and identifies the potential causes of non-deterministic behaviours in game engines. 
 %
-This is then followed by a case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, which highlights its inherent shortcomings in providing sufficient precision in experimental results.
+This is then followed by a case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, which highlights its inherent shortcomings in providing sufficient precision in experimental results. 
 %
 Different configurations and utilisations of the software and hardware are explored to determine an operational domain where the simulation precision is satisfactory low i.e. variance between repeats becomes negligible for development and testing work.  
 
 Finally, a method of a general nature is proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
+
+
+% =========================================
+% Game engines are increasingly used as simulation platforms by the autonomous vehicle (AV) community to develop vehicle control systems and test environments.
+% %
+% A key requirement for simulation-based development and verification is determinism.
+% %
+% Whereby, a deterministic process will always produce the same output given the same initial conditions and event history.
+% %
+% Thus, making tests repeatable and yielding simulation results that are trustworthy and straightforward to debug.
+% %
+% However, game engines are seldom deterministic.
+
+% This paper first reviews and identifies the potential causes of non-deterministic behaviours in game engines.
+% %
+% This is then followed by a case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, which highlights its inherent shortcomings in providing sufficient precision in experimental results.
+% %
+% Different configurations and utilisations of the software and hardware are explored to determine an operational domain where the simulation precision is satisfactory low i.e. variance between repeats becomes negligible for development and testing work.  
+
+% Finally, a method of a general nature is proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
+
+% =========================================
 % Game engines are increasingly used as simulation platforms by the autonomous vehicle (AV) community to develop vehicle control systems and test environments. 
 % %
 % A deterministic process has no randomness and will always produce the same output with the same initial conditions and event history. 
