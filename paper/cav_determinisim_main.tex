@@ -609,7 +609,7 @@ In the context of AV simulation, such rounding errors could result in accuracy i
 Thus, one could conclude that floating-point arithmetic causes non-determinism, resulting in loss of repeatability. In fact, some authors suggest avoiding the use of floating-point representation entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}. 
 
 
-In contrast, we argue that the precision issues related to floating-point operations are better described as \textit{incorrectness} that is in fact repeatable; they do not cause non-determinism per se. 
+In contrast, we argue that the precision issues related to floating-point operations are better described as \textit{incorrectness} that is in fact repeatable; they do not cause non-determinism per se. {\color{red} Should this be IMPRECISION rather than incorrectness?}
 %
 It is normally reasonable to assume that the processors on which game engines run are deterministic with respect to floating-point arithmetic. 
 %
@@ -695,7 +695,7 @@ Overall, scheduling, concurrency and parallelisation may be reasons for \textit{
 % \todo[inline]{Add a summary/conclusion?}
 %\\\\
 
-\subsection{NUMA Non-Uniform Memory Access}
+\subsection{Non-Uniform Memory Access (NUMA)}
 For a repeated test that operates over a number of cores based on a CPU scheduling policy, memory access time may vary depending on the physical memory location relative to the processor. Typically a core can access its own memory with lower latency than that of another core resulting in lower interprocessor data transfer cost~\cite{nieplocha1996global}. 
 %
 Changes in latency between repeated tests may, in the worst case, cause the game engine to operate non-deterministically if tasks are processed out of sequence using equal priority scheduling, or, perhaps, simply with an increased data transfer cost, i.e.\ slower. 
@@ -760,7 +760,7 @@ Memory checking not withstanding, errors associated with the lack of ECC are lik
 To ensure precise simulation outcomes the physics setting, $dt$, must be fixed, along with any actor navigation meshes, seeds for random number generation, game engine setup and simulation specific parameters.
 \todo[inline,color=green!40]{GC alternative: To ensure precise simulation outcomes the physics setting $dt$ must be fixed, along with any actor navigation meshes, random number seeds, game engine setup and simulation specific parameters.}
 %
-NUMA should only affect interprocessor data transfer cost and, without control measures, will only make the computation cycle longer. Relative access times between different caches are likely to be small although may have a more pronounced impact on high throughput systems, e.g.\ HPC. {\color{red} Not sure this is correct, see the NUMA section above. Why ``only''? If one computation out of many takes longer, then their exec order can be affected, or not?}
+Non-uniform memory access (NUMA) should only affect interprocessor data transfer cost and, without control measures, will only make the computation cycle longer. Relative access times between different caches are likely to be small although may have a more pronounced impact on high throughput systems, e.g.\ HPC. {\color{red} Not sure this is correct, see the NUMA section above. Why ``only''? If one computation out of many takes longer, then their exec order can be affected, or not?}
 %
 Basic thread scheduling should not affect the simulation's determinism unless changing scheduling policy, operating system or migrating between machines with different setups. 
 %
@@ -809,7 +809,7 @@ Ultimately, our objective is to control non-determinisim to minimise simulation 
 
 \todo[inline,color=red!40]{old:  We first describe the context, scene and scenario of interest before discussing and defining a threshold for what is considered an acceptable simulation variance in this context.}
 %
-We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context.
+We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context. {\color{red} and then..? Please cover the entire section - consider splitting setup from evaluation.}
 %
 \todo[inline,color=green!40]{GC alternative: We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context.}
 %
@@ -980,7 +980,9 @@ An initial study into the Unreal Engine using a pedestrian and a moving block wa
 %
 However, none of these options improved simulation variance significantly and all internal setting were set restored to the default values. Details on this previous investigation can be found on the Trustworthy Systems GitHub~\cite{TSLUnrealEngineTesting}. {\color{red} NOT ACCESSIBLE}
 
+\subsection{Initial Results and Discussion}\label{ResultsSection}
 
+{\color{red} This is for unrestricted, so this does not come as a surprise later.}
 
 % ***************************************************
 %  External Settings
@@ -990,7 +992,7 @@ However, none of these options improved simulation variance significantly and al
 
 After discovering that internal engine settings could not achieve a simulation variance that met the required 
 % \textit{deterministic threshold}, 
-\textit{tolerance}, {\color{red} WHEN HAS THIS BEEN REPORTED?}
+\textit{tolerance}, {\color{red} WHEN HAS THIS BEEN REPORTED? Should there be an ``Interim Results'' section?}
 settings external to the game engine were explored. 
 %
 Game engines, and simulation hardware more generally, will utilise available system resources such as central and graphical processing units (CPU and GPU respectively), to perform physics calculations and run the simulation environment. 
@@ -1002,6 +1004,9 @@ To replicate in a controlled manner the high computational loads that may be ant
 % In order to reproduce conditions for computationally intensive simulations, the experiments are executed with additional levels of artificial resource utilisation. 
 Resource utilisation was artificially increased for both CPU and GPU devices to include a range of values from 0 to 95\% (see Section~\ref{s:methodology}) using reported values of the system monitors \texttt{htop} and \texttt{nvidia-smi} respectively. Resource utilisation figures reported here should be considered approximate values.
 % The level of additional resource utilisation, above that of the needs of the simulation, was increased from $0\%$ (no additional resource load) in $25\%$ increments up to a maximum of $95\%$ for both CPU and GPU as reported by system monitors (\texttt{htop} and \texttt{nvidia-smi} respectively). 
+%
+{\color{red} Somwhere the experimental setup needs to clarify that one set was executed ``unrestricted'' and another ``restricted'' - say what this means and why this was done.}
+
 
 \todo[inline,color=green!40]{GC Addition (para below):} 
 %Issues around floating-point precision and concurrency as previously mentioned notwithstanding, 
@@ -1017,21 +1022,23 @@ Practitioners should also be aware that many libraries for calculating variance 
 % ***************************************************
 %  System Configuration and Screening
 % ***************************************************
-\subsection{System Configuration and Screening}\label{s:screening}
-These tests were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB non-ECC DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 GPU with 8GB GDDR6 RAM at 1515 MHz. 
+\subsection{Experimental System Configuration and Pre-Screening}\label{s:screening}
+The experiments were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB non-ECC DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 GPU with 8GB GDDR6 RAM at 1515 MHz. 
 %
-Operating systems was Linux Ubuntu 18.04.4 LTS. To ensure reliability of results, each test was repeated 1000 times. 
+The operating systems was Linux Ubuntu 18.04.4 LTS. 
 %
 Tests were carried out in CARLA (v0.9.6 and Unreal Engine v4.22) using synchronous mode with a fixed $dt$ of $0.05$s. 
 %
-A detailed guide for reproducing these experiments along with the scripts used are provided on github\footnote{\url{https://github.com/TSL-UOB/CAV-Determinism/tree/master/CARLA_Tests_setup_guide}}.
+Each test was repeated 1000 times. 
+%
+A detailed guide for reproducing the experiments along with the scripts used are provided on github\footnote{\url{https://github.com/TSL-UOB/CAV-Determinism/tree/master/CARLA_Tests_setup_guide}}.
 %
 To eliminate some of the potential sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests and analyses were performed on our system. These were:
 
 \begin{itemize}[leftmargin=*]
     \item System memory: \texttt{memtest86}~\cite{MemTest86} full suite of tests ran, all passed.
-    \item Graphical memory: \texttt{cuda\_memtest}~\cite{cuda_memtest}\cite{shi2009testing}.
-    \item Non-uniform memory access: \texttt{numactl}~\cite{numactl_NUMA} was used to fix the simulator and test script to single cores but only a minor (2\%) improvement in simulation variance was observed and therefore not used for subsequent testing.
+    \item Graphical memory: \texttt{cuda\_memtest}~\cite{cuda_memtest}, \cite{shi2009testing}.
+    \item Non-uniform memory access (NUMA): \texttt{numactl}~\cite{numactl_NUMA} was used to fix the simulator and test script to single cores but only a minor (2\%) improvement in simulation variance was observed. Therefore this was not used for subsequent testing. {\color{red} But if we aim to min the sources of non-det, then that should be considered/used?}
 \end{itemize}
 
 
@@ -1090,40 +1097,42 @@ To eliminate some of the potential sources of non-determinism outlined in Sectio
         \caption{}
         \label{CarsCollisionPrePost}
     \end{subfigure}
-    \caption{Vehicle to vehicle collision (test 2) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision against resource utilisation. The simulation noise floor is shown in (a) which is the empirical lower limit of deviation for the hardware reported in this study.}
+    \caption{Vehicle to vehicle collision (Test 2) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision against resource utilisation. The simulation noise floor is shown in (a) which is the empirical lower limit of deviation for the hardware reported in this study.}
 \end{figure*}
 
 
 % ***************************************************
 %  Results and Discussion
 % ***************************************************
-\subsection{Results and Discussion}\label{ResultsSection}
-A summary of all the results are shown Table~\ref{TableOfExperiments} in the column $\max\sigma$ (unrestricted), where the value reported is the maximum deviation across all resource utilisation levels, i.e. the worst case for a given scenario.  
+\subsection{Final Results and Discussion}\label{ResultsSection}
+
+{\color{red} Consider spitting to introduce the first part of the table, which motivates the 2nd lot of experiments under load restrictions. I'd find this more logical.}
+
+A summary of all the results is shown in Table~\ref{TableOfExperiments}.  In the column $\max\sigma$ (unrestricted) the value reported is the maximum deviation across all resource utilisation levels, i.e.\ the worst case for a given scenario.  
 %
-From these  results it is clear that scenarios with only pedestrian actors (tests 5-6) display results within tolerance over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. However, all other scenarios involving vehicles or a mixture of actor types breach the tolerance that has been set, with some deviation in actor path as large as $59$cm.
+From these results it is clear that scenarios with only pedestrian actors (Tests 5 \& 6) display results within tolerance over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. 
+%
+However, all other scenarios involving vehicles or a mixture of actor types do not meet the required tolerance, with some deviation in actor path as large as $59$cm.
+%
 \todo[inline,color=green!40]{GC Edit: From these  results it is clear that scenarios with only pedestrian actors (tests 5-6) display results within the permissible tolerance over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. However, all other scenarios involving vehicles or a mixture of actor types breach the permissible tolerance that has been set, with some deviation in actor path as large as $59$cm. }
 %
-Clearly a deviation in results of such a large amount is unacceptable if simulation is to be used as a reliable verification tool.
+Clearly, such a large deviation cannot be acceptable for simulation to be considered a credible verification tool.
 
-Resource utilisation level was found to have a significant impact on \textit{simulation variance}.
+Resource utilisation was found to have a significant impact on \textit{simulation variance}.
 %
-Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against the artificially increased resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (for CPU \& GPU). In this figure, anything above the $1$cm level (dashed line) is considered non-permissible according to our specific tolerance level informed from our verification requirements.
+Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against the artificially increased resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (for CPU \& GPU). In this figure, any $\max\sigma$ above the $1$cm level (indicated by a dashed line) is considered non-permissible according to our specified tolerance. 
+%
+Note that the non-permissible results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per Equation~\ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
 %
 \todo[inline]{Where are the verification requirements listed? They should be part of the scenario description. GC- added to the start of section 3.} 
 %
 
-A general pattern in the results indicates that; some scenarios consistently fail to produce results within permissible levels of variance at any resource utilisation level (Fig.~\ref{ExperimentsStressSummary} Test ID 2 \& 4 above the dashed cm level), some are consistently within tolerance (Test ID 5 \& 6 with pedestrians only), and that some cases only fail to meet the tolerance requirement when at higher utilisation levels, breaching the tolerance above 75\% resource utilisation (Test ID 1 \& 3).
+A general pattern in the results indicates that some scenarios consistently fail to produce results within tolerance, irrespective of resource utilisation (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 2 \& 4 are above the dashed $1$cm line), while some are consistently within tolerance (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 5 \& 6 both are with pedestrians only), and some cases only fail to meet the tolerance requirement at higher resource utilisation levels, i.e.\ above 75\% resource utilisation (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 1 \& 3). {\color{red} ??? about 85\% based on the figure - or not???}
 
-\todo[inline]{Help the reader see what you can see by explaining exactly where this can be seen in the figure(s). GC text added above}
-
-
-
-
-However, the non-permissible results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per Equation~\ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
-
-Examining specifically the results from tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible post-collision. 
+Examining specifically the results from Tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (Test 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible post collision. 
 %
-This pattern of permissible results prior to collision and non-permissible post-collision is maintained up to a resource utilisation level of approximately 75\%, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates permissible pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding of this work; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-permissible.
+The pattern of permissible results prior to collision and non-permissible post collision is maintained up to a resource utilisation level of approximately 75\% {\color{red} Why 75\%?}, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (Test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates permissible pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-permissible.
+
 \todo[inline,color=green!40]{GC Edit: Examining specifically the results from tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible post-collision. 
 %
 This pattern of permissible results prior to collision and non-permissible post-collision is maintained up to a resource utilisation level of approximately 75\%, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates permissible pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding of this work; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-permissible. }
@@ -1141,20 +1150,20 @@ This pattern of permissible results prior to collision and non-permissible post-
         \caption{}
         \label{CarsPeopleCollisionPrePost}
     \end{subfigure}
-    \caption{Vehicle to pedestrian collision (test 4) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision for different resource utilisation levels.}
+    \caption{Vehicle to pedestrian collision (Test 4) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision for different resource utilisation levels.}
 \end{figure*}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.48\textwidth]{Other/Figures/NICE_analysis_summary_V4.pdf}
-    \caption{Summary of investigating the effect of NICE priority setting for 0\% and 75\% additonal CPU \& GPU resource utilisation.}
+    \caption{Variance range of three NICE priority settings for additional CPU \& GPU resource utilisation of 0\% and 75\%.}
     \label{NICEExperimentStressSummary}
 \end{figure}
 
 
-The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three observations here; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision.
+The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (Test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three observations; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision.
 % as described above. 
-Secondly, that the maximum deviation of the pedestrian involved in the collision (Ped ID 3) is at a tolerable level throughout the test\footnote{However, please note that in CARLA the pedestrian object is destroyed post-collision hence the flat line from $t=6$s onwards.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers and research practitioners in the field as it implies that \textit{any collision between actors can affect the simulation variance of the entire actor population} and could potentially result in  erroneous assertion checking.
+Secondly, that the maximum deviation of the pedestrian involved in the collision (Ped ID 3) is at a tolerable level throughout the test\footnote{However, please note that in CARLA the pedestrian object is destroyed post-collision hence the flat line from $t=6$s onwards.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers, developers and researchers in the field as it implies that \textit{any collision between actors can affect the simulation variance of the entire actor population} and could potentially result in  erroneous simulation results. % not just assertion checking 
 
 % \todo[inline]{Make sure that assertion checking has been introduced before.}
 
@@ -1171,13 +1180,15 @@ Secondly, that the maximum deviation of the pedestrian involved in the collision
 \begin{figure*}[t]
     \centering
     \includegraphics[width=0.99\linewidth]{Other/Figures/Methodology_Diagram_v5.pdf}
-    \caption{Flow diagram of the methodology proposed to determine the simulation variance of a simulation.}
+    \caption{Stages of the methodology proposed to determine the variance of a simulation.}
     \label{method_diagram}
 \end{figure*}
 
 \todo[inline]{Sum this up and lead on to the Methodology - assuming that this section is placed before the Methodology section. This should cover that our results are clearly specific to our HW and provide evidence of non-determinism, but the results are not transferable. Thus, we present a general Methodology that others can re-use/apply to determine whether or not their sim is deterministic - in the next section.}
  
-The main findings of this work suggest a working practice that would minimise the non-deterministic effects observed in this investigation. By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the permissible variance of $1$cm is achievable as shown in the \textit{restricted} column in Table.~\ref{TableOfExperiments}. By applying this set of restrictions upon the simulation the maximum observed deviation across all experiments was $0.98$cm which is within the target tolerance we set out to achieve. 
+To conclude, the main findings of this case study suggest a working practice that would minimise the factors that give rise to the non-deterministic effects observed in this investigation. 
+%
+By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the permissible variance of $1$cm is achievable as shown in the \textit{restricted} column in Table~\ref{TableOfExperiments}. By applying this set of restrictions upon the simulation the maximum observed deviation across all experiments was $0.98$cm which is within the target tolerance we set out to achieve. 
 %
 Practitioners may wish to set a stricter resource utilisation level, such as less than 50\% to further reduce the potential dispersion of results if this is required for their chosen application. 
 %
@@ -1186,25 +1197,27 @@ Practitioners may wish to set a stricter resource utilisation level, such as les
 }
 
 \subsection{Process Scheduling Priority}
-An investigation into the response of process scheduling on the simulation variance was undertaken. The experiment was repeated ($n=1000$) using test 1 but altering the process scheduling priority using the program \texttt{NICE}.\footnote{\url{http://manpages.ubuntu.com/manpages/bionic/man1/nice.1.html}} Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under high resource utilisation.
+An investigation into the impact of process scheduling on the simulation variance was undertaken {\color{red} say why}. The experiment was repeated ($n=1000$) using Test 1 but altering the process scheduling priority using the program \texttt{NICE}.\footnote{\url{http://manpages.ubuntu.com/manpages/bionic/man1/nice.1.html}} Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under high resource utilisation.
 %
 To give a process a high priority a negative NICE value is set with the lowest being -20. To decrease the priority a positive value is set, up to +19. The default NICE value is 0.
 
-The results are presented in Fig.~\ref{NICEExperimentStressSummary} where the box denotes the inter-quartile range, non-outlier limits by the whiskers and a horizontal bar for the median. The figure shows that decreasing the priority (right hand side of plot) has little effect on simulation variance when compared to a NICE value of 0 (central plot bars). Increasing priority (left hand side of plot) reduced variance for the 75\% resource utilisation but this did not account for all the difference in the observed results. This is demonstrated in the maximum priority setting where the bars in plot are not equal, indicating an additional contribution to variance not accounted for by the NICE scheduling. 
+The results are presented in Fig.~\ref{NICEExperimentStressSummary} {\color{red} What is on the y axis?} where the box denotes the inter-quartile range {\color{red} of???}, non-outlier limits by the whiskers and a horizontal bar for the median. The figure shows that decreasing the priority {\color{red} of the simulator process} (right hand side of the  plot) has little effect on simulation variance when compared to a default NICE value of 0 (central bars in the plot). Increasing priority (left hand side of the plot) significantly reduced the variance for the 75\% resource utilisation experiment, but this does not account for all the difference in the observed results. This can be seen in the maximum priority setting where the bars in the plot are not equal, indicating an additional contribution to variance not accounted for by the NICE scheduling. 
 %
-This unaccounted difference in the variance may be due to the lack of absolute control that \texttt{NICE} has over the process scheduling.\footnote{\url{https://askubuntu.com/questions/656771/process-niceness-vs-priority}}
+The remaining difference in the variance between the two resource utilisation levels may be due to the lack of absolute control that \texttt{NICE} has over process scheduling.\footnote{\url{https://askubuntu.com/questions/656771/process-niceness-vs-priority}}
 
-\subsection{Investigation Summary} \label{s:empirical_summary}
+\subsection{Investigation Summary} \label{s:empirical_summary} {\color{red} Factor into overall conclusion of the case study}
 
 % \todo[inline]{GC-need to reference the 'restricted' set of results here too}
 
-\todo[inline]{Do we need to say here why we think certain results are non-det, what the reasons might be?? The results indicate that actor type, resource utilisation and collision events all affect the determinism in the CARLA simulator. Collision events may utilise more computational resources than simulations without such events, i.e. the physics loop takes longer to process as there are complex physical interactions to resolve. This may coincide with the second observation that higher resource levels also lead to non-deterministic results. We hypothesise that both these observations are due to improper management of thread scheduling within the engine. When resources are occupied there may be a delay in processing critical calculations for the simulator, which may arrive out of an expected sequence or the engine compensates for this delay by reducing the number of physics loops that can be performed within a render cycle. (is this 2nd one true, or does carla ignore render requests?)}
+%\todo[inline]{Do we need to say here why we think certain results are non-det, what the reasons might be?? The results indicate that actor type, resource utilisation and collision events all affect the determinism in the CARLA simulator. Collision events may utilise more computational resources than simulations without such events, i.e. the physics loop takes longer to process as there are complex physical interactions to resolve. This may coincide with the second observation that higher resource levels also lead to non-deterministic results. We hypothesise that both these observations are due to improper management of thread scheduling within the engine. When resources are occupied there may be a delay in processing critical calculations for the simulator, which may arrive out of an expected sequence or the engine compensates for this delay by reducing the number of physics loops that can be performed within a render cycle. (is this 2nd one true, or does carla ignore render requests?)}
 
-This empirical investigation has highlighted the shortcomings of using a games engine for simulation based verification and advice for best working practice. However, these results are specific to the hardware and software used in the study and may not be transferable to other systems directly. Therefore we now present a general methodology that practitioners can follow to find the 
+This empirical investigation has highlighted the shortcomings of using a games engine for simulation based verification and advice for best working practice. However, these results are specific to the hardware and software used in the study and may not be transferable to other systems directly. 
+%
+Therefore we have derived a general methodology that practitioners can follow to find the 
 % \textit{deterministic domains of operation} 
 \textit{operational domains of permissible variance} 
-for any hardware configuration.
-
+for %any hardware configuration.
+a game-engine-based simulation environment. This methodology is presented in the next section. 
 
 % First, the tests with no collisions are considered, these represent tests 1, 3 and 5. Tests 1 and 3, which involves vehicles only and vehicles with pedestrians respectively, shows very low simulation variance for stress levels below 50\% and as the stress level increases they surpass the red line crossing our defined deterministic level but still being sufficiently low (i.e. with in the centimeter level). This clearly shows how the load on a computer (i.e. stressing CPU and GPU) can have drastic effects on the repeatablitiy of tests. This is more specific to vehicle agents rather than pedestrians since the behaviour of pedestrians is consistent and remarkably below the mm level for all of the different levels of stress shown by test 5, where only pedestrians are involved with no collisions, from which it can be deduced that the mean deviation change with the stress level in test 3 was solely due to the vehicles.
 
@@ -1222,14 +1235,19 @@ for any hardware configuration.
 % ***************************************************
 %  METHOD
 % ***************************************************
-\section{Methodology} \label{s:methodology}
-In this section a method for determining the variance of simulated actor path trajectories, termed \textit{simulation variance}, and resolving the operational domains of permissible variance of the simulation presented here as a work flow, see Fig.~\ref{method_diagram}.
+\section{Methodology {\color{red} for what???}} \label{s:methodology}
+In this section a method for assessing the actor path variance in AV simulation environments that are based on game engines is presented in the form of a work flow, see Fig.~\ref{method_diagram}. This method can be used to determine the operational domains of permissible variance of a simulation environment.  
 %
-In addition a number of recommendations and best practices are suggested that other practitioners can follow to minimise simulation variance. 
+{\color{red} MAKES NO SENSE: {\sc In this section a method for determining the variance of simulated actor path trajectories (KIE: a trajectory is a path), termed simulation variance, and resolving the operational domains of permissible variance of the simulation presented here as a work flow, see Fig.~\ref{method_diagram}.}}
+%
+In addition, recommendations and best practice guidelines for minimising simulation variance are suggested. 
 % A number of parameters have been identified either theoretically or from the empirical investigation that influence simulation variance. 
-% This methodology has been refined several times over the course of our investigations into both Unreal Engine and CARLA and is presented here as a work flow, see Fig.~\ref{method_diagram}. %These need to be considered at different stages in the process.  
+% This methodology has been refined several times over the course of our investigations into both Unreal Engine and CARLA and is presented here as a work flow, see Fig.~\ref{method_diagram}. %These need to be considered at different stages in the process. 
 %
-\subsection{Design Experiment}\label{s:design_experiment}
+
+The method consists of a sequence of five stages; experimental design, simulator configuration, external configuration, execution and analysis. In the following, each stage is described in detail with reference to the items listed for each stage in Fig.~\ref{method_diagram}. {\color{red} NOTE: renamed stages.}
+
+\subsection{Experimental Design}\label{s:design_experiment}
 
 \subsubsection{Actors} \label{s:actors}
 
