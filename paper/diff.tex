@@ -1,4 +1,7 @@
 \documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL cav_determinisim_main-original.tex   Sun Feb 14 23:23:43 2021
+%DIF ADD cav_determinisim_main.tex            Thu Mar  4 02:14:45 2021
 % \input{archive/main.config.tex}
 \usepackage[maxnames=6,firstinits=true,doi=false,url=true,isbn=false]{biblatex}
 % \addbibresource{IROS.bib}
@@ -21,13 +24,43 @@
 \newcommand{\TODO}[1]{{\color{red}\textbf{TODO: #1}}}
 % \pagenumbering{gobble} %suppresses page numbers
 \usepackage{balance} %balance columns
-%\usepackage{todonotes}
+%DIF 24c24
+%DIF < % \usepackage{todonotes}
+%DIF -------
+%\usepackage{todonotes} %DIF > 
+%DIF -------
 \usepackage[disable]{todonotes}
 \usepackage{siunitx}
 % \usepackage{draftwatermark}
-\usepackage{flushend}
+%DIF 28a28
+\usepackage{flushend} %DIF > 
+%DIF -------
 
 %-------------------------------------------------------------------------------
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
 
 \begin{document}
 
@@ -95,22 +128,22 @@ Game engines are increasingly used as simulation platforms by the autonomous veh
 %
 A key requirement for simulation-based development and verification is determinism, since a deterministic process will always produce the same output given the same initial conditions and event history. 
 %
-Thus, in a deterministic simulation environment, tests are rendered repeatable and yield simulation results that are trustworthy and straightforward to debug. 
+Thus, \DIFaddbegin \DIFadd{in a deterministic simulation environment, }\DIFaddend tests are rendered repeatable and yield simulation results that are trustworthy and straightforward to debug. 
 %
 However, game engines are seldom deterministic.
 
 This paper first reviews and identifies the potential causes of non-deterministic behaviours in game engines. 
 %
-A case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, is then presented to highlight its inherent shortcomings in providing sufficient precision in experimental results. 
+\DIFdelbegin \DIFdel{This is then followed by a }\DIFdelend \DIFaddbegin \DIFadd{A }\DIFaddend case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, \DIFdelbegin \DIFdel{which highlights }\DIFdelend \DIFaddbegin \DIFadd{is then presented to highlight }\DIFaddend its inherent shortcomings in providing sufficient precision in experimental results. 
 %
-Different configurations and utilisations of the software and hardware are explored to determine an operational domain where the simulation precision is sufficiently low i.e.\ variance between repeated executions becomes negligible for development and testing work.  
+Different configurations and utilisations of the software and hardware are explored to determine an operational domain where the simulation precision is \DIFdelbegin \DIFdel{satisfactory }\DIFdelend \DIFaddbegin \DIFadd{sufficiently }\DIFaddend low i.e.\DIFdelbegin \DIFdel{variance between repeats }\DIFdelend \DIFaddbegin \DIFadd{\ variance between repeated executions }\DIFaddend becomes negligible for development and testing work.  
 
 Finally, a method of a general nature is proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
 
 
-{\color{red} \sc Ensure past/present is used consistently and appropriately throughout.}
+\DIFaddbegin {\color{red} \sc \DIFadd{Ensure past/present is used consistently and appropriately throughout.}}
 
-% =========================================
+\DIFaddend % =========================================
 % Game engines are increasingly used as simulation platforms by the autonomous vehicle (AV) community to develop vehicle control systems and test environments.
 % %
 % A key requirement for simulation-based development and verification is determinism.
@@ -184,7 +217,7 @@ There have been a number of fatalities with AVs, some of which could be attribut
 % The use of game engines for AV testing
 Increasingly, the autonomous vehicle community is adopting game engines as simulation platforms to support the development and testing of vehicle control software. 
 %
-CARLA~\cite{carla_main_website}, for instance, is an open-source simulator for autonomous driving that is implemented in the Unreal Engine~\cite{UE4_main_website}, a real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
+CARLA~\cite{carla_main_website}, for instance, is an open-source simulator for autonomous driving that is implemented in the Unreal Engine~\cite{UE4_main_website}\DIFaddbegin \DIFadd{, }\DIFaddend a real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
 
 % Requirements of simulation based verification SBV
 State-of-the-art game engines provide a convenient option for simulation-based testing. They offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes, potentially suitable for perception stack testing and visual inspection of accidents or near misses. 
@@ -209,11 +242,11 @@ However, while game engines are designed primarily for performance to achieve a 
 
 \todo[inline,color=green!40]{GC New below}
 
-\section{Preliminaries}
+\DIFaddbegin \section{\DIFadd{Preliminaries}}
 
-\subsection{Definitions}
+\DIFaddend \subsection{Definitions}
 
-Several definitions are introduced in this section. These are used in the subsequent discussion. Refer to Fig.~\ref{variance_description} throughout this section.
+\DIFdelbegin \DIFdel{A list of definitions are given here which }\DIFdelend \DIFaddbegin \DIFadd{Several definitions are introduced in this section. These }\DIFaddend are used in the subsequent discussion. Refer to Fig.~\ref{variance_description} throughout this section.
 \\
 
 \subsubsection{Determinism}
@@ -222,13 +255,13 @@ Schumann describes determinism as the property of causality given a temporal dev
 % 
 % Herein the term \textit{simulation variance} is used to refer to how simulation traces and outputs vary, when the same stimulus is provided repeatedly to the simulation environment under identical initial conditions. Specifically, we focus on the variance of actor paths within a given scenario. 
 
-A simulation can be thought of as the process of generating or producing experimental data. 
+A simulation can be thought of as the \DIFdelbegin \DIFdel{generation or production of }\DIFdelend \DIFaddbegin \DIFadd{process of generating or producing }\DIFaddend experimental data. 
 %
 In the case of a driving simulator, kinematics will describe future states of actors given the current conditions and actions taken, thereby generating new data. 
 %
-If a simulation is deterministic, Fig.~\ref{variance_description}~(b), then there will be no variation in the generated output data, i.e. all future states are perfectly reproducible from prior states and actions. 
+If a simulation is deterministic\DIFaddbegin \DIFadd{, Fig.~\ref{variance_description}~(b), }\DIFaddend then there will be no variation in the generated output data, i.e. all future states are perfectly reproducible from prior states and actions. 
 %
-However, if a simulation is non-deterministic, Fig.~\ref{variance_description}~(a), then there will be a variation in the generated output data. \\
+However, if a simulation is non-deterministic\DIFaddbegin \DIFadd{, Fig.~\ref{variance_description}~(a), }\DIFaddend then there will be a variation in the generated output data. \\
 
 \begin{figure}[!t]
     \centering
@@ -251,7 +284,7 @@ However, if a simulation is non-deterministic, Fig.~\ref{variance_description}~(
 % \subsection{Definitions: Precision, Variance \& Tolerance}
 \subsubsection{Variance, Precision \& Tolerance}
 
-We adopt terminology from the mechanical engineering and statistics domains to describe when there is variation in the generated output data~\cite{ADictionaryofMechanicalEngineering}.
+We adopt \DIFdelbegin \DIFdel{some terms }\DIFdelend \DIFaddbegin \DIFadd{terminology }\DIFaddend from the mechanical engineering and statistics \DIFdelbegin \DIFdel{domain that best }\DIFdelend \DIFaddbegin \DIFadd{domains to }\DIFaddend describe when there is variation in the generated output data~\cite{ADictionaryofMechanicalEngineering}.
 %
 % \textit{Precision} is therefore defined as the degree to which a simulation can repeatedly generate the same result when executed with the same conditions and actions taken. 
 % %
@@ -260,55 +293,61 @@ We adopt terminology from the mechanical engineering and statistics domains to d
 % \textit{Variance} (or \textit{precision}) is used here to define the spread (distribution) of the generated output data with respect to the mean value. 
 \textit{Variance} is used here to define the spread, or distribution, of the generated output data with respect to the mean value. \textit{Precision} is synonymous with \textit{variance} although inversely related mathematically. 
 %
-Therefore, variance can indicate the degree to which a simulation can repeatedly generate the same result when executed under the same conditions and actions.
-%
+Therefore, variance can indicate the degree to which a simulation can repeatedly generate the same result when executed \DIFdelbegin \DIFdel{with }\DIFdelend \DIFaddbegin \DIFadd{under }\DIFaddend the same conditions and actions\DIFdelbegin \DIFdel{taken
+}\DIFdelend \DIFaddbegin \DIFadd{.
+}\DIFaddend %
 \textit{Tolerance} is defined as the permissible limit of the variance, or in short the \textit{permissible variance}. 
 
 % The engineering terms \textit{precision} and \textit{tolerance} suitably describe how the simulation data vary when the same repeated stimulus is provided to the simulation environment under identical initial conditions~\cite{ADictionaryofMechanicalEngineering}. %
 %
 % As an analogy, the simulator can be thought of as a manufacturing process, producing data and if tasked to repeatedly execute the same process we must ask how \textit{precise} can this process be and what, if any, will the \textit{variance} be? % when comparing the differences between multiple products. 
-As an analogy, the simulator can be thought of as a manufacturing process that produces data. To determine the precision of this process, the output must be measured and analysed for differences when the process is repeated. 
-%
-Those differences describe the spread or variance in the process output. A hard limit on the variance can then be defined, Fig.~\ref{variance_description}~(a), beyond which the output fails to meet the required tolerance, e.g.\ the output is rejected by quality control.
+As an analogy, the simulator can be thought of as a manufacturing process \DIFdelbegin \DIFdel{, producing dataand to find the value of the precision then the }\DIFdelend \DIFaddbegin \DIFadd{that produces data. To determine the precision of this process, the }\DIFaddend output must be measured \DIFaddbegin \DIFadd{and analysed }\DIFaddend for differences when the process is repeated. 
+%DIF > 
+Those differences describe the spread or variance in the process output\DIFdelbegin \DIFdel{and a }\DIFdelend \DIFaddbegin \DIFadd{. A }\DIFaddend hard limit on the variance can \DIFaddbegin \DIFadd{then }\DIFaddend be defined, Fig.~\ref{variance_description}\DIFdelbegin \DIFdel{a}\DIFdelend \DIFaddbegin \DIFadd{~(a)}\DIFaddend , beyond which the output fails to meet the required tolerance, e.g.\DIFdelbegin \DIFdel{rejected for }\DIFdelend \DIFaddbegin \DIFadd{\ the output is rejected by }\DIFaddend quality control.
 %
 % In relation to manufacturing, the precision of any computer based task is casually assumed to be absolute, for example one may question the manufactured precision of a physical component but not the computer assisted drawing that it was made from. 
 %but technically this is equivalent to the representation of numbers within it, e.g. 64-bit floating point. %\textbf{[ref]}. %
 %
-Real manufacturing fails to achieve absolute precision. Hence, there is a need for tolerances to be specified to account for the variance in real-world manufacturing processes. 
+Real manufacturing fails to achieve absolute precision\DIFdelbegin \DIFdel{and hence the }\DIFdelend \DIFaddbegin \DIFadd{. Hence, there is a }\DIFaddend need for tolerances \DIFdelbegin \DIFdel{on design specifications to }\DIFdelend \DIFaddbegin \DIFadd{to be specified to }\DIFaddend account for the variance in real-world \DIFaddbegin \DIFadd{manufacturing }\DIFaddend processes. 
 
-If a simulator is deterministic then it will produce results with absolute precision or zero variance, Fig.~\ref{variance_description}~(b), and hence will be within tolerance by design. If the simulator is non-deterministic then there will be a measurable, non-zero variance in the output data.\\
+If a simulator is deterministic then it will produce results with absolute precision or zero variance, Fig.~\ref{variance_description}\DIFdelbegin \DIFdel{b}\DIFdelend \DIFaddbegin \DIFadd{~(b)}\DIFaddend , and hence will be within \DIFdelbegin \DIFdel{acceptable tolerance }\DIFdelend \DIFaddbegin \DIFadd{tolerance by design}\DIFaddend . If the simulator is non-deterministic then there will be a \DIFaddbegin \DIFadd{measurable, non-zero }\DIFaddend variance in the output \DIFdelbegin \DIFdel{which can be measured}\DIFdelend \DIFaddbegin \DIFadd{data}\DIFaddend .\\
 %
 
 \subsubsection{Accuracy}
-Precision and tolerance should not to be confused with \textit{accuracy}, which describes how closely the mean of the generated output of a process aligns to a known standard or reference value. We therefore define accuracy as the difference between the true value, or reference value, and what has been achieved in the data generation process or simulation. 
+Precision and tolerance should not to be confused with \textit{accuracy}\DIFaddbegin \DIFadd{, }\DIFaddend which describes how closely the mean of the generated output of a process aligns to a known standard or reference value. We therefore define accuracy as the difference between the true value, or reference value, and what has been achieved in the \DIFdelbegin \DIFdel{simulation or generation process }\DIFdelend \DIFaddbegin \DIFadd{data generation process or simulation}\DIFaddend . 
 %
 For a driving simulation the reference value 
 % , for which accuracy can be measured against, 
 may be the real world that the simulation seeks to emulate, where any divergence from this standard is termed the \textit{reality gap}. 
-%
-In practice full accuracy will often not be achievable due to modelling and associated computational demands of creating and executing exact replica. In most cases, in fact, it is unnecessary and some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. \\
+\DIFdelbegin \DIFdel{In most cases such accuracy will not be possible due to }\DIFdelend %DIF > 
+\DIFaddbegin \DIFadd{In practice full accuracy will often not be achievable due to modelling and associated }\DIFaddend computational demands of \DIFdelbegin \DIFdel{such an exact replicaand in most casesis unnecessary, where }\DIFdelend \DIFaddbegin \DIFadd{creating and executing exact replica. In most cases, in fact, it is unnecessary and }\DIFaddend some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. \\
 
 \subsubsection{Simulation Trace}
-A simulation trace is the output log from the simulator consisting of a time series of all actor positions ($x,y,z$) in a 3D environment recorded at regular time intervals. This definition could be extended to include other variables. %, but position is sufficient for this analysis.\\
-A set of simulation traces derived from the same input and starting state then forms the experimental data on which variance is calculated for a given simulation run. \\
+A simulation trace is the output log from the simulator consisting of a time series of all actor positions ($x,y,z$) \DIFaddbegin \DIFadd{in a 3D environment recorded }\DIFaddend at regular time intervals. This definition could be extended to include other variables. %, but position is sufficient for this analysis.\\
+A set of simulation traces derived from the same input \DIFaddbegin \DIFadd{and starting state }\DIFaddend then forms the experimental data on which variance is calculated \DIFaddbegin \DIFadd{for a given simulation run}\DIFaddend . \\
 
 
 \subsubsection{Simulation Variance \& Deviation}
-If the simulator is non-deterministic then how can the simulation variance be measured? This can be achieved by monitoring the values of any of the recorded output variables that should be consistent from run to run. 
+If the simulator is non-deterministic then how can \DIFdelbegin \DIFdel{this }\DIFdelend \DIFaddbegin \DIFadd{the simulation }\DIFaddend variance be measured? This can be achieved by monitoring \DIFdelbegin \DIFdel{any simulated }\DIFdelend \DIFaddbegin \DIFadd{the values of any of the recorded }\DIFaddend output variables that should be consistent from run to run. 
 % In this study the actor state was chosen, or more specifically the statistical variance of actor paths within a given scenario using a fixed set of actions. 
-For example, actor position variance is a distance-based metric that can be derived from simulation traces. The actor position over time, i.e.\ the actor path, is often used in assertion checking, e.g.\ to determine whether vehicles keep within lanes or whether minimum distances to other vehicles and road users are being maintained. 
-% 
-Thus, in the case study presented in this paper, the term \textit{simulation variance}, measured in SI unit $m^2$, refers to a measure of actor position variance in the simulation with respect to time, assuming fixed actions. {\color{red} Unclear: Why wrt.\ time, that would then be the actor path, or not?}
-%
-%\textit{Deviation} (SI unit $m$) is the square root of variance (SI unit $m^2$), which is a more intuitive measure to comprehend when interpreting test results.
-%
-Case study results are presented using deviation (SI unit $m$), the square root of variance, rather than variance, as this is a more intuitive measure to comprehend when interpreting test results.
-%
-% more intuitive to comprehend when considering verification tests, e.g. vehicle close-passing. Moreover, the maximum observed value of deviation was chosen over a mean value to ensure sufficient sensitivity.\\
-\\
+\DIFdelbegin \DIFdel{Actor path variance, derived from the simulation trace, is chosen over other variables as this distance based metric forms the basis for many downstream verification tests. 
+%DIF <  such as assertion checking. 
+}\DIFdelend \DIFaddbegin \DIFadd{For example, actor position variance is a distance-based metric that can be derived from simulation traces. The actor position over time, i.e.\ the actor path, is often used in assertion checking, e.g.\ to determine whether vehicles keep within lanes or whether minimum distances to other vehicles and road users are being maintained. 
+}\DIFaddend % 
+\DIFdelbegin \DIFdel{Therefore the }\DIFdelend \DIFaddbegin \DIFadd{Thus, in the case study presented in this paper, the }\DIFaddend term \textit{simulation variance}\DIFaddbegin \DIFadd{, measured in SI unit $m^2$, }\DIFaddend refers to a measure of actor position variance in the simulation with respect to time\DIFaddbegin \DIFadd{, }\DIFaddend assuming fixed actions. \DIFaddbegin {\color{red} \DIFadd{Unclear: Why wrt.\ time, that would then be the actor path, or not?}}
+\DIFaddend %
+\DIFdelbegin \textit{\DIFdel{Deviation}} %DIFAUXCMD
+\DIFdelend %DIF > \textit{Deviation} (SI unit $m$) is the square root of variance (SI unit $m^2$), which is a more intuitive measure to comprehend when interpreting test results.
+%DIF > 
+\DIFaddbegin \DIFadd{Case study results are presented using deviation }\DIFaddend (SI unit $m$)\DIFdelbegin \DIFdel{is }\DIFdelend \DIFaddbegin \DIFadd{, }\DIFaddend the square root of variance\DIFdelbegin \DIFdel{(SI unit $m^2$), which }\DIFdelend \DIFaddbegin \DIFadd{, rather than variance, as this }\DIFaddend is a more intuitive \DIFdelbegin \DIFdel{value }\DIFdelend \DIFaddbegin \DIFadd{measure }\DIFaddend to comprehend when \DIFdelbegin \DIFdel{considering interpretation of verification tests.
+%DIF < Results are referred to in terms of deviation, the square root of variance, rather than variance, as this is more intuitive to comprehend when considering verification tests, e.g. vehicle close-passing. Moreover, the maximum observed value of deviation was chosen over a mean value to ensure sufficient sensitivity.\\
+}\DIFdelend \DIFaddbegin \DIFadd{interpreting test results.
+%DIF > 
+%DIF >  more intuitive to comprehend when considering verification tests, e.g. vehicle close-passing. Moreover, the maximum observed value of deviation was chosen over a mean value to ensure sufficient sensitivity.\\
+}\DIFaddend \\
 
 \subsubsection{Scene, Scenario \& Situation}
-We adopt the terminology defined for automated driving in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time; these are considered actors and may include the AV, or \textit{ego vehicle}, other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific parameters. A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
+We \DIFdelbegin \DIFdel{will }\DIFdelend adopt the terminology defined \DIFaddbegin \DIFadd{for automated driving }\DIFaddend in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time; these are considered actors and may include the AV\DIFaddbegin \DIFadd{, }\DIFaddend or \textit{ego vehicle}, other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific parameters. A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
 
 % \todo[inline]{values - Does this mean stimulus or other parameters? GC - changed to parameters}
 
@@ -321,16 +360,17 @@ We adopt the terminology defined for automated driving in~\cite{Ulbrich2015}, wh
 %
 
 \subsection{When is Determinism needed?}
-Determinism is a key requirement for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable, i.e.\ repeated runs of a test, given the same initial conditions and event history, produce the same output data.
-%
-Thus, a deterministic simulator has zero \textit{variance}. 
+Determinism is a key \DIFdelbegin \DIFdel{prerequisite }\DIFdelend \DIFaddbegin \DIFadd{requirement }\DIFaddend for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable\DIFdelbegin \DIFdel{. A deterministic simulator can be considered to have }\DIFdelend \DIFaddbegin \DIFadd{, i.e.\ repeated runs of a test, given the same initial conditions and event history, produce the same output data.
+%DIF > 
+Thus, a deterministic simulator has }\DIFaddend zero \textit{variance}. 
+\DIFdelbegin \DIFdel{If the variance is }\DIFdelend \DIFaddbegin 
 
-A simulator with non-zero variance can no longer be considered deterministic. 
-%
-Non-deterministic simulators may be sufficient for certain applications as long as their variance is permissible, i.e.\ \textit{within tolerance}. 
-%
-Therefore, \textit{tolerance} is the acceptable degree of variability between repeated simulations. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. 
-%
+\DIFadd{A simulator with }\DIFaddend non-zero \DIFdelbegin \DIFdel{it }\DIFdelend \DIFaddbegin \DIFadd{variance }\DIFaddend can no longer be considered deterministic\DIFdelbegin \DIFdel{but this }\DIFdelend \DIFaddbegin \DIFadd{. 
+%DIF > 
+Non-deterministic simulators }\DIFaddend may be sufficient for certain applications as long as \DIFdelbegin \DIFdel{it is }\DIFdelend \DIFaddbegin \DIFadd{their variance is permissible, i.e.\ }\DIFaddend \textit{within tolerance}. 
+%DIF > 
+Therefore, \textit{tolerance} is the acceptable degree of variability between repeated \DIFdelbegin \DIFdel{simulation traces}\DIFdelend \DIFaddbegin \DIFadd{simulations}\DIFaddend . When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. 
+%DIF > 
 This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
 
 % GC Text
@@ -342,39 +382,40 @@ This ensures that software bugs can be found and fixed efficiently, and that sim
 %When considering the development of autonomous vehicles, untested code could lead to dangerous behaviours not being identified and fatal road accidents may occur.
 %
 
-If the simulation is non-deterministic, e.g.\ 
-% KIE No, whether the variance is or is not permissible is not what matters for non-det, it should be zero!
-%e.g. it has a non-permissible variance in,
-it has a non-zero variance in, for example, actor positions, then this may, in the best case, lead to intermittent assertion failures, making it difficult to re-produce, understand and remove bugs and rendering verification results unstable. In the worst case, however, bugs that could have been identified in simulation remain undetected, leading to false confidence in the safety of the AV's control software. 
+If the simulation is non-deterministic\DIFdelbegin \DIFdel{and has a non-permissible }\DIFdelend \DIFaddbegin \DIFadd{, e.g.\ 
+%DIF >  KIE No, whether the variance is or is not permissible is not what matters for non-det, it should be zero!
+%DIF > e.g. it has a non-permissible variance in,
+it has a non-zero }\DIFaddend variance in, for example, actor positions, \DIFdelbegin \DIFdel{this may lead to assessment errors}\DIFdelend \DIFaddbegin \DIFadd{then this may, in the best case, lead to intermittent assertion failures}\DIFaddend , making it difficult to \DIFaddbegin \DIFadd{re-produce, }\DIFaddend understand and remove bugs \DIFaddbegin \DIFadd{and rendering verification results unstable}\DIFaddend . In the worst case, \DIFaddbegin \DIFadd{however, }\DIFaddend bugs that could have been identified in simulation remain undetected, \DIFdelbegin \DIFdel{resulting in }\DIFdelend \DIFaddbegin \DIFadd{leading to }\DIFaddend false confidence in the safety of the AV's control software. 
 %
 
 % \todo[inline]{GC Edit: If the simulation is non-deterministic, it lacks the appropriate precision for this application and the error between output traces exceeds the acceptable tolerance however, variance in actor positions, for instance, may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software.}
 
 % Challenges of SBV
-When used for gaming, game engines do not need to be deterministic nor do they have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs % related to non-determinism 
-a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions are:
+When used for gaming, game engines do not need to be deterministic nor do they \DIFdelbegin \DIFdel{even }\DIFdelend have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs \DIFdelbegin \DIFdel{related to non-determinism }\DIFdelend %DIF >  related to non-determinism 
+a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research \DIFdelbegin \DIFdel{question is}\DIFdelend \DIFaddbegin \DIFadd{questions are}\DIFaddend :
 %
 \todo[inline,color=red!40]{old: How can one assess the extent to which a simulation environment is deterministic?  }
 %
-{\em How can one assess whether a simulation environment is deterministic?} and 
-{\em How can one determine and control the simulation variance?}
-\todo[inline,color=green!40]{GC Alternative: How can one assess the extent to which a simulation environment is deterministic or has a permissible tolerance?} 
+\DIFaddbegin {\em \DIFaddend How can one assess \DIFdelbegin \DIFdel{the extent to which }\DIFdelend \DIFaddbegin \DIFadd{whether }\DIFaddend a simulation environment is deterministic\DIFdelbegin \DIFdel{or has a permissible level of variance?}\DIFdelend \DIFaddbegin \DIFadd{?}} \DIFadd{and 
+}{\em \DIFadd{How can one determine and control the simulation variance?}}
+\DIFaddend \todo[inline,color=green!40]{GC Alternative: How can one assess the extent to which a simulation environment is deterministic or has a permissible tolerance?} 
 
 % In pursuit of an answer to this question we
-In this paper we investigate non-determinism and how it affects simulation results on the example of CARLA, an open-source autonomous driving simulation environment based on the Unreal game engine.
+In this paper we \DIFdelbegin \DIFdel{investigated how the non-determinism of Carla, }\DIFdelend \DIFaddbegin \DIFadd{investigate non-determinism and how it affects simulation results on the example of CARLA, an open-source autonomous driving simulation environment }\DIFaddend based on the Unreal game engine\DIFdelbegin \DIFdel{, when used for simulation-based AV verification affects the simulation results}\DIFdelend .
 %
-In our case study, scenarios between pedestrian and vehicle actors are investigated to determine the actor position variance in the simulation output for repeated simulation runs. 
-% KIE: This is covered in the next sentence:
-% to identify conditions that result in non-determinism based on actor position variance in the simulation output.
-%
+In our case study, scenarios between pedestrian and vehicle actors \DIFdelbegin \DIFdel{have been analysed to identify conditions that result in non-deterministic simulation output by analysis of }\DIFdelend \DIFaddbegin \DIFadd{are investigated to determine the }\DIFaddend actor position variance \DIFdelbegin \DIFdel{.
+}\DIFdelend \DIFaddbegin \DIFadd{in the simulation output for repeated simulation runs. 
+%DIF >  KIE: This is covered in the next sentence:
+%DIF >  to identify conditions that result in non-determinism based on actor position variance in the simulation output.
+}\DIFaddend %
 \todo[inline,color=red!40]{old: By limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a deterministic operational simulation setup could be identified. }
 %
-% By analysing actor position variance 
-We find that the CARLA simulator is non-deterministic under certain conditions. {\color{red} Say what the observed variance range is, and what we consider permissible for this study.}
-% However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.
+\DIFdelbegin \DIFdel{By analysing actor position variance we }\DIFdelend %DIF >  By analysing actor position variance 
+\DIFaddbegin \DIFadd{We }\DIFaddend find that the \DIFdelbegin \DIFdel{Carla }\DIFdelend \DIFaddbegin \DIFadd{CARLA }\DIFaddend simulator is non-deterministic under certain conditions. \DIFaddbegin {\color{red} \DIFadd{Say what the observed variance range is, and what we consider permissible for this study.}}
+\DIFaddend % However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.
 %
-CARLA exhibits a permissible variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected. {\color{red} Why ``vehicle'' collision and not just ``collision''?}
-%
+\DIFdelbegin \DIFdel{Carla }\DIFdelend \DIFaddbegin \DIFadd{CARLA }\DIFaddend exhibits a permissible \DIFdelbegin \DIFdel{level of }\DIFdelend variance when system utilisation is restricted to 75\% or less and \DIFdelbegin \DIFdel{ensuring termination of scenarios }\DIFdelend \DIFaddbegin \DIFadd{the simulation is terminated }\DIFaddend once a vehicle collision has been detected. \DIFaddbegin {\color{red} \DIFadd{Why ``vehicle'' collision and not just ``collision''?}}
+\DIFaddend %
 \todo[inline,color=green!40]{GC Alternative: By analysing actor position variance we find that the Carla simulator is non-deterministic under certain conditions. 
 However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.}
 
@@ -382,10 +423,11 @@ The insights gained from this case study motivated the development of a general 
 %
 \todo[inline,color=red!40]{old: Knowing the simulation variance will help them assess the impact that using a game engine for AV simulation may have. In particular, they can gain a better understanding of how potentially existing non-determinism affects repeatability and reliability of the simulation results.  }
 %
-Knowing the simulation variance will help assess the suitability of a game engine for AV simulation.
-%impact that using a game engine for AV simulation may have.
-% on verification tasks. 
-In particular, this can give a better understanding of the effects of non-determinism and to what extent simulation precision may impact on verification results.
+Knowing the simulation variance will help assess the \DIFdelbegin \DIFdel{impact that using }\DIFdelend \DIFaddbegin \DIFadd{suitability of }\DIFaddend a game engine for AV simulation\DIFdelbegin \DIFdel{may have on verification tasks.
+}\DIFdelend \DIFaddbegin \DIFadd{.
+%DIF > impact that using a game engine for AV simulation may have.
+%DIF >  on verification tasks. 
+}\DIFaddend In particular, this can give a better understanding of the effects of non-determinism and to what extent simulation precision may impact on verification results.
 %
 \todo[inline,color=green!40]{GC Alternative: Knowing the simulation variance will help verification engineers assess the impact that using a game engine for AV simulation may have. In particular, this can give a better understanding of how potentially existing non-determinism affects simulation precision and any verification results that are interpreted from this. }
 %
@@ -439,21 +481,23 @@ We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\to
 %     \item Provide a method of how the level of non-determinism can be investigated and defined.
 %     \item A case study showing the implementation of this methodology in an engine widely used in AVs simulations (Unreal Engine).
 % \end{itemize}
- 
+
 % ***************************************************
 %  BACKGROUND
 % ***************************************************
 \section{Background} \label{s:background}
 
-There are numerous game engines with their associated development environments which could be considered suitable for AV development, e.g.\ Unreal Engine~\cite{UE4_main_website}, Unity~\cite{Unity_main_website}, CryEngine~\cite{CryEngine_main_website}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing game engines, e.g.\ CARLA~\cite{carla_main_website}, AirSim~\cite{AirSim_main_website}, Apollo~\cite{Apollo_main_website}, and some have been developed for cloud-based simulation, e.g.\ Nvidia Drive Constellation~\cite{nvidia_constellation}.
+There are numerous game engines with their associated development environments which could be considered suitable for AV development, e.g.\DIFaddbegin \DIFadd{\ }\DIFaddend Unreal Engine~\cite{UE4_main_website}, Unity~\cite{Unity_main_website}, CryEngine~\cite{CryEngine_main_website}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing game engines, e.g.\ CARLA~\cite{carla_main_website}, AirSim~\cite{AirSim_main_website}, Apollo~\cite{Apollo_main_website}, and some have been developed for \DIFdelbegin \DIFdel{cloud based }\DIFdelend \DIFaddbegin \DIFadd{cloud-based }\DIFaddend simulation, e.g.\ Nvidia Drive Constellation~\cite{nvidia_constellation}.
 % \footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
 
 Investigating the determinism of game engines has not attracted much research interest since performance is more critical for game developers than accurate and repeatable execution.  %However, when these engines are used for AV development then deterministic behaviour is required. 
 %
-Ensuring software operates deterministically is a non-trivial task.  Catching intermittent failures, or flaky tests~\cite{intermittently-failing-tests}, in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}.
+Ensuring software operates deterministically is a non-trivial task\DIFdelbegin \DIFdel{and catching }\DIFdelend \DIFaddbegin \DIFadd{.  Catching }\DIFaddend intermittent failures, or flaky tests~\cite{intermittently-failing-tests}, in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}.
 %
-\todo[inline]{GC line added to introduction. We need a paragraph on how hard it can be to make a computation fully deterministic, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
-%
+\DIFdelbegin %DIFDELCMD < \todo[inline]{GC line added to introduction. We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \todo[inline]{GC line added to introduction. We need a paragraph on how hard it can be to make a computation fully deterministic, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
+\DIFaddend %
 \todo[inline,color=green!40]{GC Addition: Ensuring software operates deterministically is a non-trivial task and catching intermittent failures in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}. }
 %
 This section gives an overview of the internal structure of a game engine and what sources or settings in the engine may affect \textit{simulation variance}.
@@ -525,7 +569,7 @@ Note that both residual lag and extrapolation could affect perception stack test
 % \todo[inline]{Why is this part of the figure? It would be clearer if it was in a separate figure that shows all the clocks involved and how they interact - depend on each other. GC-suggest we remove as the ticks are not relevant to the main argument or discussion.}
 %
 % Ideally the time step should be as short as possible, so that the simulation returns better accuracy of complex physical processes. %runs with high fidelity on fast machines. 
-In exceptional cases, where computational resources are scarce, the fixed time step can be greater than the time between render ticks %it takes to process an ``Update" inner loop on some (slow) machines, 
+In exceptional cases\DIFaddbegin \DIFadd{, }\DIFaddend where computational resources are scarce, the fixed time step can be greater than the time between render ticks %it takes to process an ``Update" inner loop on some (slow) machines, 
 and the simulation will exhibit lag between input commands and rendered states, resulting in unsynchronised and unrealistic behaviour as can be experienced when games are executed on platforms not intended for gaming. 
 % \todo[inline]{Explain how this lag may affect perception stack testing}
 
@@ -537,10 +581,11 @@ and the simulation will exhibit lag between input commands and rendered states, 
 %
 \todo[inline,color=red!40]{old: Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy. In contrast, simulation accuracy is essential in AV development and testing, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of accuracy at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that is as close as possible to what the real input would be, i.e.\ with no or minimal extrapolation or lag. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.  }
 %
-Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither needs a faithful representation of reality, i.e.\ the gamer will accept low \textit{accuracy}, nor do they require for repeated actions to result in the same outcome to within a particular tolerance. %, i.e.\ can be low \textit{precision}.
+Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither \DIFdelbegin \DIFdel{wishes }\DIFdelend \DIFaddbegin \DIFadd{needs }\DIFaddend a faithful representation of reality, i.e.\DIFaddbegin \DIFadd{\ }\DIFaddend the gamer will accept low \textit{accuracy}, nor do they require for repeated actions to result in the same outcome to within a particular tolerance\DIFdelbegin \DIFdel{, i. e. can be low }\textit{\DIFdel{precision}}%DIFAUXCMD
+\DIFdelend . %DIF > , i.e.\ can be low \textit{precision}.
 %
-In contrast, the precision required for AV development and testing is very high, especially for perception stack testing, but also, more generally, for obtaining reliable verification results and for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required tolerance %on the precision 
-at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that is repeatable so that if any software bugs are found they can be re-played and the issue resolved. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.
+In contrast, the precision required for AV development and testing is \DIFdelbegin \DIFdel{much higher}\DIFdelend \DIFaddbegin \DIFadd{very high}\DIFaddend , especially for perception stack testing, but also\DIFdelbegin \DIFdel{for }\DIFdelend \DIFaddbegin \DIFadd{, more generally, for obtaining reliable verification results and for }\DIFaddend visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required \DIFdelbegin \DIFdel{level of tolerance on the precision }\DIFdelend \DIFaddbegin \DIFadd{tolerance %DIF > on the precision 
+}\DIFaddend at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that is repeatable so that if any software bugs are found they can be re-played and the issue resolved. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.
 %
 \todo[inline,color=green!40]{GC Edit: Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither wishes a faithful representation of reality, i.e. can be low accuracy, nor do they require for repeated actions to result in the same outcome to a particular tolerance, i.e. can be low precision. In contrast, the precision required for AV development and testing is much higher, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of tolerance on the precision at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that repeatable so that if any software bugs are found they can be re-played and the issue resolved. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.}
 %
@@ -560,7 +605,7 @@ The following review discusses the potential sources of non-determinism that wer
 %
 \todo[inline,color=green!40]{GC Addition below}%
 %
-A good analysis of potential sources is given by Strandberg et al.~\cite{intermittently-failing-tests}, although the AV simulation domain introduces it's own unique challenges that were not considered in that paper.
+A good analysis of potential sources is given by Strandberg et al.~\cite{intermittently-failing-tests}\DIFaddbegin \DIFadd{, }\DIFaddend although the AV simulation domain introduces it's own unique challenges that were not considered in that paper.
 
 % MOVED TO INTRO \todo[inline]{We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
 
@@ -577,30 +622,47 @@ Intermittently Failing Tests in the Embedded Systems Domain~\cite{intermittently
 
 Floating-point representation of real numbers is limited by the fixed bit width available in the hardware, resulting in the finite precision with which numbers can be represented in a computation. 
 Thus, the results of arithmetic operations must fit into the given bit width, which is achieved through rounding to the nearest representable value. This gives rise to rounding errors~\cite{FloatingPointsBook,goldberg1991every}. %
+%DIF < 
+%DIF <  SEE BELOW \todo[inline]{Check the points on floating point operations in An Empirical Analysis of Flaky Tests~\cite{empirical-analysis-of-flaky-tests}.}
+\DIFaddbegin 
 
-% SEE BELOW \todo[inline]{Check the points on floating-point operations in An Empirical Analysis of Flaky Tests~\cite{empirical-analysis-of-flaky-tests}.}
-{\color{red} PROBLEMATIC: Even operations such as the average of an array can result in issues with overflows and underflows {\sc (these can happen with Integers too)}
-and,  non-associative addition~\cite{Kapre2007} {\sc (only when the exec order is changed)} which may result in non-deterministic behaviour. }
+%DIF >  SEE BELOW \todo[inline]{Check the points on floating-point operations in An Empirical Analysis of Flaky Tests~\cite{empirical-analysis-of-flaky-tests}.}
+{\color{red} \DIFadd{PROBLEMATIC: }\DIFaddend Even operations such as the average of an array can result in issues with overflows \DIFdelbegin \DIFdel{, underflows and }\DIFdelend \DIFaddbegin \DIFadd{and underflows }{\sc \DIFadd{(these can happen with Integers too)}}
+\DIFadd{and,  }\DIFaddend non-associative addition~\cite{Kapre2007} \DIFaddbegin {\sc \DIFadd{(only when the exec order is changed)}} \DIFaddend which may result in non-deterministic behaviour. \DIFdelbegin \DIFdel{Calculation resultsmay differ }\DIFdelend \DIFaddbegin }
 
-% As a consequence, floating-point arithmetic is not associative. Thus, for arithmetic expressions beyond two operands, such as $x+y+z$, a change of execution order, e.g.\ from $x+(y+z)$ to $(x+y)+z$, can lead to different results~\cite{Kapre2007}.
-%
-As a consequence, floating-point arithmetic is not associative. Thus, for arithmetic expressions beyond two operands, such as $x+y+z$, executing $x+(y+z)$ rather than $(x+y)+z$, can produce different results~\cite{Kapre2007}. This is because rounding is being performed at different stages in the computation, depending on the respective execution order. 
-%
-Execution order changes can occur due to the use of a different compiler or as a consequence of parallelisation, e.g.\ within the runtime environment or at the hardware level. 
-%
-Furthermore, floating-point calculation results may differ if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. 
-%
-%{\color{red} Some authors even suggest avoiding the use of floating-point entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}.}
-%
+%DIF >  As a consequence, floating-point arithmetic is not associative. Thus, for arithmetic expressions beyond two operands, such as $x+y+z$, a change of execution order, e.g.\ from $x+(y+z)$ to $(x+y)+z$, can lead to different results~\cite{Kapre2007}.
+%DIF > 
+\DIFadd{As a consequence, floating-point arithmetic is not associative. Thus, for arithmetic expressions beyond two operands, such as $x+y+z$, executing $x+(y+z)$ rather than $(x+y)+z$, can produce different results~\mbox{%DIFAUXCMD
+\cite{Kapre2007}}%DIFAUXCMD
+. This is because rounding is being performed at different stages in the computation, depending on the respective execution order. 
+%DIF > 
+Execution order changes can occur }\DIFaddend due to the \DIFdelbegin \DIFdel{nature of non-associative floating point arithmetic if there is a change in compiler , a change in the execution order or even }\DIFdelend \DIFaddbegin \DIFadd{use of a different compiler or as a consequence of parallelisation, e.g.\ within the runtime environment or at the hardware level. 
+%DIF > 
+Furthermore, floating-point calculation results may differ }\DIFaddend if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. 
+\DIFdelbegin \DIFdel{Some authors even suggest avoiding the use of floating point entirely for assertion testing due to imprecision and non-deterministic behaviour~\mbox{%DIFAUXCMD
+\cite{empirical-analysis-of-flaky-tests}}%DIFAUXCMD
+. 
+}\DIFdelend %
+%DIF > {\color{red} Some authors even suggest avoiding the use of floating-point entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}.}
+%DIF > 
 %If calculations are performed on a single core, then concurrency of multiple threads is not an issue.
-\todo[inline,color=green!40]{GC Addition (added reference on non-associative fp addition Kapre2007, Whitehead2011, empirical-analysis-of-flaky-tests, see para below:)
+\DIFdelbegin %DIFDELCMD < \todo[inline,color=green!40]{GC Addition (added reference on non-associative fp addition Kapre2007, Whitehead2011, empirical-analysis-of-flaky-tests, see para below:)
+%DIFDELCMD < 
+
+%DIFDELCMD < Even operations such as the average of an array can result in issues with overflows, underflows and non-associative addition~\cite{Kapre2007} which may result in non-deterministic behaviour. Calculation results may differ due to the nature of non-associative floating point arithmetic if there is a change in compiler, a change in the execution order or even if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. Some authors even suggest avoiding the use of floating point entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}. 
+%DIFDELCMD < %
+%DIFDELCMD < If calculations are perofrmed on a single core, then concurrency of multiple threads is not an issue.
+%DIFDELCMD < % which is discussed in the section below titled Scheduling, Concurrency and Parallelisation.}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \todo[inline,color=green!40]{GC Addition (added reference on non-associative fp addition Kapre2007, Whitehead2011, empirical-analysis-of-flaky-tests, see para below:)
 
 % Even operations such as the average of an array can result in issues with overflows, underflows and non-associative addition~\cite{Kapre2007} which may result in non-deterministic behaviour. Calculation results may differ due to the nature of non-associative floating-point arithmetic if there is a change in compiler, a change in the execution order or even if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. Some authors even suggest avoiding the use of floating-point entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}. 
 %
 % If calculations are perofrmed on a single core, then concurrency of multiple threads is not an issue.
 % which is discussed in the section below titled Scheduling, Concurrency and Parallelisation.
 }
-%
+\DIFaddend %
 % Floating-point representation of real numbers is limited with fixed register sizes resulting in errors of rounding where loss of bits occur which are rounded or truncated and cancellation which happens where two similar values are subtracted.
 
 % Translating to the usage of AV simulations in physics engines,
@@ -608,22 +670,30 @@ In the context of AV simulation, such rounding errors could result in accuracy i
 % \todo[inline]{state what assertions are (used for) GC-see below} 
 %In the field of AV verification, assertions are the immutable rules and regulations that describe safe and legal driving. 
 %
-Thus, one could conclude that floating-point arithmetic causes non-determinism, resulting in loss of repeatability. In fact, some authors suggest avoiding the use of floating-point representation entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}. 
+Thus, one could \DIFdelbegin \DIFdel{jump to the conclusion }\DIFdelend \DIFaddbegin \DIFadd{conclude }\DIFaddend that floating-point \DIFdelbegin \DIFdel{errors cause non-deterministic behaviour}\DIFdelend \DIFaddbegin \DIFadd{arithmetic causes non-determinism}\DIFaddend , resulting in loss of repeatability. \DIFaddbegin \DIFadd{In fact, some authors suggest avoiding the use of floating-point representation entirely for assertion testing due to imprecision and non-deterministic behaviour~\mbox{%DIFAUXCMD
+\cite{empirical-analysis-of-flaky-tests}}%DIFAUXCMD
+. 
+}\DIFaddend 
 
 
-In contrast, we argue that the precision issues related to floating-point operations are better described as \textit{incorrectness} that is in fact repeatable; they do not cause non-determinism per se. {\color{red} Should this be IMPRECISION rather than incorrectness?}
+\DIFdelbegin \DIFdel{However, these precision issues }\DIFdelend \DIFaddbegin \DIFadd{In contrast, we argue that the precision issues related to floating-point operations }\DIFaddend are better described as \textit{incorrectness} \DIFdelbegin \DIFdel{, rather than them being a source of }\DIFdelend \DIFaddbegin \DIFadd{that is in fact repeatable; they do not cause }\DIFaddend non-determinism \DIFdelbegin \DIFdel{. 
+}\DIFdelend \DIFaddbegin \DIFadd{per se. }{\color{red} \DIFadd{Should this be IMPRECISION rather than incorrectness?}}
+\DIFaddend %
+It is normally reasonable to assume that the processors on which game engines run are \DIFdelbegin \DIFdel{designed to be }\DIFdelend deterministic with respect to floating-point arithmetic. 
 %
-It is normally reasonable to assume that the processors on which game engines run are deterministic with respect to floating-point arithmetic. 
-%
-Thus, given the same operands and sequence of operations, the same processor should always produce the same bit pattern. %, i.e.\ a result that is as consistently equally \textit{incorrect} over a number of executions.
-%
-So, even if the result of a floating-point operation is incorrect due to floating-point rounding errors, it should always be equally \textit{incorrect} for implementations that conform to the IEEE floating-point standard~\cite{8766229}.
+Thus, \DIFdelbegin \DIFdel{when a rounding error occurs, then }\DIFdelend \DIFaddbegin \DIFadd{given the same operands and sequence of operations, }\DIFaddend the same processor should \DIFaddbegin \DIFadd{always }\DIFaddend produce the same \DIFdelbegin \textit{\DIFdel{incorrect}} %DIFAUXCMD
+\DIFdel{result given the same operands. }\DIFdelend \DIFaddbegin \DIFadd{bit pattern. %DIF > , i.e.\ a result that is as consistently equally \textit{incorrect} over a number of executions.
+}\DIFaddend %
+So, even if the result of a floating-point operation is incorrect due to floating-point rounding errors, it should always be equally \textit{incorrect} \DIFdelbegin \DIFdel{as long as the implementation conforms }\DIFdelend \DIFaddbegin \DIFadd{for implementations that conform }\DIFaddend to the IEEE floating-point standard~\cite{8766229}.
 
-However, as illustrated above on the example of non-associative addition, a change of execution order can lead to sequences of floating point operations producing different results. Thus, any uncontrolled options to modify execution order, e.g.\ at the compiler level, within the runtime environment or at the hardware level, can cause simulation results to differ between runs, resulting in non-zero variance and loss of determinism. 
- 
-Beyond that, aggressive optimisations by the compiler can also introduce incorrectness in floating-point arithmetic~\cite{llvm-floating-point}. However, the same executable should still return the same output for identical input. 
+\DIFdelbegin \DIFdel{Beyond hardware limitations, }\DIFdelend \DIFaddbegin \DIFadd{However, as illustrated above on the example of non-associative addition, a change of execution order can lead to sequences of floating point operations producing different results. Thus, any uncontrolled options to modify execution order, e.g.\ at the compiler level, within the runtime environment or at the hardware level, can cause simulation results to differ between runs, resulting in non-zero variance and loss of determinism. 
+ }
 
-In conclusion, floating-point arithmetic does not cause non-zero \textit{simulation variance} for repeated simulation runs when using the same executable on the same hardware with exactly the same configuration and execution order.
+\DIFadd{Beyond that, }\DIFaddend aggressive optimisations by the compiler can also introduce incorrectness in floating-point arithmetic~\cite{llvm-floating-point}. However, the same executable should still return the same output for identical input. 
+%DIF < 
+\DIFdelbegin \DIFdel{Therefore, it can be concluded that }\DIFdelend \DIFaddbegin 
+
+\DIFadd{In conclusion, }\DIFaddend floating-point arithmetic does not \DIFdelbegin \DIFdel{contribute to }\DIFdelend \DIFaddbegin \DIFadd{cause non-zero }\DIFaddend \textit{simulation variance} for repeated \DIFdelbegin \DIFdel{tests }\DIFdelend \DIFaddbegin \DIFadd{simulation runs when }\DIFaddend using the same executable on the same hardware with \DIFaddbegin \DIFadd{exactly }\DIFaddend the same configuration \DIFaddbegin \DIFadd{and execution order}\DIFaddend .
 
 
 
@@ -639,7 +709,7 @@ In conclusion, floating-point arithmetic does not cause non-zero \textit{simulat
 Runtime scheduling is a resource management method for sharing computational resources between tasks of different or equal priority where tasks are executed dependent on the scheduler policy of the operating system. A scheduler policy may be optimised in many ways such as for task throughput, deadline delivery or minimum latency~\cite{liu1973scheduling}. 
 % \todo[inline]{is this the scheduling that is done by the operating system, i.e. at runtime? GC - runtime, added to 1st para.}
 %
-In principle, changing the scheduling policy and thread priorities may increase simulation variance. 
+\DIFdelbegin \DIFdel{Changing }\DIFdelend \DIFaddbegin \DIFadd{In principle, changing }\DIFaddend the scheduling policy and thread priorities may increase simulation variance. 
 
 It is, however, unlikely that changes to thread priorities or scheduling policy would occur during repeated controlled tests for the same hardware and operating system configuration. Given that hardware is considered deterministic and if the thread execution order does not change between tests, then for the same hardware and operating system configuration the same output should be given.  
 
@@ -659,9 +729,12 @@ This is because the processor cores are identical and any impurities across the 
 %
 However, scheduling multiple processes across several processing cores, where the number of cores is smaller than the number of processes, can result in variation of the execution order and cause simulation variance unless explicitly constrained or statically allocated prior to execution. 
 
-Indeed, the developers of the debugging program \texttt{rr}~\cite{RR_link} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour by design~\cite{acm-q-rr-interview}.
+Indeed, the developers of the \DIFdelbegin \DIFdel{de-bugging program }\DIFdelend \DIFaddbegin \DIFadd{debugging program }\DIFaddend \texttt{\DIFdelbegin \DIFdel{RR}\DIFdelend \DIFaddbegin \DIFadd{rr}\DIFaddend }~\cite{RR_link} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour \DIFaddbegin \DIFadd{by design}\DIFaddend ~\cite{acm-q-rr-interview}.
 %
-\todo[inline,color=green!40]{GC addition:Indeed, the developers of the de-bugging program \texttt{rr} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}. }
+\DIFdelbegin %DIFDELCMD < \todo[inline,color=green!40]{GC addition:Indeed, the developers of the de-bugging program \texttt{RR} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}. }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \todo[inline,color=green!40]{GC addition:Indeed, the developers of the de-bugging program \texttt{rr} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}. }
+\DIFaddend 
 
 Likewise, simulation variance may be observed for game engines that use GPU parallelisation to improve performance by offloading time-critical calculations to several dedicated computing resources simultaneously. While this would be faster than a serial execution, the order of execution arising from program-level concurrency is often not guaranteed. 
 
@@ -680,7 +753,8 @@ Overall, scheduling, concurrency and parallelisation may be reasons for \textit{
 %
 %In the simulation domain, if the environment, and hence the data the network is exposed to, is controlled then the perception stack will behave deterministically, assuming no \textit{residual lag}. In this sense, control over weather and lighting in the game engine should be considered and controlled as well as any other dynamic elements to the environment, e.g. reflections from surface water. 
 % these may. Given the same hardware the output should always be the same, unless scheduling of the threads change. 
-% i.e. the utilisation of hardware is manipulated differently each time. This would then result in non-deterministic behaviours especially if it is combined with the floating-point problem discussed earlier. 
+%DIF <  i.e. the utilisation of hardware is manipulated differently each time. This would then result in non-deterministic behaviours especially if it is combined with the floating point problem discussed earlier. 
+%DIF >  i.e. the utilisation of hardware is manipulated differently each time. This would then result in non-deterministic behaviours especially if it is combined with the floating-point problem discussed earlier. 
 %
 % For example, if a process on thread 1 requires data from thread 2, but thread 2 is delayed due to additional load then synchrony between the threads may be lost if not controlled for explicitly. Given that game engines will promote performance over accuracy the process on thread 1 may be dropped or skipped until the data are available. This may lead to events happening out of order depending on the computational load and hence non-deterministic.
 %
@@ -697,7 +771,7 @@ Overall, scheduling, concurrency and parallelisation may be reasons for \textit{
 % \todo[inline]{Add a summary/conclusion?}
 %\\\\
 
-\subsection{Non-Uniform Memory Access (NUMA)}
+\subsection{\DIFdelbegin \DIFdel{NUMA }\DIFdelend Non-Uniform Memory Access \DIFaddbegin \DIFadd{(NUMA)}\DIFaddend }
 For a repeated test that operates over a number of cores based on a CPU scheduling policy, memory access time may vary depending on the physical memory location relative to the processor. Typically a core can access its own memory with lower latency than that of another core resulting in lower interprocessor data transfer cost~\cite{nieplocha1996global}. 
 %
 Changes in latency between repeated tests may, in the worst case, cause the game engine to operate non-deterministically if tasks are processed out of sequence using equal priority scheduling, or, perhaps, simply with an increased data transfer cost, i.e.\ slower. 
@@ -714,12 +788,12 @@ Any simulation hardware not using ECC memory that runs for 1000's of hours, typi
 
 
 \subsection{Game Engine Setup}
-The type and version of the engine code executed should be considered, paying attention to the control of pseudo-random numbers, fixed physics calculation steps, ($dt$), fixed actor navigation mesh, deterministic ego vehicle controllers and engine texture loading rates especially for perception stack testing. %
+The type and version of the engine code executed should be considered, paying attention to the control of pseudo-random numbers, fixed physics calculation steps\DIFaddbegin \DIFadd{, }\DIFaddend ($dt$), fixed actor navigation mesh, deterministic ego vehicle controllers and engine texture loading rates especially for perception stack testing. %
 %
 % It must be noted that if $dt$ cannot be fixed then deterministic results are unlikely.
 % \todo[inline]{introduce actor navigation mesh GC-section on actor navigation brought forward}
 % \todo[inline]{introduce ego vehicle earlier on GC added line 99}
-For example, in Unreal Editor the \textit{unit}~\cite{stat_commands} command can be used to monitor performance metrics such as \textit{Frame} which reports 
+For example, in Unreal Editor the \textit{unit}\DIFaddbegin \DIFadd{~}\DIFaddend \cite{stat_commands} command can be used to monitor performance metrics such as \textit{Frame} which reports 
 % to determine processing bottlenecks by indicating\todo[inline]{what does indicating mean? GC-displaying, returning or showing} 
 the total time spent generating one frame, \textit{Game} for game loop execution time and \textit{Draw} for render thread time. 
 %
@@ -739,7 +813,7 @@ A navigation mesh is a fixed area of the environment where actors are free to na
 %
 Navigation meshes are used by the path planning algorithm to find the shortest distance between navigable points in the environment and could be considered as a potential source of non-determinism if the navigation mesh is not a fixed entity. %. Some AV simulator developers claim that the built-in physics engines' AI is non-deterministic
 %
-However, the environment management in CARLA implements fixed binary files for navigation meshes that are linked to each road scene or driving environment. These cannot be unknowingly modified and therefore can be considered fixed. 
+However, the environment management in CARLA implements fixed binary files for navigation meshes that are linked to each road scene or driving environment\DIFdelbegin \DIFdel{and }\DIFdelend \DIFaddbegin \DIFadd{. These }\DIFaddend cannot be unknowingly modified and therefore can be considered fixed. 
 
 Unless other sources that can alter the fixed environment exist, the A* algorithm should give deterministic results. Thus, actor navigation should not be considered a source of non-determinism.
 %
@@ -758,12 +832,14 @@ Memory checking not withstanding, errors associated with the lack of ECC are lik
 \todo[inline]{So, do commercial HPC facilities have ECC memory?}
 \todo[inline,color=green!40]{GC yes see Dell1997 "Today all servers except the very low end support Single Error Correct (SEC) ECC"}
 %
-\todo[inline,color=red!40]{old: To ensure repeatable simulation outcomes the physics setting $dt$ must be fixed, along with any actor navigation meshes, seeds for random number generation, game engine setup and simulation specific parameters.}
-To ensure precise simulation outcomes the physics setting, $dt$, must be fixed, along with any actor navigation meshes, seeds for random number generation, game engine setup and simulation specific parameters.
+\DIFdelbegin %DIFDELCMD < \todo[inline,color=red!40]{old: To ensure repeatable simulation outcomes the physics setting $dt$ must be fixed, along with any actor navigation meshes, random number seeds, game engine setup and simulation specific parameters.}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \todo[inline,color=red!40]{old: To ensure repeatable simulation outcomes the physics setting $dt$ must be fixed, along with any actor navigation meshes, seeds for random number generation, game engine setup and simulation specific parameters.}
+\DIFaddend To ensure precise simulation outcomes the physics setting\DIFaddbegin \DIFadd{, }\DIFaddend $dt$\DIFaddbegin \DIFadd{, }\DIFaddend must be fixed, along with any actor navigation meshes, \DIFdelbegin \DIFdel{random number seeds}\DIFdelend \DIFaddbegin \DIFadd{seeds for random number generation}\DIFaddend , game engine setup and simulation specific parameters.
 \todo[inline,color=green!40]{GC alternative: To ensure precise simulation outcomes the physics setting $dt$ must be fixed, along with any actor navigation meshes, random number seeds, game engine setup and simulation specific parameters.}
 %
-Non-uniform memory access (NUMA) should only affect interprocessor data transfer cost and, without control measures, will only make the computation cycle longer. Relative access times between different caches are likely to be small although may have a more pronounced impact on high throughput systems, e.g.\ HPC. {\color{red} Not sure this is correct, see the NUMA section above. Why ``only''? If one computation out of many takes longer, then their exec order can be affected, or not?}
-%
+\DIFdelbegin \DIFdel{NUMA }\DIFdelend \DIFaddbegin \DIFadd{Non-uniform memory access (NUMA) }\DIFaddend should only affect interprocessor data transfer cost and\DIFaddbegin \DIFadd{, }\DIFaddend without control measures\DIFaddbegin \DIFadd{, }\DIFaddend will only make the computation cycle longer. Relative access times between different caches are likely to be small although may have a more pronounced impact on high throughput systems, e.g.\ HPC. \DIFaddbegin {\color{red} \DIFadd{Not sure this is correct, see the NUMA section above. Why ``only''? If one computation out of many takes longer, then their exec order can be affected, or not?}}
+\DIFaddend %
 Basic thread scheduling should not affect the simulation's determinism unless changing scheduling policy, operating system or migrating between machines with different setups. 
 %
 However, should new and unexpected threads start during the simulation, then the interruption to execution order or additional resource demand may affect timing of subsequent steps, thus reducing the number of physics updates within a game loop. Likewise, uncontrolled allocation of hardware resources such as CPUs or GPUs can potentially give rise to non-determinism. 
@@ -788,7 +864,7 @@ Test & Actors 					 	  & Collision 	 & Collision Type 			 & $n$  & $\max\sigma$ 
 6    & Two pedestrians                & Yes 		 & Pedestrian and Pedestrian & 1000 & $5.6{\times}10^{-13}$ & $5.6{\times}10^{-13}$ \\
 \bottomrule
 \end{tabular}
-\caption{A description of the test scenarios showing the test number, the actors included, whether a collision occurred and if so then between which actors. $n$, the number of repeats is set to 1000 and $\max\sigma$ is the maximum simulation deviation. The term \textit{unrestricted} refers to an unrestricted account of the results including results of any resource utilisation. To understand the impact of collisions and high resource utilisation, the \textit{restricted} column shows a subset of the results where post-collision data and experiments above 75\% resource utilisation have been removed.}
+\caption{A description of the test scenarios showing the test number, the actors included, \DIFdelbeginFL \DIFdelFL{if }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{whether }\DIFaddendFL a collision occurred and \DIFaddbeginFL \DIFaddFL{if so then }\DIFaddendFL between which actors. \DIFdelbeginFL \DIFdelFL{Where }\DIFdelendFL $n$\DIFdelbeginFL \DIFdelFL{is }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{, }\DIFaddendFL the number of repeats \DIFaddbeginFL \DIFaddFL{is set to 1000 }\DIFaddendFL and $\max\sigma$ is the maximum simulation deviation. The term \textit{unrestricted} refers to an unrestricted account of the results including results of any resource utilisation. To understand the impact of collisions and high resource utilisation, the \textit{restricted} column shows a subset of the results where post-collision data and experiments above 75\% resource utilisation have been removed.}
 \label{TableOfExperiments}
 \end{table*}
 
@@ -807,12 +883,12 @@ they have on simulation variance.
 %
 Gao et al.~\cite{when-and-what-should-we-control} took a similar approach investigating Java applications, where a set of sources of non-determinism (termed factors) were shown to impact on repeatability of testing. %and recommended that results of repeated tests must be quoted in averages and ranges as their testing configuration was not possible to execute deterministically. 
 %
-Ultimately, our objective is to control non-determinism to minimise simulation variance.
+Ultimately, our objective is to control \DIFdelbegin \DIFdel{non-determinisim }\DIFdelend \DIFaddbegin \DIFadd{non-determinism }\DIFaddend to minimise simulation variance.
 
 \todo[inline,color=red!40]{old:  We first describe the context, scene and scenario of interest before discussing and defining a threshold for what is considered an acceptable simulation variance in this context.}
 %
-We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context. {\color{red} and then..? Please cover the entire section - consider splitting setup from evaluation.}
-%
+We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context. \DIFaddbegin {\color{red} \DIFadd{and then..? Please cover the entire section - consider splitting setup from evaluation.}}
+\DIFaddend %
 \todo[inline,color=green!40]{GC alternative: We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context.}
 %
 \todo[inline]{Complete the section structure as this is a very long section.}
@@ -842,9 +918,9 @@ We first describe the context, scene and scenario of interest before discussing 
 
 This case study draws on a setup used to verify an urban mobility and transport solution, where the primary verification objective is to test the behaviour of an ego vehicle in an urban environment at a T-junction in response to pedestrians and other vehicles.
 %
-Thus, the scene for our investigation is the T-junction with the scenarios as shown in Figure~\ref{f:test_a_and_b}.
+Thus, the scene for our investigation is the T-junction \DIFdelbegin \DIFdel{(T-intersection) and the scenarios are }\DIFdelend \DIFaddbegin \DIFadd{with the scenarios as }\DIFaddend shown in Figure~\ref{f:test_a_and_b}.
 
-This scene was used to create a number of scenarios involving pedestrians and vehicles in order to identify any changes in the actor paths over repeated tests executed under a variety of systematically designed conditions and hence study any simulation variance.
+This scene was used to create a number of scenarios involving pedestrians and vehicles in order to identify any changes in the actor \DIFdelbegin \DIFdel{trajectories }\DIFdelend \DIFaddbegin \DIFadd{paths }\DIFaddend over repeated tests executed under a variety of systematically designed conditions and hence study any simulation variance.
 %
 The vehicles and pedestrians were given trajectories, via pre-defined waypoints, that would result in either colliding with or avoiding other actors.
 \todo[inline]{Decide past or present tense and be consistent throughout.}
@@ -854,7 +930,8 @@ The vehicles and pedestrians were given trajectories, via pre-defined waypoints,
 
 
 
-\subsection{Tolerable Simulation Variance}\label{s:tolerance}
+\subsection{Tolerable Simulation Variance}\DIFaddbegin \label{s:tolerance}
+\DIFaddend 
 
 \todo[inline]{Terminology:\\
 {\bf Accuracy} is the degree of closeness/conformance to a known value.
@@ -874,8 +951,8 @@ Deterministic behaviour would result in zero variance of the simulated actor sta
 %
 % \todo[inline,color=green!40]{GC addition: Deterministic behaviour would result in zero tolerance of the simulated actor states but if this cannot be achieved then what is a permissible tolerance? }
 %
-The tolerance must be appropriate to allow accurate assertion checking and coverage collection in the simulation environment, but not so small as to fail with minor computational perturbations. {\color{red} {\sc What would fail?}}
-%
+\DIFdelbegin \DIFdel{This }\DIFdelend \DIFaddbegin \DIFadd{The }\DIFaddend tolerance must be appropriate to allow accurate assertion checking and coverage collection in the simulation environment, but not so small as to fail with minor computational perturbations. \DIFaddbegin {\color{red} {\sc \DIFadd{What would fail?}}}
+\DIFaddend %
 Thus, a tolerance must be defined to reflect the precision at which repeatability of simulation execution is required. 
 
 % tolerances are controlled to within a small, acceptable degree of variability from one part to another.
@@ -890,7 +967,7 @@ For this case study a tolerance on actor position of $1$m would be insufficient 
 %situations such as potentially dangerous close passing of a cyclist. 
 A very small value, e.g.\ $1\times10^{-12}m$, may be overly-sensitive to minor computational perturbations and generate false positives. 
 % due to the simulation \textit{noise floor}\footnote{See Fig.~\ref{CarsCollisionCG25}.} 
-Therefore, for this case study and, more broadly, for our general verification requirements, a tolerance of $1$cm has been selected. 
+Therefore, for this case study and\DIFdelbegin \DIFdel{more broadly }\DIFdelend \DIFaddbegin \DIFadd{, more broadly, for }\DIFaddend our general verification requirements, a tolerance of $1$cm has been selected. 
 % Thus any variation of less than $1$cm is tolerable. 
 Thus any variance of less than $1$cm is permissible. To put this another way, we can accept a precision with a tolerance of $\leq$$\pm$1$cm$. 
 
@@ -904,7 +981,7 @@ Thus any variance of less than $1$cm is permissible. To put this another way, we
 \todo[inline,color=red!40]{old: For the simulation to be considered repeatable, the overall level of simulation variance for any actor should be less than a user-defined threshold, or \textit{permissible tolerance}, for a given scenario and verification objective.  }
 
 % \todo[inline,color=green!40]{GC question: should we remove this line below as it is repeating above statement?}
-In the following, case study results are shown in terms of the maximum deviation, $\max\sigma$, from the mean actor path over the entire simulation history where any value higher than the specified tolerance is considered non-permissible.
+\DIFdelbegin \DIFdel{Case }\DIFdelend \DIFaddbegin \DIFadd{In the following, case }\DIFaddend study results are shown in terms of the maximum deviation, $\max\sigma$, from the mean actor path over the entire simulation history where any value higher than the specified tolerance is considered non-permissible.
 %
 \todo[inline,color=green!40]{GC edit: Case study results are shown in terms of the maximum deviation, $\max\sigma$, from the mean actor path over the entire simulation history %and the deviation threshold in this investigation is $1cm$, 
 where any value higher than the specified tolerance is considered non-permissible. }
@@ -915,49 +992,63 @@ where any value higher than the specified tolerance is considered non-permissibl
 
 
 \subsection{Actor Collisions}\label{S:Actor_Collisions}
-Previous investigations into the Unreal Engine indicated that collisions between dynamic actors {\color{red} Why DYNAMIC?} and solid objects, termed \textit{blocking physics bodies} in Unreal Engine documentation~\cite{collision_overview}, can lead to high simulation variance~\cite{TSLUnrealEngineTesting}. {\color{red} NOT ACCESSIBLE}
-%
-Collisions and the subsequent physics calculations that are processed, termed \textit{event hit} callback in Unreal Engine, were identified as potentially key aspects to the investigation into simulation variance.
+Previous investigations into the Unreal Engine indicated that collisions between dynamic actors \DIFaddbegin {\color{red} \DIFadd{Why DYNAMIC?}} \DIFaddend and solid objects, termed \textit{blocking physics bodies} in Unreal Engine documentation~\cite{collision_overview}, can lead to high simulation variance\DIFdelbegin \DIFdel{, \mbox{%DIFAUXCMD
+\cite{TSLUnrealEngineTesting}}%DIFAUXCMD
+. }\DIFdelend \DIFaddbegin \DIFadd{~\mbox{%DIFAUXCMD
+\cite{TSLUnrealEngineTesting}}%DIFAUXCMD
+. }{\color{red} \DIFadd{NOT ACCESSIBLE}}
+\DIFaddend %
+Collisions and the subsequent physics calculations that are processed, termed \textit{event hit} callback in Unreal Engine, were \DIFdelbegin \DIFdel{seen }\DIFdelend \DIFaddbegin \DIFadd{identified }\DIFaddend as potentially key aspects to the investigation into simulation variance.
 
-The tests used for the case study are listed in Table~\ref{TableOfExperiments}. They cover a range of interactions between actor types. 
+The tests \DIFaddbegin \DIFadd{used for the case study }\DIFaddend are listed in Table~\ref{TableOfExperiments}\DIFdelbegin \DIFdel{and were chosen to }\DIFdelend \DIFaddbegin \DIFadd{. They }\DIFaddend cover a range of interactions between actor types. 
 %
-Tests 1 \& 2 involve two vehicles meeting at a junction where they either do not collide (Test 1) and where they do collide (Test 2), thereby triggering an \textit{event hit} callback in the game engine. In both cases the trajectories of the vehicles are hard-coded to follow a set of waypoints spaced at $0.1$m 
+Tests 1 \& 2 involve \DIFdelbegin \DIFdel{2 }\DIFdelend \DIFaddbegin \DIFadd{two }\DIFaddend vehicles meeting at a junction where they \DIFaddbegin \DIFadd{either }\DIFaddend do not collide (\DIFdelbegin \DIFdel{test }\DIFdelend \DIFaddbegin \DIFadd{Test }\DIFaddend 1) and \DIFdelbegin \DIFdel{when they do tiggering }\DIFdelend \DIFaddbegin \DIFadd{where they do collide (Test 2), thereby triggering }\DIFaddend an \textit{event hit} callback in the game engine\DIFdelbegin \DIFdel{(test 2)}\DIFdelend . In both cases the trajectories of the vehicles are hard-coded to follow a set of waypoints spaced at $0.1$m 
 % \todo[inline]{AG: is this value correct or should it be 2.0m? AG-reply: The granularity of the trajectory waypoints is 0.1m, but the lookahead distance that the actors use is 2m ... actors would ignore trajectory waypoints that are less than 2.0m away from them.} 
 intervals using a PID controller. 
-%
-In Test 3 a mixture of different actor types is introduced where two vehicles drive without collision and a pedestrian walks across the road at a crossing point. 
-%
-In Test 4 this pedestrian collides with one of the vehicles at the crossing, triggering an \textit{event hit} callback, see Fig~\ref{Test_a}. Similar to vehicles, pedestrians navigate via a set of regularly spaced waypoints at $0.1$m intervals using the A* algorithm which is the default controller for the CARLA pedestrian actors. Tests 5 \& 6 involve only pedestrians that either do not collide (Test 5) and that do collide (Test 6), see Fig.~\ref{Test_b}. 
+\DIFdelbegin \DIFdel{In test }\DIFdelend %DIF > 
+\DIFaddbegin \DIFadd{In Test }\DIFaddend 3 a mixture of different actor types \DIFdelbegin \DIFdel{are }\DIFdelend \DIFaddbegin \DIFadd{is }\DIFaddend introduced where two vehicles drive without collision and a pedestrian walks across the road at a crossing point. 
+\DIFdelbegin \DIFdel{In test }\DIFdelend %DIF > 
+\DIFaddbegin \DIFadd{In Test }\DIFaddend 4 this pedestrian collides with one of the vehicles at the crossing, triggering \DIFdelbegin \DIFdel{a }\DIFdelend \DIFaddbegin \DIFadd{an }\DIFaddend \textit{event hit} callback, see Fig~\ref{Test_a}. Similar to vehicles, pedestrians navigate via a set of regularly spaced waypoints at $0.1$m intervals using the A* algorithm which is the default controller for the CARLA pedestrian actors. Tests 5 \& 6 involve only pedestrians that \DIFaddbegin \DIFadd{either }\DIFaddend do not collide (\DIFdelbegin \DIFdel{test }\DIFdelend \DIFaddbegin \DIFadd{Test }\DIFaddend 5) and that do collide (\DIFdelbegin \DIFdel{test }\DIFdelend \DIFaddbegin \DIFadd{Test }\DIFaddend 6), see Fig.~\ref{Test_b}. 
 
 \todo[inline]{Again, match the flow diagram steps in the subsections, but here wrt the case study steps.}
 
 % ***************************************************
 %  Experiment Description
 % ***************************************************
-\subsection{Evaluation Metric}\label{s:Experiment_Description}
+\subsection{\DIFdelbegin \DIFdel{Experiment Description}\DIFdelend \DIFaddbegin \DIFadd{Evaluation Metric}\DIFaddend }\label{s:Experiment_Description}
 % \todo[inline]{Say what needs to be logged, what needs to be calculated based on these logs and what one should be looking for and why.}
-For each test the position of each actor is logged at $0.1s$ intervals providing a trace of that actor's path with respect to simulation time. 
+For each test the position of each actor \DIFdelbegin \DIFdel{was }\DIFdelend \DIFaddbegin \DIFadd{is }\DIFaddend logged at $0.1s$ intervals providing a trace of that actor's \DIFdelbegin \DIFdel{trajectory }\DIFdelend \DIFaddbegin \DIFadd{path }\DIFaddend with respect to simulation time. 
 %
-The logs from repeated tests are compared at the same time index $t$ for each actor $a$ to provide a value for the variance of actor $a$ at time index $t$, $\sigma_a^{2}(t)$, at each point in time. {\color{red} This gives a variance function over time for each actor.}
+\DIFdelbegin \DIFdel{Repeated traces }\DIFdelend \DIFaddbegin \DIFadd{The logs from repeated tests }\DIFaddend are compared at the same time index $t$ for \DIFaddbegin \DIFadd{each }\DIFaddend actor $a$ to provide a value for the variance \DIFaddbegin \DIFadd{of actor $a$ at time index $t$}\DIFaddend , $\sigma_a^{2}(t)$\DIFaddbegin \DIFadd{, at each point in time. }{\color{red} \DIFadd{This gives a variance function over time for each actor.}}
 
-{\color{blue} The logs from repeated tests are sourced to establish a value for the variance associated with each actor, $a$, at each time point $t$, giving a variance function over time for each actor, $\sigma_a^{2}(t)$.}
+{\color{blue} \DIFadd{The logs from repeated tests are sourced to establish a value for the variance associated with each actor, $a$, at each time point $t$, giving a variance function over time for each actor, $\sigma_a^{2}(t)$}\DIFaddend .%DIF < 
+\DIFdelbegin \DIFdel{Herein the }\DIFdelend \DIFaddbegin }
 
-Instead of using ..., {\color{red} \sc please complete} herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor position data relative to the mean and is helpfully in the same units as actor position, i.e.\ metres ($m$), for ease of interpretation.
-%
-\todo[inline,color=green!40]{GC Addition: For each test the position of each actor was logged at $0.1s$ intervals providing a trace of that actor's trajectory with respect to simulation time. 
+\DIFadd{Instead of using ..., }{\color{red} \sc \DIFadd{please complete}} \DIFadd{herein the }\DIFaddend results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor position data relative to the mean and is helpfully in the same units as actor position, \DIFaddbegin \DIFadd{i.e.\ metres (}\DIFaddend $m$\DIFaddbegin \DIFadd{)}\DIFaddend , for ease of interpretation.
+\DIFdelbegin %DIFDELCMD < \todo[inline,color=green!40]{GC Addition: For each test the position of each actor was logged at $0.1s$ intervals providing a trace of that actor's trajectory with respect to simulation time. 
+%DIFDELCMD < %
+%DIFDELCMD < Repeated traces are compared at the same time index $t$ for actor $a$ to provide a value for the variance, $\sigma_a^{2}(t)$. 
+%DIFDELCMD < %
+%DIFDELCMD < Herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor position data relative to the mean and is helpfully in the same units as actor position, $m$, for ease of interpretation. }
+%DIFDELCMD < %%%
+\DIFdelend %
+\DIFaddbegin \todo[inline,color=green!40]{GC Addition: For each test the position of each actor was logged at $0.1s$ intervals providing a trace of that actor's trajectory with respect to simulation time. 
 %
 Repeated traces are compared at the same time index $t$ for each actor $a$ to provide a value for the variance, $\sigma_a^{2}(t)$. 
 %
 Herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor position data relative to the mean and is helpfully in the same units as actor position, $m$, for ease of interpretation. }
 
-The maximum variance over the entire set of $n$ repeated simulations is defined as the largest variance of any actor at any time in any of the simulation runs, as given in Equation~\ref{eq:max_sigma}. 
-%{\color{red} This is still a function over time - should it be?}
-\begin{equation} \label{eq:max_sigma}
+\DIFaddend The maximum variance over the entire set of $n$ \DIFdelbegin \DIFdel{simulations is therefore }\DIFdelend \DIFaddbegin \DIFadd{repeated simulations is }\DIFaddend defined as the largest variance of any actor at any time in \DIFdelbegin \DIFdel{the simulation, 
+}\DIFdelend \DIFaddbegin \DIFadd{any of the simulation runs, as given in Equation~\ref{eq:max_sigma}. 
+%DIF > {\color{red} This is still a function over time - should it be?}
+}\DIFaddend \begin{equation} \label{eq:max_sigma}
 \max_{a,t}\sigma_a^{2}(t)
-\end{equation}
-The maximum deviation is the square root of the maximum variance {\color{red} The absolute value of the square root?} and herein referred to as ${\max\sigma}$ for brevity. {\color{red} So, ``a'' is any actor or a specific actor? Likewise, ``t'' is any time point or a specific time point? NOTE that any actor any time means a in A and t in T, where A is the set of actors and T is the set of all time points.}
+\DIFdelbegin \DIFdel{, 
+}\DIFdelend \end{equation}
+\DIFdelbegin \DIFdel{and therefore the }\DIFdelend \DIFaddbegin \DIFadd{The }\DIFaddend maximum deviation is \DIFdelbegin \DIFdel{simply }\DIFdelend \DIFaddbegin \DIFadd{the }\DIFaddend square root of the maximum variance \DIFaddbegin {\color{red} \DIFadd{The absolute value of the square root?}} \DIFaddend and herein referred to as ${\max\sigma}$ for brevity. \DIFaddbegin {\color{red} \DIFadd{So, ``a'' is any actor or a specific actor? Likewise, ``t'' is any time point or a specific time point? NOTE that any actor any time means a in A and t in T, where A is the set of actors and T is the set of all time points.}}
+\DIFaddend 
 
-The maximum deviation, $\max\sigma$, can be analysed for the different scenarios and settings that were identified as potential sources of non-determinism, and compared against the limit of \textit{permissible variance} to indicate if the simulation is sufficiently accurate for verification purposes.
+The maximum deviation, $\max\sigma$, \DIFdelbegin \DIFdel{was analysed against }\DIFdelend \DIFaddbegin \DIFadd{can be analysed for }\DIFaddend the different scenarios and settings that were identified as potential sources of non-determinism, and compared against the limit of \textit{permissible variance} to indicate if the simulation \DIFdelbegin \DIFdel{was reliable }\DIFdelend \DIFaddbegin \DIFadd{is sufficiently accurate }\DIFaddend for verification purposes.
 % The output for each experiment can therefore be summarised as the \textit{maximum variance} of any actor over the $n$ repeated tests. 
 % The maximum, rather than average, variance is chosen to indicate the worst case where an average could obscure outlier data points when a high number of repeated tests are performed. 
 \todo[inline,color=green!40]{GC Addition: The maximum deviation, $\max\sigma$, was analysed against the different scenarios and settings that were identified as potential sources of non-determinism, and compared against the threshold of \textit{permissible tolerance} to indicate if the simulation was reliable for verification purposes. } 
@@ -977,17 +1068,18 @@ The maximum deviation, $\max\sigma$, can be analysed for the different scenarios
 % ***************************************************
 \subsection{Internal Settings}
 
-Within Unreal Engine there are numerous internal settings relating to the movement and interaction of physical bodies in the simulation. Settings can be adjusted to alter how actors interact and path plan via the navigation mesh of the environment, e.g.\ \textit{Contact Offset} and \textit{Navmesh Voxel Size}, or can be changed to improve the fidelity of physics calculations between game update steps, e.g.\ \textit{Physics Sub-Stepping} and \textit{Max Physics Delta Time}. Other options such as \textit{Enable Enhanced Determinism} were investigated along with running the engine from the command line with options for more deterministic behaviour \texttt{-deterministic}, floating-point control \texttt{/fp:strict} and headless mode \texttt{-nullrhi} along with running the test as a packaged release by building and cooking~\cite{releasing_project}.
+Within Unreal Engine there are numerous internal settings relating to the movement and interaction of physical bodies in the simulation. Settings can be adjusted to alter how actors interact and path plan via the navigation mesh of the environment, e.g.\DIFaddbegin \DIFadd{\ }\DIFaddend \textit{Contact Offset} and \textit{Navmesh Voxel Size}, or can be changed to improve the fidelity of physics calculations between game update steps, e.g.\DIFaddbegin \DIFadd{\ }\DIFaddend \textit{Physics Sub-Stepping} and \textit{Max Physics Delta Time}. Other options such as \textit{Enable Enhanced Determinism} were investigated along with running the engine from the command line with options for more deterministic behaviour \texttt{-deterministic}, \DIFdelbegin \DIFdel{floating point }\DIFdelend \DIFaddbegin \DIFadd{floating-point }\DIFaddend control \texttt{/fp:strict} and headless mode \texttt{-nullrhi} along with running the test as a packaged release by building and cooking~\cite{releasing_project}.
 % \todo[inline]{Maybe we can introduce our initial study here? Picture of the man and moving bloack and a result showing the path traces in x,y etc?}
 An initial study into the Unreal Engine using a pedestrian and a moving block was used to investigate simulation variance against these settings. The results were compared to a baseline of the default engine settings. 
 %
-However, none of these options improved simulation variance significantly and all internal setting were set restored to the default values. Details on this previous investigation can be found on the Trustworthy Systems GitHub~\cite{TSLUnrealEngineTesting}. {\color{red} NOT ACCESSIBLE}
+However, none of these options improved simulation variance significantly and all internal setting were set restored to the default values. Details on this previous investigation can be found on the Trustworthy Systems GitHub~\cite{TSLUnrealEngineTesting}. \DIFaddbegin {\color{red} \DIFadd{NOT ACCESSIBLE}}
+\DIFaddend 
 
-\subsection{Initial Results and Discussion}\label{InitialResultsSection}
+\DIFaddbegin \subsection{\DIFadd{Initial Results and Discussion}}\label{InitialResultsSection}
 
-{\color{red} This is for unrestricted, so this does not come as a surprise later.}
+{\color{red} \DIFadd{This is for unrestricted, so this does not come as a surprise later.}}
 
-% ***************************************************
+\DIFaddend % ***************************************************
 %  External Settings
 % ***************************************************
 \subsection{External Settings}
@@ -995,25 +1087,28 @@ However, none of these options improved simulation variance significantly and al
 
 After discovering that internal engine settings could not achieve a simulation variance that met the required 
 % \textit{deterministic threshold}, 
-\textit{tolerance}, {\color{red} WHEN HAS THIS BEEN REPORTED? Should there be an ``Interim Results'' section?}
-settings external to the game engine were explored. 
+\textit{tolerance}, \DIFaddbegin {\color{red} \DIFadd{WHEN HAS THIS BEEN REPORTED? Should there be an ``Interim Results'' section?}}
+\DIFaddend settings external to the game engine were explored. 
 %
 Game engines, and simulation hardware more generally, will utilise available system resources such as central and graphical processing units (CPU and GPU respectively), to perform physics calculations and run the simulation environment. 
 %
-For high performance simulations the demand on these resources may be a significant fraction of the total available and an initial hypothesis was that as this ratio tended toward one, there would be an increase in \textit{simulation variance}. This hypothesis was supported by our initial work performed on the unreal engine~\cite{TSLUnrealEngineTesting} and was explored more fully in this work using the CARLA platform. {\color{red} From a reviewer's point of view this is a mysterious initial study that has been referred to often but nothing has been presented. Either take out or include, at least wrt.\ the overall observations, such as the support for this hypothesis.}
+For high performance simulations the demand on these resources may be a significant fraction of the total available and an initial hypothesis was that as this ratio tended toward one, there would be an increase in \textit{simulation variance}. This hypothesis was supported by our initial work performed on the unreal engine~\cite{TSLUnrealEngineTesting} and was explored more fully in this work using the CARLA platform. \DIFaddbegin {\color{red} \DIFadd{From a reviewer's point of view this is a mysterious initial study that has been referred to often but nothing has been presented. Either take out or include, at least wrt.\ the overall observations, such as the support for this hypothesis.}}
+\DIFaddend 
 
 To replicate in a controlled manner the high computational loads that may be anticipated for high performance simulations, software that artificially utilises resources on both the CPU and GPU were executed alongside the simulation. 
 %
 % In order to reproduce conditions for computationally intensive simulations, the experiments are executed with additional levels of artificial resource utilisation. 
-Resource utilisation was artificially increased for both CPU and GPU devices to include a range of values from 0 to 95\% (see Section~\ref{s:methodology}) using reported values of the system monitors \texttt{htop} and \texttt{nvidia-smi} respectively. Resource utilisation figures reported here should be considered approximate values.
+Resource utilisation was artificially increased for both CPU and GPU devices to include a range of values from \DIFdelbegin \DIFdel{0-95}\DIFdelend \DIFaddbegin \DIFadd{0 to 95}\DIFaddend \% (see Section\DIFaddbegin \DIFadd{~}\DIFaddend \ref{s:methodology}) using reported values of the system monitors \texttt{htop} and \texttt{nvidia-smi} respectively. Resource utilisation figures reported here should be considered approximate values.
 % The level of additional resource utilisation, above that of the needs of the simulation, was increased from $0\%$ (no additional resource load) in $25\%$ increments up to a maximum of $95\%$ for both CPU and GPU as reported by system monitors (\texttt{htop} and \texttt{nvidia-smi} respectively). 
-%
-{\color{red} Somewhere the experimental setup needs to clarify that one set was executed ``unrestricted'' and another ``restricted'' - say what this means and why this was done.}
+%DIF > 
+\DIFaddbegin {\color{red} \DIFadd{Somewhere the experimental setup needs to clarify that one set was executed ``unrestricted'' and another ``restricted'' - say what this means and why this was done.}}
+\DIFaddend 
 
 
 \todo[inline,color=green!40]{GC Addition (para below):} 
-%Issues around floating-point precision and concurrency as previously mentioned notwithstanding, 
-Practitioners should also be aware that many libraries for calculating variance itself may require attention to get precise results. For example the \texttt{numpy} method of variance is sensitive to the input precision and will return an incorrect answer if the wrong parameters are set~\cite{NumpyVar}. In \texttt{matlab}, the calculation of variance may switch from single thread to a multi-threaded execution not obviously apparent to the user when the input data size becomes large enough, opening up the potential for concurrency-induced imprecision~\cite{matlab_parallel_computing}. 
+%DIF < Issues around floating point precision and concurrency as previously mentioned notwithstanding, 
+%DIF > Issues around floating-point precision and concurrency as previously mentioned notwithstanding, 
+Practitioners should also be aware that many libraries for calculating variance itself may require attention to get precise results. For example the \texttt{numpy} method of variance is sensitive to the input precision and will return an incorrect answer if the wrong parameters are set~\cite{NumpyVar}. In \texttt{matlab}, the calculation of variance may switch from single thread to a multi-threaded execution not obviously apparent to the user when the input data size becomes large enough, opening up the potential for \DIFdelbegin \DIFdel{concurrency }\DIFdelend \DIFaddbegin \DIFadd{concurrency-induced }\DIFaddend imprecision~\cite{matlab_parallel_computing}. 
 
 \begin{figure}[t]
     \centering
@@ -1021,28 +1116,29 @@ Practitioners should also be aware that many libraries for calculating variance 
     \caption{Summary of results showing maximum deviation for each scenario against different resource utilisation levels. Tests 5 and 6 overlap having almost identical results.}
     \label{ExperimentsStressSummary}
 \end{figure}
-	
+
 % ***************************************************
 %  System Configuration and Screening
 % ***************************************************
-\subsection{Experimental System Configuration and Pre-Screening}\label{s:screening}
-The experiments were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB non-ECC DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 GPU with 8GB GDDR6 RAM at 1515 MHz. 
+\subsection{\DIFaddbegin \DIFadd{Experimental }\DIFaddend System Configuration and \DIFdelbegin \DIFdel{Screening}\DIFdelend \DIFaddbegin \DIFadd{Pre-Screening}\DIFaddend }\label{s:screening}
+\DIFdelbegin \DIFdel{These tests }\DIFdelend \DIFaddbegin \DIFadd{The experiments }\DIFaddend were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB non-ECC DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 GPU with 8GB GDDR6 RAM at 1515 MHz. 
 %
-The operating systems was Linux Ubuntu 18.04.4 LTS. 
-%
+\DIFdelbegin \DIFdel{Operating }\DIFdelend \DIFaddbegin \DIFadd{The operating }\DIFaddend systems was Linux Ubuntu 18.04.4 LTS. 
+\DIFdelbegin \DIFdel{To ensure reliability of results, each test was repeated 1000 times. 
+}\DIFdelend %
 Tests were carried out in CARLA (v0.9.6 and Unreal Engine v4.22) using synchronous mode with a fixed $dt$ of $0.05$s. 
 %
-Each test was repeated 1000 times. {\color{red} Justify why 1000 - see my later comment in the Method section.}
-%
-A detailed guide for reproducing the experiments along with the scripts used are provided on github\footnote{\url{https://github.com/TSL-UOB/CAV-Determinism/tree/master/CARLA_Tests_setup_guide}}.
+\DIFaddbegin \DIFadd{Each test was repeated 1000 times. }{\color{red} \DIFadd{Justify why 1000 - see my later comment in the Method section.}}
+%DIF > 
+\DIFaddend A detailed guide for reproducing \DIFdelbegin \DIFdel{these }\DIFdelend \DIFaddbegin \DIFadd{the }\DIFaddend experiments along with the scripts used are provided on github\footnote{\url{https://github.com/TSL-UOB/CAV-Determinism/tree/master/CARLA_Tests_setup_guide}}.
 %
 To eliminate some of the potential sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests and analyses were performed on our system. These were:
 
-\begin{itemize}[leftmargin=*]
+ \begin{itemize} [leftmargin=*]
     \item System memory: \texttt{memtest86}~\cite{MemTest86} full suite of tests ran, all passed.
-    \item Graphical memory: \texttt{cuda\_memtest}~\cite{cuda_memtest}, \cite{shi2009testing}.
-    \item Non-uniform memory access (NUMA): \texttt{numactl}~\cite{numactl_NUMA} was used to fix the simulator and test script to single cores, but only a minor (2\%) improvement in simulation variance was observed. Therefore this was not used for subsequent testing. {\color{red} But if we aim to min the sources of non-det, then that should be considered/used?}
-\end{itemize}
+    \item Graphical memory: \texttt{cuda\_memtest}~\cite{cuda_memtest}\DIFaddbegin \DIFadd{, }\DIFaddend \cite{shi2009testing}.
+    \item Non-uniform memory access \DIFaddbegin \DIFadd{(NUMA)}\DIFaddend : \texttt{numactl}~\cite{numactl_NUMA} was used to fix the simulator and test script to single cores\DIFaddbegin \DIFadd{, }\DIFaddend but only a minor (2\%) improvement in simulation variance was observed\DIFdelbegin \DIFdel{and therefore }\DIFdelend \DIFaddbegin \DIFadd{. Therefore this was }\DIFaddend not used for subsequent testing. \DIFaddbegin {\color{red} \DIFadd{But if we aim to min the sources of non-det, then that should be considered/used?}}
+\DIFaddend  \end{itemize} 
 
 
 
@@ -1100,43 +1196,55 @@ To eliminate some of the potential sources of non-determinism outlined in Sectio
         \caption{}
         \label{CarsCollisionPrePost}
     \end{subfigure}
-    \caption{Vehicle to vehicle collision (Test 2) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision against resource utilisation. The simulation noise floor is shown in (a) which is the empirical lower limit of deviation for the hardware reported in this study.}
+    \caption{Vehicle to vehicle collision (\DIFdelbeginFL \DIFdelFL{test }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Test }\DIFaddendFL 2) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision against resource utilisation. The simulation noise floor is shown in (a) which is the empirical lower limit of deviation for the hardware reported in this study.}
 \end{figure*}
 
 
 % ***************************************************
 %  Results and Discussion
 % ***************************************************
-\subsection{Final Results and Discussion}\label{FinalResultsSection}
+\subsection{\DIFaddbegin \DIFadd{Final }\DIFaddend Results and Discussion}\DIFdelbegin %DIFDELCMD < %DIFDELCMD < \label{ResultsSection}%%%
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \label{FinalResultsSection}
 
-{\color{red} Consider spitting to introduce the first part of the table, which motivates the 2nd lot of experiments under load restrictions. I'd find this more logical.}
+{\color{red} \DIFadd{Consider spitting to introduce the first part of the table, which motivates the 2nd lot of experiments under load restrictions. I'd find this more logical.}}
 
-A summary of all the results is shown in Table~\ref{TableOfExperiments}.  In the column $\max\sigma$ (unrestricted) the value reported is the maximum deviation across all resource utilisation levels, i.e.\ the worst case for a given scenario.  
+\DIFaddend A summary of all the results \DIFdelbegin \DIFdel{are shown }\DIFdelend \DIFaddbegin \DIFadd{is shown in }\DIFaddend Table~\ref{TableOfExperiments}\DIFdelbegin \DIFdel{in }\DIFdelend \DIFaddbegin \DIFadd{.  In }\DIFaddend the column $\max\sigma$ (unrestricted) \DIFdelbegin \DIFdel{, where }\DIFdelend the value reported is the maximum deviation across all resource utilisation levels, i.e.\DIFaddbegin \DIFadd{\ }\DIFaddend the worst case for a given scenario.  
 %
-From these results it is clear that scenarios with only pedestrian actors (Tests 5 \& 6) display results within tolerance over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. 
-%
-However, all other scenarios involving vehicles or a mixture of actor types do not meet the required tolerance, with some deviation in actor path as large as $59$cm.
-%
+From these results it is clear that scenarios with only pedestrian actors (\DIFdelbegin \DIFdel{tests 5-6}\DIFdelend \DIFaddbegin \DIFadd{Tests 5 \& 6}\DIFaddend ) display results within tolerance over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. 
+%DIF > 
+However, all other scenarios involving vehicles or a mixture of actor types \DIFdelbegin \DIFdel{breach the tolerance that has been set}\DIFdelend \DIFaddbegin \DIFadd{do not meet the required tolerance}\DIFaddend , with some deviation in actor path as large as $59$cm.
+%DIF > 
 \todo[inline,color=green!40]{GC Edit: From these  results it is clear that scenarios with only pedestrian actors (tests 5-6) display results within the permissible tolerance over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. However, all other scenarios involving vehicles or a mixture of actor types breach the permissible tolerance that has been set, with some deviation in actor path as large as $59$cm. }
 %
-Clearly, such a large deviation cannot be acceptable for simulation to be considered a credible verification tool.
+Clearly\DIFdelbegin \DIFdel{a deviation in results of }\DIFdelend \DIFaddbegin \DIFadd{, }\DIFaddend such a large \DIFdelbegin \DIFdel{amount is unacceptable if simulation is to be used as a reliable }\DIFdelend \DIFaddbegin \DIFadd{deviation cannot be acceptable for simulation to be considered a credible }\DIFaddend verification tool.
 
-Resource utilisation was found to have a significant impact on \textit{simulation variance}.
+Resource utilisation \DIFdelbegin \DIFdel{level }\DIFdelend was found to have a significant impact on \textit{simulation variance}.
 %
-Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against the artificially increased resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (for CPU \& GPU). In this figure, any $\max\sigma$ above the $1$cm level (indicated by a dashed line) is considered non-permissible according to our specified tolerance. 
+Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against the artificially increased resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (for CPU \& GPU). In this figure, \DIFdelbegin \DIFdel{anything }\DIFdelend \DIFaddbegin \DIFadd{any $\max\sigma$ }\DIFaddend above the $1$cm level (\DIFaddbegin \DIFadd{indicated by a }\DIFaddend dashed line) is considered non-permissible according to our \DIFdelbegin \DIFdel{specific tolerancelevel informed from our verification requirements}\DIFdelend \DIFaddbegin \DIFadd{specified tolerance}\DIFaddend . 
 %
-Note that the non-permissible results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per Equation~\ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
-%
-\todo[inline]{Where are the verification requirements listed? They should be part of the scenario description. GC- added to the start of section 3.} 
+\DIFaddbegin \DIFadd{Note that the non-permissible results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per Equation~\ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
+%DIF > 
+}\DIFaddend \todo[inline]{Where are the verification requirements listed? They should be part of the scenario description. GC- added to the start of section 3.} 
 %
 
-A general pattern in the results indicates that some scenarios consistently fail to produce results within tolerance, irrespective of resource utilisation (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 2 \& 4 are above the dashed $1$cm line), while some are consistently within tolerance (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 5 \& 6 both are with pedestrians only), and some cases only fail to meet the tolerance requirement at higher resource utilisation levels, i.e.\ above 75\% resource utilisation (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 1 \& 3). {\color{red} ??? about 85\% based on the figure - or not???}
+A general pattern in the results indicates that \DIFdelbegin \DIFdel{; }\DIFdelend some scenarios consistently fail to produce results within \DIFdelbegin \DIFdel{permissible levels of variance at any resource utilisation level (}\DIFdelend \DIFaddbegin \DIFadd{tolerance, irrespective of resource utilisation (cf.\ }\DIFaddend Fig.~\ref{ExperimentsStressSummary} Test \DIFdelbegin \DIFdel{ID }\DIFdelend 2 \& 4 \DIFaddbegin \DIFadd{are }\DIFaddend above the dashed \DIFdelbegin \DIFdel{cm level), }\DIFdelend \DIFaddbegin \DIFadd{$1$cm line), while }\DIFaddend some are consistently within tolerance (\DIFdelbegin \DIFdel{Test ID }\DIFdelend \DIFaddbegin \DIFadd{cf.\ Fig.~\ref{ExperimentsStressSummary} Test }\DIFaddend 5 \& 6 \DIFaddbegin \DIFadd{both are }\DIFaddend with pedestrians only), and \DIFdelbegin \DIFdel{that }\DIFdelend some cases only fail to meet the tolerance requirement \DIFdelbegin \DIFdel{when at higher }\DIFdelend \DIFaddbegin \DIFadd{at higher resource }\DIFaddend utilisation levels, \DIFdelbegin \DIFdel{breaching the tolerance }\DIFdelend \DIFaddbegin \DIFadd{i.e.\ }\DIFaddend above 75\% resource utilisation (\DIFdelbegin \DIFdel{Test ID }\DIFdelend \DIFaddbegin \DIFadd{cf.\ Fig.~\ref{ExperimentsStressSummary} Test }\DIFaddend 1 \& 3). \DIFaddbegin {\color{red} \DIFadd{??? about 85\% based on the figure - or not???}}
+\DIFaddend 
 
-Examining specifically the results from Tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (Test 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible post collision. 
+\DIFdelbegin %DIFDELCMD < \todo[inline]{Help the reader see what you can see by explaining exactly where this can be seen in the figure(s). GC text added above}
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{However, the non-permissible results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per Equation~\ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend Examining specifically the results from \DIFdelbegin \DIFdel{tests }\DIFdelend \DIFaddbegin \DIFadd{Tests }\DIFaddend 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (\DIFdelbegin \DIFdel{test }\DIFdelend \DIFaddbegin \DIFadd{Test }\DIFaddend 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible \DIFdelbegin \DIFdel{post-collision}\DIFdelend \DIFaddbegin \DIFadd{post collision}\DIFaddend . 
 %
-The pattern of permissible results prior to collision and non-permissible post collision is maintained up to a resource utilisation level of approximately 75\% {\color{red} Why 75\%?}, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (Test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates permissible pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-permissible.
+\DIFdelbegin \DIFdel{This }\DIFdelend \DIFaddbegin \DIFadd{The }\DIFaddend pattern of permissible results prior to collision and non-permissible \DIFdelbegin \DIFdel{post-collision }\DIFdelend \DIFaddbegin \DIFadd{post collision }\DIFaddend is maintained up to a resource utilisation level of approximately 75\% \DIFaddbegin {\color{red} \DIFadd{Why 75\%?}}\DIFaddend , see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (\DIFdelbegin \DIFdel{test }\DIFdelend \DIFaddbegin \DIFadd{Test }\DIFaddend 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates permissible pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding\DIFdelbegin \DIFdel{of this work}\DIFdelend ; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-permissible.
+\DIFaddbegin 
 
-\todo[inline,color=green!40]{GC Edit: Examining specifically the results from tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible post-collision. 
+\DIFaddend \todo[inline,color=green!40]{GC Edit: Examining specifically the results from tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible post-collision. 
 %
 This pattern of permissible results prior to collision and non-permissible post-collision is maintained up to a resource utilisation level of approximately 75\%, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates permissible pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding of this work; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-permissible. }
 % \todo{Why ``not reliable''.} 
@@ -1153,20 +1261,21 @@ This pattern of permissible results prior to collision and non-permissible post-
         \caption{}
         \label{CarsPeopleCollisionPrePost}
     \end{subfigure}
-    \caption{Vehicle to pedestrian collision (Test 4) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision for different resource utilisation levels.}
+    \caption{Vehicle to pedestrian collision (\DIFdelbeginFL \DIFdelFL{test }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Test }\DIFaddendFL 4) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision for different resource utilisation levels.}
 \end{figure*}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.48\textwidth]{Other/Figures/NICE_analysis_summary_V4.pdf}
-    \caption{Variance range of three NICE priority settings for additional CPU \& GPU resource utilisation of 0\% and 75\%.}
+    \caption{\DIFdelbeginFL \DIFdelFL{Summary }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Variance range }\DIFaddendFL of \DIFdelbeginFL \DIFdelFL{investigating the effect of }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{three }\DIFaddendFL NICE priority \DIFdelbeginFL \DIFdelFL{setting }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{settings }\DIFaddendFL for \DIFdelbeginFL \DIFdelFL{0\% and 75\% additonal }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{additional }\DIFaddendFL CPU \& GPU resource utilisation \DIFaddbeginFL \DIFaddFL{of 0\% and 75\%}\DIFaddendFL .}
     \label{NICEExperimentStressSummary}
 \end{figure}
 
 
-The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (Test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three observations; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision.
+The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (\DIFdelbegin \DIFdel{test }\DIFdelend \DIFaddbegin \DIFadd{Test }\DIFaddend 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three observations\DIFdelbegin \DIFdel{here}\DIFdelend ; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision.
 % as described above. 
-Secondly, that the maximum deviation of the pedestrian involved in the collision (Ped ID 3) is at a tolerable level throughout the test\footnote{However, please note that in CARLA the pedestrian object is destroyed post-collision hence the flat line from $t=6$s onwards.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers, developers and researchers in the field as it implies that \textit{any collision between actors can affect the simulation variance of the entire actor population} and could potentially result in  erroneous simulation results. % not just assertion checking 
+Secondly, that the maximum deviation of the pedestrian involved in the collision (Ped ID 3) is at a tolerable level throughout the test\footnote{However, please note that in CARLA the pedestrian object is destroyed post-collision hence the flat line from $t=6$s onwards.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers\DIFdelbegin \DIFdel{and research practitioners }\DIFdelend \DIFaddbegin \DIFadd{, developers and researchers }\DIFaddend in the field as it implies that \textit{any collision between actors can affect the simulation variance of the entire actor population} and could potentially result in  erroneous \DIFdelbegin \DIFdel{assertion checking. }\DIFdelend \DIFaddbegin \DIFadd{simulation results. %DIF >  not just assertion checking 
+}\DIFaddend 
 
 % \todo[inline]{Make sure that assertion checking has been introduced before.}
 
@@ -1183,15 +1292,15 @@ Secondly, that the maximum deviation of the pedestrian involved in the collision
 \begin{figure*}[t]
     \centering
     \includegraphics[width=0.99\linewidth]{Other/Figures/Methodology_Diagram_v5.pdf}
-    \caption{Stages of the method proposed to determine the variance of a simulation. {\color{red} \sc please update to match text}}
+    \caption{\DIFdelbeginFL \DIFdelFL{Flow diagram }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Stages }\DIFaddendFL of the \DIFdelbeginFL \DIFdelFL{methodology }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{method }\DIFaddendFL proposed to determine the \DIFdelbeginFL \DIFdelFL{simulation }\DIFdelendFL variance of a simulation. \DIFaddbeginFL {\color{red} \sc \DIFaddFL{please update to match text}}\DIFaddendFL }
     \label{method_diagram}
 \end{figure*}
 
 \todo[inline]{Sum this up and lead on to the Methodology - assuming that this section is placed before the Methodology section. This should cover that our results are clearly specific to our HW and provide evidence of non-determinism, but the results are not transferable. Thus, we present a general Methodology that others can re-use/apply to determine whether or not their sim is deterministic - in the next section.}
- 
-To conclude, the main findings of this case study suggest a working practice that would minimise the factors that give rise to the non-deterministic effects observed in this investigation. 
-%
-By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the permissible variance of $1$cm is achievable as shown in the \textit{restricted} column in Table~\ref{TableOfExperiments}. By applying this set of restrictions upon the simulation the maximum observed deviation across all experiments was $0.98$cm which is within the target tolerance we set out to achieve. 
+
+\DIFdelbegin \DIFdel{The }\DIFdelend \DIFaddbegin \DIFadd{To conclude, the }\DIFaddend main findings of this \DIFdelbegin \DIFdel{work }\DIFdelend \DIFaddbegin \DIFadd{case study }\DIFaddend suggest a working practice that would minimise the \DIFaddbegin \DIFadd{factors that give rise to the }\DIFaddend non-deterministic effects observed in this investigation. 
+%DIF > 
+By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the permissible variance of $1$cm is achievable as shown in the \textit{restricted} column in Table\DIFdelbegin \DIFdel{.}\DIFdelend ~\ref{TableOfExperiments}. By applying this set of restrictions upon the simulation the maximum observed deviation across all experiments was $0.98$cm which is within the target tolerance we set out to achieve. 
 %
 Practitioners may wish to set a stricter resource utilisation level, such as less than 50\% to further reduce the potential dispersion of results if this is required for their chosen application. 
 %
@@ -1200,27 +1309,31 @@ Practitioners may wish to set a stricter resource utilisation level, such as les
 }
 
 \subsection{Process Scheduling Priority}
-An investigation into the impact of process scheduling on the simulation variance was undertaken {\color{red} say why}. The experiment was repeated ($n=1000$) using Test 1 but altering the process scheduling priority using the program \texttt{NICE}.\footnote{\url{http://manpages.ubuntu.com/manpages/bionic/man1/nice.1.html}} Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under high resource utilisation.
+An investigation into the \DIFdelbegin \DIFdel{response }\DIFdelend \DIFaddbegin \DIFadd{impact }\DIFaddend of process scheduling on the simulation variance was undertaken \DIFaddbegin {\color{red} \DIFadd{say why}}\DIFaddend . The experiment was repeated ($n=1000$) using \DIFdelbegin \DIFdel{test }\DIFdelend \DIFaddbegin \DIFadd{Test }\DIFaddend 1 but altering the process scheduling priority using the program \texttt{NICE}.\footnote{\url{http://manpages.ubuntu.com/manpages/bionic/man1/nice.1.html}} Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under high resource utilisation.
 %
 To give a process a high priority a negative NICE value is set with the lowest being -20. To decrease the priority a positive value is set, up to +19. The default NICE value is 0.
 
-The results are presented in Fig.~\ref{NICEExperimentStressSummary} {\color{red} What is on the y axis?} where the box denotes the inter-quartile range {\color{red} of???}, non-outlier limits by the whiskers and a horizontal bar for the median. The figure shows that decreasing the priority {\color{red} of the simulator process} (right hand side of the  plot) has little effect on simulation variance when compared to a default NICE value of 0 (central bars in the plot). Increasing priority (left hand side of the plot) significantly reduced the variance for the 75\% resource utilisation experiment, but this does not account for all the difference in the observed results. This can be seen in the maximum priority setting where the bars in the plot are not equal, indicating an additional contribution to variance not accounted for by the NICE scheduling. 
+The results are presented in Fig.~\ref{NICEExperimentStressSummary} \DIFaddbegin {\color{red} \DIFadd{What is on the y axis?}} \DIFaddend where the box denotes the inter-quartile range \DIFaddbegin {\color{red} \DIFadd{of???}}\DIFaddend , non-outlier limits by the whiskers and a horizontal bar for the median. The figure shows that decreasing the priority \DIFaddbegin {\color{red} \DIFadd{of the simulator process}} \DIFaddend (right hand side of \DIFaddbegin \DIFadd{the  }\DIFaddend plot) has little effect on simulation variance when compared to a \DIFaddbegin \DIFadd{default }\DIFaddend NICE value of 0 (central \DIFdelbegin \DIFdel{plot bars }\DIFdelend \DIFaddbegin \DIFadd{bars in the plot}\DIFaddend ). Increasing priority (left hand side of \DIFdelbegin \DIFdel{plot) reduced }\DIFdelend \DIFaddbegin \DIFadd{the plot) significantly reduced the }\DIFaddend variance for the 75\% resource utilisation \DIFdelbegin \DIFdel{but this did }\DIFdelend \DIFaddbegin \DIFadd{experiment, but this does }\DIFaddend not account for all the difference in the observed results. This \DIFdelbegin \DIFdel{is demonstrated }\DIFdelend \DIFaddbegin \DIFadd{can be seen }\DIFaddend in the maximum priority setting where the bars in \DIFaddbegin \DIFadd{the }\DIFaddend plot are not equal, indicating an additional contribution to variance not accounted for by the NICE scheduling. 
 %
-The remaining difference in the variance between the two resource utilisation levels may be due to the lack of absolute control that \texttt{NICE} has over process scheduling.\footnote{\url{https://askubuntu.com/questions/656771/process-niceness-vs-priority}}
+\DIFdelbegin \DIFdel{This unaccounted }\DIFdelend \DIFaddbegin \DIFadd{The remaining }\DIFaddend difference in the variance \DIFaddbegin \DIFadd{between the two resource utilisation levels }\DIFaddend may be due to the lack of absolute control that \texttt{NICE} has over \DIFdelbegin \DIFdel{the }\DIFdelend process scheduling.\footnote{\url{https://askubuntu.com/questions/656771/process-niceness-vs-priority}}
 
-\subsection{Investigation Summary} \label{s:empirical_summary} {\color{red} Factor into overall conclusion of the case study}
+\subsection{Investigation Summary} \label{s:empirical_summary} \DIFaddbegin {\color{red} \DIFadd{Factor into overall conclusion of the case study}}
+\DIFaddend 
 
 % \todo[inline]{GC-need to reference the 'restricted' set of results here too}
 
-%\todo[inline]{Do we need to say here why we think certain results are non-det, what the reasons might be?? The results indicate that actor type, resource utilisation and collision events all affect the determinism in the CARLA simulator. Collision events may utilise more computational resources than simulations without such events, i.e. the physics loop takes longer to process as there are complex physical interactions to resolve. This may coincide with the second observation that higher resource levels also lead to non-deterministic results. We hypothesise that both these observations are due to improper management of thread scheduling within the engine. When resources are occupied there may be a delay in processing critical calculations for the simulator, which may arrive out of an expected sequence or the engine compensates for this delay by reducing the number of physics loops that can be performed within a render cycle. (is this 2nd one true, or does carla ignore render requests?)}
+\DIFdelbegin %DIFDELCMD < \todo[inline]{Do we need to say here why we think certain results are non-det, what the reasons might be?? The results indicate that actor type, resource utilisation and collision events all affect the determinism in the CARLA simulator. Collision events may utilise more computational resources than simulations without such events, i.e. the physics loop takes longer to process as there are complex physical interactions to resolve. This may coincide with the second observation that higher resource levels also lead to non-deterministic results. We hypothesise that both these observations are due to improper management of thread scheduling within the engine. When resources are occupied there may be a delay in processing critical calculations for the simulator, which may arrive out of an expected sequence or the engine compensates for this delay by reducing the number of physics loops that can be performed within a render cycle. (is this 2nd one true, or does carla ignore render requests?)}
+%DIFDELCMD < %%%
+\DIFdelend %DIF > \todo[inline]{Do we need to say here why we think certain results are non-det, what the reasons might be?? The results indicate that actor type, resource utilisation and collision events all affect the determinism in the CARLA simulator. Collision events may utilise more computational resources than simulations without such events, i.e. the physics loop takes longer to process as there are complex physical interactions to resolve. This may coincide with the second observation that higher resource levels also lead to non-deterministic results. We hypothesise that both these observations are due to improper management of thread scheduling within the engine. When resources are occupied there may be a delay in processing critical calculations for the simulator, which may arrive out of an expected sequence or the engine compensates for this delay by reducing the number of physics loops that can be performed within a render cycle. (is this 2nd one true, or does carla ignore render requests?)}
 
 This empirical investigation has highlighted the shortcomings of using a games engine for simulation based verification and advice for best working practice. However, these results are specific to the hardware and software used in the study and may not be transferable to other systems directly. 
-%
-Therefore we have derived a general methodology that practitioners can follow to find the 
+\DIFdelbegin \DIFdel{Therefore we now present }\DIFdelend %DIF > 
+\DIFaddbegin \DIFadd{Therefore we have derived }\DIFaddend a general methodology that practitioners can follow to find the 
 % \textit{deterministic domains of operation} 
 \textit{operational domains of permissible variance} 
-for %any hardware configuration.
-a game-engine-based simulation environment. This methodology is presented in the next section. 
+for \DIFdelbegin \DIFdel{any hardware configuration. }\DIFdelend %DIF > any hardware configuration.
+\DIFaddbegin \DIFadd{a game-engine-based simulation environment. This methodology is presented in the next section. 
+}\DIFaddend 
 
 % First, the tests with no collisions are considered, these represent tests 1, 3 and 5. Tests 1 and 3, which involves vehicles only and vehicles with pedestrians respectively, shows very low simulation variance for stress levels below 50\% and as the stress level increases they surpass the red line crossing our defined deterministic level but still being sufficiently low (i.e. with in the centimeter level). This clearly shows how the load on a computer (i.e. stressing CPU and GPU) can have drastic effects on the repeatablitiy of tests. This is more specific to vehicle agents rather than pedestrians since the behaviour of pedestrians is consistent and remarkably below the mm level for all of the different levels of stress shown by test 5, where only pedestrians are involved with no collisions, from which it can be deduced that the mean deviation change with the stress level in test 3 was solely due to the vehicles.
 
@@ -1238,42 +1351,50 @@ a game-engine-based simulation environment. This methodology is presented in the
 % ***************************************************
 %  METHOD
 % ***************************************************
-\section{Method to determine the Variance of a Simulation{\color{red} for what???}} \label{s:methodology}
-In this section a method for assessing the actor path variance in AV simulation environments that are based on game engines is presented in the form of a work flow, see Fig.~\ref{method_diagram}. This method can be used to determine the operational domains of permissible variance of a simulation environment.  
-%
-{\color{red} MAKES NO SENSE: {\sc In this section a method for determining the variance of simulated actor path trajectories (KIE: a trajectory is a path), termed simulation variance, and resolving the operational domains of permissible variance of the simulation presented here as a work flow, see Fig.~\ref{method_diagram}.}}
-%
-In addition, recommendations and best practice guidelines for minimising simulation variance are suggested. {\color{red} \sc Highlight these in the text.}
-% A number of parameters have been identified either theoretically or from the empirical investigation that influence simulation variance. 
+\section{\DIFdelbegin \DIFdel{Methodology}\DIFdelend \DIFaddbegin \DIFadd{Method to determine the Variance of a Simulation}{\color{red} \DIFadd{for what???}}\DIFaddend } \label{s:methodology}
+In this section a method for \DIFaddbegin \DIFadd{assessing the actor path variance in AV simulation environments that are based on game engines is presented in the form of a work flow, see Fig.~\ref{method_diagram}. This method can be used to determine the operational domains of permissible variance of a simulation environment.  
+%DIF > 
+}{\color{red} \DIFadd{MAKES NO SENSE: }{\sc \DIFadd{In this section a method for }\DIFaddend determining the variance of simulated actor path trajectories \DIFaddbegin \DIFadd{(KIE: a trajectory is a path), termed simulation variance}\DIFaddend , \DIFdelbegin \DIFdel{termed }\textit{\DIFdel{simulation variance}}%DIFAUXCMD
+\DIFdel{, }\DIFdelend and resolving the operational domains of permissible variance of the simulation presented here as a work flow, see Fig.~\ref{method_diagram}.\DIFaddbegin }}
+\DIFaddend %
+In addition\DIFdelbegin \DIFdel{a number of }\DIFdelend \DIFaddbegin \DIFadd{, }\DIFaddend recommendations and best \DIFdelbegin \DIFdel{practices are suggested that other practitioners can follow to minimise simulation variance . 
+}\DIFdelend \DIFaddbegin \DIFadd{practice guidelines for minimising simulation variance are suggested. }{\color{red} \sc \DIFadd{Highlight these in the text.}}
+\DIFaddend % A number of parameters have been identified either theoretically or from the empirical investigation that influence simulation variance. 
 % This methodology has been refined several times over the course of our investigations into both Unreal Engine and CARLA and is presented here as a work flow, see Fig.~\ref{method_diagram}. %These need to be considered at different stages in the process. 
 %
+\DIFaddbegin 
 
-The method consists of a sequence of five stages; experimental design, simulator configuration, external configuration, execution and analysis. In the following, each stage is described in detail with reference to the items listed for each stage in Fig.~\ref{method_diagram}. {\color{red} NOTE: renamed stages.}
+\DIFadd{The method consists of a sequence of five stages; experimental design, simulator configuration, external configuration, execution and analysis. In the following, each stage is described in detail with reference to the items listed for each stage in Fig.~\ref{method_diagram}. }{\color{red} \DIFadd{NOTE: renamed stages.}}
 
-\subsection{Experimental Design}\label{s:design_experiment}
+\DIFaddend \subsection{\DIFaddbegin \DIFadd{Experimental }\DIFaddend Design\DIFdelbegin \DIFdel{Experiment}\DIFdelend }\label{s:design_experiment}
 
-{\color{red} \sc Surely, a series of systematically designed experiments, each repeated X times, should be set up, where each experiment varies one of the suspected sources of non-determinism? Then, the analysis of the data from each experiment should reveal the actual sources of non-determinism for the given setting? In other words, we are aiming to fix as much as we can control (easily), and then we intentionally vary (ideally) single variables, e.g.\ the resource utilisation, to find out what makes a difference. We need a clear definition of the objectives of the experimental design, i.e.\ what one should vary and what one wants to ``nail down''.}
+\DIFaddbegin {\color{red} \sc \DIFadd{Surely, a series of systematically designed experiments, each repeated X times, should be set up, where each experiment varies one of the suspected sources of non-determinism? Then, the analysis of the data from each experiment should reveal the actual sources of non-determinism for the given setting? In other words, we are aiming to fix as much as we can control (easily), and then we intentionally vary (ideally) single variables, e.g.\ the resource utilisation, to find out what makes a difference. We need a clear definition of the objectives of the experimental design, i.e.\ what one should vary and what one wants to ``nail down''.}}
 
-\subsubsection{Actors} \label{s:actors}
+\DIFaddend \subsubsection{Actors} \label{s:actors}
 
-Different actor types may be handled differently by the game engine. For instance, our investigation indicated that CARLA pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However, the introduction of CARLA vehicles increased the simulation variance of the pedestrian-only test by 12 orders of magnitude. {\color{red} \sc This needs rephrasing as it appears to contradict the statement above.} As such, all actors that could be included in any future simulation should be tested, including any non-standard CARLA or bespoke actors. {\color{red} \sc ... such as the ego vehicle...? [see section on ``External Settings'' last point - Ego Controller.]}
-%
+Different actor types may be handled differently by the game engine\DIFdelbegin \DIFdel{and }\DIFdelend \DIFaddbegin \DIFadd{. For instance, }\DIFaddend our investigation indicated that CARLA pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However\DIFaddbegin \DIFadd{, }\DIFaddend the introduction of CARLA vehicles increased the simulation variance of the pedestrian-only test by 12 orders of magnitude. \DIFaddbegin {\color{red} \sc \DIFadd{This needs rephrasing as it appears to contradict the statement above.}} \DIFaddend As such, all actors that could be included in any future simulation should be tested, including any non-standard CARLA or bespoke actors. \DIFaddbegin {\color{red} \sc \DIFadd{... such as the ego vehicle...? }[\DIFadd{see section on ``External Settings'' last point - Ego Controller.}]}
+\DIFaddend %
 \subsubsection{Trajectories and Collisions} 
 % Actor paths should be hard-coded in a number of different tests that explore; no collisions, collisions between actors, and potentially collisions between actors and static scenery if this is likely to occur in the simulation.
-Actor paths, or the sequence of actions required to generate paths, should be hard-coded to ensure repeatability. These paths should include collisions between actors and potentially collisions between actors and static scenery if this is likely to occur in the simulation or as part of the verification process. Actor paths without collision are also important to include as these will serve as a baseline to the other tests. {\color{red} \sc What baseline?}
+Actor paths, or the sequence of actions required to generate paths, should be hard-coded to ensure repeatability. These paths should include collisions between actors and potentially collisions between actors and static scenery if this is likely to occur in the simulation or as part of the verification process. Actor paths without collision are also important to include as these will serve as a baseline to the other tests. \DIFaddbegin {\color{red} \sc \DIFadd{What baseline?}}
+\DIFaddend 
 
-\subsubsection{Permissible Variance} \label{s:threshold}
-The verification engineer should set the \textit{permissible variance}, also termed \textit{tolerance}.
-% which refers to the acceptable level of actor path variance. 
-% ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. 
-%
-The tolerance depends on the objectives of the simulation and the granularity at which the simulation environment operates. For example, this tolerance must be sufficiently small to enable accurate assertion checking and coverage collection. In Section~\ref{s:tolerance} a tolerance of $1$cm was considered sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this tolerance experimentally. 
+\subsubsection{\DIFdelbegin \DIFdel{Setting a Tolerance}\DIFdelend \DIFaddbegin \DIFadd{Permissible Variance}\DIFaddend } \label{s:threshold}
+The verification engineer should set the \DIFaddbegin \textit{\DIFadd{permissible variance}}\DIFadd{, also termed }\DIFaddend \textit{tolerance}\DIFdelbegin \DIFdel{based on their specific requirements which refers to the acceptable level of actor path variance.
+}\DIFdelend \DIFaddbegin \DIFadd{.
+%DIF >  which refers to the acceptable level of actor path variance. 
+}\DIFaddend % ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. 
+\DIFdelbegin \DIFdel{This tolerance level is analogous to the analogue signal level associated with each of the binary states %DIF < of the signals 
+in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be, for example, any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the noisy physical signal values that are analogue voltages into the digital domain with binary representation. 
+}\DIFdelend %
+The tolerance \DIFdelbegin \DIFdel{that the user must set }\DIFdelend depends on the objectives of the simulation and the granularity at which the simulation environment operates. For example, this tolerance must be sufficiently small to enable accurate assertion checking \DIFdelbegin \DIFdel{. In our empirical investigation we set }\DIFdelend \DIFaddbegin \DIFadd{and coverage collection. In Section~\ref{s:tolerance} }\DIFaddend a tolerance of $1$cm \DIFdelbegin \DIFdel{which is }\DIFdelend \DIFaddbegin \DIFadd{was considered }\DIFaddend sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this tolerance experimentally. 
 
-%The permissible variance is analogous to the analogue signal level associated with each of the binary states %of the signals in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be, for example, any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the noisy physical signal values that are analogue voltages into the digital domain with binary representation. <- KIE: meant only to illustrate that other areas also have defined tolerances. 
-%
+%DIF > The permissible variance is analogous to the analogue signal level associated with each of the binary states %of the signals in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be, for example, any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the noisy physical signal values that are analogue voltages into the digital domain with binary representation. <- KIE: meant only to illustrate that other areas also have defined tolerances. 
+%DIF > 
+\DIFaddbegin 
 
 
-% \todo[inline]{Make sure assertion checking has previously been introduced.}
+\DIFaddend % \todo[inline]{Make sure assertion checking has previously been introduced.}
 
 % The method requires the assessment of scenarios that exercise different actor types and functional callbacks of the game engine. These may affect different aspects of the engine as outlined in Section~\ref{s:background}, such as actor navigation and collision callbacks.
 
@@ -1284,22 +1405,29 @@ The tolerance depends on the objectives of the simulation and the granularity at
 % \todo[inline]{We may need to introduce the Case Study first, then derive the general Methodology from it. This way, we can explain the requirements of the case study, how things were set up, what was observed, how the methodology was refined, several iterations even, etc.} 
 
 
-\subsubsection{Simulation Time} {\color{red} \sc Should this not be part of the Execution section?}
-The simulation time should be sufficient to record interactions between actors but not so long that the testing take an inconvenient time to complete. In our empirical investigation a simulation time of $10-20$s was sufficient to monitor the distinct change in events such as the pre- and post-collision including the delayed effect seen by other actors, shown in Fig.~\ref{CarsPeopleCollsionsCG25}. {\color{red} \sc Point to the section that specified that.}
+\subsubsection{Simulation \DIFdelbegin \DIFdel{Length}\DIFdelend \DIFaddbegin \DIFadd{Time}\DIFaddend } \DIFaddbegin {\color{red} \sc \DIFadd{Should this not be part of the Execution section?}}
+\DIFaddend The simulation time should be sufficient to record \DIFdelbegin \DIFdel{an interaction }\DIFdelend \DIFaddbegin \DIFadd{interactions }\DIFaddend between actors but not so long that the testing take an inconvenient time to complete. In our empirical investigation a simulation time of $10-20$s was sufficient to monitor the distinct change in events such as the pre- and post-collision including the delayed effect seen by other actors, shown in Fig.~\ref{CarsPeopleCollsionsCG25}. \DIFaddbegin {\color{red} \sc \DIFadd{Point to the section that specified that.}}
+\DIFaddend 
 
 % Depending on the number of repeated tests and the average deviation reported from the experiment, a maximum rather than average may be required if the results are close to the user-specified threshold. This is to ensure that an outlier data-point is not hidden in the average of $n$-tests.
 
 
 \subsection{Simulator Settings}
-The settings internal to the game engine or other simulation environment should be set to ensure a fixed physics time step, $dt$. If using CARLA, a small fixed value, say $0.05s$, can be set by using \texttt{setting.fixed\_delta\_seconds = 0.05}. In Unity, the default fixed time step is set to $0.02s$~\cite{MonoBehaviour_unity}. 
+The settings internal to the game engine or other simulation environment should be set to ensure a fixed physics time step, $dt$. If using CARLA\DIFaddbegin \DIFadd{, }\DIFaddend a small fixed value, say $0.05s$, can be set by using \DIFdelbegin \DIFdel{the following: }\DIFdelend \texttt{setting.fixed\_delta\_seconds = 0.05}\DIFdelbegin \DIFdel{, whereas in Unity}\DIFdelend \DIFaddbegin \DIFadd{. In Unity, }\DIFaddend the default fixed time step is set to $0.02s$~\cite{MonoBehaviour_unity}. 
+\DIFaddbegin 
 
-In CARLA, synchronous mode must be used to allow communication to external controllers which ensures no sensor data are passed out of order to the simulator which is particularly important if a complex ego controller is used~\cite{carla_sim_config}. 
+\DIFaddend In CARLA, synchronous mode must be used to allow communication to external controllers which ensures no sensor data are passed out of order to the simulator which is particularly important if a complex ego controller is used~\cite{carla_sim_config}. 
+%DIF < 
+\DIFaddbegin 
 
-The use of random numbers must be controlled through fixed seeds, resulting in pseudo-randomness. Random numbers might be used in the simulation environment to control variations of background effects, e.g.\ weather patterns, or the navigation of random pedestrian actors, external vehicle controllers or other clients connected to the simulation environment. 
+\DIFaddend The use of random numbers must be controlled through \DIFdelbegin \DIFdel{the use of fixed seedswhich }\DIFdelend \DIFaddbegin \DIFadd{fixed seeds, resulting in pseudo-randomness. Random numbers }\DIFaddend might be used \DIFaddbegin \DIFadd{in the simulation environment }\DIFaddend to control variations of background effects, e.g.\DIFaddbegin \DIFadd{\ }\DIFaddend weather patterns, or the navigation of random pedestrian actors, external vehicle controllers or other clients connected to the simulation environment. 
 %
 Actors that navigate through the environment should use a fixed navigation mesh. 
-%
-The version number of the CARLA and Unreal environment has also be shown to affect results, see~\cite{TSLUnrealEngineTesting}. Therefore, ensuring a consistent version number throughout testing is also important.
+\DIFdelbegin %DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend %DIF > 
+The version number of the CARLA and Unreal environment has also be shown to affect results, see~\cite{TSLUnrealEngineTesting}\DIFdelbegin \DIFdel{, so ensuring }\DIFdelend \DIFaddbegin \DIFadd{. Therefore, ensuring a }\DIFaddend consistent version number throughout testing is also important.
 
 % \todo[inline]{Select section titles to match the flow diagram. In each of these sections, go through the matching phase in the flow diagram, explaining each point listed there and justify recommendations.}
 % The experiment should be a short\todo[inline]{What does short mean? Quantify.} scenario that can be easily repeated with the same initial conditions. 
@@ -1309,40 +1437,53 @@ The version number of the CARLA and Unreal environment has also be shown to affe
 
 \subsubsection{Resource Utilisation}
 % To simulate the demands of taxing simulations, potentially requiring realistic rendering or complex physics calculations in an otherwise simple scenario, stress programs should be used to artificially occupy system resources. 
-The resources available to the simulator have been shown to have a significant effect on the variance of the path of simulated vehicles. %and exploring this as a variable the analysis is required. 
-%
-Thus, it is important to understand at what level of resource utilisation the system running the simulation becomes susceptible to \textit{simulation variance}.
+The resources available to the simulator have been shown to have a significant effect on the \DIFdelbegin \DIFdel{simulation variance of simulated vehicles and exploring this as a variable the analysis is required.
+}\DIFdelend \DIFaddbegin \DIFadd{variance of the path of simulated vehicles. %DIF > and exploring this as a variable the analysis is required. 
+%DIF > 
+Thus, it is important to understand at what level of resource utilisation the system running the simulation becomes susceptible to }\textit{\DIFadd{simulation variance}}\DIFadd{.
+}
 
-CPU utilisation software, such as the linux \texttt{stress} tool, which is a workload generator program, can be used to spawn workers on any number of cores or virtual threads on a system. This can be used to artificially increase the load on the system. For GPU utilisation, \texttt{gpu-burn} can be employed using the \texttt{fur test}. Different resolutions and multiple instances can be used to tune graphical utilisation levels~\cite{GPU_stress}. Reported values of resource utilisation can be obtained using the system monitors \texttt{htop} and \texttt{nvidia-smi} for CPU and GPU, respectively. These values should be added to the data logs.
-%
-Alternatively, in place of artificial resource utilisation, multiple instances of the simulation could be executed simultaneously. However, the granularity of control with this approach may be reduced.
+\DIFaddend CPU utilisation software, such as the linux \texttt{stress} tool\DIFaddbegin \DIFadd{, }\DIFaddend which is a workload generator program\DIFaddbegin \DIFadd{, }\DIFaddend can be used \DIFaddbegin \DIFadd{to }\DIFaddend spawn workers on any number of cores or virtual threads on a system. This can be used to artificially \DIFdelbegin \DIFdel{increased }\DIFdelend \DIFaddbegin \DIFadd{increase }\DIFaddend the load on the system\DIFdelbegin \DIFdel{to explore at what point your system may become susceptible to }\textit{\DIFdel{simulation variance}}%DIFAUXCMD
+\DIFdelend . For GPU utilisation\DIFaddbegin \DIFadd{, }\DIFaddend \texttt{gpu-burn} \DIFdelbegin \DIFdel{was }\DIFdelend \DIFaddbegin \DIFadd{can be }\DIFaddend employed using the \texttt{fur test}\DIFdelbegin \DIFdel{where different }\DIFdelend \DIFaddbegin \DIFadd{. Different }\DIFaddend resolutions and multiple instances can be used to tune graphical utilisation levels~\cite{GPU_stress}. Reported values of resource utilisation can be obtained using the system monitors \texttt{htop} and \texttt{nvidia-smi} for CPU and GPU\DIFaddbegin \DIFadd{, }\DIFaddend respectively. These values \DIFdelbegin \DIFdel{can also be written into the data logging for completeness.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \DIFadd{should be added to the data logs.
+%DIF > 
+}\DIFaddend Alternatively, in place of artificial resource utilisation\DIFaddbegin \DIFadd{, }\DIFaddend multiple instances of the simulation could be executed simultaneously. However, the granularity of control with this approach may be reduced.
 
 % \todo[inline]{Again, this sounds as if having the case study first makes more sense. That way we can explain wrt the experiments and then generalise to obtain the Methodology.}
 
 % \todo[inline]{This should be ``External Settings'' - from flow diagram?}
 
 \subsubsection{Memory Testing}
-Prior to experimental execution the system hardware should be tested for memory conformity and to ensure no single bit errors are occurring, see Section~\ref{s:screening}. For mainboard memory \texttt{memtest86}\ can be used on most platforms to run a series of pre-defined memory test patterns. This memory testing software can also be used for ECC enabled hardware. Similarly, to test memory on Nvidia based graphical adaptors \texttt{cuda\_memtest} can be used to ensure no memory errors exist.
+Prior to experimental execution the system hardware should be tested for memory conformity and to ensure no single bit errors are occurring, see \DIFaddbegin \DIFadd{Section}\DIFaddend ~\ref{s:screening}. For mainboard memory \texttt{memtest86}\ can be used on most platforms to run a series of pre-defined memory test patterns. This memory testing software can also be used for ECC enabled hardware. Similarly, to test memory on Nvidia based graphical adaptors \texttt{cuda\_memtest} can be used to ensure no memory errors exist.
 
 
 \subsubsection{Scheduling}
-We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, gaining fine control over the scheduling policy and thread execution order is known to not be trivial~\cite{acm-q-rr-interview}. 
+We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, \DIFaddbegin \DIFadd{gaining }\DIFaddend fine control over the scheduling policy and thread execution order \DIFdelbegin \DIFdel{may be non-trivial. 
+Such policies are defined by the operating system and may execute threads with equal priority. In }\DIFdelend \DIFaddbegin \DIFadd{is known to not be trivial~\mbox{%DIFAUXCMD
+\cite{acm-q-rr-interview}}%DIFAUXCMD
+. 
+}
 
-The operating system schedules threads according to a specified scheduling policy, potentially based on equal thread priority. Thus, in such a case, all tasks non-essential to the simulator should be terminated to prevent interference with the simulation. 
+\DIFadd{The operating system schedules threads according to a specified scheduling policy, potentially based on equal thread priority. Thus, in }\DIFaddend such a case, all tasks non-essential to the simulator should be terminated to prevent \DIFdelbegin \DIFdel{interruption to the simulator}\DIFdelend \DIFaddbegin \DIFadd{interference with the simulation}\DIFaddend . 
 
 % If the policy or operating system cannot be changed then s
-Assigning a higher priority to the simulator process may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows~\cite{TaskSettingWindows} or \texttt{NICE} in Linux~\cite{Nice_linux}.
+\DIFdelbegin \DIFdel{Setting the simulator process to }\DIFdelend \DIFaddbegin \DIFadd{Assigning }\DIFaddend a higher priority \DIFaddbegin \DIFadd{to the simulator process }\DIFaddend may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows~\cite{TaskSettingWindows} or \texttt{NICE} in Linux~\cite{Nice_linux}.
 
 \subsubsection{NUMA Control}
-Control over a Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multiprocessors with shared memory. This control allows the simulator program to be fixed on a single core, reducing and unifying memory access time.
+Control over \DIFaddbegin \DIFadd{a }\DIFaddend Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multiprocessors with shared memory. This control allows the simulator program to be fixed on a single core\DIFdelbegin \DIFdel{reducing }\DIFdelend \DIFaddbegin \DIFadd{, reducing and unifying }\DIFaddend memory access time.
 %
-Note that initial screening tests performed with NUMA control resulted in only minor improvements in simulation variance, see Section~\ref{s:screening}. 
-%
-This control may assist if simulation variance is borderline to the tolerance but not seen as essential. {\color{red} \sc Unclear: what is not essential?}
+\DIFdelbegin \DIFdel{Initial screening tests done }\DIFdelend \DIFaddbegin \DIFadd{Note that initial screening tests performed }\DIFaddend with NUMA control \DIFdelbegin \DIFdel{gave moderate }\DIFdelend \DIFaddbegin \DIFadd{resulted in only minor }\DIFaddend improvements in simulation variance\DIFdelbegin \DIFdel{of the order of a few percent}\DIFdelend , see Section~\ref{s:screening}. 
+%DIF > 
+This control may assist if simulation variance is borderline to the tolerance but not seen as essential. \DIFaddbegin {\color{red} \sc \DIFadd{Unclear: what is not essential?}}
+\DIFaddend 
 
-\subsubsection{Ego Vehicle Controller {\color{red} \sc Why is this not covered under actors? [see my note in the Actors section]}}
-{\color{red} \sc Clearly separate the investigation from the Method. The fact that the case study did not have an ego vehicle should be mentioned as a limitation of the case study, rather than elaborated on here, but why does this make a difference?}
-The impact of the ego vehicle  should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner. {\color{red} \sc Long and cumbersome sentence with strange grammar: No ego vehicle was used in the empirical investigation but this should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner. }
+\subsubsection{Ego Vehicle Controller \DIFaddbegin {\color{red} \sc \DIFadd{Why is this not covered under actors? }[\DIFadd{see my note in the Actors section}]}\DIFaddend }
+\DIFaddbegin {\color{red} \sc \DIFadd{Clearly separate the investigation from the Method. The fact that the case study did not have an ego vehicle should be mentioned as a limitation of the case study, rather than elaborated on here, but why does this make a difference?}}
+\DIFadd{The impact of the ego vehicle  should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner. }{\color{red} \sc \DIFadd{Long and cumbersome sentence with strange grammar: }\DIFaddend No ego vehicle was used in the empirical investigation but this should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner. \DIFaddbegin }
+\DIFaddend 
 
 \subsection{Execution}
 
@@ -1350,23 +1491,28 @@ The impact of the ego vehicle  should be considered as an actor but ensuring tha
 % Tests should be sufficiently repeated using statistical power~\cite{cohen2013statistical} to reveal any outlier errors that occur with low probability.\todo[inline]{Explain what this means.} 
 % Histogram to show how sampling with position binning varies?
 % \footnote{\label{note1}Experiments using the Unreal Engine not reported here for brevity but code and experimental results can be found at \url{https://github.com/TSL-UOB/AV-Determinism/tree/master/UnrealEngineTests}}
-%
-Initial testing~\cite{TSLUnrealEngineTesting} indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests, with three tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10$cm. While executing 100 repeats may seem sufficient, this sample size may fail to observe events that occur with low probability, giving false confidence in the results. {\color{red} \sc Again, separate the study from the method. This observation should really have been made in the section on ``Experimental System Config and Pre-Screening, to justify the figure of 1000 repeats.} It is therefore recommended that the sample size is determined empirically dependent on the number of results that exceed the tolerance. {\color{red} \sc How would one know?}
-% To ensure outlier data points are not hidden in the average of a large number of tests, the maximum deviation should be reported rather than the average when summarising.
+%DIF > 
+Initial testing~\cite{TSLUnrealEngineTesting} indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests\DIFdelbegin \DIFdel{but with 3 }\DIFdelend \DIFaddbegin \DIFadd{, with three }\DIFaddend tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10$cm. While executing 100 repeats may seem sufficient, this sample size may fail to observe \DIFdelbegin \DIFdel{these }\DIFdelend events that occur with low probability, \DIFdelbegin \DIFdel{inferring a }\DIFdelend \DIFaddbegin \DIFadd{giving }\DIFaddend false confidence in the results. \DIFaddbegin {\color{red} \sc \DIFadd{Again, separate the study from the method. This observation should really have been made in the section on ``Experimental System Config and Pre-Screening, to justify the figure of 1000 repeats.}} \DIFaddend It is therefore recommended that the sample size is \DIFdelbegin \DIFdel{found }\DIFdelend \DIFaddbegin \DIFadd{determined }\DIFaddend empirically dependent on the number of results that exceed the tolerance. \DIFaddbegin {\color{red} \sc \DIFadd{How would one know?}}
+\DIFaddend % To ensure outlier data points are not hidden in the average of a large number of tests, the maximum deviation should be reported rather than the average when summarising.
 
 \subsubsection{Data Logging}
-Unique identifiers should be assigned to each experiment, each repeat and each individual actor. 
-The time-stamped actor positions should then be recorded at fixed time intervals throughout the simulation in order to determine the variance in actor path. Additional information should also be logged such as the CPU and GPU utilisation levels and engine specific metrics such as game loop latency.
+\DIFdelbegin \DIFdel{Data logging should be used to record the actorpositions }\DIFdelend \DIFaddbegin \DIFadd{Unique identifiers should be assigned to each experiment, each repeat and each individual actor. 
+The time-stamped actor positions should then be recorded }\DIFaddend at fixed time intervals throughout the simulation in order to determine the variance in actor path. Additional information \DIFdelbegin \DIFdel{can }\DIFdelend \DIFaddbegin \DIFadd{should }\DIFaddend also be logged such as the CPU and GPU utilisation levels and engine specific metrics such as game loop latency.
 % such as the \texttt{unit} command in Unreal Engine. 
-%For the subsequent analysis, each actor should have an identifier. The repeat number and simulation time should also be captured. 
+\DIFdelbegin \DIFdel{For the subsequent analysis, the actor should have an identifier and the repeat number and simulation time should also be captured. 
+}\DIFdelend %DIF > For the subsequent analysis, each actor should have an identifier. The repeat number and simulation time should also be captured. 
 % The maximum deviation in actor path with respect to the mean for $n$ repeated tests will indicate at what dimensional scale deterministic results are achieved. For example, if 100 tests are executed and the maximum deviation in actor path is $<1$cm, then this scenario could be interpreted as being deterministic above this scale. 
 
 \subsection{Analysis}
-For each experiment, the maximum value of actor path deviation over all time samples and actors, $\max\sigma$, should be analysed to identify which of the candidate sources of non-determinism require restriction or control to reach the domain of permissible variance within the simulation environment. 
-%Finding these boundaries will identify the \textit{domains of permissible variance} for the user specific hardware.
-% KIE: Why now point to HW? And, which "boundaries"?
+\DIFdelbegin \DIFdel{The }\DIFdelend \DIFaddbegin \DIFadd{For each experiment, the }\DIFaddend maximum value of actor path deviation over all time samples and actors, $\max\sigma$, should be analysed to identify which of the candidate sources of non-determinism require restriction or control \DIFdelbegin \DIFdel{for permissible operation. 
+Finding these boundaries will identify the }\textit{\DIFdel{domains of permissible variance}} %DIFAUXCMD
+\DIFdel{for the user specific hardware.}\DIFdelend \DIFaddbegin \DIFadd{to reach the domain of permissible variance within the simulation environment. 
+%DIF > Finding these boundaries will identify the \textit{domains of permissible variance} for the user specific hardware.
+%DIF >  KIE: Why now point to HW? And, which "boundaries"?
+}\DIFaddend 
 
-{\color{red} \sc Unclear how this relates to Analysis. Is this a summary of the method? If so, it should be moved to the front or to the conclusion.} This method can be extended to a broader actor states and actions including actor orientation, speed, and any other status indicators that may be of interest and also including appropriate actions that may be useful for verification purposes. This broader As such, Equation~\ref{eq:max_sigma} would need to be adjusted to include these new variables. {\color{red} \sc Something is missing in this sentence - please correct before moving to a different place, or removing.}
+\DIFaddbegin {\color{red} \sc \DIFadd{Unclear how this relates to Analysis. Is this a summary of the method? If so, it should be moved to the front or to the conclusion.}} \DIFaddend This method can be extended to a broader actor states and actions including actor orientation, speed, and any other status indicators that may be of interest and also including appropriate actions that may be useful for verification purposes. This broader As such, Equation~\ref{eq:max_sigma} would need to be adjusted to include these new variables. \DIFaddbegin {\color{red} \sc \DIFadd{Something is missing in this sentence - please correct before moving to a different place, or removing.}}
+\DIFaddend 
 
 % Game engine actors can be used to simulate the AV and other vehicles as well as pedestrians. For the experiment, actors should follow a series of trajectory waypoints which are hard-coded for each test type. 
 
@@ -1380,7 +1526,7 @@ For each experiment, the maximum value of actor path deviation over all time sam
 % For the vehicles in the simulation, waypoints are generated and interpolated in the same way but execution at runtime is slightly different where a PID controller is used to generate a velocity profile and steering angle requests to reach the destination targets.}
 
 % We use game engine actors to simulate the AVs and other agents (vehicles and pedestrians). Actors can either follow a series of trajectory waypoints or can plan a route to a further destination using some path planning and obstacle avoidance algorithms, e.g. A* search algorithm. 
- 
+
 % \subsection{Internal settings}\todo[inline]{Systematically go through the points listed in the flow diagram, explain and justify.}
 % Where possible a fixed $dt$ should be used to give the most reliable physics calculations. 
 
@@ -1443,32 +1589,55 @@ For each experiment, the maximum value of actor path deviation over all time sam
 
 % \todo[inline]{GC: we need to say what we set out to achieve and why that is important, then say how our investigation led us to several theories which resulted in understanding several key parameters which directly affect simulation variance. From this we developed a methodology that the community can use to understand the deterministic operational domains of their own specific hardware:  Autonomous vehicle testing is adopting the use of game engines for development and verification of vehicle control systems in simulation. Simulations must be deterministic or practitioners should at least be aware of the operational domains for reliable results and repeatability of tests. An empirical investigation uncovered several parameters that contributed to simulation variance ... explain results ... This led to the design of a methodology allowing 'users' to determine the deterministic operational domains for a specific hardware/platform configuration ... }
 
-%The autonomous vehicle community are adopting game engine simulators for such purposes as control system development and verification. 
-Game engines offer simulation environments that are used for the development and verification of autonomous driving functions. 
+\DIFdelbegin \DIFdel{The autonomous vehicle community are adopting game engine simulators for such purposes as control system }\DIFdelend %DIF > The autonomous vehicle community are adopting game engine simulators for such purposes as control system development and verification. 
+\DIFaddbegin \DIFadd{Game engines offer simulation environments that are used for the }\DIFaddend development and verification \DIFaddbegin \DIFadd{of autonomous driving functions}\DIFaddend . 
 %
-Determinism of a simulator is required to achieve repeatability, which is essential to find and fix software bugs efficiently, and to ensure simulation results are trustworthy. 
+\DIFdelbegin %DIFDELCMD < \todo[inline,color=red!40]{old:Having a deterministic simulator is required for reliable and repeatable results,}
+%DIFDELCMD < %%%
+\DIFdel{Having a deterministic }\DIFdelend \DIFaddbegin \DIFadd{Determinism of a }\DIFaddend simulator is required \DIFdelbegin \DIFdel{for precise results, }%DIFDELCMD < \todo[inline]{Having a deterministic simulator is required for precise results,} 
+%DIFDELCMD < %%%
+%DIF < 
+\DIFdelend \DIFaddbegin \DIFadd{to achieve repeatability, which is essential }\DIFaddend to find and fix software bugs \DIFdelbegin \DIFdel{and ensure }\DIFdelend \DIFaddbegin \DIFadd{efficiently, and to ensure simulation }\DIFaddend results are trustworthy. 
 %
-If a simulator is non-deterministic then practitioners should at least be aware of, and know how to find, the operational domains where \textit{simulation variance} is tolerable. 
+If a simulator is non-deterministic then practitioners should at least be aware of, and \DIFaddbegin \DIFadd{know }\DIFaddend how to find, the operational domains \DIFdelbegin \DIFdel{for reliable results. 
+During an }\DIFdelend \DIFaddbegin \DIFadd{where }\textit{\DIFadd{simulation variance}} \DIFadd{is tolerable. 
+}
 
-An investigation into the CARLA simulator revealed a significant simulation variance for repeated tests with the same initial conditions and event history, indicating non-determinism of the simulation. 
+\DIFadd{An }\DIFaddend investigation into the CARLA simulator \DIFdelbegin \DIFdel{, a }\textit{\DIFdel{simulation variance}} %DIFAUXCMD
+\DIFdel{was observed }\DIFdelend \DIFaddbegin \DIFadd{revealed a significant simulation variance }\DIFaddend for repeated tests with the same initial conditions \DIFdelbegin \DIFdel{indicating non-deterministic execution}\DIFdelend \DIFaddbegin \DIFadd{and event history, indicating non-determinism of the simulation}\DIFaddend . 
 %
-We then researched, identified and discussed potential sources for non-determinism in this context.
+\DIFdelbegin \DIFdel{During the study we hypothesized and uncovered several parameters }\DIFdelend \DIFaddbegin \DIFadd{We then researched, identified and discussed potential sources for non-determinism in this context.
+%DIF > 
+A systematic case study of the CARLA simulator uncovered the actual factors }\DIFaddend that contribute towards greater simulation variance\DIFdelbegin \DIFdel{and hence }\DIFdelend \DIFaddbegin \DIFadd{, giving rise to }\DIFaddend non-deterministic execution\DIFdelbegin \DIFdel{, such as }\DIFdelend \DIFaddbegin \DIFadd{. In particular, }\DIFaddend actor collisions and \DIFdelbegin \DIFdel{system resource utilisation }\DIFdelend \DIFaddbegin \DIFadd{system-level resource utilisation were identified as key contributors}\DIFaddend . 
 %
-A systematic case study of the CARLA simulator uncovered the actual factors that contribute towards greater simulation variance, giving rise to non-deterministic execution. In particular, actor collisions and system-level resource utilisation were identified as key contributors. 
-%
-{\color{red} \sc Say what the recommendations were for the required tolerance of the case study, i.e.\ summarise our results/recommendations here and point to github for data/detail. This seems to have been commented out but was here before.}
+\DIFdelbegin \DIFdel{The results of the investigation are hardware and software version specific, so we proposed a general methodology that }\DIFdelend \DIFaddbegin {\color{red} \sc \DIFadd{Say what the recommendations were for the required tolerance of the case study, i.e.\ summarise our results/recommendations here and point to github for data/detail. This seems to have been commented out but was here before.}}
 
-A general method to assess the actor path variance of a game-engine-based simulation environment is then proposed. The method can be used to find the \textit{domains of permissible variance} of a simulation environment for a given system configuration. This can give AV developers and verification engineers increased confidence in the simulation results and reduce debug time. 
-% 
-% \subsection{Future Work}
-%
-As future work the method can be extended to criteria other than the actor path, e.g.\ actor orientation and any status indicators that may be of interest, also including actions, sequences and timings that may be useful for verification purposes.
+\DIFadd{A general method to assess the actor path variance of a game-engine-based simulation environment is then proposed. The method }\DIFaddend can be used to find the \textit{domains of permissible variance} \DIFdelbegin \DIFdel{for any }\DIFdelend \DIFaddbegin \DIFadd{of a simulation environment for a }\DIFaddend given system configuration. %DIF < 
+\DIFdelbegin \DIFdel{This methodology will allow the AV verification community using simulation tools to ensure their results are reliable and trustworthy. 
+}%DIFDELCMD < 
 
-An ambitious avenue for future work is the development of a deterministic simulator for AV development and verification. This requires controlling all potential sources of non-determinism, including randomness and scheduling, very similar to the development of the record-and-reply debugger \texttt{rr}~\cite{RR_link}, originally developed to catch low-frequency non-deterministically failing tests at Mozilla~\cite{acm-q-rr-interview}.
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \DIFadd{This can give AV developers and verification engineers increased confidence in the simulation results and reduce debug time. 
+%DIF >  
+}\DIFaddend % \subsection{Future Work}
+\DIFdelbegin \DIFdel{A potential avenue of exploration is developing a version of the simulator which has been designed specifically for verification. In this version the simulator would be deterministic because the execution is suitably controlled along with sources of }\DIFdelend %DIF > 
+\DIFaddbegin \DIFadd{As future work the method can be extended to criteria other than the actor path, e.g.\ actor orientation and any status indicators that may be of interest, also including actions, sequences and timings that may be useful for verification purposes.
+}
 
-%With the advent of more AI systems becoming adaptive, meaning that the system may change it's response to the same stimulus over time, the notion of repeatability will need reassessing in the context of verification. The main research question here is what will constitute `the same' which will be important for passing or failing verification tests but also for determining coverage. 
+\DIFadd{An ambitious avenue for future work is the development of a deterministic simulator for AV development and verification. This requires controlling all potential sources of non-determinism, including }\DIFaddend randomness and scheduling\DIFdelbegin \DIFdel{. A similar task was achieved with the }\DIFdelend \DIFaddbegin \DIFadd{, very similar to the development of the record-and-reply debugger }\DIFaddend \texttt{\DIFdelbegin \DIFdel{RR}%DIFDELCMD < } %%%
+\DIFdel{program~\mbox{%DIFAUXCMD
+\cite{RR_link}}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{rr}}\DIFadd{~\mbox{%DIFAUXCMD
+\cite{RR_link}}%DIFAUXCMD
+, originally developed to catch low-frequency non-deterministically failing tests at Mozilla~\mbox{%DIFAUXCMD
+\cite{acm-q-rr-interview}}%DIFAUXCMD
+}\DIFaddend .
 
-% \todo[inline]{Review/rewrite this to match the earlier changes in the paper. Practitioners in this field can resolve the non-deterministic operational domains of their simulation by following the method outlined in this paper. Potential sources of non-deterministic simulation behaviour have been discussed such as floating-point rounding error and scheduling policy. A case study was used to ascertain the boundary between deterministic and non-deterministic operational domains of the CARLA driving simulator. Results suggest non-deterministic outcomes when resource utilisation levels exceeded 75\% or when vehicle collisions occur for the particular hardware used in this study. Furthermore it was found that all actors, even those not involved directly in a collision, will behave non-deterministically if a collision callback to the game engine is made. Best operating practice follows that the simulation should be stopped as soon as a collision callback is detected or resource utilisation levels exceed 75\% although this value may be system specific. }
+\DIFdelbegin \DIFdel{With the advent of more AI systems becoming adaptive, meaning that the system may change it's response to the same stimulus over time, the notion of repeatability will need reassessing in the context of verification. The main research question here is what will constitute `the same' which will be important for passing or failing verification tests but also for determining coverage. 
+}\DIFdelend %DIF > With the advent of more AI systems becoming adaptive, meaning that the system may change it's response to the same stimulus over time, the notion of repeatability will need reassessing in the context of verification. The main research question here is what will constitute `the same' which will be important for passing or failing verification tests but also for determining coverage. 
+
+%DIF <  \todo[inline]{Review/rewrite this to match the earlier changes in the paper. Practitioners in this field can resolve the non-deterministic operational domains of their simulation by following the method outlined in this paper. Potential sources of non-deterministic simulation behaviour have been discussed such as floating point rounding error and scheduling policy. A case study was used to ascertain the boundary between deterministic and non-deterministic operational domains of the CARLA driving simulator. Results suggest non-deterministic outcomes when resource utilisation levels exceeded 75\% or when vehicle collisions occur for the particular hardware used in this study. Furthermore it was found that all actors, even those not involved directly in a collision, will behave non-deterministically if a collision callback to the game engine is made. Best operating practice follows that the simulation should be stopped as soon as a collision callback is detected or resource utilisation levels exceed 75\% although this value may be system specific. }
+%DIF >  \todo[inline]{Review/rewrite this to match the earlier changes in the paper. Practitioners in this field can resolve the non-deterministic operational domains of their simulation by following the method outlined in this paper. Potential sources of non-deterministic simulation behaviour have been discussed such as floating-point rounding error and scheduling policy. A case study was used to ascertain the boundary between deterministic and non-deterministic operational domains of the CARLA driving simulator. Results suggest non-deterministic outcomes when resource utilisation levels exceeded 75\% or when vehicle collisions occur for the particular hardware used in this study. Furthermore it was found that all actors, even those not involved directly in a collision, will behave non-deterministically if a collision callback to the game engine is made. Best operating practice follows that the simulation should be stopped as soon as a collision callback is detected or resource utilisation levels exceed 75\% although this value may be system specific. }
 
 % \todo[inline]{GC: think we should put more emphasis on the outcomes of the method rather than the cast study.}
 % \todo[inline]{Point out (again) that all data and scripts etc are on github.}
