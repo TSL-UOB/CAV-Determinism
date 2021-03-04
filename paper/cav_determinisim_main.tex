@@ -161,7 +161,7 @@ Finally, a method of a general nature is proposed, that can be used to find the 
 \begin{IEEEkeywords}
 Autonomous Driving, Autonomous Vehicles, Determinism, Physics Engines,  Verification and Validation (V\&V), Simulation, Testing
 \end{IEEEkeywords}
-\IEEEpeerreviewmaketitle
+\IEEEpeerreviewmaketitle 
 
 % ***************************************************
 %  INTRODUCTION
@@ -373,7 +373,7 @@ In our case study, scenarios between pedestrian and vehicle actors are investiga
 We find that the CARLA simulator is non-deterministic under certain conditions. {\color{red} Say what the observed variance range is, and what we consider permissible for this study.}
 % However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.
 %
-CARLA exhibits a permissible variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected. {\color{red} Why ``vehicle'' collision and not just ``collision''?}
+CARLA exhibits a permissible variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected. 
 %
 \todo[inline,color=green!40]{GC Alternative: By analysing actor position variance we find that the Carla simulator is non-deterministic under certain conditions. 
 However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.}
@@ -579,8 +579,8 @@ Floating-point representation of real numbers is limited by the fixed bit width 
 Thus, the results of arithmetic operations must fit into the given bit width, which is achieved through rounding to the nearest representable value. This gives rise to rounding errors~\cite{FloatingPointsBook,goldberg1991every}. %
 
 % SEE BELOW \todo[inline]{Check the points on floating-point operations in An Empirical Analysis of Flaky Tests~\cite{empirical-analysis-of-flaky-tests}.}
-{\color{red} PROBLEMATIC: Even operations such as the average of an array can result in issues with overflows and underflows {\sc (these can happen with Integers too)}
-and,  non-associative addition~\cite{Kapre2007} {\sc (only when the exec order is changed)} which may result in non-deterministic behaviour. }
+%{\color{red} PROBLEMATIC: Even operations such as the average of an array can result in issues with overflows and underflows {\sc (these can happen with Integers too)}
+%and,  non-associative addition~\cite{Kapre2007} {\sc (only when the exec order is changed)} which may result in non-deterministic behaviour. }
 
 % As a consequence, floating-point arithmetic is not associative. Thus, for arithmetic expressions beyond two operands, such as $x+y+z$, a change of execution order, e.g.\ from $x+(y+z)$ to $(x+y)+z$, can lead to different results~\cite{Kapre2007}.
 %
@@ -611,7 +611,8 @@ In the context of AV simulation, such rounding errors could result in accuracy i
 Thus, one could conclude that floating-point arithmetic causes non-determinism, resulting in loss of repeatability. In fact, some authors suggest avoiding the use of floating-point representation entirely for assertion testing due to imprecision and non-deterministic behaviour~\cite{empirical-analysis-of-flaky-tests}. 
 
 
-In contrast, we argue that the precision issues related to floating-point operations are better described as \textit{incorrectness} that is in fact repeatable; they do not cause non-determinism per se. {\color{red} Should this be IMPRECISION rather than incorrectness?}
+In contrast, we argue that the precision issues related to floating-point operations are better described as \textit{incorrectness} that is in fact repeatable; they do not cause non-determinism per se. 
+%{\color{red} Should this be IMPRECISION rather than incorrectness?}
 %
 It is normally reasonable to assume that the processors on which game engines run are deterministic with respect to floating-point arithmetic. 
 %
@@ -915,7 +916,7 @@ where any value higher than the specified tolerance is considered non-permissibl
 
 
 \subsection{Actor Collisions}\label{S:Actor_Collisions}
-Previous investigations into the Unreal Engine indicated that collisions between dynamic actors {\color{red} Why DYNAMIC?} and solid objects, termed \textit{blocking physics bodies} in Unreal Engine documentation~\cite{collision_overview}, can lead to high simulation variance~\cite{TSLUnrealEngineTesting}. {\color{red} NOT ACCESSIBLE}
+Previous investigations into the Unreal Engine indicated that collisions between actors and solid objects, termed \textit{blocking physics bodies} in Unreal Engine documentation~\cite{collision_overview}, can lead to high simulation variance~\cite{TSLUnrealEngineTesting}. 
 %
 Collisions and the subsequent physics calculations that are processed, termed \textit{event hit} callback in Unreal Engine, were identified as potentially key aspects to the investigation into simulation variance.
 
@@ -938,9 +939,7 @@ In Test 4 this pedestrian collides with one of the vehicles at the crossing, tri
 % \todo[inline]{Say what needs to be logged, what needs to be calculated based on these logs and what one should be looking for and why.}
 For each test the position of each actor is logged at $0.1s$ intervals providing a trace of that actor's path with respect to simulation time. 
 %
-The logs from repeated tests are compared at the same time index $t$ for each actor $a$ to provide a value for the variance of actor $a$ at time index $t$, $\sigma_a^{2}(t)$, at each point in time. {\color{red} This gives a variance function over time for each actor.}
-
-{\color{blue} The logs from repeated tests are sourced to establish a value for the variance associated with each actor, $a$, at each time point $t$, giving a variance function over time for each actor, $\sigma_a^{2}(t)$.}
+The logs from repeated tests are sourced to establish a value for the variance associated with each actor, $a$, at each time point $t$, giving a variance function over time for each actor, $\sigma_a^{2}(t)$.
 
 Instead of using ..., {\color{red} \sc please complete} herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor position data relative to the mean and is helpfully in the same units as actor position, i.e.\ metres ($m$), for ease of interpretation.
 %
@@ -955,7 +954,8 @@ The maximum variance over the entire set of $n$ repeated simulations, i.e.\ the 
 \begin{equation} \label{eq:max_sigma}
 \max_{a,t}\sigma_a^{2}(t)
 \end{equation}
-The maximum deviation is the square root of the maximum variance {\color{red} The absolute value of the square root?} and herein referred to as ${\max\sigma}$ for brevity. {\color{red} So, ``a'' is any actor or a specific actor? Likewise, ``t'' is any time point or a specific time point? NOTE that any actor any time means a in A and t in T, where A is the set of actors and T is the set of all time points.}
+The maximum deviation is the absolute value of the square root of the maximum variance and herein referred to as ${\max\sigma}$ for brevity. 
+% {\color{red} So, ``a'' is any actor or a specific actor? Likewise, ``t'' is any time point or a specific time point? NOTE that any actor any time means a in A and t in T, where A is the set of actors and T is the set of all time points.}
 
 The maximum deviation, $\max\sigma$, can be analysed for the different scenarios and settings that were identified as potential sources of non-determinism, and compared against the limit of \textit{permissible variance} to indicate if the simulation is sufficiently accurate for verification purposes.
 % The output for each experiment can therefore be summarised as the \textit{maximum variance} of any actor over the $n$ repeated tests. 
@@ -981,7 +981,7 @@ Within Unreal Engine there are numerous internal settings relating to the moveme
 % \todo[inline]{Maybe we can introduce our initial study here? Picture of the man and moving bloack and a result showing the path traces in x,y etc?}
 An initial study into the Unreal Engine using a pedestrian and a moving block was used to investigate simulation variance against these settings. The results were compared to a baseline of the default engine settings. 
 %
-However, none of these options improved simulation variance significantly and all internal setting were set restored to the default values. Details on this previous investigation can be found on the Trustworthy Systems GitHub~\cite{TSLUnrealEngineTesting}. {\color{red} NOT ACCESSIBLE}
+However, none of these options improved simulation variance significantly and all internal setting were set restored to the default values. Details on this previous investigation can be found on the Trustworthy Systems GitHub~\cite{TSLUnrealEngineTesting}. 
 
 \subsection{Initial Results and Discussion}\label{InitialResultsSection}
 
@@ -1130,11 +1130,11 @@ Note that the non-permissible results in Figure~\ref{ExperimentsStressSummary} (
 \todo[inline]{Where are the verification requirements listed? They should be part of the scenario description. GC- added to the start of section 3.} 
 %
 
-A general pattern in the results indicates that some scenarios consistently fail to produce results within tolerance, irrespective of resource utilisation (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 2 \& 4 are above the dashed $1$cm line), while some are consistently within tolerance (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 5 \& 6 both are with pedestrians only), and some cases only fail to meet the tolerance requirement at higher resource utilisation levels, i.e.\ above 75\% resource utilisation (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 1 \& 3). {\color{red} ??? about 85\% based on the figure - or not???}
+A general pattern in the results indicates that some scenarios consistently fail to produce results within tolerance, irrespective of resource utilisation (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 2 \& 4 are above the dashed $1$cm line), while some are consistently within tolerance (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 5 \& 6 both are with pedestrians only), and some cases only fail to meet the tolerance requirement at higher resource utilisation levels, i.e.\ above 75\% resource utilisation (cf.\ Fig.~\ref{ExperimentsStressSummary} Test 1 \& 3). 
 
 Examining specifically the results from Tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (Test 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible post collision. 
 %
-The pattern of permissible results prior to collision and non-permissible post collision is maintained up to a resource utilisation level of approximately 75\% {\color{red} Why 75\%?}, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (Test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates permissible pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-permissible.
+The pattern of permissible results prior to collision and non-permissible post collision is maintained up to a resource utilisation level of approximately 75\%, see Fig.~\ref{CarsCollisionPrePost}. This time series examination was repeated for vehicle to pedestrian collisions (Test 4) and the results are shown in Fig.~\ref{CarsPeopleCollsionsCG25}. Similarly to vehicle-to-vehicle collisions, the variation of $\max\sigma$ for vehicle to pedestrian collisions indicates permissible pre-collision behaviour with up to 75\% resource utilisation, see Fig.~\ref{CarsPeopleCollisionPrePost}. This is a key finding; it suggests that verification engineers should consider terminating tests at the point of a collision, as any post-collision results will be non-permissible.
 
 \todo[inline,color=green!40]{GC Edit: Examining specifically the results from tests 2 \& 4 as a function of simulation time reveals further information about the simulation variance before and after an actor collision. Fig.~\ref{CarsCollisionCG25} shows this examination for vehicle to vehicle collisions (test 2), where $\max\sigma$ switches from permissible prior to the vehicle collision to non-permissible post-collision. 
 %
@@ -1238,7 +1238,7 @@ a game-engine-based simulation environment. This methodology is presented in the
 % ***************************************************
 %  METHOD
 % ***************************************************
-\section{Method to determine the Variance of a Simulation{\color{red} for what???}} \label{s:methodology}
+\section{Method to determine the Variance of a Simulation {\color{red} Say for what???}} \label{s:methodology}
 In this section a method for assessing the actor path variance in AV simulation environments that are based on game engines is presented in the form of a work flow, see Fig.~\ref{method_diagram}. This method can be used to determine the operational domains of permissible variance of a simulation environment.  
 %
 {\color{red} MAKES NO SENSE: {\sc In this section a method for determining the variance of simulated actor path trajectories (KIE: a trajectory is a path), termed simulation variance, and resolving the operational domains of permissible variance of the simulation presented here as a work flow, see Fig.~\ref{method_diagram}.}}
@@ -1365,8 +1365,6 @@ The time-stamped actor positions should then be recorded at fixed time intervals
 For each experiment, the maximum value of actor path deviation over all time samples and actors, $\max\sigma$, should be analysed to identify which of the candidate sources of non-determinism require restriction or control to reach the domain of permissible variance within the simulation environment. 
 %Finding these boundaries will identify the \textit{domains of permissible variance} for the user specific hardware.
 % KIE: Why now point to HW? And, which "boundaries"?
-
-{\color{red} \sc Unclear how this relates to Analysis. Is this a summary of the method? If so, it should be moved to the front or to the conclusion.} This method can be extended to a broader actor states and actions including actor orientation, speed, and any other status indicators that may be of interest and also including appropriate actions that may be useful for verification purposes. This broader As such, Equation~\ref{eq:max_sigma} would need to be adjusted to include these new variables. {\color{red} \sc Something is missing in this sentence - please correct before moving to a different place, or removing.}
 
 % Game engine actors can be used to simulate the AV and other vehicles as well as pedestrians. For the experiment, actors should follow a series of trajectory waypoints which are hard-coded for each test type. 
 
