@@ -108,6 +108,8 @@ Different configurations and utilisations of the software and hardware are explo
 Finally, a method of a general nature is proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
 
 
+{\color{red} \sc Ensure past/present is used consistently and appropriately throughout.}
+
 % =========================================
 % Game engines are increasingly used as simulation platforms by the autonomous vehicle (AV) community to develop vehicle control systems and test environments.
 % %
@@ -274,7 +276,7 @@ Those differences describe the spread or variance in the process output. A hard 
 %
 Real manufacturing fails to achieve absolute precision. Hence, there is a need for tolerances to be specified to account for the variance in real-world manufacturing processes. 
 
-If a simulator is deterministic then it will produce results with absolute precision or zero variance, Fig.~\ref{variance_description}~(b), and hence will be within acceptable tolerance by design. If the simulator is non-deterministic then there will be a measurable, non-zero variance in the output data.\\
+If a simulator is deterministic then it will produce results with absolute precision or zero variance, Fig.~\ref{variance_description}~(b), and hence will be within tolerance by design. If the simulator is non-deterministic then there will be a measurable, non-zero variance in the output data.\\
 %
 
 \subsubsection{Accuracy}
@@ -371,7 +373,7 @@ In our case study, scenarios between pedestrian and vehicle actors are investiga
 We find that the CARLA simulator is non-deterministic under certain conditions. {\color{red} Say what the observed variance range is, and what we consider permissible for this study.}
 % However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.
 %
-CARLA exhibits a permissible level of variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected. {\color{red} Why ``vehicle'' collision and not just ``collision''?}
+CARLA exhibits a permissible variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected. {\color{red} Why ``vehicle'' collision and not just ``collision''?}
 %
 \todo[inline,color=green!40]{GC Alternative: By analysing actor position variance we find that the Carla simulator is non-deterministic under certain conditions. 
 However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.}
@@ -450,7 +452,7 @@ Investigating the determinism of game engines has not attracted much research in
 %
 Ensuring software operates deterministically is a non-trivial task.  Catching intermittent failures, or flaky tests~\cite{intermittently-failing-tests}, in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}.
 %
-\todo[inline]{GC line added to introduction. We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
+\todo[inline]{GC line added to introduction. We need a paragraph on how hard it can be to make a computation fully deterministic, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
 %
 \todo[inline,color=green!40]{GC Addition: Ensuring software operates deterministically is a non-trivial task and catching intermittent failures in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}. }
 %
@@ -805,7 +807,7 @@ they have on simulation variance.
 %
 Gao et al.~\cite{when-and-what-should-we-control} took a similar approach investigating Java applications, where a set of sources of non-determinism (termed factors) were shown to impact on repeatability of testing. %and recommended that results of repeated tests must be quoted in averages and ranges as their testing configuration was not possible to execute deterministically. 
 %
-Ultimately, our objective is to control non-determinisim to minimise simulation variance.
+Ultimately, our objective is to control non-determinism to minimise simulation variance.
 
 \todo[inline,color=red!40]{old:  We first describe the context, scene and scenario of interest before discussing and defining a threshold for what is considered an acceptable simulation variance in this context.}
 %
@@ -1006,7 +1008,7 @@ To replicate in a controlled manner the high computational loads that may be ant
 Resource utilisation was artificially increased for both CPU and GPU devices to include a range of values from 0 to 95\% (see Section~\ref{s:methodology}) using reported values of the system monitors \texttt{htop} and \texttt{nvidia-smi} respectively. Resource utilisation figures reported here should be considered approximate values.
 % The level of additional resource utilisation, above that of the needs of the simulation, was increased from $0\%$ (no additional resource load) in $25\%$ increments up to a maximum of $95\%$ for both CPU and GPU as reported by system monitors (\texttt{htop} and \texttt{nvidia-smi} respectively). 
 %
-{\color{red} Somwhere the experimental setup needs to clarify that one set was executed ``unrestricted'' and another ``restricted'' - say what this means and why this was done.}
+{\color{red} Somewhere the experimental setup needs to clarify that one set was executed ``unrestricted'' and another ``restricted'' - say what this means and why this was done.}
 
 
 \todo[inline,color=green!40]{GC Addition (para below):} 
