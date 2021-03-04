@@ -1,7 +1,7 @@
 \documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL cav_determinisim_main-original.tex   Sun Feb 14 23:23:43 2021
-%DIF ADD cav_determinisim_main.tex            Thu Mar  4 02:14:45 2021
+%DIF ADD cav_determinisim_main.tex            Thu Mar  4 02:39:45 2021
 % \input{archive/main.config.tex}
 \usepackage[maxnames=6,firstinits=true,doi=false,url=true,isbn=false]{biblatex}
 % \addbibresource{IROS.bib}
@@ -1038,7 +1038,7 @@ Repeated traces are compared at the same time index $t$ for each actor $a$ to pr
 %
 Herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor position data relative to the mean and is helpfully in the same units as actor position, $m$, for ease of interpretation. }
 
-\DIFaddend The maximum variance over the entire set of $n$ \DIFdelbegin \DIFdel{simulations is therefore }\DIFdelend \DIFaddbegin \DIFadd{repeated simulations is }\DIFaddend defined as the largest variance of any actor at any time in \DIFdelbegin \DIFdel{the simulation, 
+\DIFaddend The maximum variance over the entire set of $n$ \DIFdelbegin \DIFdel{simulations is therefore }\DIFdelend \DIFaddbegin \DIFadd{repeated simulations, i.e.\ the overall observed worst case, is }\DIFaddend defined as the largest variance of any actor at any time in \DIFdelbegin \DIFdel{the simulation, 
 }\DIFdelend \DIFaddbegin \DIFadd{any of the simulation runs, as given in Equation~\ref{eq:max_sigma}. 
 %DIF > {\color{red} This is still a function over time - should it be?}
 }\DIFaddend \begin{equation} \label{eq:max_sigma}
