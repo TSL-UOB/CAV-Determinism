@@ -657,9 +657,9 @@ This is because the processor cores are identical and any impurities across the 
 %
 However, scheduling multiple processes across several processing cores, where the number of cores is smaller than the number of processes, can result in variation of the execution order and cause simulation variance unless explicitly constrained or statically allocated prior to execution. 
 
-Indeed, the developers of the de-bugging program \texttt{RR}~\cite{RR_link} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour by design~\cite{acm-q-rr-interview}.
+Indeed, the developers of the debugging program \texttt{rr}~\cite{RR_link} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour by design~\cite{acm-q-rr-interview}.
 %
-\todo[inline,color=green!40]{GC addition:Indeed, the developers of the de-bugging program \texttt{RR} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}. }
+\todo[inline,color=green!40]{GC addition:Indeed, the developers of the de-bugging program \texttt{rr} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour~\cite{acm-q-rr-interview}. }
 
 Likewise, simulation variance may be observed for game engines that use GPU parallelisation to improve performance by offloading time-critical calculations to several dedicated computing resources simultaneously. While this would be faster than a serial execution, the order of execution arising from program-level concurrency is often not guaranteed. 
 
@@ -852,7 +852,7 @@ The vehicles and pedestrians were given trajectories, via pre-defined waypoints,
 
 
 
-\subsection{Tolerable Simulation Variance}
+\subsection{Tolerable Simulation Variance}\label{s:tolerance}
 
 \todo[inline]{Terminology:\\
 {\bf Accuracy} is the degree of closeness/conformance to a known value.
@@ -940,7 +940,7 @@ The logs from repeated tests are compared at the same time index $t$ for each ac
 
 {\color{blue} The logs from repeated tests are sourced to establish a value for the variance associated with each actor, $a$, at each time point $t$, giving a variance function over time for each actor, $\sigma_a^{2}(t)$.}
 
-Herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor position data relative to the mean and is helpfully in the same units as actor position, i.e.\ metres ($m$), for ease of interpretation.
+Instead of using ..., {\color{red} \sc please complete} herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor position data relative to the mean and is helpfully in the same units as actor position, i.e.\ metres ($m$), for ease of interpretation.
 %
 \todo[inline,color=green!40]{GC Addition: For each test the position of each actor was logged at $0.1s$ intervals providing a trace of that actor's trajectory with respect to simulation time. 
 %
@@ -948,13 +948,14 @@ Repeated traces are compared at the same time index $t$ for each actor $a$ to pr
 %
 Herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor position data relative to the mean and is helpfully in the same units as actor position, $m$, for ease of interpretation. }
 
-The maximum variance over the entire set of $n$ simulations is therefore defined as the largest variance of any actor at any time in the simulation, as given in Equation~\ref{eq:max_sigma}. {\color{red} This is still a function over time - should it be?}
+The maximum variance over the entire set of $n$ repeated simulations is defined as the largest variance of any actor at any time in any of the simulation runs, as given in Equation~\ref{eq:max_sigma}. 
+%{\color{red} This is still a function over time - should it be?}
 \begin{equation} \label{eq:max_sigma}
 \max_{a,t}\sigma_a^{2}(t)
 \end{equation}
 The maximum deviation is the square root of the maximum variance {\color{red} The absolute value of the square root?} and herein referred to as ${\max\sigma}$ for brevity. {\color{red} So, ``a'' is any actor or a specific actor? Likewise, ``t'' is any time point or a specific time point? NOTE that any actor any time means a in A and t in T, where A is the set of actors and T is the set of all time points.}
 
-The maximum deviation, $\max\sigma$, was analysed against the different scenarios and settings that were identified as potential sources of non-determinism, and compared against the limit of \textit{permissible variance} to indicate if the simulation was reliable for verification purposes.
+The maximum deviation, $\max\sigma$, can be analysed for the different scenarios and settings that were identified as potential sources of non-determinism, and compared against the limit of \textit{permissible variance} to indicate if the simulation is sufficiently accurate for verification purposes.
 % The output for each experiment can therefore be summarised as the \textit{maximum variance} of any actor over the $n$ repeated tests. 
 % The maximum, rather than average, variance is chosen to indicate the worst case where an average could obscure outlier data points when a high number of repeated tests are performed. 
 \todo[inline,color=green!40]{GC Addition: The maximum deviation, $\max\sigma$, was analysed against the different scenarios and settings that were identified as potential sources of non-determinism, and compared against the threshold of \textit{permissible tolerance} to indicate if the simulation was reliable for verification purposes. } 
@@ -1029,7 +1030,7 @@ The operating systems was Linux Ubuntu 18.04.4 LTS.
 %
 Tests were carried out in CARLA (v0.9.6 and Unreal Engine v4.22) using synchronous mode with a fixed $dt$ of $0.05$s. 
 %
-Each test was repeated 1000 times. 
+Each test was repeated 1000 times. {\color{red} Justify why 1000 - see my later comment in the Method section.}
 %
 A detailed guide for reproducing the experiments along with the scripts used are provided on github\footnote{\url{https://github.com/TSL-UOB/CAV-Determinism/tree/master/CARLA_Tests_setup_guide}}.
 %
@@ -1038,7 +1039,7 @@ To eliminate some of the potential sources of non-determinism outlined in Sectio
 \begin{itemize}[leftmargin=*]
     \item System memory: \texttt{memtest86}~\cite{MemTest86} full suite of tests ran, all passed.
     \item Graphical memory: \texttt{cuda\_memtest}~\cite{cuda_memtest}, \cite{shi2009testing}.
-    \item Non-uniform memory access (NUMA): \texttt{numactl}~\cite{numactl_NUMA} was used to fix the simulator and test script to single cores but only a minor (2\%) improvement in simulation variance was observed. Therefore this was not used for subsequent testing. {\color{red} But if we aim to min the sources of non-det, then that should be considered/used?}
+    \item Non-uniform memory access (NUMA): \texttt{numactl}~\cite{numactl_NUMA} was used to fix the simulator and test script to single cores, but only a minor (2\%) improvement in simulation variance was observed. Therefore this was not used for subsequent testing. {\color{red} But if we aim to min the sources of non-det, then that should be considered/used?}
 \end{itemize}
 
 
@@ -1180,7 +1181,7 @@ Secondly, that the maximum deviation of the pedestrian involved in the collision
 \begin{figure*}[t]
     \centering
     \includegraphics[width=0.99\linewidth]{Other/Figures/Methodology_Diagram_v5.pdf}
-    \caption{Stages of the methodology proposed to determine the variance of a simulation.}
+    \caption{Stages of the method proposed to determine the variance of a simulation. {\color{red} \sc please update to match text}}
     \label{method_diagram}
 \end{figure*}
 
@@ -1235,12 +1236,12 @@ a game-engine-based simulation environment. This methodology is presented in the
 % ***************************************************
 %  METHOD
 % ***************************************************
-\section{Methodology {\color{red} for what???}} \label{s:methodology}
+\section{Method to determine the Variance of a Simulation{\color{red} for what???}} \label{s:methodology}
 In this section a method for assessing the actor path variance in AV simulation environments that are based on game engines is presented in the form of a work flow, see Fig.~\ref{method_diagram}. This method can be used to determine the operational domains of permissible variance of a simulation environment.  
 %
 {\color{red} MAKES NO SENSE: {\sc In this section a method for determining the variance of simulated actor path trajectories (KIE: a trajectory is a path), termed simulation variance, and resolving the operational domains of permissible variance of the simulation presented here as a work flow, see Fig.~\ref{method_diagram}.}}
 %
-In addition, recommendations and best practice guidelines for minimising simulation variance are suggested. 
+In addition, recommendations and best practice guidelines for minimising simulation variance are suggested. {\color{red} \sc Highlight these in the text.}
 % A number of parameters have been identified either theoretically or from the empirical investigation that influence simulation variance. 
 % This methodology has been refined several times over the course of our investigations into both Unreal Engine and CARLA and is presented here as a work flow, see Fig.~\ref{method_diagram}. %These need to be considered at different stages in the process. 
 %
@@ -1249,20 +1250,26 @@ The method consists of a sequence of five stages; experimental design, simulator
 
 \subsection{Experimental Design}\label{s:design_experiment}
 
+{\color{red} \sc Surely, a series of systematically designed experiments, each repeated X times, should be set up, where each experiment varies one of the suspected sources of non-determinism? Then, the analysis of the data from each experiment should reveal the actual sources of non-determinism for the given setting? In other words, we are aiming to fix as much as we can control (easily), and then we intentionally vary (ideally) single variables, e.g.\ the resource utilisation, to find out what makes a difference. We need a clear definition of the objectives of the experimental design, i.e.\ what one should vary and what one wants to ``nail down''.}
+
 \subsubsection{Actors} \label{s:actors}
 
-Different actor types may be handled differently by the game engine and our investigation indicated that CARLA pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However the introduction of CARLA vehicles increased the simulation variance of the pedestrian-only test by 12 orders of magnitude. As such, all actors that could be included in any future simulation should be tested, including any non-standard CARLA or bespoke actors.
+Different actor types may be handled differently by the game engine. For instance, our investigation indicated that CARLA pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However, the introduction of CARLA vehicles increased the simulation variance of the pedestrian-only test by 12 orders of magnitude. {\color{red} \sc This needs rephrasing as it appears to contradict the statement above.} As such, all actors that could be included in any future simulation should be tested, including any non-standard CARLA or bespoke actors. {\color{red} \sc ... such as the ego vehicle...? [see section on ``External Settings'' last point - Ego Controller.]}
 %
 \subsubsection{Trajectories and Collisions} 
 % Actor paths should be hard-coded in a number of different tests that explore; no collisions, collisions between actors, and potentially collisions between actors and static scenery if this is likely to occur in the simulation.
-Actor paths, or the sequence of actions required to generate paths, should be hard-coded to ensure repeatability. These paths should include collisions between actors and potentially collisions between actors and static scenery if this is likely to occur in the simulation or as part of the verification process. Actor paths without collision are also important to include as these will serve as a baseline to the other tests.
+Actor paths, or the sequence of actions required to generate paths, should be hard-coded to ensure repeatability. These paths should include collisions between actors and potentially collisions between actors and static scenery if this is likely to occur in the simulation or as part of the verification process. Actor paths without collision are also important to include as these will serve as a baseline to the other tests. {\color{red} \sc What baseline?}
 
-\subsubsection{Setting a Tolerance} \label{s:threshold}
-The verification engineer should set the \textit{tolerance} based on their specific requirements which refers to the acceptable level of actor path variance. % ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. 
-This tolerance level is analogous to the analogue signal level associated with each of the binary states %of the signals 
-in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be, for example, any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the noisy physical signal values that are analogue voltages into the digital domain with binary representation. 
+\subsubsection{Permissible Variance} \label{s:threshold}
+The verification engineer should set the \textit{permissible variance}, also termed \textit{tolerance}.
+% which refers to the acceptable level of actor path variance. 
+% ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. 
 %
-The tolerance that the user must set depends on the objectives of the simulation and the granularity at which the simulation environment operates. For example, this tolerance must be sufficiently small to enable accurate assertion checking. In our empirical investigation we set a tolerance of $1$cm which is sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this tolerance experimentally. 
+The tolerance depends on the objectives of the simulation and the granularity at which the simulation environment operates. For example, this tolerance must be sufficiently small to enable accurate assertion checking and coverage collection. In Section~\ref{s:tolerance} a tolerance of $1$cm was considered sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this tolerance experimentally. 
+
+%The permissible variance is analogous to the analogue signal level associated with each of the binary states %of the signals in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be, for example, any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the noisy physical signal values that are analogue voltages into the digital domain with binary representation. <- KIE: meant only to illustrate that other areas also have defined tolerances. 
+%
+
 
 % \todo[inline]{Make sure assertion checking has previously been introduced.}
 
@@ -1275,76 +1282,89 @@ The tolerance that the user must set depends on the objectives of the simulation
 % \todo[inline]{We may need to introduce the Case Study first, then derive the general Methodology from it. This way, we can explain the requirements of the case study, how things were set up, what was observed, how the methodology was refined, several iterations even, etc.} 
 
 
-\subsubsection{Simulation Length} 
-The simulation time should be sufficient to record an interaction between actors but not so long that the testing take an inconvenient time to complete. In our empirical investigation a simulation time of $10-20$s was sufficient to monitor the distinct change in events such as the pre- and post-collision including the delayed effect seen by other actors, shown in Fig.~\ref{CarsPeopleCollsionsCG25}.
+\subsubsection{Simulation Time} {\color{red} \sc Should this not be part of the Execution section?}
+The simulation time should be sufficient to record interactions between actors but not so long that the testing take an inconvenient time to complete. In our empirical investigation a simulation time of $10-20$s was sufficient to monitor the distinct change in events such as the pre- and post-collision including the delayed effect seen by other actors, shown in Fig.~\ref{CarsPeopleCollsionsCG25}. {\color{red} \sc Point to the section that specified that.}
 
 % Depending on the number of repeated tests and the average deviation reported from the experiment, a maximum rather than average may be required if the results are close to the user-specified threshold. This is to ensure that an outlier data-point is not hidden in the average of $n$-tests.
 
 
 \subsection{Simulator Settings}
-The settings internal to the game engine or other simulation environment should be set to ensure a fixed physics time step, $dt$. If using CARLA a small fixed value, say $0.05s$, can be set by using the following: \texttt{setting.fixed\_delta\_seconds = 0.05}, whereas in Unity the default fixed time step is set to $0.02s$~\cite{MonoBehaviour_unity}. In CARLA, synchronous mode must be used to allow communication to external controllers which ensures no sensor data are passed out of order to the simulator which is particularly important if a complex ego controller is used~\cite{carla_sim_config}. 
-%
-The use of random numbers must be controlled through the use of fixed seeds which might be used to control variations of background effects, e.g. weather patterns, or the navigation of random pedestrian actors, external vehicle controllers or other clients connected to the simulation environment. 
+The settings internal to the game engine or other simulation environment should be set to ensure a fixed physics time step, $dt$. If using CARLA, a small fixed value, say $0.05s$, can be set by using \texttt{setting.fixed\_delta\_seconds = 0.05}. In Unity, the default fixed time step is set to $0.02s$~\cite{MonoBehaviour_unity}. 
+
+In CARLA, synchronous mode must be used to allow communication to external controllers which ensures no sensor data are passed out of order to the simulator which is particularly important if a complex ego controller is used~\cite{carla_sim_config}. 
+
+The use of random numbers must be controlled through fixed seeds, resulting in pseudo-randomness. Random numbers might be used in the simulation environment to control variations of background effects, e.g.\ weather patterns, or the navigation of random pedestrian actors, external vehicle controllers or other clients connected to the simulation environment. 
 %
 Actors that navigate through the environment should use a fixed navigation mesh. 
-
-The version number of the CARLA and Unreal environment has also be shown to affect results, see~\cite{TSLUnrealEngineTesting}, so ensuring consistent version number throughout testing is also important.
+%
+The version number of the CARLA and Unreal environment has also be shown to affect results, see~\cite{TSLUnrealEngineTesting}. Therefore, ensuring a consistent version number throughout testing is also important.
 
 % \todo[inline]{Select section titles to match the flow diagram. In each of these sections, go through the matching phase in the flow diagram, explaining each point listed there and justify recommendations.}
 % The experiment should be a short\todo[inline]{What does short mean? Quantify.} scenario that can be easily repeated with the same initial conditions. 
 
 
-\subsection{External Settings}
+\subsection{External Settings} 
 
 \subsubsection{Resource Utilisation}
 % To simulate the demands of taxing simulations, potentially requiring realistic rendering or complex physics calculations in an otherwise simple scenario, stress programs should be used to artificially occupy system resources. 
-The resources available to the simulator have been shown to have a significant effect on the simulation variance of simulated vehicles and exploring this as a variable the analysis is required. 
-CPU utilisation software, such as the linux \texttt{stress} tool which is a workload generator program can be used spawn workers on any number of cores or virtual threads on a system. This can be used to artificially increased the load on the system to explore at what point your system may become susceptible to \textit{simulation variance}. For GPU utilisation \texttt{gpu-burn} was employed using the \texttt{fur test} where different resolutions and multiple instances can be used to tune graphical utilisation levels~\cite{GPU_stress}. Reported values of resource utilisation can be obtained using the system monitors \texttt{htop} and \texttt{nvidia-smi} for CPU and GPU respectively. These values can also be written into the data logging for completeness.
+The resources available to the simulator have been shown to have a significant effect on the variance of the path of simulated vehicles. %and exploring this as a variable the analysis is required. 
+%
+Thus, it is important to understand at what level of resource utilisation the system running the simulation becomes susceptible to \textit{simulation variance}.
 
-Alternatively, in place of artificial resource utilisation multiple instances of the simulation could be executed simultaneously. However, the granularity of control with this approach may be reduced.
+CPU utilisation software, such as the linux \texttt{stress} tool, which is a workload generator program, can be used to spawn workers on any number of cores or virtual threads on a system. This can be used to artificially increase the load on the system. For GPU utilisation, \texttt{gpu-burn} can be employed using the \texttt{fur test}. Different resolutions and multiple instances can be used to tune graphical utilisation levels~\cite{GPU_stress}. Reported values of resource utilisation can be obtained using the system monitors \texttt{htop} and \texttt{nvidia-smi} for CPU and GPU, respectively. These values should be added to the data logs.
+%
+Alternatively, in place of artificial resource utilisation, multiple instances of the simulation could be executed simultaneously. However, the granularity of control with this approach may be reduced.
 
 % \todo[inline]{Again, this sounds as if having the case study first makes more sense. That way we can explain wrt the experiments and then generalise to obtain the Methodology.}
 
 % \todo[inline]{This should be ``External Settings'' - from flow diagram?}
 
 \subsubsection{Memory Testing}
-Prior to experimental execution the system hardware should be tested for memory conformity and to ensure no single bit errors are occurring, see~\ref{s:screening}. For mainboard memory \texttt{memtest86}\ can be used on most platforms to run a series of pre-defined memory test patterns. This memory testing software can also be used for ECC enabled hardware. Similarly, to test memory on Nvidia based graphical adaptors \texttt{cuda\_memtest} can be used to ensure no memory errors exist.
+Prior to experimental execution the system hardware should be tested for memory conformity and to ensure no single bit errors are occurring, see Section~\ref{s:screening}. For mainboard memory \texttt{memtest86}\ can be used on most platforms to run a series of pre-defined memory test patterns. This memory testing software can also be used for ECC enabled hardware. Similarly, to test memory on Nvidia based graphical adaptors \texttt{cuda\_memtest} can be used to ensure no memory errors exist.
 
 
 \subsubsection{Scheduling}
-We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, fine control over the scheduling policy and thread execution order may be non-trivial. Such policies are defined by the operating system and may execute threads with equal priority. In such a case, all tasks non-essential to the simulator should be terminated to prevent interruption to the simulator. 
+We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, gaining fine control over the scheduling policy and thread execution order is known to not be trivial~\cite{acm-q-rr-interview}. 
+
+The operating system schedules threads according to a specified scheduling policy, potentially based on equal thread priority. Thus, in such a case, all tasks non-essential to the simulator should be terminated to prevent interference with the simulation. 
 
 % If the policy or operating system cannot be changed then s
-Setting the simulator process to a higher priority may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows~\cite{TaskSettingWindows} or \texttt{NICE} in Linux~\cite{Nice_linux}.
+Assigning a higher priority to the simulator process may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows~\cite{TaskSettingWindows} or \texttt{NICE} in Linux~\cite{Nice_linux}.
 
 \subsubsection{NUMA Control}
-Control over Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multiprocessors with shared memory. This control allows the simulator program to be fixed on a single core reducing memory access time.
+Control over a Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multiprocessors with shared memory. This control allows the simulator program to be fixed on a single core, reducing and unifying memory access time.
 %
-Initial screening tests done with NUMA control gave moderate improvements in simulation variance of the order of a few percent, see Section~\ref{s:screening}. This control may assist if simulation variance is borderline to the tolerance but not seen as essential.
+Note that initial screening tests performed with NUMA control resulted in only minor improvements in simulation variance, see Section~\ref{s:screening}. 
+%
+This control may assist if simulation variance is borderline to the tolerance but not seen as essential. {\color{red} \sc Unclear: what is not essential?}
 
-\subsubsection{Ego Vehicle Controller}
-No ego vehicle was used in the empirical investigation but this should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner.
+\subsubsection{Ego Vehicle Controller {\color{red} \sc Why is this not covered under actors? [see my note in the Actors section]}}
+{\color{red} \sc Clearly separate the investigation from the Method. The fact that the case study did not have an ego vehicle should be mentioned as a limitation of the case study, rather than elaborated on here, but why does this make a difference?}
+The impact of the ego vehicle  should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner. {\color{red} \sc Long and cumbersome sentence with strange grammar: No ego vehicle was used in the empirical investigation but this should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner. }
 
 \subsection{Execution}
-
 
 \subsubsection{Sample Size}
 % Tests should be sufficiently repeated using statistical power~\cite{cohen2013statistical} to reveal any outlier errors that occur with low probability.\todo[inline]{Explain what this means.} 
 % Histogram to show how sampling with position binning varies?
 % \footnote{\label{note1}Experiments using the Unreal Engine not reported here for brevity but code and experimental results can be found at \url{https://github.com/TSL-UOB/AV-Determinism/tree/master/UnrealEngineTests}}
-Initial testing~\cite{TSLUnrealEngineTesting} indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests but with 3 tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10$cm. While executing 100 repeats may seem sufficient, this sample size may fail to observe these events that occur with low probability, inferring a false confidence in the results. It is therefore recommended that the sample size is found empirically dependent on the number of results that exceed the tolerance. 
+%
+Initial testing~\cite{TSLUnrealEngineTesting} indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests, with three tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10$cm. While executing 100 repeats may seem sufficient, this sample size may fail to observe events that occur with low probability, giving false confidence in the results. {\color{red} \sc Again, separate the study from the method. This observation should really have been made in the section on ``Experimental System Config and Pre-Screening, to justify the figure of 1000 repeats.} It is therefore recommended that the sample size is determined empirically dependent on the number of results that exceed the tolerance. {\color{red} \sc How would one know?}
 % To ensure outlier data points are not hidden in the average of a large number of tests, the maximum deviation should be reported rather than the average when summarising.
 
 \subsubsection{Data Logging}
-Data logging should be used to record the actor positions at fixed time intervals throughout the simulation in order to determine the variance in actor path. Additional information can also be logged such as the CPU and GPU utilisation levels and engine specific metrics such as game loop latency.
+Unique identifiers should be assigned to each experiment, each repeat and each individual actor. 
+The time-stamped actor positions should then be recorded at fixed time intervals throughout the simulation in order to determine the variance in actor path. Additional information should also be logged such as the CPU and GPU utilisation levels and engine specific metrics such as game loop latency.
 % such as the \texttt{unit} command in Unreal Engine. 
-For the subsequent analysis, the actor should have an identifier and the repeat number and simulation time should also be captured. 
+%For the subsequent analysis, each actor should have an identifier. The repeat number and simulation time should also be captured. 
 % The maximum deviation in actor path with respect to the mean for $n$ repeated tests will indicate at what dimensional scale deterministic results are achieved. For example, if 100 tests are executed and the maximum deviation in actor path is $<1$cm, then this scenario could be interpreted as being deterministic above this scale. 
 
 \subsection{Analysis}
-The maximum value of actor path deviation over all time samples and actors, $\max\sigma$, should be analysed to identify which of the candidate sources of non-determinism require restriction or control for permissible operation. Finding these boundaries will identify the \textit{domains of permissible variance} for the user specific hardware.
+For each experiment, the maximum value of actor path deviation over all time samples and actors, $\max\sigma$, should be analysed to identify which of the candidate sources of non-determinism require restriction or control to reach the domain of permissible variance within the simulation environment. 
+%Finding these boundaries will identify the \textit{domains of permissible variance} for the user specific hardware.
+% KIE: Why now point to HW? And, which "boundaries"?
 
-This method can be extended to a broader actor states and actions including actor orientation, speed, and any other status indicators that may be of interest and also including appropriate actions that may be useful for verification purposes. This broader As such, Equation~\ref{eq:max_sigma} would need to be adjusted to include these new variables.
+{\color{red} \sc Unclear how this relates to Analysis. Is this a summary of the method? If so, it should be moved to the front or to the conclusion.} This method can be extended to a broader actor states and actions including actor orientation, speed, and any other status indicators that may be of interest and also including appropriate actions that may be useful for verification purposes. This broader As such, Equation~\ref{eq:max_sigma} would need to be adjusted to include these new variables. {\color{red} \sc Something is missing in this sentence - please correct before moving to a different place, or removing.}
 
 % Game engine actors can be used to simulate the AV and other vehicles as well as pedestrians. For the experiment, actors should follow a series of trajectory waypoints which are hard-coded for each test type. 
 
@@ -1421,26 +1441,30 @@ This method can be extended to a broader actor states and actions including acto
 
 % \todo[inline]{GC: we need to say what we set out to achieve and why that is important, then say how our investigation led us to several theories which resulted in understanding several key parameters which directly affect simulation variance. From this we developed a methodology that the community can use to understand the deterministic operational domains of their own specific hardware:  Autonomous vehicle testing is adopting the use of game engines for development and verification of vehicle control systems in simulation. Simulations must be deterministic or practitioners should at least be aware of the operational domains for reliable results and repeatability of tests. An empirical investigation uncovered several parameters that contributed to simulation variance ... explain results ... This led to the design of a methodology allowing 'users' to determine the deterministic operational domains for a specific hardware/platform configuration ... }
 
-The autonomous vehicle community are adopting game engine simulators for such purposes as control system development and verification. 
+%The autonomous vehicle community are adopting game engine simulators for such purposes as control system development and verification. 
+Game engines offer simulation environments that are used for the development and verification of autonomous driving functions. 
 %
-\todo[inline,color=red!40]{old:Having a deterministic simulator is required for reliable and repeatable results,}
-Having a deterministic simulator is required for precise results, 
-\todo[inline]{Having a deterministic simulator is required for precise results,} 
+Determinism of a simulator is required to achieve repeatability, which is essential to find and fix software bugs efficiently, and to ensure simulation results are trustworthy. 
 %
-to find and fix software bugs and ensure results are trustworthy. 
-%
-If a simulator is non-deterministic then practitioners should at least be aware of, and how to find, the operational domains for reliable results. During an investigation into the CARLA simulator, a \textit{simulation variance} was observed for repeated tests with the same initial conditions indicating non-deterministic execution. 
-%
-During the study we hypothesized and uncovered several parameters that contribute towards greater simulation variance and hence non-deterministic execution, such as actor collisions and system resource utilisation. 
-%
-The results of the investigation are hardware and software version specific, so we proposed a general methodology that can be used to find the \textit{domains of permissible variance} for any given system configuration. 
-%
-This methodology will allow the AV verification community using simulation tools to ensure their results are reliable and trustworthy.
+If a simulator is non-deterministic then practitioners should at least be aware of, and know how to find, the operational domains where \textit{simulation variance} is tolerable. 
 
+An investigation into the CARLA simulator revealed a significant simulation variance for repeated tests with the same initial conditions and event history, indicating non-determinism of the simulation. 
+%
+We then researched, identified and discussed potential sources for non-determinism in this context.
+%
+A systematic case study of the CARLA simulator uncovered the actual factors that contribute towards greater simulation variance, giving rise to non-deterministic execution. In particular, actor collisions and system-level resource utilisation were identified as key contributors. 
+%
+{\color{red} \sc Say what the recommendations were for the required tolerance of the case study, i.e.\ summarise our results/recommendations here and point to github for data/detail. This seems to have been commented out but was here before.}
+
+A general method to assess the actor path variance of a game-engine-based simulation environment is then proposed. The method can be used to find the \textit{domains of permissible variance} of a simulation environment for a given system configuration. This can give AV developers and verification engineers increased confidence in the simulation results and reduce debug time. 
+% 
 % \subsection{Future Work}
-A potential avenue of exploration is developing a version of the simulator which has been designed specifically for verification. In this version the simulator would be deterministic because the execution is suitably controlled along with sources of randomness and scheduling. A similar task was achieved with the \texttt{RR} program~\cite{RR_link}. 
+%
+As future work the method can be extended to criteria other than the actor path, e.g.\ actor orientation and any status indicators that may be of interest, also including actions, sequences and timings that may be useful for verification purposes.
 
-With the advent of more AI systems becoming adaptive, meaning that the system may change it's response to the same stimulus over time, the notion of repeatability will need reassessing in the context of verification. The main research question here is what will constitute `the same' which will be important for passing or failing verification tests but also for determining coverage. 
+An ambitious avenue for future work is the development of a deterministic simulator for AV development and verification. This requires controlling all potential sources of non-determinism, including randomness and scheduling, very similar to the development of the record-and-reply debugger \texttt{rr}~\cite{RR_link}, originally developed to catch low-frequency non-deterministically failing tests at Mozilla~\cite{acm-q-rr-interview}.
+
+%With the advent of more AI systems becoming adaptive, meaning that the system may change it's response to the same stimulus over time, the notion of repeatability will need reassessing in the context of verification. The main research question here is what will constitute `the same' which will be important for passing or failing verification tests but also for determining coverage. 
 
 % \todo[inline]{Review/rewrite this to match the earlier changes in the paper. Practitioners in this field can resolve the non-deterministic operational domains of their simulation by following the method outlined in this paper. Potential sources of non-deterministic simulation behaviour have been discussed such as floating-point rounding error and scheduling policy. A case study was used to ascertain the boundary between deterministic and non-deterministic operational domains of the CARLA driving simulator. Results suggest non-deterministic outcomes when resource utilisation levels exceeded 75\% or when vehicle collisions occur for the particular hardware used in this study. Furthermore it was found that all actors, even those not involved directly in a collision, will behave non-deterministically if a collision callback to the game engine is made. Best operating practice follows that the simulation should be stopped as soon as a collision callback is detected or resource utilisation levels exceed 75\% although this value may be system specific. }
 
