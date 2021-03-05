@@ -1260,7 +1260,7 @@ Different actor types may be handled differently by the game engine. For instanc
 %
 \subsubsection{Trajectories and Collisions} 
 % Actor paths should be hard-coded in a number of different tests that explore; no collisions, collisions between actors, and potentially collisions between actors and static scenery if this is likely to occur in the simulation.
-Actor paths, or the sequence of actions required to generate paths, should be hard-coded to ensure repeatability. These paths should include collisions between actors and potentially collisions between actors and static scenery if this is likely to occur in the simulation or as part of the verification process. Actor paths without collision are also important to include as these will serve as a baseline to the other tests. {\color{red} \sc What baseline?}
+Actor paths, or the sequence of actions required to generate paths, should be hard-coded to ensure repeatability. These paths should include collisions between actors and potentially collisions between actors and static scenery if this is likely to occur in the simulation or as part of the verification process. Actor paths without collision are also important to include as these will serve as a baseline to the other tests; to see if deviations between runs in actor paths increases with collisions. {\color{red} \sc What baseline?} {\color{green} \sc Done}
 
 \subsubsection{Permissible Variance} \label{s:threshold}
 The verification engineer should set the \textit{permissible variance}, also termed \textit{tolerance}.
