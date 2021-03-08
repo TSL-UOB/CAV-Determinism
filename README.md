@@ -1,12 +1,11 @@
 # CAV-Determinism
 
-Links to diagrams in paper incase you want to change them... 
+Links to source files for diagrams in paper.
 
-Link to Onedrive Gameloop diagram:  https://uob-my.sharepoint.com/:p:/g/personal/ag14622_bristol_ac_uk/EQA8F3gdl-FJpq6Nkpy6mVoBwgTqADDb2MUbIznLJ7B07Q?e=Wyp1Ui
+Gameloop diagram: https://uob.sharepoint.com/:p:/r/teams/grp-tsl-cav/Shared%20Documents/Diagrams/Determinisim/GameLoopDiagram/GameEngineLoopv2.pptx?d=wdda45eaef26a4135818cc26cc52d905b&csf=1&web=1&e=rlR9UD 
 
-Link to Onedrive methodology diagram: 
-v1= https://uob-my.sharepoint.com/:p:/g/personal/ag14622_bristol_ac_uk/ER5ijMsIr39PoW2sbqqeIi4B0hdIai0QkK6IEVWXnjtJjQ?e=IvW60b
-v2= https://uob-my.sharepoint.com/:p:/g/personal/ag14622_bristol_ac_uk/ET2YGaSskalKjXH9L_CQHCcBtM0xF4mbp9IW5j-04mipfA?e=u27o05
-v3= https://uob-my.sharepoint.com/:p:/r/personal/ag14622_bristol_ac_uk/Documents/ROBOPILOT%20UoB/Diagrams/Determinisim/MethodDiagram/Methodology_Diagram_v3.pptx?d=w3d6830f3384d48d1ab9a786d21f88b54&csf=1&web=1&e=NeXuhf
+Methodology diagram: https://uob.sharepoint.com/:p:/r/teams/grp-tsl-cav/Shared%20Documents/Diagrams/Determinisim/MethodDiagram/Methodology_Diagram_v5.pptx?d=w6c5218d8b06643c9bb4b113e2eadcedb&csf=1&web=1&e=CAhP5m
 
-Link to Onedrive test cases scenarios diagrams:  https://uob-my.sharepoint.com/:p:/g/personal/ag14622_bristol_ac_uk/EXiTkJAHDnpJtEqtrUCKqEIBaFgEHG16k1OWrErgGP7hZA?e=KUQjZx
+Test cases scenarios diagrams:  https://uob.sharepoint.com/:p:/r/teams/grp-tsl-cav/Shared%20Documents/Diagrams/Determinisim/TestCasesDiagram/TestCasesDiagramV2.pptx?d=w29cab003f8624b8c92bd7342349b7674&csf=1&web=1&e=M0IcD9
+
+Variance,Precision_tolerance diagrams: https://uob.sharepoint.com/:p:/r/teams/grp-tsl-cav/Shared%20Documents/Diagrams/Determinisim/Variance_precision_tolerance_definition_digaram/Variance_predicition_tolerance_definition_diagram.pptx?d=w7270795551ee40bc8ebc72ca2a813f13&csf=1&web=1&e=R51FaJ
