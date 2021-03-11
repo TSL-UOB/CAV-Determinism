@@ -1111,7 +1111,7 @@ To eliminate some of the potential sources of non-determinism outlined in Sectio
 % ***************************************************
 %  Results and Discussion
 % ***************************************************
-\section{Results and Discussion}\label{FinalResultsSection}
+\section{Results and Discussion}\label{s:FinalResultsSection}
 
 \begin{figure*}[t]
     \centering
@@ -1271,6 +1271,8 @@ a game-engine-based simulation environment. This methodology is presented in the
 % It is important to note, however, that in test 4 a delayed effect of increase in simulation variance was noticed to Car ID 1, which interestingly was not involved in the collision, this was attributed to how the physics engine was programmed to calculate collisions which might cause other obscure behaviours to other agents. The importance of this outcome is that it shows even if an ego vehicle is not involved in a collision, but other agents are, this will still have effects on the simulation variance of the ego vehicle. Thus failing to stay below our red line and the test should be terminated. In summary, from the tests carried out we can deduce that for a computer of the following specifications, an Alienware Area 51 R5 with an i9 9960X CPU chip, NVIDIA GeForce RTX 2080 graphics card and 64GB of RAM, that all tests carried out using CARLA in UE4 are gauranteed to be deterministic and repeatable (according to our definition by the red line) as long as the CPU + GPU stress does not exceed 50\% and tests are terminated as soon as a collision of any type is detected in the simulation. left alone and not used for any other tasks while the runs were executed.
 
 
+
+
 % ***************************************************
 %  METHOD
 % ***************************************************
@@ -1279,25 +1281,32 @@ a game-engine-based simulation environment. This methodology is presented in the
 %
 In this section a method for determining the simulation variance of actor paths and resolving the operational domains of permissible variance is presented here as a work flow, see Fig.~\ref{method_diagram}.
 %
-In addition, recommendations and best practice guidelines for minimising simulation variance are suggested, such as fixing the physics time step in \textit{Simulator Settings}. 
-% {\color{red} \sc Highlight these in the text.}
+In addition, recommendations and best practice guidelines for minimising simulation variance are suggested.
+% , such as fixing the physics time step in \textit{Simulator Settings}. 
+{\color{red} \sc Highlight these in the text.}
 % A number of parameters have been identified either theoretically or from the empirical investigation that influence simulation variance. 
 % This methodology has been refined several times over the course of our investigations into both Unreal Engine and CARLA and is presented here as a work flow, see Fig.~\ref{method_diagram}. %These need to be considered at different stages in the process. 
 %
 
-The method consists of a sequence of five stages; experimental design, simulator configuration, external configuration, execution and analysis. In the following, each stage is described in detail with reference to the items listed for each stage in Fig.~\ref{method_diagram}. {\color{red} NOTE: renamed stages.}
+The method consists of a sequence of five stages; experimental design, simulator settings, external settings, execution and analysis. In the following, each stage is described in detail with reference to the items listed for each stage in Fig.~\ref{method_diagram}.
 
 \subsection{Experimental Design}\label{s:design_experiment}
 
 {\color{red} \sc Surely, a series of systematically designed experiments, each repeated X times, should be set up, where each experiment varies one of the suspected sources of non-determinism? Then, the analysis of the data from each experiment should reveal the actual sources of non-determinism for the given setting? In other words, we are aiming to fix as much as we can control (easily), and then we intentionally vary (ideally) single variables, e.g.\ the resource utilisation, to find out what makes a difference. We need a clear definition of the objectives of the experimental design, i.e.\ what one should vary and what one wants to ``nail down''.}
 
+{\color{green!99} \sc The experiment design is based around a series of carefully selected tests that varies one the sources of non-determinism whilst keeping all others parameters constant. Each test is repeated $n$ times and the analysis of the results provide a confidence around a degree of statistical certainty. By varying a single parameter and controlling all others, the simulation variance associated with each source of non-determinism can be found and prioritised. }
+
 \subsubsection{Actors} \label{s:actors}
 
-Different actor types may be handled differently by the game engine. For instance, our investigation indicated that CARLA pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However, the introduction of CARLA vehicles increased the simulation variance of the pedestrian-only test by 12 orders of magnitude. {\color{red} \sc This needs rephrasing as it appears to contradict the statement above.} As such, all actors that could be included in any future simulation should be tested, including any non-standard CARLA or bespoke actors. {\color{red} \sc ... such as the ego vehicle...? [see section on ``External Settings'' last point - Ego Controller.]}
+% Different actor types may be handled differently by the game engine. For instance, our investigation indicated that CARLA pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However, the introduction of CARLA vehicles increased the simulation variance of the pedestrian-vehicle test by 12 orders of magnitude. {\color{red} \sc This needs rephrasing as it appears to contradict the statement above.} 
+%
+As such, all actors that could be included in any future simulation should be tested, including any non-standard CARLA or bespoke actors including the ego vehicle, see section on ``External Settings'' last point - Ego Controller. 
+% {\color{red} \sc ... such as the ego vehicle...? [see section on ``External Settings'' last point - Ego Controller.]}
 %
 \subsubsection{Trajectories and Collisions} 
 % Actor paths should be hard-coded in a number of different tests that explore; no collisions, collisions between actors, and potentially collisions between actors and static scenery if this is likely to occur in the simulation.
-Actor paths, or the sequence of actions required to generate paths, should be hard-coded to ensure repeatability. These paths should include collisions between actors and potentially collisions between actors and static scenery if this is likely to occur in the simulation or as part of the verification process. Actor paths without collision are also important to include as these will serve as a baseline to the other tests; to see if deviations between runs in actor paths increases with collisions. {\color{red} \sc What baseline?} {\color{green} \sc Done}
+Actor paths, or the sequence of actions required to generate paths, should be hard-coded to ensure repeatability. These paths should include collisions between actors and potentially collisions between actors and static scenery if this is likely to occur in the simulation or as part of the verification process. Actor paths without collision are also important to include as these will serve as a baseline to the other tests; to see if deviations between runs in actor paths increases with collisions. 
+% {\color{red} \sc What baseline?} {\color{green} \sc Done}
 
 \subsubsection{Permissible Variance} \label{s:threshold}
 The verification engineer should set the \textit{permissible variance}, also termed \textit{tolerance}.
@@ -1321,8 +1330,10 @@ The tolerance depends on the objectives of the simulation and the granularity at
 % \todo[inline]{We may need to introduce the Case Study first, then derive the general Methodology from it. This way, we can explain the requirements of the case study, how things were set up, what was observed, how the methodology was refined, several iterations even, etc.} 
 
 
-\subsubsection{Simulation Time} {\color{red} \sc Should this not be part of the Execution section?}
-The simulation time should be sufficient to record interactions between actors but not so long that the testing take an inconvenient time to complete. In our empirical investigation a simulation time of $10-20$s was sufficient to monitor the distinct change in events such as the pre- and post-collision including the delayed effect seen by other actors, shown in Fig.~\ref{CarsPeopleCollsionsCG25}. {\color{red} \sc Point to the section that specified that.}
+\subsubsection{Simulation Time} 
+% {\color{red} \sc Should this not be part of the Execution section?} 
+The simulation time will depend on the actor paths and terminating conditions. The simulation time should be sufficient to record interactions between actors but not so long that the testing take an inconvenient time to complete. In our empirical investigation a simulation time of $10-20$s was sufficient to monitor the distinct change in events such as the pre- and post-collision including the delayed effect seen by other actors, shown in Fig.~\ref{CarsPeopleCollsionsCG25} in Section~\ref{s:FinalResultsSection}. The termination conditions of the simulation can be set by, for example, actors reaching their final trajectory waypoints. 
+ % {\color{red} \sc Point to the section that specified that.}
 
 % Depending on the number of repeated tests and the average deviation reported from the experiment, a maximum rather than average may be required if the results are close to the user-specified threshold. This is to ensure that an outlier data-point is not hidden in the average of $n$-tests.
 
@@ -1371,15 +1382,21 @@ The operating system schedules threads according to a specified scheduling polic
 Assigning a higher priority to the simulator process may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows~\cite{TaskSettingWindows} or \texttt{NICE} in Linux~\cite{Nice_linux}.
 
 \subsubsection{NUMA Control}
-Control over a Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multiprocessors with shared memory. This control allows the simulator program to be fixed on a single core, reducing and unifying memory access time.
+Control over a Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multi-core processors with shared memory. This control allows the simulator process to be fixed on a single core, reducing and unifying memory access time.
 %
-Note that initial screening tests performed with NUMA control resulted in only minor improvements in simulation variance, see Section~\ref{s:screening}. 
+Investigations in tests performed with NUMA control resulted in only minor improvements in simulation variance, see Section~\ref{s:screening}. 
 %
-This control may assist if simulation variance is borderline to the tolerance but not seen as essential. {\color{red} \sc Unclear: what is not essential?}
+% Using \texttt{numactl} allows a process to run with a specified memory placement policy, fixing the process to a single core. This will reduce the data transfer cost and the opportunity for disrupted execution order that may be responsible for increase simulation variance. 
+%
+Using a fixed memory placement policy may assist if simulation variance is borderline to the tolerance but only of the order of a few percent from our observations.
 
-\subsubsection{Ego Vehicle Controller {\color{red} \sc Why is this not covered under actors? [see my note in the Actors section]}}
-{\color{red} \sc Clearly separate the investigation from the Method. The fact that the case study did not have an ego vehicle should be mentioned as a limitation of the case study, rather than elaborated on here, but why does this make a difference?}
-The impact of the ego vehicle  should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner. {\color{red} \sc Long and cumbersome sentence with strange grammar: No ego vehicle was used in the empirical investigation but this should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner. }
+\subsubsection{Ego Vehicle Controller}
+% {\color{red} \sc Why is this not covered under actors? [see my note in the Actors section]}
+% {\color{red} \sc Clearly separate the investigation from the Method. The fact that the case study did not have an ego vehicle should be mentioned as a limitation of the case study, rather than elaborated on here, but why does this make a difference?}
+%
+An ego vehicle was not used in this study, but the impact of introducing this to the simulator can be considered here. The ego vehicle is seen as another actor in the simulation but care must be taken to ensure that any control algorithms, machine learning modules and processing pipelines are deterministic. We recommended this be treated as a separate source of non-determinism and handled accordingly. 
+
+% ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner. {\color{red} \sc Long and cumbersome sentence with strange grammar: No ego vehicle was used in the empirical investigation but this should be considered as an actor but ensuring that any randomness used in the controller is controlled with fixed seeds and that any adaptive learning algorithms should be controlled in the same manner. }
 
 \subsection{Execution}
 
@@ -1389,11 +1406,18 @@ The impact of the ego vehicle  should be considered as an actor but ensuring tha
 % \footnote{\label{note1}Experiments using the Unreal Engine not reported here for brevity but code and experimental results can be found at \url{https://github.com/TSL-UOB/AV-Determinism/tree/master/UnrealEngineTests}}
 %
 % {\color{red} \sc Again, separate the study from the method. This observation should really have been made in the section on ``Experimental System Config and Pre-Screening, to justify the figure of 1000 repeats.} 
-It is recommended that the chosen sample size is determined empirically. By increasing the sample size and observing the simulation variance does not change
-...
-...
- dependent on the number of results that exceed the tolerance. {\color{red} \sc How would one know?}
-% To ensure outlier data points are not hidden in the average of a large number of tests, the maximum deviation should be reported rather than the average when summarising.
+It is recommended that the chosen sample size is determined empirically. 
+%
+{\color{green} We recommend monitoring variance while increasing the sample size in orders of magnitude
+until there is confidence that $\max\sigma$ will not exceed the specified tolerance for the verification process. 
+%
+Note that we suggest monitoring the maximum value of $\sigma$, not the average, because if even a single simulation run is outside of the permissible variance this may lead to false confidence in the verification result.}
+
+% By increasing the sample size and observing that the simulation variance is stable, one can infer that a sufficient number of samples have been collected. If the variance changes with a change in sample size then a stable condition has not been found.
+% ...
+% ...
+%  dependent on the number of results that exceed the tolerance. {\color{red} \sc How would one know?}
+% % To ensure outlier data points are not hidden in the average of a large number of tests, the maximum deviation should be reported rather than the average when summarising.
 
 \subsubsection{Data Logging}
 Unique identifiers should be assigned to each experiment, each repeat and each individual actor. 
