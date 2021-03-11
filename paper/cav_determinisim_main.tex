@@ -99,13 +99,13 @@ Thus, in a deterministic simulation environment, tests are rendered repeatable a
 %
 However, game engines are seldom deterministic.
 
-This paper first reviews and identifies the potential causes of non-deterministic behaviours in game engines. 
+This paper reviewed and identified the potential causes of non-deterministic behaviours in game engines. 
 %
-A case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, is then presented to highlight its inherent shortcomings in providing sufficient precision in experimental results. 
+A case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, is presented to highlight its inherent shortcomings in providing sufficient precision in experimental results. 
 %
-Different configurations and utilisations of the software and hardware are explored to determine an operational domain where the simulation precision is sufficiently low i.e.\ variance between repeated executions becomes negligible for development and testing work.  
+Different configurations and utilisations of the software and hardware were explored to determine an operational domain where the simulation precision is sufficiently low i.e.\ variance between repeated executions becomes negligible for development and testing work.  
 
-Finally, a method of a general nature is proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
+Finally, a method of a general nature was proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
 
 
 {\color{red} \sc Ensure past/present is used consistently and appropriately throughout.}
@@ -179,7 +179,7 @@ Autonomous Driving, Autonomous Vehicles, Determinism, Physics Engines,  Verifica
 Simulated tests aim to provide evidence to developers and regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988} which form a body of safe and legal driving rules, termed assertions, that must not be violated. 
 
 Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules, e.g.\ through assertion checking during simulation. 
-There have been a number of fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. Simulation environments offer a means to explore the vast parameter space in a safe and efficient manner~\cite{korosec2019waymo} without the need for millions of miles of costly on-road testing~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
+There have been several fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. Simulation environments offer a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} without the need for millions of miles of costly on-road testing~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
 
 % The use of game engines for AV testing
 Increasingly, the autonomous vehicle community is adopting game engines as simulation platforms to support the development and testing of vehicle control software. 
@@ -189,7 +189,7 @@ CARLA~\cite{carla_main_website}, for instance, is an open-source simulator for a
 % Requirements of simulation based verification SBV
 State-of-the-art game engines provide a convenient option for simulation-based testing. They offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes, potentially suitable for perception stack testing and visual inspection of accidents or near misses. 
 %
-Furthermore, they are easy to setup and run with respect to on-road testing and are simple to control and observe, both with respect to the environment the AV operates in as well as the temporal development of actors~\cite{Ulbrich2015}. 
+Furthermore, they are easy to set up and run compared to on-road testing and are simple to control and observe, both with respect to the environment the AV operates in as well as the temporal development of actors~\cite{Ulbrich2015}. 
 %
 %\todo[inline]{These game engines provide a convenient route to testing ego control and perception stack in a realistic environment}
 % 
@@ -258,7 +258,7 @@ We adopt terminology from the mechanical engineering and statistics domains to d
 % \textit{Variance} is used here to define the spread (distribution) of the generated output data with respect to the mean value. 
 %
 % \textit{Variance} (or \textit{precision}) is used here to define the spread (distribution) of the generated output data with respect to the mean value. 
-\textit{Variance} is used here to define the spread, or distribution, of the generated output data with respect to the mean value. \textit{Precision} is synonymous with \textit{variance} although inversely related mathematically. 
+\textit{Variance} is used here to define the spread or distribution, of the generated output data with respect to the mean value. \textit{Precision} is synonymous with \textit{variance} although inversely related mathematically. 
 %
 Therefore, variance can indicate the degree to which a simulation can repeatedly generate the same result when executed under the same conditions and actions.
 %
@@ -280,13 +280,13 @@ If a simulator is deterministic then it will produce results with absolute preci
 %
 
 \subsubsection{Accuracy}
-Precision and tolerance should not to be confused with \textit{accuracy}, which describes how closely the mean of the generated output of a process aligns to a known standard or reference value. We therefore define accuracy as the difference between the true value, or reference value, and what has been achieved in the data generation process or simulation. 
+Precision and tolerance should not be confused with \textit{accuracy}, which describes how closely the mean of the generated output of a process aligns to a known standard or reference value. Therefore, we define accuracy as the difference between the true value, or reference value, and what has been achieved in the data generation process or simulation. 
 %
-For a driving simulation the reference value 
+For a driving simulation, the reference value 
 % , for which accuracy can be measured against, 
 may be the real world that the simulation seeks to emulate, where any divergence from this standard is termed the \textit{reality gap}. 
 %
-In practice full accuracy will often not be achievable due to modelling and associated computational demands of creating and executing exact replica. In most cases, in fact, it is unnecessary and some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. \\
+In practice, full accuracy will often not be achievable due to modelling and associated computational demands of creating and executing exact replica. In most cases it is unnecessary and some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. \\
 
 \subsubsection{Simulation Trace}
 A simulation trace is the output log from the simulator consisting of a time series of all actor positions ($x,y,z$) in a 3D environment recorded at regular time intervals. This definition could be extended to include other variables. %, but position is sufficient for this analysis.\\
@@ -345,7 +345,7 @@ This ensures that software bugs can be found and fixed efficiently, and that sim
 If the simulation is non-deterministic, e.g.\ 
 % KIE No, whether the variance is or is not permissible is not what matters for non-det, it should be zero!
 %e.g. it has a non-permissible variance in,
-it has a non-zero variance in, for example, actor positions, then this may, in the best case, lead to intermittent assertion failures, making it difficult to re-produce, understand and remove bugs and rendering verification results unstable. In the worst case, however, bugs that could have been identified in simulation remain undetected, leading to false confidence in the safety of the AV's control software. 
+it has a non-zero variance in, for example, actor positions, then this may, in the best case, lead to intermittent assertion failures, making it difficult to reproduce, understand and remove bugs and rendering verification results unstable. In the worst case, however, bugs that could have been identified in simulation remain undetected, leading to false confidence in the safety of the AV's control software. 
 %
 
 % \todo[inline]{GC Edit: If the simulation is non-deterministic, it lacks the appropriate precision for this application and the error between output traces exceeds the acceptable tolerance however, variance in actor positions, for instance, may lead to assessment errors, making it difficult to understand and remove bugs. In the worst case, bugs that could have been identified in simulation remain undetected, resulting in false confidence in the safety of the AV's control software.}
@@ -362,7 +362,7 @@ a high priority for games developers. It could even be argued that simulation va
 
 \subsection{Contribution}
 % In pursuit of an answer to this question we
-In this paper we investigate non-determinism and how it affects simulation results on the example of CARLA, an open-source autonomous driving simulation environment based on the Unreal game engine.
+In this paper, we investigate non-determinism and how it affects simulation results on the example of CARLA, an open-source autonomous driving simulation environment based on the Unreal game engine.
 %
 In our case study, scenarios between pedestrian and vehicle actors are investigated to determine the actor position variance in the simulation output for repeated simulation runs. 
 % KIE: This is covered in the next sentence:
@@ -387,7 +387,7 @@ The insights gained from this case study motivated the development of a general 
 Knowing the simulation variance will help assess the suitability of a game engine for AV simulation.
 %impact that using a game engine for AV simulation may have.
 % on verification tasks. 
-In particular, this can give a better understanding of the effects of non-determinism and to what extent simulation precision may impact on verification results.
+In particular, this can give a better understanding of the effects of non-determinism and to what extent simulation precision may impact verification results.
 %
 \todo[inline,color=green!40]{GC Alternative: Knowing the simulation variance will help verification engineers assess the impact that using a game engine for AV simulation may have. In particular, this can give a better understanding of how potentially existing non-determinism affects simulation precision and any verification results that are interpreted from this. }
 %
@@ -447,7 +447,7 @@ We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\to
 % ***************************************************
 \section{Background} \label{s:background}
 
-There are numerous game engines with their associated development environments which could be considered suitable for AV development, e.g.\ Unreal Engine~\cite{UE4_main_website}, Unity~\cite{Unity_main_website}, CryEngine~\cite{CryEngine_main_website}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing game engines, e.g.\ CARLA~\cite{carla_main_website}, AirSim~\cite{AirSim_main_website}, Apollo~\cite{Apollo_main_website}, and some have been developed for cloud-based simulation, e.g.\ Nvidia Drive Constellation~\cite{nvidia_constellation}.
+There are numerous game engines with their associated development environments that could be considered suitable for AV development, e.g.\ Unreal Engine~\cite{UE4_main_website}, Unity~\cite{Unity_main_website}, CryEngine~\cite{CryEngine_main_website}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing game engines, e.g.\ CARLA~\cite{carla_main_website}, AirSim~\cite{AirSim_main_website}, Apollo~\cite{Apollo_main_website}, and some have been developed for cloud-based simulation, e.g.\ Nvidia Drive Constellation~\cite{nvidia_constellation}.
 % \footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
 
 Investigating the determinism of game engines has not attracted much research interest since performance is more critical for game developers than accurate and repeatable execution.  %However, when these engines are used for AV development then deterministic behaviour is required. 
@@ -539,10 +539,13 @@ and the simulation will exhibit lag between input commands and rendered states, 
 %
 \todo[inline,color=red!40]{old: Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy. In contrast, simulation accuracy is essential in AV development and testing, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of accuracy at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that is as close as possible to what the real input would be, i.e.\ with no or minimal extrapolation or lag. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.  }
 %
-Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither needs a faithful representation of reality, i.e.\ the gamer will accept low \textit{accuracy}, nor do they require for repeated actions to result in the same outcome to within a particular tolerance. %, i.e.\ can be low \textit{precision}.
-%
-In contrast, the precision required for AV development and testing is very high, especially for perception stack testing, but also, more generally, for obtaining reliable verification results and for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required tolerance %on the precision 
-at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that is repeatable so that if any software bugs are found they can be re-played and the issue resolved. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.
+Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision.
+% 
+The gamer neither needs a faithful representation of reality (i.e. gamer accepts low accuracy) nor require repeated actions to result in the same outcome (i.e. gamer accepts low precision). In contrast, high accuracy and precision are necessary for AV development, testing and verification.
+% The gamer neither needs a faithful representation of reality, i.e.\ the gamer will accept low \textit{accuracy}, nor do they require for repeated actions to result in the same outcome to within a particular tolerance. %, i.e.\ can be low \textit{precision}.
+% %
+% In contrast, the precision required for AV development and testing is very high, especially for perception stack testing, but also, more generally, for obtaining reliable verification results and for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required tolerance %on the precision 
+% at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that is repeatable so that if any software bugs are found they can be re-played and the issue resolved. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.
 %
 \todo[inline,color=green!40]{GC Edit: Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither wishes a faithful representation of reality, i.e. can be low accuracy, nor do they require for repeated actions to result in the same outcome to a particular tolerance, i.e. can be low precision. In contrast, the precision required for AV development and testing is much higher, especially for perception stack testing, but also for visual inspection of accidents or near misses. If necessary, it is acceptable to achieve the required level of tolerance on the precision at the cost of real-time performance. For example, for perception stack testing the sensors need to get input that repeatable so that if any software bugs are found they can be re-played and the issue resolved. This  may only be realisable by slowing down the rendering to enable more extensive physics calculations.}
 %
@@ -622,7 +625,7 @@ Thus, given the same operands and sequence of operations, the same processor sho
 %
 So, even if the result of a floating-point operation is incorrect due to floating-point rounding errors, it should always be equally \textit{incorrect} for implementations that conform to the IEEE floating-point standard~\cite{8766229}.
 
-However, as illustrated above on the example of non-associative addition, a change of execution order can lead to sequences of floating point operations producing different results. Thus, any uncontrolled options to modify execution order, e.g.\ at the compiler level, within the runtime environment or at the hardware level, can cause simulation results to differ between runs, resulting in non-zero variance and loss of determinism. 
+However, as illustrated above on the example of non-associative addition, a change of execution order can lead to sequences of floating-point operations producing different results. Thus, any uncontrolled options to modify execution order, e.g.\ at the compiler level, within the runtime environment or at the hardware level, can cause simulation results to differ between runs, resulting in non-zero variance and loss of determinism. 
  
 Beyond that, aggressive optimisations by the compiler can also introduce incorrectness in floating-point arithmetic~\cite{llvm-floating-point}. However, the same executable should still return the same output for identical input. 
 
@@ -639,7 +642,7 @@ In conclusion, floating-point arithmetic does not cause non-zero \textit{simulat
 % https://en.wikipedia.org/wiki/Concurrency_(computer_science)
 % https://en.wikipedia.org/wiki/Concurrent_computing
 % https://en.wikipedia.org/wiki/Race_condition#cite_note-1
-Runtime scheduling is a resource management method for sharing computational resources between tasks of different or equal priority where tasks are executed dependent on the scheduler policy of the operating system. A scheduler policy may be optimised in many ways such as for task throughput, deadline delivery or minimum latency~\cite{liu1973scheduling}. 
+Runtime scheduling is a resource management method for sharing computational resources between tasks of different or equal priority where tasks are executed depending on the operating system's scheduler policy. A scheduler policy may be optimised in many ways such as for task throughput, deadline delivery or minimum latency~\cite{liu1973scheduling}. 
 % \todo[inline]{is this the scheduling that is done by the operating system, i.e. at runtime? GC - runtime, added to 1st para.}
 %
 In principle, changing the scheduling policy and thread priorities may increase simulation variance. 
