@@ -99,13 +99,13 @@ Thus, in a deterministic simulation environment, tests are rendered repeatable a
 %
 However, game engines are seldom deterministic.
 
-This paper reviewed and identified the potential causes of non-deterministic behaviours in game engines. 
+This paper reviews and identifies the potential causes of non-deterministic behaviours in game engines. 
 %
 A case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, is presented to highlight its inherent shortcomings in providing sufficient precision in experimental results. 
 %
-Different configurations and utilisations of the software and hardware were explored to determine an operational domain where the simulation precision is sufficiently low i.e.\ variance between repeated executions becomes negligible for development and testing work.  
+Different configurations and utilisations of the software and hardware are explored to determine an operational domain where the simulation precision is sufficiently low i.e.\ variance between repeated executions becomes negligible for development and testing work.  
 
-Finally, a method of a general nature was proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
+Finally, a method of a general nature is proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
 
 
 {\color{red} \sc Ensure past/present is used consistently and appropriately throughout.}
@@ -207,9 +207,59 @@ Compared to the vehicle dynamics simulators and traffic-level simulators used by
 %
 However, while game engines are designed primarily for performance to achieve a good user experience, the requirements for AV verification go beyond that and include determinism.
 
+
+% \subsection{Contribution}
+% In pursuit of an answer to this question we
+In this paper, we investigate non-determinism and how it affects simulation results on the example of CARLA, an open-source autonomous driving simulation environment based on the Unreal game engine.
+%
+In our case study, scenarios between pedestrian and vehicle actors are investigated to determine the actor position variance in the simulation output for repeated simulation runs. 
+% KIE: This is covered in the next sentence:
+% to identify conditions that result in non-determinism based on actor position variance in the simulation output.
+%
+\todo[inline,color=red!40]{old: By limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a deterministic operational simulation setup could be identified. }
+%
+% By analysing actor position variance 
+We find that the CARLA simulator is non-deterministic. Actor path variance was found to be non-zero under certain conditions where the deviation from the mean was observed up to $59$cm. We would consider a deviation of $1$cm to be permissible for autonomous vehicle verification tasks in an urban environment. 
+% {\color{red} Say what the observed variance range is, and what we consider permissible for this study.}
+% However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.
+%
+CARLA exhibits a permissible variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected. 
+%
+\todo[inline,color=green!40]{GC Alternative: By analysing actor position variance we find that the Carla simulator is non-deterministic under certain conditions. 
+However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.}
+
+The insights gained from this case study motivated the development of a general step-by-step method for AV developers and verification engineers to determine the simulation variance for a given simulation environment. 
+%
+\todo[inline,color=red!40]{old: Knowing the simulation variance will help them assess the impact that using a game engine for AV simulation may have. In particular, they can gain a better understanding of how potentially existing non-determinism affects repeatability and reliability of the simulation results.  }
+%
+Knowing the simulation variance will help assess the suitability of a game engine for AV simulation.
+%impact that using a game engine for AV simulation may have.
+% on verification tasks. 
+In particular, this can give a better understanding of the effects of non-determinism and to what extent simulation precision may impact verification results.
+%
+\todo[inline,color=green!40]{GC Alternative: Knowing the simulation variance will help verification engineers assess the impact that using a game engine for AV simulation may have. In particular, this can give a better understanding of how potentially existing non-determinism affects simulation precision and any verification results that are interpreted from this. }
+%
+% \todo[inline]{review and potentially summarize results from case study GC - added see below.}
+%We present a case study to illustrate the use of this method. The study highlights the effects of non-determinism of a game engine on simulation results. Scenarios between pedestrian and vehicle actors are used to identify conditions that result in high simulation variance.
+%
+%By limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a deterministic operational domain could be identified.
+%
+
+This paper is structured as follows.
+%
+Section~\ref{s:prelim} defines terms used throughout the paper and identifies when determinism is needed. 
+Section~\ref{s:background} briefly introduces how game engines work before investigating in Section~\ref{s:nondeterminisimSources} the potential sources of non-determinism in game engines.
+%
+Our case study of simulation variance for a number of scenarios involving pedestrian and vehicle settings using CARLA is presented in Section~\ref{s:case-study}.
+%
+Section~\ref{s:methodology} presents the step-by-step method to assess the suitability of a simulation system for AV verification in general. 
+%
+We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\todo{review at end}
+
+
 \todo[inline,color=green!40]{GC New below}
 
-\section{Preliminaries}
+\section{Preliminaries} \label{s:prelim}
 
 \subsection{Definitions}
 
@@ -359,53 +409,6 @@ a high priority for games developers. It could even be argued that simulation va
 {\em How can one assess whether a simulation environment is deterministic?} and 
 {\em How can one determine and control the simulation variance?}
 \todo[inline,color=green!40]{GC Alternative: How can one assess the extent to which a simulation environment is deterministic or has a permissible tolerance?} 
-
-\subsection{Contribution}
-% In pursuit of an answer to this question we
-In this paper, we investigate non-determinism and how it affects simulation results on the example of CARLA, an open-source autonomous driving simulation environment based on the Unreal game engine.
-%
-In our case study, scenarios between pedestrian and vehicle actors are investigated to determine the actor position variance in the simulation output for repeated simulation runs. 
-% KIE: This is covered in the next sentence:
-% to identify conditions that result in non-determinism based on actor position variance in the simulation output.
-%
-\todo[inline,color=red!40]{old: By limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a deterministic operational simulation setup could be identified. }
-%
-% By analysing actor position variance 
-We find that the CARLA simulator is non-deterministic. Actor path variance was found to be non-zero under certain conditions where the deviation from the mean was observed up to $59$cm. We would consider a deviation of $1$cm to be permissible for autonomous vehicle verification tasks in an urban environment. 
-% {\color{red} Say what the observed variance range is, and what we consider permissible for this study.}
-% However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.
-%
-CARLA exhibits a permissible variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected. 
-%
-\todo[inline,color=green!40]{GC Alternative: By analysing actor position variance we find that the Carla simulator is non-deterministic under certain conditions. 
-However, by limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a permissible level of simulation variance was observed.}
-
-The insights gained from this case study motivated the development of a general step-by-step method for AV developers and verification engineers to determine the simulation variance for a given simulation environment. 
-%
-\todo[inline,color=red!40]{old: Knowing the simulation variance will help them assess the impact that using a game engine for AV simulation may have. In particular, they can gain a better understanding of how potentially existing non-determinism affects repeatability and reliability of the simulation results.  }
-%
-Knowing the simulation variance will help assess the suitability of a game engine for AV simulation.
-%impact that using a game engine for AV simulation may have.
-% on verification tasks. 
-In particular, this can give a better understanding of the effects of non-determinism and to what extent simulation precision may impact verification results.
-%
-\todo[inline,color=green!40]{GC Alternative: Knowing the simulation variance will help verification engineers assess the impact that using a game engine for AV simulation may have. In particular, this can give a better understanding of how potentially existing non-determinism affects simulation precision and any verification results that are interpreted from this. }
-%
-% \todo[inline]{review and potentially summarize results from case study GC - added see below.}
-%We present a case study to illustrate the use of this method. The study highlights the effects of non-determinism of a game engine on simulation results. Scenarios between pedestrian and vehicle actors are used to identify conditions that result in high simulation variance.
-%
-%By limiting the level of system utilisation to less than 75\% and terminating scenarios once a collision has been detected, a deterministic operational domain could be identified.
-%
-
-This paper is structured as follows.
-%
-Section~\ref{s:background} briefly introduces how game engines work before investigating in Section~\ref{s:nondeterminisimSources} the potential sources of non-determinism in game engines.
-%
-Our case study of simulation variance for a number of scenarios involving pedestrian and vehicle settings using CARLA is presented in Section~\ref{s:case-study}.
-%
-Section~\ref{s:methodology} presents the step-by-step method to assess the suitability of a simulation system for AV verification in general. 
-%
-We conclude in Section~\ref{s:conclusion} and give an outlook on future work.\todo{review at end}
 
 
 % \noindent \IEEEPARstart{T}{}he evolution and inevitable implementation of connected and autonomous vehicles (AVs) on roads is a delicate if not utterly fascinating subject. Such systems operate in environments marked by inaccessibility, unexpected weather conditions, or unpredictable behavior by surrounding humans\cite{RobustnessAutonomy}. 
@@ -803,7 +806,8 @@ Ultimately, our objective is to control non-determinism to minimise simulation v
 
 \todo[inline,color=red!40]{old:  We first describe the context, scene and scenario of interest before discussing and defining a threshold for what is considered an acceptable simulation variance in this context.}
 %
-We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context. {\color{red} and then..? Please cover the entire section - consider splitting setup from evaluation.}
+We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context. A discussion on the internal and external settings of the simulation is included, along with system configuration and pre-screening sections. 
+% {\color{red} and then..? Please cover the entire section - consider splitting setup from evaluation.}
 %
 \todo[inline,color=green!40]{GC alternative: We first describe the context, scene and scenario of interest before discussing and defining a tolerance for what is considered an acceptable simulation variance in this context.}
 %
@@ -1148,7 +1152,7 @@ To eliminate some of the potential sources of non-determinism outlined in Sectio
 
 % {\color{red} Consider spitting to introduce the first part of the table, which motivates the 2nd lot of experiments under load restrictions. I'd find this more logical.}
 
-A summary of all the results is shown in Table~\ref{TableOfExperiments}.  In the column $\max\sigma$ (unrestricted) the value reported is the maximum deviation across all resource utilisation levels, i.e.\ the worst case for a given scenario.  
+A summary of main the results are shown in Table~\ref{TableOfExperiments}.  In the column $\max\sigma$ (unrestricted) the value reported is the maximum deviation across all resource utilisation levels, i.e.\ the worst case for a given scenario.  
 %
 From these results it is clear that scenarios with only pedestrian actors (Tests 5 \& 6) display results within tolerance over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. 
 %
@@ -1208,13 +1212,15 @@ To conclude, the main findings of this case study suggest a working practice tha
 By limiting simulation results to pre-collision data and ensuring resource utilisation levels do not exceed 75\%, the permissible variance of $1$cm is achievable as shown in the \textit{restricted} column in Table~\ref{TableOfExperiments}. By applying this set of restrictions upon the simulation the maximum observed deviation across all experiments was $0.98$cm which is within the target tolerance we set out to achieve. 
 %
 Practitioners may wish to set a stricter resource utilisation level, such as less than 50\% to further reduce the potential dispersion of results if this is required for their chosen application. 
+
+A correlation between resource utilisation and simulation variance has been observed in these results which may be due to process scheduling. Rather than liming utilisation of the whole system, another approach may be to promote the scheduling priority of the simulation process which is explored in Section~\ref{r:process_scheduling}. Furthermore, we were keen to investigate the impact of memory access and include a brief investigation of this in Section~\ref{r:numa}. 
 %
 \todo[inline,color=green!40]{GC Addition: Practitioners may wish to set a stricter resource utilisation level, such as less than 50\% to further reduce the potential dispersion of results if this is required for their chosen application. 
 %For this case study a 50\% restriction of resource utilisation would reduce deviation across all experiments to XXX.XXXmm. 
 }
 
 
-\subsection{Process Scheduling Priority}
+\subsection{Process Scheduling Priority} \label{r:process_scheduling}
 
 \begin{figure}[t]
     \centering
@@ -1231,7 +1237,7 @@ The results are presented in Fig.~\ref{NICEExperimentStressSummary} where the bo
 %
 The remaining difference in the variance between the two resource utilisation levels may be due to the lack of absolute control that \texttt{NICE} has over process scheduling.\footnote{\url{https://askubuntu.com/questions/656771/process-niceness-vs-priority}}
 
-\subsection{Non-uniform memory access (NUMA)}
+\subsection{Non-uniform memory access (NUMA)} \label{r:numa}
 An additional investigation into memory access was undertaken given the potential impact that data transfer cost and execution order may have on simulation variance, see Section~\ref{s:sources_numa}. %
 The program \texttt{numactl}~\cite{numactl_NUMA} allows a process to run with a specified memory placement policy, essentially allowing the process to be bound to a particular CPU core. %
 \texttt{numactl} was used to fix the simulator and test script to single cores, and a (2\%) improvement in simulation variance was observed. %
@@ -1297,13 +1303,13 @@ The method consists of a sequence of five stages; experimental design, simulator
 
 {\color{red} \sc Surely, a series of systematically designed experiments, each repeated X times, should be set up, where each experiment varies one of the suspected sources of non-determinism? Then, the analysis of the data from each experiment should reveal the actual sources of non-determinism for the given setting? In other words, we are aiming to fix as much as we can control (easily), and then we intentionally vary (ideally) single variables, e.g.\ the resource utilisation, to find out what makes a difference. We need a clear definition of the objectives of the experimental design, i.e.\ what one should vary and what one wants to ``nail down''.}
 
-{\color{green!99} \sc The experiment design is based around a series of carefully selected tests that varies one the sources of non-determinism whilst keeping all others parameters constant. Each test is repeated $n$ times and the analysis of the results provide a confidence around a degree of statistical certainty. By varying a single parameter and controlling all others, the simulation variance associated with each source of non-determinism can be found and prioritised. }
+{\color{green!99} \sc The experiment design is based around a series of carefully selected tests that varies one of the sources of non-determinism whilst keeping all others parameters constant. Each test is repeated $n$ times and the analysis of the results provide a confidence with a degree of statistical certainty. By varying a single parameter and controlling all others, the simulation variance associated with each source of non-determinism can be found and addressed. }
 
 \subsubsection{Actors} \label{s:actors}
 
 % Different actor types may be handled differently by the game engine. For instance, our investigation indicated that CARLA pedestrians (termed \textit{walkers}) do not suffer from simulation variance under any conditions that were tested. However, the introduction of CARLA vehicles increased the simulation variance of the pedestrian-vehicle test by 12 orders of magnitude. {\color{red} \sc This needs rephrasing as it appears to contradict the statement above.} 
 %
-As such, all actors that could be included in any future simulation should be tested, including any non-standard CARLA or bespoke actors including the ego vehicle, see section on ``External Settings'' last point - Ego Controller. 
+All actors that could be included in the simulation should be tested, including any non-standard CARLA or bespoke actors including the ego vehicle, see Section~\ref{ego_actor}. 
 % {\color{red} \sc ... such as the ego vehicle...? [see section on ``External Settings'' last point - Ego Controller.]}
 %
 \subsubsection{Trajectories and Collisions} 
@@ -1356,7 +1362,7 @@ The version number of the CARLA and Unreal environment has also be shown to affe
 % The experiment should be a short\todo[inline]{What does short mean? Quantify.} scenario that can be easily repeated with the same initial conditions. 
 
 
-\subsection{External Settings} 
+\subsection{External Settings} \label{ego_actor}
 
 \subsubsection{Resource Utilisation}
 % To simulate the demands of taxing simulations, potentially requiring realistic rendering or complex physics calculations in an otherwise simple scenario, stress programs should be used to artificially occupy system resources. 
@@ -1393,7 +1399,7 @@ Investigations in tests performed with NUMA control resulted in only minor impro
 %
 Using a fixed memory placement policy may assist if simulation variance is borderline to the tolerance but only of the order of a few percent from our observations.
 
-\subsubsection{Ego Vehicle Controller}
+\subsubsection{Ego Vehicle Controller} 
 % {\color{red} \sc Why is this not covered under actors? [see my note in the Actors section]}
 % {\color{red} \sc Clearly separate the investigation from the Method. The fact that the case study did not have an ego vehicle should be mentioned as a limitation of the case study, rather than elaborated on here, but why does this make a difference?}
 %
@@ -1412,7 +1418,7 @@ An ego vehicle was not used in this study, but the impact of introducing this to
 It is recommended that the chosen sample size is determined empirically. 
 %
 {\color{green} We recommend monitoring variance while increasing the sample size in orders of magnitude
-until there is confidence that $\max\sigma$ will not exceed the specified tolerance for the verification process. 
+until there is confidence that $\max\sigma$ will not exceed the permissible variance for the verification process. 
 %
 Note that we suggest monitoring the maximum value of $\sigma$, not the average, because if even a single simulation run is outside of the permissible variance this may lead to false confidence in the verification result.}
 
@@ -1522,6 +1528,8 @@ An investigation into the CARLA simulator revealed a significant simulation vari
 We then researched, identified and discussed potential sources for non-determinism in this context.
 %
 A systematic case study of the CARLA simulator uncovered the actual factors that contribute towards greater simulation variance, giving rise to non-deterministic execution. In particular, actor collisions and system-level resource utilisation were identified as key contributors. 
+%
+{\color{green} To meet the recommended simulation variance for urban autonomous vehicle verification demonstrated in our case study, we recommend being aware of actor collisions and resource utilisation levels during simulation execution.  }
 %
 {\color{red} \sc Say what the recommendations were for the required tolerance of the case study, i.e.\ summarise our results/recommendations here and point to github for data/detail. This seems to have been commented out but was here before.}
 
