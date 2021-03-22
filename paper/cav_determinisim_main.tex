@@ -97,14 +97,14 @@ A key requirement for simulation-based development and verification is determini
 %
 Thus, in a deterministic simulation environment, tests are rendered repeatable and yield simulation results that are trustworthy and straightforward to debug. 
 %
-However, game engines are seldom deterministic.
-
+However, game engines are seldom deterministic. 
+%
 This paper reviews and identifies the potential causes of non-deterministic behaviours in game engines. 
 %
 A case study using CARLA, an open-source autonomous driving simulation environment powered by Unreal Engine, is presented to highlight its inherent shortcomings in providing sufficient precision in experimental results. 
 %
-Different configurations and utilisations of the software and hardware are explored to determine an operational domain where the simulation precision is sufficiently low i.e.\ variance between repeated executions becomes negligible for development and testing work.  
-
+Different configurations and utilisations of the software and hardware are explored to determine an operational domain where the simulation precision is sufficiently low i.e.\ variance between repeated executions becomes negligible for development and testing work. 
+%
 Finally, a method of a general nature is proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
 
 
@@ -1292,7 +1292,7 @@ In this section a method for determining the simulation variance of actor paths 
 %
 In addition, recommendations and best practice guidelines for minimising simulation variance are suggested.
 % , such as fixing the physics time step in \textit{Simulator Settings}. 
-{\color{red} \sc Highlight these in the text.}
+% {\color{red} \sc Highlight these in the text.}
 % A number of parameters have been identified either theoretically or from the empirical investigation that influence simulation variance. 
 % This methodology has been refined several times over the course of our investigations into both Unreal Engine and CARLA and is presented here as a work flow, see Fig.~\ref{method_diagram}. %These need to be considered at different stages in the process. 
 %
@@ -1530,9 +1530,9 @@ We then researched, identified and discussed potential sources for non-determini
 %
 A systematic case study of the CARLA simulator uncovered the actual factors that contribute towards greater simulation variance, giving rise to non-deterministic execution. In particular, actor collisions and system-level resource utilisation were identified as key contributors. 
 %
-{\color{green} To meet the recommended simulation variance for urban autonomous vehicle verification demonstrated in our case study, we recommend being aware of actor collisions and resource utilisation levels during simulation execution.  }
+To meet the recommended simulation variance for urban autonomous vehicle verification demonstrated in our case study, we recommend being aware of actor collisions and resource utilisation levels during simulation execution.  
 %
-{\color{red} \sc Say what the recommendations were for the required tolerance of the case study, i.e.\ summarise our results/recommendations here and point to github for data/detail. This seems to have been commented out but was here before.}
+% {\color{red} \sc Say what the recommendations were for the required tolerance of the case study, i.e.\ summarise our results/recommendations here and point to github for data/detail. This seems to have been commented out but was here before.}
 
 A general method to assess the actor path variance of a game-engine-based simulation environment is then proposed. The method can be used to find the \textit{domains of permissible variance} of a simulation environment for a given system configuration. This can give AV developers and verification engineers increased confidence in the simulation results and reduce debug time. 
 % 
