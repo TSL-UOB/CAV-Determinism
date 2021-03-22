@@ -108,7 +108,7 @@ Different configurations and utilisations of the software and hardware are explo
 Finally, a method of a general nature is proposed, that can be used to find the domains of permissible variance in game engines simulations for any given system configuration.
 
 
-{\color{red} \sc Ensure past/present is used consistently and appropriately throughout.}
+% {\color{red} \sc Ensure past/present is used consistently and appropriately throughout.}
 
 % =========================================
 % Game engines are increasingly used as simulation platforms by the autonomous vehicle (AV) community to develop vehicle control systems and test environments.
@@ -1301,9 +1301,10 @@ The method consists of a sequence of five stages; experimental design, simulator
 
 \subsection{Experimental Design}\label{s:design_experiment}
 
-{\color{red} \sc Surely, a series of systematically designed experiments, each repeated X times, should be set up, where each experiment varies one of the suspected sources of non-determinism? Then, the analysis of the data from each experiment should reveal the actual sources of non-determinism for the given setting? In other words, we are aiming to fix as much as we can control (easily), and then we intentionally vary (ideally) single variables, e.g.\ the resource utilisation, to find out what makes a difference. We need a clear definition of the objectives of the experimental design, i.e.\ what one should vary and what one wants to ``nail down''.}
+% {\color{red} \sc Surely, a series of systematically designed experiments, each repeated X times, should be set up, where each experiment varies one of the suspected sources of non-determinism? Then, the analysis of the data from each experiment should reveal the actual sources of non-determinism for the given setting? In other words, we are aiming to fix as much as we can control (easily), and then we intentionally vary (ideally) single variables, e.g.\ the resource utilisation, to find out what makes a difference. We need a clear definition of the objectives of the experimental design, i.e.\ what one should vary and what one wants to ``nail down''.}
 
-{\color{green!99} \sc The experiment design is based around a series of carefully selected tests that varies one of the sources of non-determinism whilst keeping all others parameters constant. Each test is repeated $n$ times and the analysis of the results provide a confidence with a degree of statistical certainty. By varying a single parameter and controlling all others, the simulation variance associated with each source of non-determinism can be found and addressed. }
+% {\color{green!99} \sc }
+The experiment design is based around a series of carefully selected tests that varies one of the sources of non-determinism whilst keeping all others parameters constant. Each test is repeated $n$ times and the analysis of the results provide a confidence with a degree of statistical certainty. By varying a single parameter and controlling all others, the simulation variance associated with each source of non-determinism can be found and addressed. 
 
 \subsubsection{Actors} \label{s:actors}
 
@@ -1417,10 +1418,10 @@ An ego vehicle was not used in this study, but the impact of introducing this to
 % {\color{red} \sc Again, separate the study from the method. This observation should really have been made in the section on ``Experimental System Config and Pre-Screening, to justify the figure of 1000 repeats.} 
 It is recommended that the chosen sample size is determined empirically. 
 %
-{\color{green} We recommend monitoring variance while increasing the sample size in orders of magnitude
+We recommend monitoring variance while increasing the sample size in orders of magnitude
 until there is confidence that $\max\sigma$ will not exceed the permissible variance for the verification process. 
 %
-Note that we suggest monitoring the maximum value of $\sigma$, not the average, because if even a single simulation run is outside of the permissible variance this may lead to false confidence in the verification result.}
+Note that we suggest monitoring the maximum value of $\sigma$, not the average, because if even a single simulation run is outside of the permissible variance this may lead to false confidence in the verification result.
 
 % By increasing the sample size and observing that the simulation variance is stable, one can infer that a sufficient number of samples have been collected. If the variance changes with a change in sample size then a stable condition has not been found.
 % ...
