@@ -92,19 +92,30 @@
 \bibliographystyle{ieeetr}
 \mainmatter
 
-
 \title{On Determinism of Game Engines used for Simulation-based Autonomous Vehicle Verification}
 
-
 \titlerunning{On Determinism of Game Engines... }%used for Simulation-based }%Autonomous Vehicle Verification}
-
 
 \author{Greg Chance\inst{1,3}, Abanoub Ghobrial\inst{1,3}, Kevin McAreavey\inst{1,3}, S\'everin Lemaignan\inst{2,3}, Tony Pipe\inst{2,3}, Kerstin Eder\inst{1,2}}
 
 \authorrunning{G. Chance, A. Ghobrial et al.}
 \institute{University of Bristol, Bristol, UK \and University of the West of England, Bristol, UK \and Bristol Robotics Laboratory, Bristol, UK}
 \tocauthor{Authors' Instructions}
+
 \maketitle
+\let\thefootnote\relax\footnotetext{\textit{Greg Chance and Abanoub Ghobrial contributed equally to this paper and are both corresponding authors.}
+Greg Chance (e-mail: greg.chance@bristol.ac.uk), 
+Abanoub Ghobrial (e-mail: abanoub.ghobrial@bristol.ac.uk), 
+Kevin McAreavey (e-mail: kevin.mcareavey@bristol.ac.uk), 
+and 
+Kerstin Eder (e-mail: kerstin.eder@bristol.ac.uk) 
+are with the Trustworthy Systems Lab, Department of Computer Science, University of Bristol, Merchant Ventures Building, Woodland Road,  Bristol, BS8 1UQ, United Kingdom. 
+%
+S\'everin Lemaignan (e-mail: severin.lemaignan@brl.ac.uk)
+and
+Tony Pipe (e-mail: tony.pipe@brl.ac.uk), 
+are with the Bristol Robotics Lab, T Block, University of the West of England,Frenchay, Coldharbour Ln, Bristol, BS34 8QZ, United Kingdom. 
+}.
 
 \makeatletter
 \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
@@ -1038,7 +1049,7 @@ To eliminate some of the potential sources of non-determinism outlined in Sectio
 
 \begin{itemize}[leftmargin=*]
     \item System memory: \texttt{memtest86}~\cite{MemTest86} full suite of tests ran, all passed.
-    \item Graphical memory: \texttt{cuda\_memtest}~\cite{cuda_memtest}, \cite{shi2009testing}.
+    \item Graphical memory: \texttt{cuda\_memtest}~\cite{cuda_memtest}, no failures on all 11 tests~\cite{shi2009testing}.
 \end{itemize}
 
 
