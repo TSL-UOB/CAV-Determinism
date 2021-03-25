@@ -1323,8 +1323,8 @@ The verification engineer should set the \textit{permissible variance}, also ter
 % which refers to the acceptable level of actor path variance. 
 % ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. 
 %
-The tolerance depends on the objectives of the simulation and the granularity at which the simulation environment operates. For example, this tolerance must be sufficiently small to enable accurate assertion checking and coverage collection. In Section~\ref{s:tolerance} a tolerance of $1$cm was considered sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this tolerance experimentally. 
-
+The tolerance depends on the objectives of the simulation and the granularity at which the simulation environment operates. For example, this tolerance must be sufficiently small to enable accurate assertion checking and coverage collection, but not so small for assertion results to differ for repeated runs. In Section~\ref{s:tolerance} a tolerance of $1$cm was considered sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this tolerance experimentally. 
+%
 %The permissible variance is analogous to the analogue signal level associated with each of the binary states %of the signals in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be, for example, any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the noisy physical signal values that are analogue voltages into the digital domain with binary representation. <- KIE: meant only to illustrate that other areas also have defined tolerances. 
 %
 
