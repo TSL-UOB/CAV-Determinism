@@ -1,10 +1,10 @@
+\RequirePackage{etex} %% **************** add this for ARXIV submission
 \documentclass[runningheads,twocolumn,a4paper,10pt]{llncs}
+% \documentclass[runningheads,a4paper]{llncs}
 \usepackage{etex}
 \reserveinserts{28}
 \pdfoutput=1
-
 \setcounter{tocdepth}{3}
-
 \usepackage[a4paper, total={7in, 10in}]{geometry}
 \usepackage[linesnumbered,lined,boxed,commentsnumbered,ruled]{algorithm2e}
 \renewcommand{\algorithmcfname}{ALGORITHM}
@@ -20,12 +20,9 @@
 \usepackage{booktabs}
 \usepackage{capt-of}
 \usepackage{makecell}
-\usepackage{textcomp }
 \usepackage{multirow}
 \usepackage{listings}
 \usepackage{graphicx}
-\usepackage{colortbl}
-\usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage[font=footnotesize,labelfont=bf]{subcaption}
 \usepackage[hidelinks]{hyperref}
@@ -34,37 +31,22 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage[para,online,flushleft]{threeparttable}
-\usepackage{multirow}
 \usepackage{wasysym}
 \usepackage{amssymb}
 \usepackage{enumitem}
 \usetikzlibrary{arrows}
 % \usepackage{subfig}
-\usepackage{subcaption}
 \usepackage{breakcites}
-
 \usepackage{array}
-\usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{amssymb}
 \usepackage{color}
-\usepackage{threeparttable}
 \usepackage{balance} %balance columns
 \hyphenation{op-tical net-works semi-conduc-tor}
-\usepackage{enumitem}
-\usepackage{hyperref} % Add  [ocgcolorlinks,pdfusetitle] before hyperref for colored links
-% \usepackage{subfig}
-\usepackage{subcaption}
 \usepackage{dblfloatfix}
-\usepackage{booktabs}
 \usepackage{authblk}
-% \pagenumbering{gobble} %suppresses page numbers
-\usepackage{balance} %balance columns
-% \usepackage{todonotes}
 \usepackage[disable]{todonotes}
 \usepackage{siunitx}
-
 \usepackage{xurl} %for long URLs
+
 
 % \usepackage{multicol}
 \setcounter{secnumdepth}{3}
@@ -1311,7 +1293,7 @@ The verification engineer should set the \textit{permissible variance}, also ter
 % which refers to the acceptable level of actor path variance. 
 % ($\sigma^2$), which is quoted in terms of deviation ($\sigma$) for ease of interpretation. 
 %
-The tolerance depends on the objectives of the simulation and the granularity at which the simulation environment operates. For example, this tolerance must be sufficiently small to enable accurate assertion checking and coverage collection. In Section~\ref{s:tolerance} a tolerance of $1$cm was considered sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this tolerance experimentally. 
+The tolerance depends on the objectives of the simulation and the granularity at which the simulation environment operates. For example, this tolerance must be sufficiently small to enable accurate assertion checking and coverage collection, but not so small for assertion results to differ for repeated runs. In Section~\ref{s:tolerance} a tolerance of $1$cm was considered sufficient for urban scenario assertion checking. In practice, it may be necessary to determine this tolerance experimentally. 
 
 %The permissible variance is analogous to the analogue signal level associated with each of the binary states %of the signals in digital circuits. At some low analogue voltage the signal is interpreted as binary $0$, this may be, for example, any voltage below $0.5$V, and the same signal is interpreted as binary $1$ at some higher voltage, e.g.\ above $3.5$V. This convention enables the abstraction from the noisy physical signal values that are analogue voltages into the digital domain with binary representation. <- KIE: meant only to illustrate that other areas also have defined tolerances. 
 %
