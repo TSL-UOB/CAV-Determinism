@@ -7,5 +7,6 @@
 *.log
 *.out
 paper/cav_determinisim_main.pdf
+paper_arxiv/arxiv_cav_determinisim_main.pdf
 *.run.xml
 *.synctex.gz
