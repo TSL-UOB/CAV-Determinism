@@ -568,7 +568,7 @@ The following review discusses the potential sources of non-determinism that wer
 %
 \todo[inline,color=green!40]{GC Addition below}%
 %
-A good analysis of potential sources is given by Strandberg et al.~\cite{intermittently-failing-tests}, although the AV simulation domain introduces it's own unique challenges that were not considered in that paper.
+A good analysis of potential sources is given by Strandberg et al.~\cite{intermittently-failing-tests}, although the AV simulation domain introduces its own unique challenges that were not considered in that paper.
 
 % MOVED TO INTRO \todo[inline]{We need a paragraph on how hard it can be to make a computation fully determinisitc, referring to the ACM queue interview with the {\tt rr} developers~\cite{acm-q-rr-interview}. Not sure whether this should be in the introduction, HERE, or in a related work section or in the discussion/conclusion. But it is important that we demonstrate knowledge of others working on this in other areas. {\tt rr} is somewhat closely related as they need determinism for debugging, and we need it for that purpose too, although we also need verification results to be stable.}
 
@@ -740,7 +740,7 @@ With respect to perception stack testing, weather and lighting conditions in the
 \subsection{Actor Navigation}
 There is existing evidence to suggest actor navigation, typically pedestrians, could be the cause of non-deterministic simulation behaviour~\cite{CARLABenchmark}.
 % 
-Unreal Engine is the underlying framework for the CARLA simulator which uses the A* algorithm for actor navigation~\cite{a_Star_oreilly}.
+Unreal Engine is the underlying framework for the CARLA simulator which uses the A* algorithm for actor navigation~\cite{newton2016unreal}.
 %
 The A* algorithm~\cite{AStarBook} will give deterministic outcomes as long as the environment is deterministic~\cite{AirsimUnrealArticle, UnrealAIDocumentation}. 
 
