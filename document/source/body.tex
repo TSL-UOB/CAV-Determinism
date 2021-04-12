@@ -6,27 +6,25 @@ Simulation-based verification of autonomous driving functionality is a promising
 %
 Simulated tests aim to provide evidence to developers and regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988} which form a body of safe and legal driving rules, termed assertions, that must not be violated. 
 
-Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules, e.g.\ through assertion checking during simulation. 
-There have been several fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. Simulation environments offer a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} without the need for millions of miles of costly on-road testing~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
+Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules e.g.,\ through assertion checking during simulation. There have been several fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. Simulation environments offer a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} without the need for millions of miles of costly on-road testing~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
 
 Increasingly, the autonomous vehicle community is adopting game engines as simulation platforms to support the development and testing of vehicle control software. 
 %
 CARLA~\cite{carla_main_website}, for instance, is an open-source simulator for autonomous driving that is implemented in the Unreal Engine~\cite{UE4_main_website}, a real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
 
-State-of-the-art game engines provide a convenient option for simulation-based testing. They offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes, potentially suitable for perception stack testing and visual inspection of accidents or near misses. 
+State-of-the-art game engines provide a convenient option for simulation-based testing. Strong arguments exist that they offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes, potentially suitable for perception stack testing and visual inspection of accidents or near misses. 
 %
 Furthermore, they are easy to set up and run compared to on-road testing and are simple to control and observe, both with respect to the environment the AV operates in as well as the temporal development of actors~\cite{Ulbrich2015}. 
 %
-Finally, support for hardware-in-the-loop development or a real-time test-bed for cyber-security testing~\cite{Javaid2013} may also be required. 
+Finally, support for hardware-in-the-loop development or a real-time test-bed for cyber-security testing~\cite{Javaid2013} may also be provided if required. 
 %
-Compared to the vehicle dynamics simulators and traffic-level simulators used by manufacturers~\cite{FrameworkAndChallenges}, game engines offer a simulation solution that meets many of the requirements for the development and functional safety testing of AVs in simulation. 
+Compared to the vehicle dynamics simulators and traffic-level simulators used by manufacturers~\cite{FrameworkAndChallenges}, game engines offer a simulation solution that meets many of the requirements for the development and functional safety testing of the autonomous features of AVs in simulation. 
 %
-However, while game engines are designed primarily for performance to achieve a good user experience, the requirements for AV verification go beyond that and include determinism.
+However, while game engines are designed primarily for performance to achieve a good user experience, the requirements for AV verification go beyond that and include the issue of determinism.
 
-
-In this paper, we investigate non-determinism and how it affects simulation results on the example of CARLA, an open-source autonomous driving simulation environment based on the Unreal game engine.
+In this paper, we investigate non-determinism and how it affects simulation results using the example of CARLA, an open-source autonomous driving simulation environment based on the Unreal game engine.
 %
-In our case study, scenarios between pedestrian and vehicle actors are investigated to determine the actor position variance in the simulation output for repeated simulation runs. We find that the CARLA simulator is non-deterministic. Actor path variance was found to be non-zero under certain conditions where the deviation from the mean was observed up to $59$cm. We would consider a deviation of $1$cm to be permissible for autonomous vehicle verification tasks in an urban environment. CARLA exhibits a permissible variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected. 
+In our case study, scenarios between pedestrian and vehicle actors are investigated to determine the actor position variance in the simulation output for repeated simulation runs. We find that the CARLA simulator is non-deterministic. Actor path variance was found to be non-zero and, under certain conditions, the deviation from the mean was observed up to $59$cm. We would consider a deviation of $1$cm to be permissible for autonomous vehicle verification tasks in an urban environment. However, we found that CARLA exhibits a permissible variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected. 
 %
 
 The insights gained from this case study motivated the development of a general step-by-step method for AV developers and verification engineers to determine the simulation variance for a given simulation environment. 
@@ -39,7 +37,9 @@ This paper is structured as follows.
 Section~\ref{s:prelim} defines terms used throughout the paper and identifies when determinism is needed. 
 Section~\ref{s:background} briefly introduces how game engines work before investigating in Section~\ref{s:nondeterminisimSources} the potential sources of non-determinism in game engines.
 %
-Our case study of simulation variance for a number of scenarios involving pedestrian and vehicle settings using CARLA is presented in Section~\ref{s:case-study}.
+An empirical case study of simulation variance for a number of scenarios involving pedestrian and vehicles is given in Section~\ref{s:case-study} including internal and external setting and system screening tests. 
+%
+The results from the case study are presented in Section~\ref{s:FinalResultsSection}. 
 %
 Section~\ref{s:methodology} presents the step-by-step method to assess the suitability of a simulation system for AV verification in general. 
 %
@@ -87,7 +87,7 @@ Precision and tolerance should not be confused with \textit{accuracy}, which des
 %
 For a driving simulation, the reference value may be the real world that the simulation seeks to emulate, where any divergence from this standard is termed the \textit{reality gap}. 
 %
-In practice, full accuracy will often not be achievable due to modelling and associated computational demands of creating and executing exact replica. In most cases it is unnecessary and some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. \\
+In practice, full accuracy will often not be achievable due to modelling and associated computational demands of creating and executing an exact replica. In most cases it is unnecessary and some authors state that `just the right amount of realism' is required to achieve valid simulation results~\cite{Koopman2018}. \\
 
 \subsubsection{Simulation Trace}
 A simulation trace is the output log from the simulator consisting of a time series of all actor positions ($x,y,z$) in a 3D environment recorded at regular time intervals. This definition could be extended to include other variables. A set of simulation traces derived from the same input and starting state then forms the experimental data on which variance is calculated for a given simulation run. \\
@@ -554,6 +554,3 @@ An investigation into the CARLA simulator revealed a significant simulation vari
 A general method to assess the actor path variance of a game-engine-based simulation environment is then proposed. The method can be used to find the \textit{domains of permissible variance} of a simulation environment for a given system configuration. This can give AV developers and verification engineers increased confidence in the simulation results and reduce debug time. As future work the method can be extended to criteria other than the actor path, e.g.\ actor orientation and any status indicators that may be of interest, also including actions, sequences and timings that may be useful for verification purposes.
 
 An ambitious avenue for future work is the development of a deterministic simulator for AV development and verification. This requires controlling all potential sources of non-determinism, including randomness and scheduling, very similar to the development of the record-and-reply debugger \texttt{rr}~\cite{RR_link}, originally developed to catch low-frequency non-deterministically failing tests at Mozilla~\cite{acm-q-rr-interview}.
-
-\section*{Acknowledgement}
-This research has in part been funded by the ROBOPILOT and CAPRI projects. Both projects are part-funded by the Centre for Connected and Autonomous Vehicles (CCAV), delivered in partnership with Innovate UK under grant numbers 103703 (CAPRI) and 103288 (ROBOPILOT), respectively.
