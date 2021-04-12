@@ -1,0 +1,154 @@
+\RequirePackage{etex} %% **************** add this for ARXIV submission
+\documentclass[runningheads,twocolumn,a4paper,10pt]{llncs}
+
+\usepackage[maxnames=6,firstinits=true,doi=false,url=true,isbn=false]{biblatex}
+\addbibresource{../source/cav_determinism.bib}
+
+% \documentclass[runningheads,a4paper]{llncs}
+\usepackage{etex}
+\reserveinserts{28}
+\pdfoutput=1
+\setcounter{tocdepth}{3}
+\usepackage[a4paper, total={7in, 10in}]{geometry}
+\usepackage[linesnumbered,lined,boxed,commentsnumbered,ruled]{algorithm2e}
+\renewcommand{\algorithmcfname}{ALGORITHM}
+\SetAlFnt{\small}
+\SetAlCapFnt{\small}
+\SetAlCapNameFnt{\small}
+\SetAlCapHSkip{0pt}
+\IncMargin{-\parindent}
+\usepackage{ textcomp }
+\usepackage{ comment }
+\usepackage[color=yellow!60,textsize=footnotesize,obeyDraft,draft]{todonotes}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{capt-of}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[font=footnotesize,labelfont=bf]{subcaption}
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalize]{cleveref}
+\captionsetup{compatibility=false}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[para,online,flushleft]{threeparttable}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usetikzlibrary{arrows}
+% \usepackage{subfig}
+\usepackage{breakcites}
+\usepackage{array}
+\usepackage{color}
+\usepackage{balance} %balance columns
+\usepackage{lastpage}
+\hyphenation{op-tical net-works semi-conduc-tor}
+\usepackage{dblfloatfix}
+\usepackage{authblk}
+% \usepackage[disable]{todonotes}
+\usepackage{siunitx}
+\usepackage{xurl} %for long URLs
+
+
+
+% \usepackage{multicol}
+\setcounter{secnumdepth}{3}
+
+
+% Make tables a little bit easier to read
+\renewcommand{\arraystretch}{1.15}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcounter{mnotei}
+\setcounter{mnotei}{0}
+\newcommand{\mnote}[1]{%
+  {\scriptsize\textsf{$^{\textcolor{red}{[n.\themnotei]}}$}}%
+  \marginpar{\scriptsize\textsf{\textcolor{red}{[n.\themnotei]: #1}}}%
+  % \marginpar{\scriptsize\textsf{n.\themnotei: #1}}%
+  \stepcounter{mnotei}
+}
+%\renewcommand{\mnote}[1]{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Provide paragraph-style table columns
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+% Give more marginpar
+\setlength{\marginparwidth}{25mm}
+
+% % Prompt people to generate graphs
+% \newcommand{\includegraphicsmaybe}[2]{
+%     \IfFileExists{#2}{\includegraphics[#1]{#2}}{
+%     \detokenize{File #2 is missing, maybe you need to run plots.py?}
+% }}
+
+% \newcommand{\TODO}[1]{{\color{red}\textbf{TODO: #1}}}
+
+\begin{document} 
+% \bibliographystyle{ieeetr}
+\mainmatter
+
+\title{On Determinism of Game Engines used for Simulation-based Autonomous Vehicle Verification}
+
+\titlerunning{On Determinism of Game Engines... }%used for Simulation-based }%Autonomous Vehicle Verification}
+
+\author{Greg Chance\inst{1,3}, Abanoub Ghobrial\inst{1,3}, Kevin McAreavey\inst{1,3}, S\'everin Lemaignan\inst{2,3}, Tony Pipe\inst{2,3}, Kerstin Eder\inst{1,3}}
+
+\authorrunning{G. Chance, A. Ghobrial et al.}
+\institute{University of Bristol, Bristol, UK \and University of the West of England, Bristol, UK \and Bristol Robotics Laboratory, Bristol, UK}
+\tocauthor{Authors' Instructions}
+
+\maketitle
+\let\thefootnote\relax\footnotetext{\textit{Greg Chance and Abanoub Ghobrial contributed equally to this paper and are both corresponding authors.}
+Greg Chance (e-mail: greg.chance@bristol.ac.uk), 
+Abanoub Ghobrial (e-mail: abanoub.ghobrial@bristol.ac.uk), 
+Kevin McAreavey (e-mail: kevin.mcareavey@bristol.ac.uk), 
+and 
+Kerstin Eder (e-mail: kerstin.eder@bristol.ac.uk) 
+are with the Trustworthy Systems Lab, Department of Computer Science, University of Bristol, Merchant Ventures Building, Woodland Road,  Bristol, BS8 1UQ, United Kingdom. 
+%
+S\'everin Lemaignan (e-mail: severin.lemaignan@brl.ac.uk)
+and
+Tony Pipe (e-mail: tony.pipe@brl.ac.uk), 
+are with the Bristol Robotics Lab, T Block, University of the West of England,Frenchay, Coldharbour Ln, Bristol, BS34 8QZ, United Kingdom. }.
+\makeatletter
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                       {-18\p@ \@plus -4\p@ \@minus -4\p@}%
+                       {4\p@ \@plus 2\p@ \@minus 2\p@}%
+                       {\normalfont\normalsize\bfseries\boldmath
+                        \rightskip=\z@ \@plus 8em\pretolerance=10000 }}
+\makeatother
+
+% \begin{multicols}{2}
+
+
+\textbf{\textit{Abstract}\input{../source/abstract.tex}}
+
+% ***************************************************
+%  Main Body
+% ***************************************************
+\input{../source/body.tex}
+
+% ***************************************************
+%  Thanks
+% ***************************************************
+\section*{Acknowledgement}
+This research has in part been funded by the ROBOPILOT and CAPRI projects. Both projects are part-funded by the Centre for Connected and Autonomous Vehicles (CCAV), delivered in partnership with Innovate UK under grant numbers 103703 (CAPRI) and 103288 (ROBOPILOT), respectively.
+%
+\textit{Greg Chance and Abanoub Ghobrial contributed equally to this paper.}
+\balance
+
+% ***************************************************
+%  Bib
+% ***************************************************
+\printbibliography
+
+\end{document}
+\grid
