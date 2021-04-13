@@ -20,7 +20,7 @@ Finally, support for hardware-in-the-loop development or a real-time test-bed fo
 %
 Compared to the vehicle dynamics simulators and traffic-level simulators used by manufacturers~\cite{FrameworkAndChallenges}, game engines offer a simulation solution that meets many of the requirements for the development and functional safety testing of the autonomous features of AVs in simulation. 
 %
-However, while game engines are designed primarily for performance to achieve a good user experience, the requirements for AV verification go beyond that and include the issue of determinism.
+However, while game engines are designed primarily for performance to achieve a good user experience, the requirements for AV verification go beyond that and include \textit{determinism}.
 
 In this paper, we investigate non-determinism and how it affects simulation results using the example of CARLA, an open-source autonomous driving simulation environment based on the Unreal game engine.
 %
@@ -120,7 +120,7 @@ When used for gaming, game engines do not need to be deterministic nor do they h
 
 There are numerous game engines with their associated development environments that could be considered suitable for AV development, e.g.\ Unreal Engine~\cite{UE4_main_website}, Unity~\cite{Unity_main_website}, CryEngine~\cite{CryEngine_main_website}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing game engines, e.g.\ CARLA~\cite{carla_main_website}, AirSim~\cite{AirSim_main_website}, Apollo~\cite{Apollo_main_website}, and some have been developed for cloud-based simulation, e.g.\ Nvidia Drive Constellation~\cite{nvidia_constellation}.
 
-Investigating the determinism of game engines has not attracted much research interest since performance is more critical for game developers than accurate and repeatable execution. Ensuring software operates deterministically is a non-trivial task.  Catching intermittent failures, or flaky tests~\cite{intermittently-failing-tests}, in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}. This section gives an overview of the internal structure of a game engine and what sources or settings in the engine may affect \textit{simulation variance}.
+Investigating the determinism of game engines has not attracted much research interest to date since performance is more critical for game developers than accurate and repeatable execution. Ensuring software operates deterministically is a non-trivial task.  Catching intermittent failures, or flaky tests~\cite{intermittently-failing-tests}, in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}. This section gives an overview of the internal structure of a game engine and what sources or settings in the engine may affect \textit{simulation variance}.
 
 % ======= Overview of a Game Loop
 Central to a game engine are the main game logic, the artificial intelligence (AI) component, the audio engine, and the physics and rendering engines. For AV simulation, we focus on the latter two. The game loop is responsible for the interaction between the physics and rendering engines. Fig.~\ref{GameEngineLoopDiagram} depicts a simplified representation of the process flow in a game engine loop, where  initialisation, game logic and decommissioning have been removed~\cite{unity_event_execution}. A game loop is broken up into three distinct phases: processing the inputs, updating the game world (Physics Engine), and generating outputs (Rendering)~\cite{GameEngineArchBook}.
@@ -207,7 +207,7 @@ This is because the processor cores are identical and any impurities across the 
 %
 However, scheduling multiple processes across several processing cores, where the number of cores is smaller than the number of processes, can result in variation of the execution order and cause simulation variance unless explicitly constrained or statically allocated prior to execution. 
 
-Indeed, the developers of the debugging program \texttt{rr}~\cite{RR_link} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads promoting deterministic behaviour by design~\cite{acm-q-rr-interview}.
+Indeed, the developers of the debugging program \texttt{rr}~\cite{RR_link} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads, thus promoting deterministic behaviour by design~\cite{acm-q-rr-interview}.
 %
 
 Likewise, simulation variance may be observed for game engines that use GPU parallelisation to improve performance by offloading time-critical calculations to several dedicated computing resources simultaneously. While this would be faster than a serial execution, the order of execution arising from program-level concurrency is often not guaranteed. 
@@ -296,7 +296,7 @@ In the following, case study results are shown in terms of the maximum deviation
 %  Actor Collisions
 % ***************************************************
 
-\begin{table*}[b]
+\begin{table*}[t]
 \centering
 \begin{tabular}{clclccc}
 \toprule
@@ -430,6 +430,13 @@ The pattern of permissible results prior to collision and non-permissible post c
 
 The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsionsCG25}. In this scenario (Test 4), there is a collision between a vehicle (Car ID 2, solid line) and a pedestrian (Ped ID 3, dot dash line) which occurs at a simulation time of approximately $6$s and a second vehicle actor (Car ID 1, dashed line), which is \textit{not involved in the collision}. There are three observations; firstly that the vehicle directly involved in the collision (Car ID 2) displays high simulation variance immediately after the collision. Secondly, that the maximum deviation of the pedestrian involved in the collision (Ped ID 3) is at a tolerable level throughout the test\footnote{However, please note that in CARLA the pedestrian object is destroyed post-collision hence the flat line from $t=6$s onwards.}. Thirdly, we observed a delayed effect on Car ID 1 showing high simulation variance with a $5$s delay \textit{even though this vehicle was not involved in the collision}. This final point should be of particular concern to verification engineers, developers and researchers in the field as it implies that \textit{any collision between actors can affect the simulation variance of the entire actor population} and could potentially result in  erroneous simulation results. % not just assertion checking 
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.48\textwidth]{../other/figures/NICE_analysis_summary_V4.pdf}
+    \caption{Variance range of three NICE priority settings for additional CPU \& GPU resource utilisation of 0\% and 75\%.}
+    \label{NICEExperimentStressSummary}
+\end{figure}
+
 \begin{figure*}[t]
     \centering
     \includegraphics[width=0.99\linewidth]{../other/figures/Methodology_Diagram_v7.pdf}
@@ -444,12 +451,7 @@ Practitioners may wish to set a stricter resource utilisation level, such as les
 A correlation between resource utilisation and simulation variance has been observed in these results which may be due to process scheduling. Rather than limiting utilisation of the whole system, another approach may be to promote the scheduling priority of the simulation process which is explored in Section~\ref{r:process_scheduling}. Furthermore, we were keen to investigate the impact of memory access and include a brief investigation of this in Section~\ref{r:numa}. 
 
 \subsection{Process Scheduling Priority} \label{r:process_scheduling}
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.48\textwidth]{../other/figures/NICE_analysis_summary_V4.pdf}
-    \caption{Variance range of three NICE priority settings for additional CPU \& GPU resource utilisation of 0\% and 75\%.}
-    \label{NICEExperimentStressSummary}
-\end{figure}
+
 
 An investigation into the impact of process scheduling on the simulation variance was undertaken following the observations of increased simulation variance with increased resource utilisation. The experiment was repeated ($n=1000$) using Test 1 but altering the process scheduling priority using the program \texttt{NICE}.\footnote{\url{http://manpages.ubuntu.com/manpages/bionic/man1/nice.1.html}} Setting a higher priority for the simulator process with respect to the resource utilisation processes, it was possible to determine if scheduling could account for the increased simulation variance when the system is under high resource utilisation.
 %
