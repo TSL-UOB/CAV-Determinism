@@ -241,7 +241,7 @@ There is evidence to suggest actor navigation, typically pedestrians, could be a
 
 To briefly describe the A* process, at each stage of the search, the algorithm selects one node for expansion from a set of nodes known as the \textit{frontier} (also fringe or open set) using a heuristic to select this node. For reasons of efficiency, A* represents the frontier as a priority queue, with nodes prioritised by the heuristic. Selection then reduces to a dequeue operation on the frontier. In general the heuristic does not guarantee a uniquely optimal node in the frontier and thus ties may be encountered. The question of how these ties are broken in a priority queue is related to the broader notion of sorting stability~\cite{Sedgewick2011}. An implementation of a priority queue is said to be stable if it preserves insertion order, otherwise it is said to be unstable. If an implementation of A* uses a stable priority queue, then it will behave as a deterministic algorithm which always returns the optimal node that was first added to the frontier. Stable priority queues are typically less computationally efficient than unstable priority queues, so the requirement on stability is often dropped in practice. 
 
-For example, one of the most common implementations of a priority queue relies on a binary heap and is unstable; it will always return the first optimal node according to its internal heap order rather than insertion order. The default priority queue implementations in the standard Java and Boost libraries are based on binary heaps~\cite{boost2021,priorityQueue}, while the Unreal documentation and source code suggests that this is also true of CARLA~\cite{FGraphAStar,TArray,GraphAStar}. Thus, an \textbf{unstable but deterministic} priority queue is an unstable priority queue that preserves some order, but not necessarily insertion order. If an implementation of A* uses an unstable but deterministic priority queue, then it will behave as a deterministic algorithm which always returns the optimal node according the ordering of its priority queue. 
+For example, one of the most common implementations of a priority queue relies on a binary heap and is unstable; it will always return the first optimal node according to its internal heap order rather than insertion order. The default priority queue implementations in the standard Java and Boost libraries are based on binary heaps~\cite{boost2021,priorityQueue}, while the Unreal documentation and source code suggests that this is also true of CARLA~\cite{FGraphAStar,TArray,GraphAStar}. Thus, an unstable but deterministic priority queue is an unstable priority queue that preserves some order, but not necessarily insertion order. If an implementation of A* uses an unstable but deterministic priority queue, then it will behave as a deterministic algorithm which always returns the optimal node according the ordering of its priority queue. 
 
 Finally, an unstable but deterministic priority queue suggests a third kind of priority queue that we can refer to as an unstable and non-deterministic priority queue; that is, a priority queue that always returns an optimal node selected at random (i.e. breaking ties arbitrarily). If an implementation of A* uses an unstable and non-deterministic priority queue, then it will behave as a non-deterministic algorithm. Overall, an implementation of A* is much more likely to use a priority queue that is unstable but deterministic rather than one that is stable, and is very unlikely to use one that is unstable and non-deterministic.
 
@@ -457,7 +457,7 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.99\linewidth]{../other/figures/Methodology_Diagram_v7.pdf}
+    \includegraphics[width=0.99\linewidth]{../other/figures/Methodology_Diagram_v8.pdf}
     \caption{Stages of the method proposed to determine the variance of a simulation.}
     \label{method_diagram}
 \end{figure*}
@@ -578,5 +578,5 @@ An ambitious avenue for future work is the development of a deterministic simula
 % ***************************************************
 %  Thanks
 % ***************************************************
-\section*{Acknowledgement}
+\section{Acknowledgement}
 This research has in part been funded by the ROBOPILOT and CAPRI projects. Both projects are part-funded by the Centre for Connected and Autonomous Vehicles (CCAV), delivered in partnership with Innovate UK under grant numbers 103703 (CAPRI) and 103288 (ROBOPILOT), respectively. Special thanks to David May, Roger Shepherd, CFMS, Auroch Digital and Fortelix for their discussions and support on this topic.  
