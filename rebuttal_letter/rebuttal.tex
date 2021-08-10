@@ -1,0 +1,233 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Professional Formal Letter
+% LaTeX Template
+% Version 2.0 (12/2/17)
+%
+% This template originates from:
+% http://www.LaTeXTemplates.com
+%
+% Authors:
+% Brian Moses
+% Vel (vel@LaTeXTemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt, a4paper]{letter} % Set the font size (10pt, 11pt and 12pt) and paper size (letterpaper, a4paper, etc)
+
+\usepackage{graphicx} % Required for including pictures
+
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage{gfsdidot} % Use the GFS Didot font: http://www.tug.dk/FontCatalogue/gfsdidot/
+\usepackage{microtype} % Improves typography
+
+
+% \input{structure.tex} % Include the file that specifies the document structure
+\pagestyle{empty} % Suppress headers and footers
+
+% \setlength\parindent{1cm} % Paragraph indentation
+
+% Create a new command for the horizontal rule in the document which allows thickness specification
+\makeatletter
+\newcommand{\vhrulefill}[1]{\leavevmode\leaders\hrule\@height#1\hfill \kern\z@}
+\makeatother
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT MARGINS
+%----------------------------------------------------------------------------------------
+
+\usepackage{geometry} % Required for adjusting page dimensions
+
+\geometry{
+	top=1cm, % Top margin
+	bottom=1.5cm, % Bottom margin
+	left=3cm, % Left margin
+	right=3cm, % Right margin
+	%showframe, % Uncomment to show how the type block is set on the page
+}
+
+%----------------------------------------------------------------------------------------
+%	DEFINE CUSTOM COMMANDS
+%----------------------------------------------------------------------------------------
+
+\newcommand{\logo}[1]{\renewcommand{\logo}{#1}}
+
+\newcommand{\Who}[1]{\renewcommand{\Who}{#1}}
+\newcommand{\Title}[1]{\renewcommand{\Title}{#1}}
+
+\newcommand{\headerlineone}[1]{\renewcommand{\headerlineone}{#1}}
+\newcommand{\headerlinetwo}[1]{\renewcommand{\headerlinetwo}{#1}}
+
+\newcommand{\authordetails}[1]{\renewcommand{\authordetails}{#1}}
+
+%----------------------------------------------------------------------------------------
+%	AUTHOR DETAILS STRUCTURE
+%----------------------------------------------------------------------------------------
+
+\newcommand{\authordetailsblock}{
+	\hspace{\fill} % Move the author details to the far right
+	\parbox[t]{0.48\textwidth}{ % Box holding the author details; width value specifies where it starts and ends, increase to move details left
+		\footnotesize % Use a smaller font size for the details
+		\Who\\ % Author name
+		\textit{\authordetails} % The author details text, all italicised
+	}
+}
+
+%----------------------------------------------------------------------------------------
+%	HEADER STRUCTURE
+%----------------------------------------------------------------------------------------
+
+\address{
+	\includegraphics[width=2.1in]{\logo} % Include the logo of author institution
+	\hspace{0.62\textwidth} % Position of the institution logo, increase to move left, decrease to move right
+	\vskip -0.1\textheight~\\ % Position of the large header text in relation to the institution logo, increase to move down, decrease to move up
+	% \Large\hspace{0.2\textwidth}\headerlineone\hfill ~\\[0.006\textheight] % First line of institution name, adjust hspace if your logo is wide
+	\Large\hspace{0.4\textwidth}\headerlineone\hfill ~\\[0.006\textheight] % First line of institution name, adjust hspace if your logo is wide
+	\hspace{0.4\textwidth}\headerlinetwo\hfill \normalsize % Second line of institution name, adjust hspace if your logo is wide
+	\makebox[0ex][r]{\textbf{\Who\Title}}\hspace{0.01\textwidth} % Print author name and title with a little whitespace to the right
+	~\\[-0.01\textheight] % Reduce the whitespace above the horizontal rule
+	\hspace{0.4\textwidth}\vhrulefill{1pt} \\ % Horizontal rule, adjust hspace if your logo is wide and \vhrulefill for the thickness of the rule
+	\authordetailsblock % Include the letter author's details on the right side of the page under the horizontal rule
+	\hspace{-0.25\textwidth} % Horizontal position of the author details block, increase to move left, decrease to move right
+	\vspace{-0.1\textheight} % Move the date and letter content up for a more compact look
+}
+
+%----------------------------------------------------------------------------------------
+%	COMPOSE THE ENTIRE HEADER
+%----------------------------------------------------------------------------------------
+
+\renewcommand{\opening}[1]{
+	{\centering\fromaddress\vspace{0.05\textheight} \\ % Print the header and from address here, add whitespace to move date down
+	\hspace*{\longindentation}\today\hspace*{\fill}\par} % Print today's date, remove \today to not display it
+	{\raggedright \toname \\ \toaddress \par} % Print the to name and address
+	\vspace{1cm} % White space after the to address
+	\noindent #1 % Print the opening line
+}
+%----------------------------------------------------------------------------------------
+%	SIGNATURE STRUCTURE
+%----------------------------------------------------------------------------------------
+
+\signature{\Who\Title} % The signature is a combination of the author's name and title
+
+\renewcommand{\closing}[1]{
+	\vspace{2.5mm} % Some whitespace after the letter content and before the signature
+	\noindent % Stop paragraph indentation
+	\hspace*{\longindentation} % Move the signature right to the value of \longindentation
+	% \hspace*{-6.5cm}\includegraphics[width=1in]{signature.png}
+	\parbox{\indentedwidth}{
+		\raggedright
+		#1 % Print the signature text
+		\vskip 1.65cm % Whitespace between the closing text and author's name for a physical signature
+		\fromsig % Prints the value of \signature{}, i.e. author name and title
+	}
+}
+\longindentation=0pt % Un-commenting this line will push the closing "Sincerely," and date to the left of the page
+
+%----------------------------------------------------------------------------------------
+%	YOUR INFORMATION
+%----------------------------------------------------------------------------------------
+
+\Who{Dr. Greg Chance} % Your name
+
+\Title{, PhD, CEng, MInstP} % Your title, leave blank for no title
+
+\authordetails{
+	Trustworthy Systems Lab\\ % Your department/institution
+	University of Bristol\\
+	1 Cathedral Square\\ % Your address
+	Bristol, BS1 5DD, UK\\ % Your city, zip code, country, etc
+	Email: greg.chance@bristol.ac.uk\\ % Your email address
+	URL: \url{bristol.ac.uk}\\ % Your URL
+	% URL: \url{bristol.ac.uk/engineering/research/trustworthy-systems-laboratory/}\\ % Your URL
+	% YouTube: \url{https://youtu.be/1emO3-OYn5k}
+}
+
+%----------------------------------------------------------------------------------------
+%	HEADER CONTENTS
+%----------------------------------------------------------------------------------------
+
+\logo{logo.png} % Logo filename, your logo should have square dimensions (i.e. roughly the same width and height), if it does not, you will need to adjust spacing within the HEADER STRUCTURE block in structure.tex (read the comments carefully!)
+
+
+\headerlineone{} % Top header line, leave blank if you only want the bottom line
+\headerlinetwo{} % Bottom header line
+
+
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TO ADDRESS
+%----------------------------------------------------------------------------------------
+
+\begin{letter}{
+	Prof. Eskandarian\\
+	Department Head\\ 
+	Nicholas and Rebecca Des Champs Chair\\
+	Mechanical Engineering Department, Virginia Tech\\
+	635 Prices Fork Road, 449 Goodwin Hall (MC 0238)
+	Blacksburg, VA 24061
+}
+
+%----------------------------------------------------------------------------------------
+%	LETTER CONTENT
+%----------------------------------------------------------------------------------------
+
+\opening{}
+
+
+\textbf{Review of paper T-ITS-21-05-1111}.
+
+Dear Prof Azim Eskandarian,
+
+Thank you for taking the time to review our manuscript. We have given each comment careful consideration between all the authors and we have made changes to the document that make the document clearer and more correct. We give a full account of the changes and rebuttals below and we include a pdf diff to show the changes made.
+
+\textbf{Reviewer 1}\\
+\textit{Comment 1: "the whole manuscript seems written from the perspective of Game Engines testing, which lacks practical values in the transportation area."}.
+Thank you for this comment, we believe this comment requires a considered response.
+
+Carla is based on a game engine and Carla is currently a popular choice for simulation-based vehicle testing, so this would suggest that the underlying  game engine of Carla is of practical value to the community of intelligent transportation. The paper is not focused on game engines per se, but rather the implications of using those game engines for vehicle testing. 
+
+Furthermove, we state on pg.4 the differences between the requirements of game engines for gaming, and for that of AV testing. "Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither needs a faithful representation of reality (i.e. gamer accepts low accuracy) nor require repeated actions to result in the same outcome (i.e. gamer accepts low precision). In contrast, high accuracy and precision are necessary for AV development, testing and verification." 
+
+Carla, and other game engine based simulators, will be an entry point for many SME's and start-up companies looking to develop products and services in this area and we believe that this paper brings pertinent information to this community, many of whom may look to ITS for guidance.
+
+Given the confusion to reviewer 1 of our message, we believe that the title of the document should be changed to better reflect the content of the paper, which is primarily concerned with the importance of determinism for simulation based verification of autonomous vehicles. Hence we have changed the paper title to: "On the Importance of Determinism for Simulation-based Autonomous Vehicle Verification using a Game Engine"
+
+
+
+
+
+Thank you and the reviewers for your time and consideration into this paper. 
+
+\closing{Sincerely,}
+
+% \begin{figure}
+% 	\includegraphics[width=1in]{signature.png}
+% \end{figure}
+
+
+%----------------------------------------------------------------------------------------
+%	OPTIONAL FOOTNOTE
+%----------------------------------------------------------------------------------------
+
+% Uncomment the 4 lines below to print a footnote with custom text
+% \def\thefootnote{}
+% \def\footnoterule{\hrule}
+% \footnotetext{\hspace*{\fill}{\footnotesize\em Footnote text}}
+% \def\thefootnote{\arabic{footnote}}
+
+%----------------------------------------------------------------------------------------
+
+\end{letter}
+
+\end{document}
