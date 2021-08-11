@@ -182,7 +182,7 @@
 %	LETTER CONTENT
 %----------------------------------------------------------------------------------------
 
-\opening{}
+% \opening{}
 
 
 \textbf{Review of paper T-ITS-21-05-1111}.
@@ -206,7 +206,36 @@ Given the confusion to reviewer 1 of our message, we believe that the title of t
 
 The issue we found with taking the average deviation over many (100's or 1000's) of repeated runs is that a single 'failure' can be hidden in an average. For example 1 error in 1000 would be an insignificant difference to an average, but a single simulation run that exceeds permisible variance could result in a false negative result or even fail to detect the presence of a serious fault with the system under test. The verification process needs to be aware of any failure, as even a single failure may coincide with a bug or error in the system that needs to be found and corrected. Hence, it is imperative that we discover any simulation that exceeds the simulation variance. We could reframe this as thinking less about simulation performance, and more about detecting any errors in the system. Verification requires the detection of edge cases (rare cases) not the average performance of the system.
 
-We have added (in italics) to the sentence on page 9:  "Initial testing [26] indicated an actor path deviation of1x10-13cm for 997 out of 1000 tests, with three tests reporting a deviation of over 10cm. \textit{Due to this nature of fault rates, using an average simulation variance would 'hide' these errors and hence, this is the reason that we use maximum variance and not an average.}". 
+We have added (in italics) to the sentence on page 9:  "Initial testing [26] indicated an actor path deviation of1x10-13cm for 997 out of 1000 tests, with three tests reporting a deviation of over 10cm. \textit{Due to the low probability of fault rates observed, using an average simulation variance would 'hide' these errors and hence this is the reason that we use maximum variance and not an average}". 
+
+\textit{Comment 3: "Moreover, I also concern about the results from several tests. As stated in Section V-B, 1 cm considered sufficient for urban scenario assertion checking. However, the average vehicle speeds are setting as 20–35 km/h (i.e. 5.56-9.72 m/s) [1]. Thus, I doubt the practical value of this permissible variance (too accurate for general AV testing) in real-world autonomous vehicle verification. The authors should provide more support materials for the setting used in the whole experiment"}.
+
+The focus of this paper is not really the absolute values that we chose for permissible variance or the speed of the vehicles (which was based on UK urban speed limit of 20mph or 30kmph), but more about the method of detecting and controlling simulation variance in an end-user's system. The value of permissible variance chosen in the paper (1cm) was chosen as a good point between, say 1m (too coarse) and 1mm (too fine), to illustrate the violation of this limit given certain simulator and system conditions.
+
+The point is that repeated runs should give the exact same output, regardless of permissible variance or simulated vehicle speed. The reviewer suggests a paper that descibes the speed of vehicles in an urban environment similar to those in our case study. We have included this reference including a line to point interested readers whom wish to set the speed of their simulated vehicles to an apporpriate value.
+
+Please see the additional line on page 7: \textit{This tolerance may need to be chosen for the specific verification case and the speed of the vehicles within the environment [1]}.
+
+\textit{Comment 4: "The whole paper seems much more relevant to the UE4 engine than the CARLA platform. I understand the CARLA application is just a case study, but the first half part of the manuscript is less relevant to the AV testing. In particular, the authors said “the AV simulation domain introduces its unique challenges that were not considered in that paper.” in section IV"}.
+
+Carla uses Unreal Engine 4 (UE4) for vehicle testing, which is not the original purpose of UE4. The issues discussed in the paper do not have any negative implications for games, but (as the paper argues) they do have negative implications for vehicle testing. Thus, the issues are issues with Carla rather than UE4, and the same issues are likely to arise in any simulator based on a game engine.
+
+\textit{Comment 5: "The numbers of references are odd"}.
+Please let us know any format changes that are required specifically. If you are referring to the document hyperlinks that link to each reference, these can be switched off if required.
+
+\textit{Comment 6: "In section I, the sentence “without the need for millions of miles of costly on-road testing” is too arbitrary, the on-road testing is still necessary for AVs verification"}.
+We agree with the reviewer that the need for on-road testing is an essential component of the verification process. However, the previous sentence highlights the shortcomings of on-road testing where human fatalities have occured due to a lack of exploration of the parameter space.
+The point of this sentence  was in the context of parameter space exploration and the fact that this space could never be explored entirely with on-road testing alone and hence the neccessity of simulation for verification.
+
+\textit{Comment 7: "No need to provide such a detailed description of floating-point arithmetic since it does not cause non-zero simulation variance"}.
+Floating point arithmetic does not contribute to simulation variance, but it is a common misconception that people often jumpt to when considering or discussing deterministic computation. We therefore believe it is important to fully explain the issue to ensure that there is no doubt going forward from this point.
+
+To make this clearer we have modified this section to indicate this misconception. We have also made this section more concise. Please see page 4-5.
+
+
+
+
+
 
 
 
