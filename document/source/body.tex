@@ -154,12 +154,15 @@ A good analysis of potential sources is given by Strandberg et al.~\cite{intermi
 % ======= Floating-Point Numbers
 \subsection{Floating-Point Arithmetic}
 
+A common misconception that is often jumped to when concerning non-determinism is the use of floating point number representation. This is an erroneous conflation with non-deterministic computational execution and we explain the reasons for this here. 
+%
 Floating-point representation of real numbers is limited by the fixed bit width available in the hardware, resulting in the finite precision with which numbers can be represented in a computation. 
 Thus, the results of arithmetic operations must fit into the given bit width, which is achieved through rounding to the nearest representable value. This gives rise to rounding errors~\cite{FloatingPointsBook,goldberg1991every}. %
 
 As a consequence, floating-point arithmetic is not associative. Thus, for arithmetic expressions beyond two operands, such as $x+y+z$, executing $x+(y+z)$ rather than $(x+y)+z$, can produce different results~\cite{Kapre2007}. This is because rounding is being performed at different stages in the computation, depending on the respective execution order. 
 %
-Execution order changes can occur due to the use of a different compiler or as a consequence of parallelisation, e.g.\ within the runtime environment or at the hardware level. 
+% Execution order changes can occur due to the use of a different compiler or as a consequence of parallelisation, e.g.\ within the runtime environment or at the hardware level. 
+Execution order changes or aggressive optimisations~\cite{llvm-floating-point} can occur due to the use or settings of a compiler or as a consequence of parallelisation which can also introduce incorrectness in floating-point arithmetic, e.g.\ within the runtime environment or at the hardware level. 
 %
 Furthermore, floating-point calculation results may differ if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. 
 
@@ -176,9 +179,9 @@ Thus, given the same operands and sequence of operations, the same processor sho
 %
 So, even if the result of a floating-point operation is incorrect due to floating-point rounding errors, it should always be equally \textit{incorrect} for implementations that conform to the IEEE floating-point standard~\cite{8766229}.
 
-However, as illustrated above on the example of non-associative addition, a change of execution order can lead to sequences of floating-point operations producing different results. Thus, any uncontrolled options to modify execution order, e.g.\ at the compiler level, within the runtime environment or at the hardware level, can cause simulation results to differ between runs, resulting in non-zero variance and loss of determinism. 
+% However, as illustrated above on the example of non-associative addition, a change of execution order can lead to sequences of floating-point operations producing different results. Thus, any uncontrolled options to modify execution order, e.g.\ at the compiler level, within the runtime environment or at the hardware level, can cause simulation results to differ between runs, resulting in non-zero variance and loss of determinism. 
  
-Beyond that, aggressive optimisations by the compiler can also introduce incorrectness in floating-point arithmetic~\cite{llvm-floating-point}. However, the same executable should still return the same output for identical input. 
+% Beyond that, aggressive optimisations by the compiler can also introduce incorrectness in floating-point arithmetic~\cite{llvm-floating-point}. However, the same executable should still return the same output for identical input. 
 
 In conclusion, floating-point arithmetic does not cause non-zero \textit{simulation variance} for repeated simulation runs when using the same executable on the same hardware with exactly the same configuration and execution order.
 
