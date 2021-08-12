@@ -293,16 +293,21 @@ We first describe the context, scene and scenario of interest before discussing 
 \begin{figure}[!t]
     \centering
     \begin{subfigure}{.24\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/TestCasesDiagramV2_a.pdf}
+        \includegraphics[width=1\textwidth]{../other/figures/det_fig3a}
         \caption{}
         \label{Test_a}
     \end{subfigure}
     \begin{subfigure}{.24\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/TestCasesDiagramV2_b.pdf}
+        \includegraphics[width=1\textwidth]{../other/figures/det_fig3b}
         \caption{}
         \label{Test_b}
     \end{subfigure}
-    \caption{Schematic of test scenarios for (a) Tests 1-4, (b) Tests 5-6. Descriptions are given in Table~\ref{TableOfExperiments}.}\label{f:test_a_and_b}
+    \begin{subfigure}{.24\textwidth}
+        \includegraphics[width=1\textwidth]{../other/figures/det_fig3c}
+        \caption{}
+        \label{Test_c}
+    \end{subfigure}
+    \caption{Schematic of test scenarios for (a) Tests 1-2, (b) Tests 3-4, (c) Tests 5-6. Descriptions are given in Table~\ref{TableOfExperiments}.}\label{f:test_a_and_b}
 \end{figure}
 
 This case study draws on a setup used to verify an urban mobility and transport solution, where the primary verification objective is to test the behaviour of an ego vehicle in an urban environment at a T-junction in response to pedestrians and other vehicles. Thus, the scene for our investigation is the T-junction with the scenarios as shown in Figure~\ref{f:test_a_and_b}.
@@ -367,9 +372,9 @@ Tests 5 \& 6 involve only pedestrians that either, do not collide (Test 5) and t
 \subsection{Evaluation Metric}\label{s:Experiment_Description}
 For each test the position of each actor is logged at $0.1s$ intervals providing a trace of that actor's path with respect to simulation time. The logs from repeated tests are sourced to establish a value for the variance associated with each actor, $a$, at each time point $t$, giving a variance function over time for each actor, $\sigma_a^{2}(t)$.
 
-Instead of using variance, herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor path relative to the mean and is helpfully in the same units as actor position, i.e.\ metres ($m$), for ease of interpretation. The maximum variance over the entire set of $n$ repeated simulations, i.e.\ the overall observed worst case, is defined as the largest variance of any actor at any time in any of the simulation runs, as given in Equation~\ref{eq:max_sigma}. 
+Instead of using variance, herein the results are given in terms of the deviation, $\sigma_a(t)$, which indicates the dispersion of the actor path relative to the mean and is helpfully in the same units as actor position, i.e.\ metres ($m$), for ease of interpretation. The maximum variance ($\Psi$) over the entire set of $n$ repeated simulations, i.e.\ the overall observed worst case, is defined as the largest variance of any actor at any time in any of the simulation runs, as given in Equation~\ref{eq:max_sigma}. 
 \begin{equation} \label{eq:max_sigma}
-\max_{a,t}\sigma_a^{2}(t)
+\Psi = \max_{a,t}\sigma_a^{2}(t)
 \end{equation}
 The maximum deviation is the absolute value of the square root of the maximum variance and herein referred to as ${\max\sigma}$ for brevity. 
 
