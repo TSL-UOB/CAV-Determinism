@@ -192,7 +192,7 @@ Dear Prof Azim Eskandarian,
 Thank you for taking the time to review our manuscript. We have given each comment careful consideration between all the authors and we have made changes to the document that make the document clearer and more correct. We give a full account of the changes and rebuttals below and we include a pdf diff to show the changes made.
 
 \textbf{Reviewer 1}\\
-\textit{Comment 1: "the whole manuscript seems written from the perspective of Game Engines testing, which lacks practical values in the transportation area."}.
+\textit{Comment 1: "the whole manuscript seems written from the perspective of Game Engines testing, which lacks practical values in the transportation area"}.
 
 Thank you for this comment, we believe this comment requires a considered response to ensure the main message of the paper comes across to the reader. Carla is based on a game engine and Carla is currently a popular choice for simulation-based vehicle testing, so this would suggest that the underlying  game engine of Carla is of practical value to the community of intelligent transportation. The paper is not focused on game engines per se, but rather the implications of using those game engines for vehicle testing. 
 
@@ -202,7 +202,7 @@ Carla, and other game engine based simulators, will be an entry point for many S
 
 Given the confusion to reviewer 1 of our message, we believe that the title of the document should be changed to better reflect the content of the paper, which is primarily concerned with the importance of determinism for simulation based verification of autonomous vehicles. Hence we have changed the paper title to: "On the Importance of Determinism for Simulation-based Autonomous Vehicle Verification using a Game Engine".
 
-\textit{Comment 2: "One major concern is index selection. As we all know, the scale of deviation relies on the mean values of the investigated variables. Thus, I wonder why the authors pick maximum deviation to measure the performance of the simulation results. In my opinion, the average deviation seems better in measuring the overall performance for the whole simulation process."}.
+\textit{Comment 2: "One major concern is index selection. As we all know, the scale of deviation relies on the mean values of the investigated variables. Thus, I wonder why the authors pick maximum deviation to measure the performance of the simulation results. In my opinion, the average deviation seems better in measuring the overall performance for the whole simulation process"}.
 
 The issue we found with taking the average deviation over many (100's or 1000's) of repeated runs is that a single 'failure' can be hidden in an average. For example 1 error in 1000 would be an insignificant difference to an average, but a single simulation run that exceeds permisible variance could result in a false negative result or even fail to detect the presence of a serious fault with the system under test. The verification process needs to be aware of any failure, as even a single failure may coincide with a bug or error in the system that needs to be found and corrected. Hence, it is imperative that we discover any simulation that exceeds the simulation variance. We could reframe this as thinking less about simulation performance, and more about detecting any errors in the system. Verification requires the detection of edge cases (rare cases) not the average performance of the system.
 
@@ -235,13 +235,30 @@ To make this clearer we have modified this section to indicate this misconceptio
 \textit{Comment 8: "There is no equal sign in Equation (1)"}.
 Thank you we have created a symbol for this to turn this into an equation. See the amended equation on page 8.
 
-\textit{Comment 8: "TABLE I and Fig 3 are not consistent, it would be better if there are three subfigures in Fig 3"}.
+\textit{Comment 9: "TABLE I and Fig 3 are not consistent, it would be better if there are three subfigures in Fig 3"}.
 Thank you we agree this would be clearer if there were three figures, this was done to save space in the document. Please see page XX for the new figure.
 
+\textit{Comment 10: "The size of simulation scenes should be pointed out, especially the boundary of (x, y, z)"}.
+Thank you, we agree this would help describe the scene better to the reader. Please see section V.C on page 7 for the additional text: \textit{The map size for the simulation test environment was 354x170$m$. The range of movement of the actors within the environment was up to 70m for vehicles and up to 25m for pedestrians}.
+
+\textit{Comment 11: "Which vehicle collided with the pedestrian in test 4, please label them in Fig 3"}. 
+We agree it would be clearer for the reader if this information was presented. We have added the collision area to Fig.3 (on page 7) indicating where the collision happens and the ID of the vehicles.
 
 
 
 
+\textbf{Reviewer 2}\\
+\textit{Comment 1: "The current paper is a little bit too long and could be shortened. For instance, several definitions in Section II.A could be introduced in a more concise way. Sections II and III could be combined. Sections V and VI could be combined"}.
+We agree the paper is a bit long, however if readers are familair with the definitions it is likely that they will skip over these but it would be prudent to keep them in. We think that section 5 and 6 are already long independently and combining them might become unweildy. 
+
+We have attempted to reduce the paper size in different areas, please see the diff document. However, as the first reviewer wanted additional material added this may have resulted in a net gain in overall length.
+
+\textit{Comment 2: "In Section IV, several potential sources of non-determinism are reviewed. Through the case study, the authors should have established a general understanding of the relative significance of each potential source to the overall simulation variance (as least for CARLA). It would be good to comment on the relative significance alongside the review of these sources"}.
+
+Giving a relative comparison is not easily achieved as each source would be difficult to quantify. Hopefully it is clear from Table.1 that pedestrian-vehicle collisions result in high simulation variance in our case study, and also the role that resource utilisation plays should be clear to the reader from veiwing Fig.4. However, writing this as a general description would be difficult. However, if the reader follows the methodology in section 7 they should be able to discover the principle sources, quantify them and proritise those which may lead to simulation variance above the permissible level for the user.
+
+\textit{Comment 3: "It would be good if the authors could show the vehicle/pedestrian trajectories of a test case where a large maximum variance occur (such as the trajectories pre and post a collision). This could help the reader better understand the cause of the large trajectory variance"}.
+Thank you, this is a great idea and we take on board your idea that this would give the reader a better insight into the issue. We have added an X-Y position data plot showing high simulation variance on page XX...
 
 
 

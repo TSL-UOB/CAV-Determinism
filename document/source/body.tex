@@ -298,7 +298,7 @@ We first describe the context, scene and scenario of interest before discussing 
         \label{Test_a}
     \end{subfigure}
     \begin{subfigure}{.24\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/det_fig3b}
+        \includegraphics[width=1\textwidth]{../other/figures/det_fig3bb}
         \caption{}
         \label{Test_b}
     \end{subfigure}
@@ -349,7 +349,7 @@ Previous investigations into the Unreal Engine indicated that collisions between
 %
 Collisions and the subsequent physics calculations that are processed, termed \textit{event hit} callback in Unreal Engine, were identified as potentially key aspects to the investigation into simulation variance.
 
-The tests used for the case study are listed in Table~\ref{TableOfExperiments}. They cover a range of interactions between actor types. 
+The tests used for the case study are listed in Table~\ref{TableOfExperiments}. They cover a range of interactions between actor types. The map size for the simulation test environment was 354x170$m$. The range of movement of the actors within the environment was up to 70$m$ for vehicles and up to 25$m$ for pedestrians.
 %
 Tests 1 \& 2 involve two vehicles meeting at a junction where they either do not collide (Test 1) and where they do collide (Test 2), thereby triggering an \textit{event hit} callback in the game engine. In both cases the trajectories of the vehicles are hard-coded to follow a set of waypoints spaced at $0.1$m intervals using a PID controller. 
 %
