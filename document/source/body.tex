@@ -6,7 +6,7 @@ Simulation-based verification of autonomous driving functionality is a promising
 %
 Simulated tests aim to provide evidence to developers and regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988} which form a body of safe and legal driving rules, termed assertions, that must not be violated. 
 
-Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules e.g.,\ through assertion checking during simulation. There have been several fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. Simulation environments offer a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} without the need for millions of miles of costly on-road testing~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
+Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules e.g.,\ through assertion checking during simulation. There have been several fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. While on-road testing is an essential and complementary part of AV verification, simulation environments offer a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} whilst limiting the need for costly road trials~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
 
 Increasingly, the autonomous vehicle community is adopting game engines as simulation platforms to support the development and testing of vehicle control software. 
 %
@@ -293,7 +293,7 @@ We first describe the context, scene and scenario of interest before discussing 
 \begin{figure}[!t]
     \centering
     \begin{subfigure}{.24\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/det_fig3a}
+        \includegraphics[width=1\textwidth]{../other/figures/fig3a}
         \caption{}
         \label{Test_a}
     \end{subfigure}
@@ -416,7 +416,7 @@ The experiments were carried out on an Alienware Area 51 R5 with an i9 9960X pro
 
 Initial testing~\cite{TSLUnrealEngineTesting} indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests, with three tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10$cm. While executing 100 repeats may seem sufficient, this sample size may fail to observe events that occur with low probability, giving false confidence in the results. Therefore each test was repeated 1000 times to provide a sufficient sample size. 
 %
-Due to the low probability of observed fault rates, using an average simulation variance would 'hide' these errors and hence this is the reason that we use maximum variance and not an average. 
+Due to the low probability of a simulation trace exceeding permissible variance, using an average would 'hide' these errors and hence this is the reason that we use maximum variance and not an average. 
 %
 A detailed guide for reproducing the experiments along with the scripts used are provided on github\footnote{\url{https://github.com/TSL-UOB/CAV-Determinism/tree/master/CARLA_Tests_setup_guide}}. To eliminate some of the potential sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests and analyses were performed on our system. These were:
 
@@ -429,6 +429,12 @@ A detailed guide for reproducing the experiments along with the scripts used are
 %  Results and Discussion
 % ***************************************************
 \section{Results and Discussion}\label{s:FinalResultsSection}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.48\textwidth]{../other/figures/actor_path_plot.jpg}
+    \caption{Actor path plot in XY plane for Test 4 with 95\% resource utilisation.}
+    \label{actorPathPlot}
+\end{figure}
 
 \begin{figure*}[t]
     \centering
@@ -460,7 +466,11 @@ A detailed guide for reproducing the experiments along with the scripts used are
     \caption{Vehicle to pedestrian collision (Test 4) showing (a) maximum deviation against simulation time for 25\% resource utilisation and (b) maximum deviation pre- and post-collision for different resource utilisation levels.}
 \end{figure*}
 
-A summary of the main results are shown in Table~\ref{TableOfExperiments}.  In the column $\max\sigma$ (unrestricted) the value reported is the maximum deviation across all resource utilisation levels, i.e.\ the worst case for a given scenario. From these results it is clear that scenarios with only pedestrian actors (Tests 5 \& 6) display results within tolerance over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. However, all other scenarios involving vehicles or a mixture of actor types do not meet the required tolerance, with some deviation in actor path as large as $59$cm. Clearly, such a large deviation cannot be acceptable for simulation to be considered a credible verification tool.
+A summary of the main results are shown in Table~\ref{TableOfExperiments}.  In the column $\max\sigma$ (unrestricted) the value reported is the maximum deviation across all resource utilisation levels, i.e.\ the worst case for a given scenario. From these results it is clear that scenarios with only pedestrian actors (Tests 5 \& 6) display results within tolerance over all resource utilisation levels with or without a collision where $\max\sigma$ is $5.6\times10^{-13}$ or $0.56\si{\pico\metre}$. However, all other scenarios involving vehicles or a mixture of actor types do not meet the required tolerance, with some deviation in actor path as large as $59$cm. 
+%
+A plot of actor position in the X-Y plane (plan view, units $m$) is shown in Fig.\ref{actorPathPlot}, where the inset clearly shows the divergence of the path of vehicle 2 post-collision with the pedestrian.
+%
+Clearly, such a large deviation cannot be acceptable for simulation to be considered a credible verification tool.
 
 Resource utilisation was found to have a significant impact on \textit{simulation variance}. Figure~\ref{ExperimentsStressSummary} shows $\max\sigma$ against the artificially increased resource utilisation level, where the $x$-axis indicates the approximate percentage of resource utilisation (for CPU \& GPU). In this figure, any $\max\sigma$ above the $1$cm level (indicated by a dashed line) is considered non-permissible according to our specified tolerance. Note that the non-permissible results in Figure~\ref{ExperimentsStressSummary} (all those above the dashed line) are the worst case account of the situation, as per Equation~\ref{eq:max_sigma}, as the maximum variance is taken over the entire simulation period.
 
