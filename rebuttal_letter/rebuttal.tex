@@ -204,10 +204,24 @@ Thank you and the reviewers for taking the time to give feedback our manuscript.
 \textbf{Reviewer 1}\\
 \textit{Comment 1: "the whole manuscript seems written from the perspective of Game Engines testing, which lacks practical values in the transportation area"}.
 
-Thank you for this comment. We believe this comment requires a considered response to ensure that the main message of the paper is being properly conveyed to the reader. Carla is based on a game engine and Carla is currently a popular choice for simulation-based vehicle testing, so this would suggest that the underlying  game engine of Carla is of practical value to the community of intelligent transportation. The paper is not focused on game engines per se, but rather the implications of using those game engines for vehicle testing. 
+Thank you for this comment. We believe this comment requires a considered response to ensure that the main message of the paper is being properly conveyed to the reader. Carla is based on a game engine and Carla is currently a popular choice for simulation-based vehicle testing, so this 
+is strong evidence that %
+% would suggest that 
+the underlying  game engine of Carla is of practical value to the community of intelligent transportation. The paper is not focused on game engines per se, but rather the implications of using those game engines for vehicle testing. 
 
+We think there must be a misunderstanding here. We clearly state the importance of needing determinism for verification:
 
-Furthermore, we state on pg.4 the differences between the requirements of game engines for gaming, and for that of AV testing: 
+\begin{quote}
+If the simulation is non-deterministic, e.g. it has a non-zero variance in, for example, actor positions, then this may, in the best case, lead to intermittent assertion failures, making it difficult to reproduce, understand and remove bugs and rendering verification results unstable. In the worst case, however, bugs that could have been identified in simulation remain undetected, leading to false confidence in the safety of the AV’s control software.
+\end{quote}
+
+We state that game engines are the underlying physics framework that support some driving simulators, such as Carla. Therefore, if you are using a driving simulator that is based on a game engine, this may lead to non-determinism and compromise your verification analysis. We agree with the reviewer that determinism for game engines may not be an important research field by itself, but we go on to state that this is not the case for AV verification. We believe this point is sufficiently clear to the reader and hope these examples bring this point to bear:
+
+\begin{quote}
+When used for gaming, game engines do not need to be deterministic nor do they have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions are: How can one assess whether a simulation environment is deterministic? and How can one determine and control the simulation variance? 
+\end{quote}
+
+We also state on pg.4 the differences between the requirements of game engines for gaming, and for that of AV testing. We state that there is no need for determinism in gaming (it may even benefit gameplay) but that this is not the case for verification: 
 
 \begin{quote}
 Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither needs a faithful representation of reality (i.e. gamer accepts low accuracy) nor require repeated actions to result in the same outcome (i.e. gamer accepts low precision). In contrast, high accuracy and precision are necessary for AV development, testing and verification.
@@ -215,7 +229,7 @@ Considering the objectives for gaming and comparing them to these for AV develop
 
 Carla, and other game engine based simulators, will be an entry point for many SME's and start-up companies looking to develop products and services in this area and we believe that this paper brings pertinent information to this community, many of whom may look to ITS for guidance.
 
-To make our message clearer, we propose that the title of the document should be changed to better reflect the content, which is primarily concerned with the importance of determinism for simulation based verification of autonomous vehicles. Hence we have changed the title to: "On the Importance of Determinism for Simulation-based Autonomous Vehicle Verification using a Game Engine".
+% To make our message clearer, we propose that the title of the document should be changed to better reflect the content, which is primarily concerned with the importance of determinism for simulation based verification of autonomous vehicles. Hence we have changed the title to: "On the Importance of Determinism for Simulation-based Autonomous Vehicle Verification using a Game Engine".
 
 \bigskip
 
