@@ -21,13 +21,16 @@
 
 \documentclass[11pt, a4paper]{letter} % Set the font size (10pt, 11pt and 12pt) and paper size (letterpaper, a4paper, etc)
 
+
 \usepackage{graphicx} % Required for including pictures
 
 \usepackage[T1]{fontenc} % Output font encoding for international characters
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage{gfsdidot} % Use the GFS Didot font: http://www.tug.dk/FontCatalogue/gfsdidot/
 \usepackage{microtype} % Improves typography
-
+\usepackage{hyperref}
+\hypersetup{hidelinks = true,}
+\usepackage{xurl}
 
 % \input{structure.tex} % Include the file that specifies the document structure
 \pagestyle{empty} % Suppress headers and footers
@@ -209,13 +212,13 @@ is strong evidence that %
 % would suggest that 
 the underlying  game engine of Carla is of practical value to the community of intelligent transportation. The paper is not focused on game engines per se, but rather the implications of using those game engines for vehicle testing. 
 
-We think there must be a misunderstanding here. We clearly state the importance of needing determinism for verification:
+We think that there must just be a misunderstanding here, we clearly state the importance of needing determinism for verification (from page 3):
 
 \begin{quote}
 If the simulation is non-deterministic, e.g. it has a non-zero variance in, for example, actor positions, then this may, in the best case, lead to intermittent assertion failures, making it difficult to reproduce, understand and remove bugs and rendering verification results unstable. In the worst case, however, bugs that could have been identified in simulation remain undetected, leading to false confidence in the safety of the AV’s control software.
 \end{quote}
 
-We state that game engines are the underlying physics framework that support some driving simulators, such as Carla. Therefore, if you are using a driving simulator that is based on a game engine, this may lead to non-determinism and compromise your verification analysis. We agree with the reviewer that determinism for game engines may not be an important research field by itself, but we go on to state that this is not the case for AV verification. We believe this point is sufficiently clear to the reader and hope these examples bring this point to bear:
+We state that game engines are the underlying physics framework that support some driving simulators, such as Carla. Therefore, if you are using a driving simulator that is based on a game engine, this may lead to non-determinism and compromise your verification analysis. We agree with the reviewer that determinism for game engines may not be an important research field by itself, but we go on to state that this is not the case for AV verification (from page 3):  
 
 \begin{quote}
 When used for gaming, game engines do not need to be deterministic nor do they have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions are: How can one assess whether a simulation environment is deterministic? and How can one determine and control the simulation variance? 
@@ -227,7 +230,7 @@ We also state on pg.4 the differences between the requirements of game engines f
 Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision. The gamer neither needs a faithful representation of reality (i.e. gamer accepts low accuracy) nor require repeated actions to result in the same outcome (i.e. gamer accepts low precision). In contrast, high accuracy and precision are necessary for AV development, testing and verification.
 \end{quote}
 
-Carla, and other game engine based simulators, will be an entry point for many SME's and start-up companies looking to develop products and services in this area and we believe that this paper brings pertinent information to this community, many of whom may look to ITS for guidance.
+Carla, and other game engine based simulators, will be an entry point for many SME's and start-up companies looking to develop products and services in this area and we believe that this paper brings pertinent information to this community, many of whom may look to ITS for guidance. We believe this point is sufficiently clear to the reader and hope these examples bring this point to bear.
 
 % To make our message clearer, we propose that the title of the document should be changed to better reflect the content, which is primarily concerned with the importance of determinism for simulation based verification of autonomous vehicles. Hence we have changed the title to: "On the Importance of Determinism for Simulation-based Autonomous Vehicle Verification using a Game Engine".
 
@@ -243,7 +246,7 @@ We could reframe this as thinking less about simulation performance, and more ab
 
 We have added (in italics) to the sentence on page 9 to clarify this point:  
 \begin{quote} 
-Initial testing [26] indicated an actor path deviation of 1x10-13cm for 997 out of 1000 tests, with three tests reporting a deviation of over 10cm. \textit{Due to the low probability of a simulation trace exceeding permissible variance, using an average would 'hide' these errors and hence this is the reason that we use maximum variance and not an average}. 
+Initial testing [26] indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests, with three tests reporting a deviation of over 10cm. \textit{Due to the low probability of a simulation trace exceeding permissible variance, using an average would `hide' these errors and hence this is the reason that we use maximum variance and not an average}. 
 \end{quote}
 
 \bigskip
@@ -267,11 +270,14 @@ To put this another way, we can accept a precision with a tolerance of $\leq$$\p
 
 Carla uses Unreal Engine 4 (UE4) for vehicle testing, which is not the original purpose of UE4. The issues discussed in the paper do not have any negative implications for games, but (as the paper argues) they do have negative implications for vehicle testing. Thus, the issues are issues with Carla rather than UE4, and the same issues are likely to arise in any simulator based on a game engine.
 
+There are examples of other simulators that run on game engines. AirSim developed by Microsoft for autonomous drone and vehicle development (see footnote\footnote{\url{https://microsoft.github.io/AirSim/}}) is based on the same UE4 game engine as Carla. Unreal is also the simulator backbone for the research efforts at the University of Warwick where simulation based safety testing is done using a simulation cave and a real vehicle (see footnote\footnote{\url{https://www.unrealengine.com/en-US/spotlights/meet-the-hybrid-real-time-simulator-for-testing-autonomous-vehicles}}). The Unity game engine has also been used for development of the apollo driving simulator (see footnote\footnote{\url{https://apollo.auto/gamesim.html}}) which has partnerships with many vehicle manufacturers (see footnote\footnote{\url{https://apollo.auto/about/ecological\_partner.html#taboem}}).
+
 
 \bigskip
 
 
 \textit{Comment 5: "The numbers of references are odd"}.
+
 Please let us know any format changes that are required specifically. If you are referring to the document hyperlinks that link to each reference, these can be switched off if required.
 
 
@@ -279,6 +285,7 @@ Please let us know any format changes that are required specifically. If you are
 
 
 \textit{Comment 6: "In section I, the sentence “without the need for millions of miles of costly on-road testing” is too arbitrary, the on-road testing is still necessary for AVs verification"}.
+
 We agree with the reviewer that the need for on-road testing is an essential component of the verification process. However, the previous sentence highlights the shortcomings of on-road testing where human fatalities have occurred due to a lack of verification which may result from insufficient exploration of the parameter space.
 
 The point of this sentence  was in the context of parameter space exploration and the fact that this space could never be explored sufficiently with on-road testing alone and hence the necessity of simulation for verification. We have modified the sentence to sound less arbitrary, and highlighted the complementary nature of both techniques:
@@ -289,6 +296,7 @@ While on-road testing is an essential and complementary part of AV verification,
 \bigskip
 
 \textit{Comment 7: "No need to provide such a detailed description of floating-point arithmetic since it does not cause non-zero simulation variance"}.
+
 Floating point arithmetic does not contribute to simulation variance, but it is a common misconception that people often jump to when considering or discussing deterministic computation. We therefore believe it is important to fully explain the issue to ensure that there is no doubt going forward from this point.
 
 To make this clearer we have modified this section to indicate this misconception. We have also made this section more concise. Please see page 4-5 starting:
@@ -299,6 +307,7 @@ To make this clearer we have modified this section to indicate this misconceptio
 \bigskip
 
 \textit{Comment 8: "There is no equal sign in Equation (1)"}.
+
 Thank you we have created a symbol for this to turn this into an equation. See the amended equation on page 8:
 
 \begin{equation} \label{eq:max_sigma}
@@ -309,19 +318,40 @@ Thank you we have created a symbol for this to turn this into an equation. See t
 \bigskip
 
 \textit{Comment 9: "TABLE I and Fig 3 are not consistent, it would be better if there are three subfigures in Fig 3"}.
+
 Thank you we agree this would be clearer if there were three figures, this was done to save space in the document. Please see page 7 for the new figure.
+
+% \includegraphics[width=1in]{../document/other/figures/fig3a}
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}
+        \includegraphics[width=4cm]{../document/other/figures/fig3a}
+    \end{subfigure}
+    \begin{subfigure}
+        \includegraphics[width=4cm]{../document/other/figures/det_fig3bb}
+    \end{subfigure}
+    \begin{subfigure}
+        \includegraphics[width=4cm]{../document/other/figures/det_fig3c}
+    \end{subfigure}
+    \caption{\\Schematic of test scenarios for (a) Tests 1-2, (b) Tests 3-4, (c) Tests 5-6. Descriptions are given in Table~1.}
+\end{figure}
+
 
 \bigskip
 
 \textit{Comment 10: "The size of simulation scenes should be pointed out, especially the boundary of (x, y, z)"}.
+
 Thank you, we agree this would help describe the scene better to the reader. Please see section V.C on page 7 for the additional text:
 \begin{quote}
-\textit{The map size for the simulation test environment was 354x170$m$. The range of movement of the actors within the environment was up to 70m for vehicles and up to 25m for pedestrians}.
+\textit{The map size for the simulation test environment was 354$m$ $\times$ 170$m$. The range of movement of the actors within the environment was up to 70m for vehicles and up to 25m for pedestrians}.
 \end{quote}
 
 \bigskip
 
 \textit{Comment 11: "Which vehicle collided with the pedestrian in test 4, please label them in Fig 3"}. 
+
 We agree it would be clearer for the reader if this information was presented. We have added the collision area to Fig.3 (on page 7) indicating where the collision happens and the ID of the vehicles.
 
 \bigskip
@@ -330,7 +360,8 @@ We agree it would be clearer for the reader if this information was presented. W
 
 \textbf{Reviewer 2}\\
 \textit{Comment 1: "The current paper is a little bit too long and could be shortened. For instance, several definitions in Section II.A could be introduced in a more concise way. Sections II and III could be combined. Sections V and VI could be combined"}.
-We agree the paper is a bit long, however if readers are familiar with the definitions it is likely that they will skip over these but it would be prudent to keep them in. We think that section V and IV are already long independently and combining them might become unwieldy. 
+
+We agree the paper is a bit long, however if readers are familiar with the definitions it is likely that they will skip over these but it would be prudent to keep them in. We think that section V and VI are already long independently and combining them might become unwieldy. 
 
 We have attempted to reduce the paper size in different areas, please see the diff document. However, as the first reviewer wanted additional material added, including figures, this may have resulted in a net increase in overall manuscript length. 
 
@@ -345,9 +376,17 @@ If the reader follows the methodology in section VII they should be able to disc
 \bigskip
 
 \textit{Comment 3: "It would be good if the authors could show the vehicle/pedestrian trajectories of a test case where a large maximum variance occur (such as the trajectories pre and post a collision). This could help the reader better understand the cause of the large trajectory variance"}.
+
 Thank you, this is a great idea and we agree that this would give the reader a better insight into the issue. We have added an X-Y plane data plot showing the high simulation variance that occurs during test 4. In this plot you can see the area that vehicle 2 and the pedestrian collide within and the subsequent path variance (see Fig.5 on page 9). 
 
-This is referenced in the following text (additional in italics):
+\begin{figure}
+    \centering
+    \includegraphics[width=12cm]{../document/other/figures/actor_path_plot.jpg}
+    \caption{\\Actor path plot in XY plane for Test 4 with 95\% resource utilisation.}
+\end{figure}
+
+
+This new figure is referenced in the following text (additional in italics):
 \begin{quote}
 However, all other scenarios involving vehicles or a mixture of actor types do not meet the required tolerance, with some deviation in actor path as large as 59cm. \textit{A plot of actor position in the X-Y plane (plan view, units m) is shown in Fig.5, where the inset shows the divergence of the path of vehicle 2 post-collision with the pedestrian.} Clearly, such a large deviation cannot be acceptable for simulation to be considered a credible verification tool.
 \end{quote}
