@@ -8,7 +8,7 @@ Simulated tests aim to provide evidence to developers and regulators of the func
 
 Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules e.g.,\ through assertion checking during simulation. There have been several fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. 
 
-While on-road testing is an essential part of AV verification, it can be complementary to simulation, offering a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} whilst reducing the amount of costly road trials~\cite{kalra2016driving}.
+While on-road testing is an essential part of AV verification, it can be complemented by  simulation-based testing, which offers a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} whilst reducing the amount of costly road trials~\cite{kalra2016driving}.
 %
 %While on-road testing is an essential and complementary part of AV verification, simulation environments offer a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} whilst limiting the need for costly road trials~\cite{kalra2016driving}. 
 In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
@@ -421,7 +421,7 @@ The experiments were carried out on an Alienware Area 51 R5 with an i9 9960X pro
 
 Initial testing~\cite{TSLUnrealEngineTesting} indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests, with three tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10$cm. While executing 100 repeats may seem sufficient, this sample size may fail to observe events that occur with low probability, giving false confidence in the results. Therefore each test was repeated 1000 times to provide a sufficient sample size. 
 %
-Due to the low probability of a simulation trace exceeding permissible variance, using an average would `hide' these errors and hence this is the reason that we use maximum variance and not an average. 
+Due to the low probability of a simulation trace exceeding the permissible variance, using an average would `hide' these errors; hence this is the reason for using maximum variance and not an average.
 %
 A detailed guide for reproducing the experiments along with the scripts used are provided on github\footnote{\url{https://github.com/TSL-UOB/CAV-Determinism/tree/master/CARLA_Tests_setup_guide}}. To eliminate some of the potential sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests and analyses were performed on our system. These were:
 
