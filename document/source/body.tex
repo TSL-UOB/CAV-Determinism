@@ -6,7 +6,12 @@ Simulation-based verification of autonomous driving functionality is a promising
 %
 Simulated tests aim to provide evidence to developers and regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct~\cite{ViennaConv}, national rules~\cite{codes2015highway} and road traffic laws~\cite{RoadTraffic1988} which form a body of safe and legal driving rules, termed assertions, that must not be violated. 
 
-Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules e.g.,\ through assertion checking during simulation. There have been several fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. While on-road testing is an essential and complementary part of AV verification, simulation environments offer a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} whilst limiting the need for costly road trials~\cite{kalra2016driving}. In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
+Design confidence is gained when the autonomous vehicle (AV) can be shown to comply with these rules e.g.,\ through assertion checking during simulation. There have been several fatalities with AVs, some of which could be attributed to insufficient verification and validation (V\&V), e.g.~\cite{FatalityExample}. 
+
+While on-road testing is an essential part of AV verification, it can be complementary to simulation, offering a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} whilst reducing the amount of costly road trials~\cite{kalra2016driving}.
+%
+%While on-road testing is an essential and complementary part of AV verification, simulation environments offer a means to explore the vast parameter space safely and efficiently~\cite{korosec2019waymo} whilst limiting the need for costly road trials~\cite{kalra2016driving}. 
+In particular, simulations can be biased to increase the frequency at which otherwise rare events occur~\cite{Koopman2018}; this includes testing how the AV reacts to unexpected behaviour of the environment~\cite{RobustnessAutonomy}. 
 
 Increasingly, the autonomous vehicle community is adopting game engines as simulation platforms to support the development and testing of vehicle control software. 
 %
@@ -140,7 +145,7 @@ Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined 
 
 Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision.
 % 
-The gamer neither needs a faithful representation of reality (i.e. gamer accepts low accuracy) nor require repeated actions to result in the same outcome (i.e. gamer accepts low precision). In contrast, high accuracy and precision are necessary for AV development, testing and verification.
+The gamer neither needs a faithful representation of reality (i.e. gamer accepts low accuracy) nor requires repeated actions to result in the same outcome (i.e. gamer accepts low precision). In contrast, high accuracy and precision are necessary for AV development, testing and verification.
 
 % ======= Sources of non-determinism
 \section{Potential Sources of Non-Determinism} \label{s:nondeterminisimSources}
@@ -349,7 +354,7 @@ Previous investigations into the Unreal Engine indicated that collisions between
 %
 Collisions and the subsequent physics calculations that are processed, termed \textit{event hit} callback in Unreal Engine, were identified as potentially key aspects to the investigation into simulation variance.
 
-The tests used for the case study are listed in Table~\ref{TableOfExperiments}. They cover a range of interactions between actor types. The map size for the simulation test environment was 354x170$m$. The range of movement of the actors within the environment was up to 70$m$ for vehicles and up to 25$m$ for pedestrians.
+The tests used for the case study are listed in Table~\ref{TableOfExperiments}. They cover a range of interactions between actor types. The map size for the simulation test environment was 354$m$ $\times$ 170$m$. The range of movement of the actors within the environment was up to 70$m$ for vehicles and up to 25$m$ for pedestrians.
 %
 Tests 1 \& 2 involve two vehicles meeting at a junction where they either do not collide (Test 1) and where they do collide (Test 2), thereby triggering an \textit{event hit} callback in the game engine. In both cases the trajectories of the vehicles are hard-coded to follow a set of waypoints spaced at $0.1$m intervals using a PID controller. 
 %
@@ -416,7 +421,7 @@ The experiments were carried out on an Alienware Area 51 R5 with an i9 9960X pro
 
 Initial testing~\cite{TSLUnrealEngineTesting} indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests, with three tests reporting a deviation of over {\raise.17ex\hbox{$\scriptstyle\sim$}}$10$cm. While executing 100 repeats may seem sufficient, this sample size may fail to observe events that occur with low probability, giving false confidence in the results. Therefore each test was repeated 1000 times to provide a sufficient sample size. 
 %
-Due to the low probability of a simulation trace exceeding permissible variance, using an average would 'hide' these errors and hence this is the reason that we use maximum variance and not an average. 
+Due to the low probability of a simulation trace exceeding permissible variance, using an average would `hide' these errors and hence this is the reason that we use maximum variance and not an average. 
 %
 A detailed guide for reproducing the experiments along with the scripts used are provided on github\footnote{\url{https://github.com/TSL-UOB/CAV-Determinism/tree/master/CARLA_Tests_setup_guide}}. To eliminate some of the potential sources of non-determinism outlined in Section~\ref{s:nondeterminisimSources} a series of screening tests and analyses were performed on our system. These were:
 
