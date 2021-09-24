@@ -406,6 +406,14 @@ To replicate in a controlled manner the high computational loads that may be ant
 
 Practitioners should also be aware that many libraries for calculating variance itself may require attention to get precise results. For example the \texttt{numpy} method of variance is sensitive to the input precision and will return an incorrect answer if the wrong parameters are set~\cite{NumpyVar}. In \texttt{matlab}, the calculation of variance may switch from single thread to a multi-threaded execution not obviously apparent to the user when the input data size becomes large enough, opening up the potential for concurrency-induced imprecision~\cite{matlab_parallel_computing}. 
 
+\section{Results and Discussion}\label{s:FinalResultsSection}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.48\textwidth]{../other/figures/actor_path_plot.jpg}
+    \caption{Actor path plot in XY plane for Test 4 with 95\% resource utilisation.}
+    \label{actorPathPlot}
+\end{figure}
+
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.48\textwidth]{../other/figures/ExperimentsStressSummaryV6.pdf}
@@ -433,13 +441,7 @@ A detailed guide for reproducing the experiments along with the scripts used are
 % ***************************************************
 %  Results and Discussion
 % ***************************************************
-\section{Results and Discussion}\label{s:FinalResultsSection}
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.48\textwidth]{../other/figures/actor_path_plot.jpg}
-    \caption{Actor path plot in XY plane for Test 4 with 95\% resource utilisation.}
-    \label{actorPathPlot}
-\end{figure}
+
 
 \begin{figure*}[t]
     \centering
