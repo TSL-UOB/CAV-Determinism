@@ -27,10 +27,15 @@ Compared to the vehicle dynamics simulators and traffic-level simulators used by
 %
 However, while game engines are designed primarily for performance to achieve a good user experience, the requirements for AV verification go beyond that and include \textit{determinism}.
 
-In this paper, we investigate non-determinism and how it affects simulation results using the example of CARLA, an open-source autonomous driving simulation environment based on the Unreal game engine.
+In this paper, we investigate non-determinism and how it affects simulation results using the example of CARLA, an open-source autonomous driving simulation environment based on the Unreal Engine.
 %
-In our case study, scenarios between pedestrian and vehicle actors are investigated to determine the actor position variance in the simulation output for repeated simulation runs. We find that the CARLA simulator is non-deterministic. Actor path variance was found to be non-zero and, under certain conditions, the deviation from the mean was observed up to $59$cm. We would consider a deviation of $1$cm to be permissible for autonomous vehicle verification tasks in an urban environment. However, we found that CARLA exhibits a permissible variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected. 
+In our case study, scenarios between pedestrian and vehicle actors are investigated to determine the actor position variance in the simulation output for repeated simulation runs. 
 %
+We establish that the CARLA simulator is non-deterministic.  Actor path variance was found to be non-zero and, under certain conditions, a deviation from the mean was observed of up to $59$cm.
+%
+In such an urban environment, we consider a deviation of up to $1$cm to be permissible for AV verification.
+%
+However, in our experiments, CARLA only exhibits this permissible variance when system utilisation is restricted to 75\% or less and the simulation is terminated once a vehicle collision has been detected.
 
 The insights gained from this case study motivated the development of a general step-by-step method for AV developers and verification engineers to determine the simulation variance for a given simulation environment. 
 %
@@ -42,7 +47,7 @@ This paper is structured as follows.
 Section~\ref{s:prelim} defines terms used throughout the paper and identifies when determinism is needed. 
 Section~\ref{s:background} briefly introduces how game engines work before investigating in Section~\ref{s:nondeterminisimSources} the potential sources of non-determinism in game engines.
 %
-An empirical case study of simulation variance for a number of scenarios involving pedestrian and vehicles is given in Section~\ref{s:case-study} including internal and external setting and system screening tests. 
+An empirical case study of simulation variance for a number of scenarios involving pedestrians and vehicles is given in Section~\ref{s:case-study} including internal and external setting and system screening tests. 
 %
 The results from the case study are presented in Section~\ref{s:FinalResultsSection}. 
 %
@@ -57,24 +62,26 @@ Several definitions are introduced in this section. These are used in the subseq
 \\
 
 \subsubsection{Determinism}
-Schumann describes determinism as the property of causality given a temporal development of events such that any state is completely determined by prior states~\cite{Schumann2010}. However, in the context of simulation this should be expanded to include not just prior states but also the history of actions taken by all actors. Therefore, a deterministic simulation will always produce the same result given the same history of prior states and actions.
+Schumann et al.\ describe determinism as the property of causality given a temporal development of events such that any state is completely determined by prior states~\cite{Schumann2010}.\TODO{KIE: I can't find that quote in that paper, please point me to it.} However, in the context of simulation this should be expanded to include not just prior states but also the history of actions taken by all actors. Therefore, a deterministic simulation will always produce the same result given the same history of prior states and actions.
 
-A simulation can be thought of as the process of generating or producing experimental data. In the case of a driving simulator, kinematics will describe future states of actors given the current conditions and actions taken, thereby generating new data. If a simulation is deterministic, Fig.~\ref{variance_description}~(b), then there will be no variation in the generated output data, i.e. all future states are perfectly reproducible from prior states and actions. However, if a simulation is non-deterministic, Fig.~\ref{variance_description}~(a), then there will be a variation in the generated output data. \\
+A simulation can be thought of as the process of generating or producing experimental data. In the case of a driving simulator, kinematics will describe future states of actors given the current conditions and actions taken, thereby generating new data. If a simulation is deterministic, Fig.~\ref{variance_description_b}, then there will be no variation in the generated output data, i.e. all future states are perfectly reproducible from prior states and actions. However, if a simulation is non-deterministic, Fig.~\ref{variance_description_a}, then there will be a variation in the generated output data. \\
 
 \begin{figure}[!t]
     \centering
+
     \begin{subfigure}{.48\textwidth}
         \includegraphics[width=1\textwidth]{../other/figures/Variance_predicition_tolerance_definition_diagram_a.pdf}
-        \caption{Non-deterministic}
+        \caption{Non-determinism}
         \label{variance_description_a}
     \end{subfigure}
 
     \begin{subfigure}{.48\textwidth}
         \includegraphics[width=1\textwidth]{../other/figures/Variance_predicition_tolerance_definition_diagram_b.pdf}
-        \caption{Deterministic}
+        \caption{Determinism}
         \label{variance_description_b}
     \end{subfigure}
-    \caption{Demonstration of variance, precision, tolerance and determinism}
+
+    \caption{Illustration of accuracy, variance, precision and tolerance in the context of non-determinism and determinism}
     \label{variance_description}
 \end{figure}
 
@@ -82,9 +89,9 @@ A simulation can be thought of as the process of generating or producing experim
 \subsubsection{Variance, Precision \& Tolerance}
 We adopt terminology from the mechanical engineering and statistics domains to describe when there is variation in the generated output data~\cite{ADictionaryofMechanicalEngineering}. \textit{Variance} is used here to define the spread or distribution, of the generated output data with respect to the mean value. \textit{Precision} is synonymous with \textit{variance} although inversely related mathematically. Therefore, variance can indicate the degree to which a simulation can repeatedly generate the same result when executed under the same conditions and actions. \textit{Tolerance} is defined as the permissible limit of the variance, or in short the \textit{permissible variance}. 
 
-As an analogy, the simulator can be thought of as a manufacturing process that produces data. To determine the precision of this process, the output must be measured and analysed for differences when the process is repeated. Those differences describe the spread or variance in the process output. A hard limit on the variance can then be defined, Fig.~\ref{variance_description}~(a), beyond which the output fails to meet the required tolerance, e.g.\ the output is rejected by quality control. Real manufacturing fails to achieve absolute precision. Hence, there is a need for tolerances to be specified to account for the variance in real-world manufacturing processes. 
+As an analogy, the simulator can be thought of as a manufacturing process that produces data. To determine the precision of this process, the output must be measured and analysed for differences when the process is repeated. Those differences describe the spread or variance in the process output. A hard limit on the variance can then be defined, Fig.~\ref{variance_description_a}, beyond which the output fails to meet the required tolerance, e.g.\ the output is rejected by quality control. Real manufacturing fails to achieve absolute precision. Hence, there is a need for tolerances to be specified to account for the variance in real-world manufacturing processes. 
 
-If a simulator is deterministic then it will produce results with absolute precision or zero variance, Fig.~\ref{variance_description}~(b), and hence will be within tolerance by design. If the simulator is non-deterministic then there will be a measurable, non-zero variance in the output data.\\
+If a simulator is deterministic then it will produce results with absolute precision or zero variance, Fig.~\ref{variance_description_b}, and hence will be within tolerance by design. If the simulator is non-deterministic then there will be a measurable, non-zero variance in the output data.\\
 %
 
 \subsubsection{Accuracy}
@@ -143,7 +150,7 @@ The physics engine operates according to a time step, $dt$. The shorter this tim
 %
 Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined limit to meet a minimum standard of physical representation but allow computational headroom for slower hardware. Some engines provide sub-stepping which processes multiple physics calculations per frame at a greater CPU cost, e.g.\ Unreal Engine~\cite{UE4_substepping}. If the engine tries to render between physics updates, \textit{residual lag} can occur, which may result in frames arriving with a delay to the simulated physics. Thus, extrapolation between frames may need to be performed to smooth transition between scenes. Note that both residual lag and extrapolation could affect perception stack testing. In exceptional cases, where computational resources are scarce, the fixed time step can be greater than the time between render ticks and the simulation will exhibit lag between input commands and rendered states, resulting in unsynchronised and unrealistic behaviour as can be experienced when games are executed on platforms not intended for gaming. 
 
-Considering the objectives for gaming and comparing them to these for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision.
+Considering the objectives for gaming and comparing them to those for AV development and testing, there are fundamental differences. Providing game players with a responsive real-time experience is often achieved at the cost of simulation accuracy and precision.
 % 
 The gamer neither needs a faithful representation of reality (i.e. gamer accepts low accuracy) nor requires repeated actions to result in the same outcome (i.e. gamer accepts low precision). In contrast, high accuracy and precision are necessary for AV development, testing and verification.
 
@@ -159,18 +166,13 @@ A good analysis of potential sources is given by Strandberg et al.~\cite{intermi
 % ======= Floating-Point Numbers
 \subsection{Floating-Point Arithmetic}
 
-A common misconception that is often jumped to when concerning non-determinism is the use of floating point number representation. This is an erroneous conflation with non-deterministic computational execution and we explain the reasons for this here. 
+A common misconception is to attribute non-determinism to the use of floating point number representation. This is an erroneous conflation with non-deterministic computational execution.  
 %
 Floating-point representation of real numbers is limited by the fixed bit width available in the hardware, resulting in the finite precision with which numbers can be represented in a computation. 
 Thus, the results of arithmetic operations must fit into the given bit width, which is achieved through rounding to the nearest representable value. This gives rise to rounding errors~\cite{FloatingPointsBook,goldberg1991every}. %
 
 As a consequence, floating-point arithmetic is not associative. Thus, for arithmetic expressions beyond two operands, such as $x+y+z$, executing $x+(y+z)$ rather than $(x+y)+z$, can produce different results~\cite{Kapre2007}. This is because rounding is being performed at different stages in the computation, depending on the respective execution order. 
 %
-% Execution order changes can occur due to the use of a different compiler or as a consequence of parallelisation, e.g.\ within the runtime environment or at the hardware level. 
-Execution order changes or aggressive optimisations~\cite{llvm-floating-point} can occur due to the use or settings of a compiler or as a consequence of parallelisation which can also introduce incorrectness in floating-point arithmetic, e.g.\ within the runtime environment or at the hardware level. 
-%
-Furthermore, floating-point calculation results may differ if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. 
-
 % Translating to the usage of AV simulations in physics engines,
 In the context of AV simulation, such rounding errors could result in accuracy issues of, for example, actor positions within the environment, leading to falsely satisfied or failed assertions.
 %
@@ -188,9 +190,13 @@ So, even if the result of a floating-point operation is incorrect due to floatin
  
 % Beyond that, aggressive optimisations by the compiler can also introduce incorrectness in floating-point arithmetic~\cite{llvm-floating-point}. However, the same executable should still return the same output for identical input. 
 
+% Execution order changes can occur due to the use of a different compiler or as a consequence of parallelisation, e.g.\ within the runtime environment or at the hardware level. 
+However, different compiler configurations, aggressive optimisations~\cite{llvm-floating-point}, and 
+parallelisation within the runtime environment or at the hardware level can change the execution order, which can cause simulation results to differ between runs when floating-point operations are affected. 
+%
+Furthermore, floating-point calculation results may differ if the execution is performed on a GPU rather than a CPU which may have different register widths~\cite{Whitehead2011}. 
+
 In conclusion, floating-point arithmetic does not cause non-zero \textit{simulation variance} for repeated simulation runs when using the same executable on the same hardware with exactly the same configuration and execution order.
-
-
 
 
 \subsection{Scheduling, Concurrency and Parallelisation}
