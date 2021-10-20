@@ -28,6 +28,7 @@
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage{gfsdidot} % Use the GFS Didot font: http://www.tug.dk/FontCatalogue/gfsdidot/
 \usepackage{microtype} % Improves typography
+
 \usepackage{hyperref}
 \hypersetup{hidelinks = true,}
 \usepackage{xurl}
@@ -247,16 +248,16 @@ We could reframe this as thinking less about simulation performance, and more ab
 
 We have added (in italics) to the sentence on page 9 to clarify this point:  
 \begin{quote} 
-Initial testing [26] indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests, with three tests reporting a deviation of over 10cm. \textit{Due to the low probability of a simulation trace exceeding the permissible variance, using an average would `hide' these errors; hence this is the reason for using maximum variance and not an average}. 
+Initial testing [26] indicated an actor path deviation of $1\times10^{-13}$cm for 997 out of 1000 tests, with three tests reporting a deviation of over 10 $cm$. \textit{Due to the low probability of a simulation trace exceeding the permissible variance, using an average would `hide' these errors; hence this is the reason for using maximum variance and not an average}. 
 \end{quote}
 
 \bigskip
 
 \textit{Comment 3: "Moreover, I also concern about the results from several tests. As stated in Section V-B, 1 cm considered sufficient for urban scenario assertion checking. However, the average vehicle speeds are setting as 20–35 km/h (i.e. 5.56-9.72 m/s) [1]. Thus, I doubt the practical value of this permissible variance (too accurate for general AV testing) in real-world autonomous vehicle verification. The authors should provide more support materials for the setting used in the whole experiment"}.
 
-Thank you we take the point you are making. This seems to be less about the results quoted but more about what value of variance is appropriate for the given case study or application. The focus of this paper is not really on the absolute values that we chose for permissible variance, indeed we state this value should be set by the user in the methodology (see section VII.A.3), or the speed of the vehicles (which was based on the UK urban speed limit of 20mph or 30kmph), but more about the method of detecting and controlling simulation variance in an end-user's system. The value of permissible variance chosen in the paper (1cm) was considered an appropriate compromise between, say 1m (too coarse) and 1mm (too fine), to illustrate the violation of this limit given certain simulator and system conditions.
+Thank you we understand the point you are making. This seems to be less about the results quoted but more about what value of variance is appropriate for the given case study or application. The focus of this paper is not really on the absolute values that we chose for permissible variance, indeed we state this value should be set by the user in the methodology (see section VII.A.3), or the speed of the vehicles (which was based on the UK urban speed limit of 20 $mph$ or 30 $kmph$), but more about the method of detecting and controlling simulation variance in an end-user's system. The value of permissible variance chosen in the paper (1 $cm$) was considered an appropriate compromise between, say 1 $m$ (too coarse) and 1 $mm$ (too fine), to illustrate the violation of this limit given certain simulator and system conditions.
 
-The point is that repeated runs should give the exact same output, regardless of permissible variance or simulated vehicle speed. The reviewer suggests a paper that describes the speed of vehicles in an urban environment similar to those in our case study. We have included this reference together with a line to point interested readers who wish to set the speed of their simulated vehicles to an appropriate value.
+The point is that repeated runs should give the exact same output, regardless of the designated permissible variance or simulated vehicle speed. The reviewer suggests a paper that describes the speed of vehicles in an urban environment similar to those in our case study. We have included this reference together with a line to point interested readers who wish to set the speed of their simulated vehicles to an appropriate value.
 
 Please see the additional line (in italics) added to page 7: 
 \begin{quote}
