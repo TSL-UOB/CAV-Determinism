@@ -62,6 +62,7 @@ Several definitions are introduced in this section. These are used in the subseq
 \\
 
 \subsubsection{Determinism}
+
 Schumann et al.\ describe determinism as the property of causality given a temporal development of events such that any state is completely determined by prior states~\cite{Schumann2010}. However, in the context of simulation this should be expanded to include not just prior states but also the history of actions taken by all actors. Therefore, a deterministic simulation will always produce the same result given the same history of prior states and actions.
 
 A simulation can be thought of as the process of generating or producing experimental data. In the case of a driving simulator, kinematics will describe future states of actors given the current conditions and actions taken, thereby generating new data. If a simulation is deterministic, Fig.~\ref{variance_description_b}, then there will be no variation in the generated output data, i.e. all future states are perfectly reproducible from prior states and actions. However, if a simulation is non-deterministic, Fig.~\ref{variance_description_a}, then there will be a variation in the generated output data. \\
@@ -113,16 +114,30 @@ Thus, in the case study presented in this paper, the term \textit{simulation var
 \subsubsection{Scene, Scenario \& Situation}
 We adopt the terminology defined for automated driving in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time; these are considered actors and may include the AV, or \textit{ego vehicle}, other road vehicles, cyclists, pedestrians and traffic signals. The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific parameters. A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time.
 
+
+
 \subsection{When is Determinism needed?}
-Determinism is a key requirement for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable, i.e.\ repeated runs of a test, given the same initial conditions and event history, produce the same output data. Thus, a deterministic simulator has zero \textit{variance}. 
 
-A simulator with non-zero variance can no longer be considered deterministic. Non-deterministic simulators may be sufficient for certain applications as long as their variance is permissible, i.e.\ \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated simulations. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
+% NEW TEXT
+Determinism is a key requirement for simulation during AV development and testing, it ensures repeated runs have the same output and therefore has zero variance. A simulator with non-zero variance is non-deterministic but may be sufficient for some applications as long as variance is permissible, i.e. \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated simulations. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
 
-If the simulation is non-deterministic, e.g.\ it has a non-zero variance in, for example, actor positions, then this may, in the best case, lead to intermittent assertion failures, making it difficult to reproduce, understand and remove bugs and rendering verification results unstable. In the worst case, however, bugs that could have been identified in simulation remain undetected, leading to false confidence in the safety of the AV's control software. 
-
-When used for gaming, game engines do not need to be deterministic nor do they have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions are:
+Non-deterministic simulation may have non-zero variance in, for example, actor positions, which may result in intermittent assertion failure and failing to detect bugs and leading to false confidence in the system. When used for gaming, game engines do not need to be deterministic nor do they have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions are:
 {\em How can one assess whether a simulation environment is deterministic?} and 
 {\em How can one determine and control the simulation variance?}
+
+
+% OLD TEXT V2
+% Determinism is a key requirement for simulation during AV development and testing. A deterministic simulation environment guarantees that tests are repeatable, i.e.\ repeated runs of a test, given the same initial conditions and event history, produce the same output data. Thus, a deterministic simulator has zero \textit{variance}. 
+
+% A simulator with non-zero variance can no longer be considered deterministic. Non-deterministic simulators may be sufficient for certain applications as long as their variance is permissible, i.e.\ \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated simulations. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
+
+% If the simulation is non-deterministic, e.g.\ it has a non-zero variance in, for example, actor positions, then this may, in the best case, lead to intermittent assertion failures, making it difficult to reproduce, understand and remove bugs and rendering verification results unstable. In the worst case, however, bugs that could have been identified in simulation remain undetected, leading to false confidence in the safety of the AV's control software. 
+
+% When used for gaming, game engines do not need to be deterministic nor do they have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions are:
+% {\em How can one assess whether a simulation environment is deterministic?} and 
+% {\em How can one determine and control the simulation variance?}
+
+
 
 
 % ***************************************************
@@ -169,7 +184,7 @@ A good analysis of potential sources is given by Strandberg et al.~\cite{intermi
 
 
 % NEW TEXT V3
-It is a common misconception to attribute non-deterministic computational execution with the use of floating point number representation, which limited by the fixed bit width available and potentially resulting rouding errors~\cite{FloatingPointsBook,goldberg1991every}. As a consequence, floating-point arithmetic is not associative~\cite{Kapre2007} and depends on execution order where some authors even suggest avoiding floating point representation entirely~\cite{empirical-analysis-of-flaky-tests}. 
+It is a common misconception to attribute non-deterministic computational execution with the use of floating point number representation, which limited by the fixed bit width available and potentially resulting rounding errors~\cite{FloatingPointsBook,goldberg1991every}. As a consequence, floating-point arithmetic is not associative~\cite{Kapre2007} and depends on execution order where some authors even suggest avoiding floating point representation entirely~\cite{empirical-analysis-of-flaky-tests}. 
 %
 In the context of AV simulation, such rounding errors could result in accuracy issues of, for example, actor positions but we argue that the precision issues related to floating-point operations are better described as \textit{incorrectness} that is in fact repeatable; they do not cause non-determinism per se. So, even if the result of a operation is incorrect due to floating-point rounding errors, it should always be equally \textit{incorrect} for implementations that conform to the IEEE floating-point standard~\cite{8766229}. 
 %
@@ -261,9 +276,10 @@ With respect to perception stack testing, weather and lighting conditions in the
 
 
 
+
 \subsection{Actor Navigation}
+
 In game engines, the A* search algorithm is often used for navigation to find optimal paths for actors. 
-%
 The optimality and validity of A* solutions is only guaranteed if the environment is deterministic, and if not, then there are no guarantees that an execution of the same A* solution will lead to the same outcome across multiple runs. 
 
 To briefly describe the A* process, at each stage of the search, the algorithm selects one node for expansion from a set of nodes known as the \textit{frontier} (also fringe or open set) using a heuristic to select this node. For reasons of efficiency, A* represents the frontier as a priority queue, with nodes prioritised by the heuristic. Selection then reduces to a dequeue operation on the frontier. In general, the heuristic does not guarantee a uniquely optimal node in the frontier and thus ties may be encountered. The question of how these ties are broken in a priority queue is related to the broader notion of sorting stability~\cite{Sedgewick2011}. An implementation of a priority queue is said to be stable if it preserves insertion order, otherwise it is said to be unstable. If an implementation of A* uses a stable priority queue, then it will behave as a deterministic algorithm which always returns the optimal node that was first added to the frontier. Stable priority queues are typically less computationally efficient than unstable priority queues, so the requirement on stability is often dropped in practice. 
@@ -400,6 +416,7 @@ The maximum deviation is the absolute value of the square root of the maximum va
 The maximum deviation, $\max\sigma$, can be analysed for the different scenarios and settings that were identified as potential sources of non-determinism, and compared against the limit of \textit{permissible variance} to indicate if the simulation is sufficiently accurate for verification purposes.
 
 
+
 % ***************************************************
 %  Internal Settings
 % ***************************************************
@@ -407,18 +424,29 @@ The maximum deviation, $\max\sigma$, can be analysed for the different scenarios
 
 Within Unreal Engine there are numerous internal settings relating to the movement and interaction of physical bodies in the simulation. Settings can be adjusted to alter how actors interact and path plan via the navigation mesh of the environment, e.g.\ \textit{Contact Offset} and \textit{Navmesh Voxel Size}, or can be changed to improve the fidelity of physics calculations between game update steps, e.g.\ \textit{Physics Sub-Stepping} and \textit{Max Physics Delta Time}. Other options such as \textit{Enable Enhanced Determinism} were investigated along with running the engine from the command line with options for more deterministic behaviour \texttt{-deterministic}, floating-point control \texttt{/fp:strict} and headless mode \texttt{-nullrhi} along with running the test as a packaged release by building and cooking~\cite{releasing_project}. An initial study into the Unreal Engine using a pedestrian and a moving block was used to investigate simulation variance against these settings. The results were compared to a baseline of the default engine settings. However, none of these options improved simulation variance significantly and all internal setting were set restored to the default values. Details on this previous investigation can be found on the Trustworthy Systems github~\cite{TSLUnrealEngineTesting}. 
 
+
+
 % ***************************************************
 %  External Settings
 % ***************************************************
 \subsection{External Settings}
 
-After examining controls the internal game engine, external settings were explored. Game engines, and simulation hardware more generally, will utilise available system resources such as central and graphical processing units (CPU and GPU respectively), to perform physics calculations and run the simulation environment. For high performance simulations the demand on these resources may be a significant fraction of the total available and an initial hypothesis was that as this ratio tended toward one, there would be an increase in \textit{simulation variance}.
 
-Some initial exploratory work was undertaken~\cite{TSLUnrealEngineTesting} that suggested computational resource utilisation was positively correlated with simulation variance, leading to high simulation variance when a system is under high load. This initial observation was explored more fully in this work using the CARLA platform. 
+Performing physics calculations and running the simulator may consume a significant proportion of system resources (e.g. CPU and GPU processors) for higher performing simulations. An initial hypothesis was that as this ratio tended toward one, there would be an increase in \textit{simulation variance} which was corroborated with some initial investigations~\cite{TSLUnrealEngineTesting} and explored more fully in this work using the Carla platform. 
+
+% PREVIOUS TEXT V2
+% After examining controls the internal game engine, external settings were explored. Game engines, and simulation hardware more generally, will utilise available system resources such as central and graphical processing units (CPU and GPU respectively), to perform physics calculations and run the simulation environment. For high performance simulations the demand on these resources may be a significant fraction of the total available and an initial hypothesis was that as this ratio tended toward one, there would be an increase in \textit{simulation variance}.
+
+% Some initial exploratory work was undertaken~\cite{TSLUnrealEngineTesting} that suggested computational resource utilisation was positively correlated with simulation variance, leading to high simulation variance when a system is under high load. This initial observation was explored more fully in this work using the CARLA platform. 
 
 To replicate in a controlled manner the high computational loads that may be anticipated for high performance simulations, software that artificially utilises resources on both the CPU and GPU were executed alongside the simulation. Resource utilisation was artificially increased for both CPU and GPU devices to include a range of values from 0 to 95\% (see Section~\ref{s:methodology}) using reported values of the system monitors \texttt{htop} and \texttt{nvidia-smi} respectively. Resource utilisation figures reported here should be considered approximate values. Resource utilisation was capped to 75\% in some parts of the results and referred to as \textit{restricted}. This was done to limit the load on the test system and hence limiting simulation variance. The term \textit{unrestricted} places no such limit on the system load.
 
 Practitioners should also be aware that many libraries for calculating variance itself may require attention to get precise results. For example the \texttt{numpy} method of variance is sensitive to the input precision and will return an incorrect answer if the wrong parameters are set~\cite{NumpyVar}. In \texttt{matlab}, the calculation of variance may switch from single thread to a multi-threaded execution not obviously apparent to the user when the input data size becomes large enough, opening up the potential for concurrency-induced imprecision~\cite{matlab_parallel_computing}. 
+
+
+% ***************************************************
+%  Results and Discussion
+% ***************************************************
 
 \section{Results and Discussion}\label{s:FinalResultsSection}
 \begin{figure}[t]
@@ -435,9 +463,12 @@ Practitioners should also be aware that many libraries for calculating variance 
     \label{ExperimentsStressSummary}
 \end{figure}
   
+
+
 % ***************************************************
 %  System Configuration and Screening
 % ***************************************************
+
 \subsection{Experimental System Configuration and Pre-Screening}\label{s:screening}
 The experiments were carried out on an Alienware Area 51 R5 with an i9 9960X processor with 64GB non-ECC DDR4 RAM at 2933MHz with an NVIDIA GeForce RTX 2080 GPU with 8GB GDDR6 RAM at 1515 MHz. The operating systems was Linux Ubuntu 18.04.4 LTS. Tests were carried out in CARLA (v0.9.6 and Unreal Engine v4.22) using synchronous mode with a fixed $dt$ of $0.05$s. 
 
@@ -451,11 +482,6 @@ A detailed guide for reproducing the experiments along with the scripts used are
     \item System memory: \texttt{memtest86}~\cite{MemTest86} full suite of tests ran, all passed.
     \item Graphical memory: \texttt{cuda\_memtest}~\cite{cuda_memtest}, no failures on all 11 tests~\cite{shi2009testing}.
 \end{itemize}
-
-% ***************************************************
-%  Results and Discussion
-% ***************************************************
-
 
 \begin{figure*}[t]
     \centering
@@ -523,6 +549,12 @@ Practitioners may wish to set a stricter resource utilisation level, such as les
 
 A correlation between resource utilisation and simulation variance has been observed in these results which may be due to process scheduling. Rather than limiting utilisation of the whole system, another approach may be to promote the scheduling priority of the simulation process which is explored in Section~\ref{r:process_scheduling}. Furthermore, we were keen to investigate the impact of memory access and include a brief investigation of this in Section~\ref{r:numa}. 
 
+
+
+% ***************************************************
+%  Process Scheduling Priority
+% ***************************************************
+
 \subsection{Process Scheduling Priority} \label{r:process_scheduling}
 
 
@@ -534,6 +566,12 @@ The results are presented in Fig.~\ref{NICEExperimentStressSummary} where the bo
 %
 The remaining difference in the variance between the two resource utilisation levels may be due to the lack of absolute control that \texttt{NICE} has over process scheduling.\footnote{\url{https://askubuntu.com/questions/656771/process-niceness-vs-priority}}
 
+
+
+% ***************************************************
+%  Non-uniform memory access (NUMA)
+% ***************************************************
+
 \subsection{Non-uniform memory access (NUMA)} \label{r:numa}
 An additional investigation into memory access was undertaken given the potential impact that data transfer cost and execution order may have on simulation variance, see Section~\ref{s:sources_numa}. %
 The program \texttt{numactl}~\cite{numactl_NUMA} allows a process to run with a specified memory placement policy, essentially allowing the process to be bound to a particular CPU core. %
@@ -543,14 +581,20 @@ This was considered minor comparative to the changes in simulation variance obse
 However, practitioners that are aiming to minimise simulation variance should use a technique such as this to minimise data transfer cost and potentially minimise any potential effect on process execution order that may lead to increased simulation variance. 
 
 
+% ***************************************************
+%  Investigation Summary
+% ***************************************************
+
 \subsection{Investigation Summary} \label{s:empirical_summary} 
 These empirical investigations have highlighted the shortcomings of using a games engine for simulation based verification and suggests advice for best working practice. It was observed that resource utilisation positively correlates with simulation variance and that specific simulation events, such as vehicle collisions, can also lead to a breach in permissible tolerance. The investigation found that the effect of higher simulation variance as a result of increased resource utilisation can be reduced, but not omitted entirely, by controlling the scheduling policy. The investigation into specifying memory placement on the simulation process did improve simulation variance but only by a minor amount of 2\%.
 
 However, these results are specific to the hardware and software used in the study and may not be transferable to other systems directly. Therefore we have derived a general methodology that practitioners can follow to find the \textit{operational domains of permissible variance} for a game-engine-based simulation environment. This methodology is presented in the next section. 
 
+
 % ***************************************************
 %  METHOD
 % ***************************************************
+
 \section{Method to determine the Variance of a Simulation} \label{s:methodology}
 In this section a method for determining the simulation variance of actor paths and resolving the operational domains of permissible variance is presented here as a work flow, see Fig.~\ref{method_diagram}. In addition, recommendations and best practice guidelines for minimising simulation variance are suggested.
 
@@ -592,11 +636,7 @@ CPU utilisation software, such as the linux \texttt{stress} tool, which is a wor
 Prior to experimental execution the system hardware should be tested for memory conformity and to ensure no single bit errors are occurring, see Section~\ref{s:screening}. For mainboard memory \texttt{memtest86}\ can be used on most platforms to run a series of pre-defined memory test patterns. This memory testing software can also be used for ECC enabled hardware. Similarly, to test memory on Nvidia based graphical adaptors \texttt{cuda\_memtest} can be used to ensure no memory errors exist.
 
 \subsubsection{Scheduling}
-We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, gaining fine control over the scheduling policy and thread execution order is non-trivial~\cite{acm-q-rr-interview}. 
-
-The operating system schedules threads according to a specified scheduling policy, potentially based on equal thread priority. Thus, in such a case, all tasks non-essential to the simulator should be terminated to prevent interference with the simulation. 
-
-Assigning a higher priority to the simulator process may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows~\cite{TaskSettingWindows} or \texttt{NICE} in Linux~\cite{Nice_linux}.
+We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, gaining fine control over the scheduling policy and thread execution order is non-trivial~\cite{acm-q-rr-interview}. The operating system schedules threads according to a specified scheduling policy, potentially based on equal thread priority. Thus, in such a case, all tasks non-essential to the simulator should be terminated to prevent interference with the simulation. Assigning a higher priority to the simulator process may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows~\cite{TaskSettingWindows} or \texttt{NICE} in Linux~\cite{Nice_linux}.
 
 \subsubsection{NUMA Control}
 Control over a Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multi-core processors with shared memory. This control allows the simulator process to be fixed on a single core, reducing and unifying memory access time. Investigations in tests performed with NUMA control resulted in only minor improvements in simulation variance, see Section~\ref{s:screening}. Using a fixed memory placement policy may assist if simulation variance is borderline to the tolerance but only of the order of a few percent from our observations.
@@ -608,11 +648,7 @@ An ego vehicle was not used in this study, but the impact of introducing this to
 \subsection{Execution}
 
 \subsubsection{Sample Size}
-It is recommended that the chosen sample size, i.e.\ the number of repeated tests, is determined empirically. We recommend monitoring variance while increasing the sample size in orders of magnitude until there is confidence that $\max\sigma$ will not exceed the permissible variance for the verification process. Note that we suggest monitoring the maximum value of $\sigma$, not the average, 
-%
-%because if even a single simulation run is outside of the permissible variance this may lead to false confidence in the verification result.
-%
-because if even a single simulation run is outside of the permissible variance it would be critically important to detect this. Using an average may lead to false confidence in the verification result.
+It is recommended that the chosen sample size, i.e.\ the number of repeated tests, is determined empirically. We recommend monitoring variance while increasing the sample size in orders of magnitude until there is confidence that $\max\sigma$ will not exceed the permissible variance for the verification process. Note that we suggest monitoring the maximum value of $\sigma$, not the average, because if even a single simulation run is outside of the permissible variance it would be critically important to detect this. Using an average may lead to false confidence in the verification result.
 
 \subsubsection{Data Logging}
 Unique identifiers should be assigned to each experiment, each repeat and each individual actor. 
@@ -628,7 +664,15 @@ For each experiment, the maximum value of actor path deviation over all time sam
 
 Game engines offer simulation environments that are used for the development and verification of autonomous driving functions. Determinism of a simulator is required to achieve repeatability, which is essential to find and fix software bugs efficiently, and to ensure simulation results are trustworthy. If a simulator is non-deterministic then practitioners should at least be aware of, and know how to find, the operational domains where \textit{simulation variance} is tolerable. 
 
-An investigation into the CARLA simulator revealed a significant simulation variance for repeated tests with the same initial conditions and event history, indicating non-determinism of the simulation. We then researched, identified and discussed potential sources for non-determinism in this context. A systematic case study of the CARLA simulator uncovered the actual factors that contribute towards greater simulation variance, giving rise to non-deterministic execution. In particular, actor collisions and system-level resource utilisation were identified as key contributors. To meet the recommended simulation variance for urban autonomous vehicle verification demonstrated in our case study, we recommend being aware of actor collisions and resource utilisation levels during simulation execution. Alternatively, there are commercially available driving simulators that claim to be fully deterministic, e.g.\ RFPro~\cite{rFpro2021}, that may be more suitable if using a game engine does not provide a simulation variance sufficient for the verification requirements.
+An investigation into the CARLA simulator revealed a significant simulation variance for repeated tests with the same initial conditions and event history, indicating non-determinism of the simulation. We then researched, identified and discussed potential sources for non-determinism in this context. 
+%
+% A systematic case study of the CARLA simulator uncovered the actual factors that contribute towards greater simulation variance, giving rise to non-deterministic execution. 
+%
+In particular, actor collisions and system-level resource utilisation were identified as key contributors to increased simulation variance when using Carla and we recommend monitoring these during simulation execution or using a commercial alternative, e.g.~\cite{rFpro2021}. 
+%
+% To meet the recommended simulation variance for urban autonomous vehicle verification demonstrated in our case study, we recommend being aware of actor collisions and resource utilisation levels during simulation execution. 
+%
+% Alternatively, there are commercially available driving simulators that claim to be fully deterministic, e.g.\ RFPro~\cite{rFpro2021}, that may be more suitable if using a game engine does not provide a simulation variance sufficient for the verification requirements.
 
 A general method to assess the actor path variance of a game-engine-based simulation environment was then proposed. The method can be used to find the \textit{domains of permissible variance} of a simulation environment for a given system configuration. This can give AV developers and verification engineers increased confidence in the simulation results and reduce debug time. As future work, the method can be extended to other simulation platforms and to criteria other than the actor path, e.g.\ actor orientation and any status indicators that may be of interest, also including actions, sequences and timings that may be useful for verification purposes.
 
