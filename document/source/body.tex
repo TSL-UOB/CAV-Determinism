@@ -15,7 +15,10 @@ In particular, simulations can be biased to increase the frequency at which othe
 
 Increasingly, the autonomous vehicle community is adopting game engines as simulation platforms to support the development and testing of vehicle control software. 
 %
-CARLA~\cite{carla_main_website}, for instance, is an open-source simulator for autonomous driving that is implemented in the Unreal Engine~\cite{UE4_main_website}, a real-time 3D creation environment for the gaming and film industry as well as other creative sectors~\cite{CARLA_paper}. 
+CARLA~\cite{CARLA_paper}% ~\cite{carla_main_website}
+, for instance, is an open-source simulator for autonomous driving that is implemented in the Unreal Engine\footnote{\url{https://www.unrealengine.com/}}
+% ~\cite{UE4_main_website}
+, a real-time 3D creation environment for the gaming and film industry as well as other creative sectors. 
 
 State-of-the-art game engines provide a convenient option for simulation-based testing. Strong arguments exist that they offer sufficient realism~\cite{Koopman2018} in the physical domain combined with realistic rendering of scenes, potentially suitable for perception stack testing and visual inspection of accidents or near misses. 
 %
@@ -145,12 +148,23 @@ Non-deterministic simulation may have non-zero variance in, for example, actor p
 % ***************************************************
 \section{Background} \label{s:background}
 
-There are numerous game engines with their associated development environments that could be considered suitable for AV development, e.g.\ Unreal Engine~\cite{UE4_main_website}, Unity~\cite{Unity_main_website}, CryEngine~\cite{CryEngine_main_website}. Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing game engines, e.g.\ CARLA~\cite{carla_main_website}, AirSim~\cite{AirSim_main_website}, Apollo~\cite{Apollo_main_website}, and some have been developed for cloud-based simulation, e.g.\ Nvidia Drive Constellation~\cite{nvidia_constellation}.
+There are numerous game engines with their associated development environments that could be considered suitable for AV development, e.g.\ Unreal Engine
+, Unity, CryEngine.\footnote{\url{https://www.cryengine.com/}} 
+% ~\cite{CryEngine_main_website}
+Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing game engines, e.g.\ CARLA~\cite{CARLA_paper}, AirSim\footnote{\url{https://microsoft.github.io/AirSim/}}, Apollo\footnote{\url{http://apollo.auto/}}, and some have been developed for cloud-based simulation, e.g.\ Nvidia Drive Constellation\footnote{\url{https://www.nvidia.com/en-gb/self-driving-cars/drive-constellation/}}.
+%~\cite{UE4_main_website}
+% ~\cite{Unity_main_website}
+%~\cite{carla_main_website}
+% ~\cite{AirSim_main_website}
+% ~\cite{Apollo_main_website}
+% ~\cite{nvidia_constellation}
 
 Investigating the determinism of game engines has not attracted much research interest to date since performance is more critical for game developers than accurate and repeatable execution. Ensuring software operates deterministically is a non-trivial task.  Catching intermittent failures, or flaky tests~\cite{intermittently-failing-tests}, in a test suite that cannot be replayed makes the debugging process equally difficult~\cite{acm-q-rr-interview}. This section gives an overview of the internal structure of a game engine and what sources or settings in the engine may affect \textit{simulation variance}.
 
 % ======= Overview of a Game Loop
-Central to a game engine are the main game logic, the artificial intelligence (AI) component, the audio engine, and the physics and rendering engines. For AV simulation, we focus on the latter two. The game loop is responsible for the interaction between the physics and rendering engines. Fig.~\ref{GameEngineLoopDiagram} depicts a simplified representation of the process flow in a game engine loop, where  initialisation, game logic and decommissioning have been removed~\cite{unity_event_execution}. A game loop is broken up into three distinct phases: processing the inputs, updating the game world (Physics Engine), and generating outputs (Rendering)~\cite{GameEngineArchBook}.
+Central to a game engine are the main game logic, the artificial intelligence (AI) component, the audio engine, and the physics and rendering engines. For AV simulation, we focus on the latter two. The game loop is responsible for the interaction between the physics and rendering engines. Fig.~\ref{GameEngineLoopDiagram} depicts a simplified representation of the process flow in a game engine loop, where  initialisation, game logic and decommissioning have been removed\footnote{\url{https://docs.unity3d.com/Manual/ExecutionOrder.html}}. 
+% ~\cite{unity_event_execution}.
+A game loop is broken up into three distinct phases: processing the inputs, updating the game world (Physics Engine), and generating outputs (Rendering)~\cite{GameEngineArchBook}.
 
 \begin{figure}[h]
 \centering
@@ -159,9 +173,9 @@ Central to a game engine are the main game logic, the artificial intelligence (A
 \label{GameEngineLoopDiagram}
 \end{figure}
 
-The game loop cycle starts with initialising the scene and actors. Input events from the User or AI are then processed followed by a physics cycle which may repeat more than once per rendered frame if the physics time step, $dt$, is less than the render update rate. This is illustrated by the loop in the physics update in Fig.~\ref{GameEngineLoopDiagram}. The render update will process frames as fast as the computational processing will allow up to the maximum monitor refresh rate~\cite{unity_framerates}. When the frame is rendered the game loop cycle returns to processing inputs. An intuitive and  more detailed description of the interplay between the physics and render cycles is given in~\cite{JohnAustinUnity}.
+The game loop cycle starts with initialising the scene and actors. Input events from the User or AI are then processed followed by a physics cycle which may repeat more than once per rendered frame if the physics time step, $dt$, is less than the render update rate. This is illustrated by the loop in the physics update in Fig.~\ref{GameEngineLoopDiagram}. The render update will process frames as fast as the computational processing will allow up to the maximum monitor refresh rate~\cite{unity_framerates}. When the frame is rendered the game loop cycle returns to processing inputs. An intuitive and  more detailed description of the interplay between the physics and render cycles, see\footnote{\url{https://johnaustin.io/articles/2019/fix-your-unity-timestep}}.% is given in~\cite{JohnAustinUnity}.
 
-The physics engine operates according to a time step, $dt$. The shorter this time step is, the smoother the interpretation of the physical dynamics will be. To use a fixed physics time step, the user's display refresh rate needs to be known in advance. This requires an update loop to take less than one render tick (one frame of real world time). Given the range of different hardware capabilities, a variable delta time is often implemented for game playing, taking the previous frame time as the next $dt$. However, variable $dt$ can lead to different outcomes in repeated tests and in some cases unrealistic physical representations~\cite{gaffer}. 
+The physics engine operates according to a time step, $dt$. The shorter this time step is, the smoother the interpretation of the physical dynamics will be. To use a fixed physics time step, the user's display refresh rate needs to be known in advance. This requires an update loop to take less than one render tick (one frame of real world time). Given the range of different hardware capabilities, a variable delta time is often implemented for game playing, taking the previous frame time as the next $dt$. However, variable $dt$ can lead to different outcomes in repeated tests and in some cases unrealistic physical representations\footnote{\url{https://gafferongames.com/post/fix_your_timestep/}}.%~\cite{gaffer}. 
 %
 Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined limit to meet a minimum standard of physical representation but allow computational headroom for slower hardware. Some engines provide sub-stepping which processes multiple physics calculations per frame at a greater CPU cost, e.g.\ Unreal Engine~\cite{UE4_substepping}. If the engine tries to render between physics updates, \textit{residual lag} can occur, which may result in frames arriving with a delay to the simulated physics. Thus, extrapolation between frames may need to be performed to smooth transition between scenes. Note that both residual lag and extrapolation could affect perception stack testing. In exceptional cases, where computational resources are scarce, the fixed time step can be greater than the time between render ticks and the simulation will exhibit lag between input commands and rendered states, resulting in unsynchronised and unrealistic behaviour as can be experienced when games are executed on platforms not intended for gaming. 
 
@@ -216,7 +230,9 @@ In conclusion, floating-point arithmetic does not cause non-zero \textit{simulat
 
 Runtime scheduling is a resource management method for sharing computational resources between tasks of different or equal priority depending on the operating system's scheduler policy. A scheduler policy may be optimised in many ways such as for task throughput, deadline delivery or minimum latency~\cite{liu1973scheduling}. In principle, changing the scheduling policy and thread priorities may increase simulation variance. 
 
-It is unlikely that changes to thread priorities or scheduling policy would occur during repeated tests on the same hardware and should give the same output. However, if some aspects of the game loop are multi-threaded~\cite{unity_multithreading} or if the scheduler simply randomly selects from a set of threads with equal priority, this may alter an otherwise deterministic sequence of events. 
+It is unlikely that changes to thread priorities or scheduling policy would occur during repeated tests on the same hardware and should give the same output. However, if some aspects of the game loop are multi-threaded\footnote{\url{https://docs.unity3d.com/Manual/JobSystemMultithreading.html}} 
+% ~\cite{unity_multithreading} 
+or if the scheduler simply randomly selects from a set of threads with equal priority, this may alter an otherwise deterministic sequence of events. 
 
 Similar to thread scheduling, scheduling at the hardware level on a multi-core system determines on which processor core to execute processes. This may be decided based on factors such as throughput, latency or CPU utilisation. Scheduling multiple processes across several processing cores, where the number of cores is smaller than the number of processes, or if executing across parallel GPU architecture, can result in variation of the execution order and cause simulation variance unless explicitly constrained or statically allocated prior to execution. Indeed, the developers of the debugging program \texttt{rr}~\cite{RR_link} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads, thus promoting deterministic behaviour by design~\cite{acm-q-rr-interview}.
 
@@ -292,7 +308,9 @@ While this priority queue is unstable, it is still deterministic, since it alway
 An example of an unstable priority queue that is non-deterministic is one that breaks ties at random.
 An implementation of A* is deterministic if it uses either a stable priority queue or an unstable but deterministic priority queue.
 
-The Unreal documentation and source code suggests that CARLA uses a priority queue based on a binary heap~\cite{FGraphAStar,TArray,GraphAStar}.
+The Unreal documentation and source code suggests that CARLA uses a priority queue based on a binary heap 
+% e.g. see\footnote{\url{https://docs.unrealengine.com/en-US/API/Runtime/AIModule/FGraphAStar/index.html}, \url{https://github.com/EpicGames/UnrealEngine/blob/release/Engine/Source/Runtime/AIModule/Public/GraphAStar.h} and \url{https://docs.unrealengine.com/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/TArrays/index.html}}.
+~\cite{FGraphAStar,TArray,GraphAStar}. 
 Theoretically this means that use of A* in CARLA will be determinstic as long as the heap is always constructed in the same way.
 However, if some unknown change causes the heap to be constructed in a different way, then the use of A* may then appear non-deterministic.
 This can be a complex problem in practice.
@@ -643,7 +661,10 @@ CPU utilisation software, such as the linux \texttt{stress} tool, which is a wor
 Prior to experimental execution the system hardware should be tested for memory conformity and to ensure no single bit errors are occurring, see Section~\ref{s:screening}. For mainboard memory \texttt{memtest86}\ can be used on most platforms to run a series of pre-defined memory test patterns. This memory testing software can also be used for ECC enabled hardware. Similarly, to test memory on Nvidia based graphical adaptors \texttt{cuda\_memtest} can be used to ensure no memory errors exist.
 
 \subsubsection{Scheduling}
-We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, gaining fine control over the scheduling policy and thread execution order is non-trivial~\cite{acm-q-rr-interview}. The operating system schedules threads according to a specified scheduling policy, potentially based on equal thread priority. Thus, in such a case, all tasks non-essential to the simulator should be terminated to prevent interference with the simulation. Assigning a higher priority to the simulator process may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows~\cite{TaskSettingWindows} or \texttt{NICE} in Linux~\cite{Nice_linux}.
+We hypothesise that thread scheduling may be a major contributor to the non-deterministic results found in the empirical study. However, gaining fine control over the scheduling policy and thread execution order is non-trivial~\cite{acm-q-rr-interview}. The operating system schedules threads according to a specified scheduling policy, potentially based on equal thread priority. Thus, in such a case, all tasks non-essential to the simulator should be terminated to prevent interference with the simulation. Assigning a higher priority to the simulator process may help to alleviate conflicting task scheduling which can be achieved by using, for example \texttt{TaskSettings.Priority} in Windows\footnote{\url{https://docs.microsoft.com/en-us/windows/win32/taskschd/tasksettings-priority}}
+% ~\cite{TaskSettingWindows} 
+or \texttt{NICE} in Linux\footnote{\url{https://linux.die.net/man/1/nice}}.
+%~\cite{Nice_linux}.
 
 \subsubsection{NUMA Control}
 Control over a Non-Uniform Memory Access policy can be achieved using \texttt{numactl} for multi-core processors with shared memory. This control allows the simulator process to be fixed on a single core, reducing and unifying memory access time. Investigations in tests performed with NUMA control resulted in only minor improvements in simulation variance, see Section~\ref{s:screening}. Using a fixed memory placement policy may assist if simulation variance is borderline to the tolerance but only of the order of a few percent from our observations.
