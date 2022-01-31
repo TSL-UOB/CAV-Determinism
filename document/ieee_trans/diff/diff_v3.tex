@@ -83,13 +83,13 @@ A simulation can be thought of as the process of generating or producing experim
     \centering
 
     \begin{subfigure}{.48\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/Variance_predicition_tolerance_definition_diagram_a.pdf}
+        \includegraphics[width=1\textwidth]{\pathToOtherFiles/figures/Variance_predicition_tolerance_definition_diagram_a.pdf}
         \caption{Non-determinism}
         \label{variance_description_a}
     \end{subfigure}
 
     \begin{subfigure}{.48\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/Variance_predicition_tolerance_definition_diagram_b.pdf}
+        \includegraphics[width=1\textwidth]{\pathToOtherFiles/figures/Variance_predicition_tolerance_definition_diagram_b.pdf}
         \caption{Determinism}
         \label{variance_description_b}
     \end{subfigure}
@@ -136,12 +136,12 @@ We adopt the terminology defined for automated driving in~\cite{Ulbrich2015}, wh
 \DIFdel{. }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \DIFadd{and therefore has zero variance. }\DIFaddend A simulator with non-zero variance \DIFdelbegin \DIFdel{can no longer be considered deterministic. Non-deterministic simulators }\DIFdelend \DIFaddbegin \DIFadd{is non-deterministic but }\DIFaddend may be sufficient for \DIFdelbegin \DIFdel{certain }\DIFdelend \DIFaddbegin \DIFadd{some }\DIFaddend applications as long as \DIFdelbegin \DIFdel{their }\DIFdelend variance is permissible, i.e. \DIFdelbegin \DIFdel{\ }\DIFdelend \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated simulations. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
+\DIFdelend \DIFaddbegin \DIFadd{and therefore have zero variance. }\DIFaddend A simulator with non-zero variance \DIFdelbegin \DIFdel{can no longer be considered deterministic. Non-deterministic simulators }\DIFdelend \DIFaddbegin \DIFadd{is non-deterministic but }\DIFaddend may be sufficient for \DIFdelbegin \DIFdel{certain }\DIFdelend \DIFaddbegin \DIFadd{some }\DIFaddend applications as long as \DIFdelbegin \DIFdel{their }\DIFdelend variance is permissible, i.e. \DIFdelbegin \DIFdel{\ }\DIFdelend \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated simulations. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
 
-\DIFdelbegin \DIFdel{If the simulation is non-deterministic, e.g.\ it has a }\DIFdelend \DIFaddbegin \DIFadd{Non-deterministic simulation may have }\DIFaddend non-zero variance in, for example, actor positions, \DIFdelbegin \DIFdel{then this may , in the best case, lead to intermittent assertion failures, making it difficult to reproduce, understand and remove bugs and rendering verification results unstable. In the worst case, however, bugs that could have been identified in simulation remain undetected, }\DIFdelend \DIFaddbegin \DIFadd{which may result in intermittent assertion failure and failing to detect bugs and }\DIFaddend leading to false confidence in the \DIFdelbegin \DIFdel{safety of the AV's control software. }%DIFDELCMD < 
+\DIFdelbegin \DIFdel{If the simulation is non-deterministic, e.g.\ it has a }\DIFdelend \DIFaddbegin \DIFadd{Non-deterministic simulation may have }\DIFaddend non-zero variance in, for example, actor positions, \DIFdelbegin \DIFdel{then this may , in the best case, lead to intermittent assertion failures, making it difficult to reproduce, understand and remove bugs and rendering verification results unstable. In the worst case, however, bugs that could have been identified in simulation remain undetected, }\DIFdelend \DIFaddbegin \DIFadd{which may result in intermittent assertion failure, failing to detect bugs and potentially }\DIFaddend leading to false confidence in the \DIFdelbegin \DIFdel{safety of the AV's control software. }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \DIFadd{system. }\DIFaddend When used for gaming, game engines do not need to be deterministic nor do they have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions are:
+\DIFdelend \DIFaddbegin \DIFadd{system under test. }\DIFaddend When used for gaming, game engines do not need to be deterministic nor do they have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions are:
 {\em How can one assess whether a simulation environment is deterministic?} and 
 {\em How can one determine and control the simulation variance?}
 
@@ -173,7 +173,7 @@ There are numerous game engines with their associated development environments t
 \cite{Unity_main_website}}\hspace{0pt}%DIFAUXCMD
 , CryEngine~\mbox{%DIFAUXCMD
 \cite{CryEngine_main_website}}\hspace{0pt}%DIFAUXCMD
-.}\DIFdelend \DIFaddbegin \DIFadd{, Unity, CryEngine.}\footnote{\url{https://www.cryengine.com/}} 
+.}\DIFdelend \DIFaddbegin \DIFadd{, Unity}\footnote{\url{https://unity.com/}} \DIFadd{and CryEngine.}\footnote{\url{https://www.cryengine.com/}} 
 %DIF >  ~\cite{CryEngine_main_website}
 \DIFaddend Specific autonomous driving research tools have been created to abstract and simplify the development environment, some of which are based on existing game engines, e.g.\ CARLA~\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
 \cite{carla_main_website}}\hspace{0pt}%DIFAUXCMD
@@ -207,7 +207,7 @@ Central to a game engine are the main game logic, the artificial intelligence (A
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{../other/figures/GameEngineLoopv2.pdf}
+\includegraphics[width=0.5\textwidth]{\pathToOtherFiles/figures/GameEngineLoopv2.pdf}
 \caption{Game engine loop block diagram~\cite{GameProgPatternsBook}.}
 \label{GameEngineLoopDiagram}
 \end{figure}
@@ -219,7 +219,7 @@ The game loop cycle starts with initialising the scene and actors. Input events 
 
 The physics engine operates according to a time step, $dt$. The shorter this time step is, the smoother the interpretation of the physical dynamics will be. To use a fixed physics time step, the user's display refresh rate needs to be known in advance. This requires an update loop to take less than one render tick (one frame of real world time). Given the range of different hardware capabilities, a variable delta time is often implemented for game playing, taking the previous frame time as the next $dt$. However, variable $dt$ can lead to different outcomes in repeated tests and in some cases unrealistic physical representations\DIFdelbegin \DIFdel{~\mbox{%DIFAUXCMD
 \cite{gaffer}}\hspace{0pt}%DIFAUXCMD
-.}\DIFdelend \DIFaddbegin \footnote{\url{https://gafferongames.com/post/fix_your_timestep/}}\DIFadd{.%DIF > ~\cite{gaffer}. 
+. }\DIFdelend \DIFaddbegin \footnote{\url{https://gafferongames.com/post/fix_your_timestep/}}\DIFadd{. %DIF > ~\cite{gaffer}. 
 }\DIFaddend %
 Semi-fixed or limited frame rates ensure $dt$ does not exceed some user-defined limit to meet a minimum standard of physical representation but allow computational headroom for slower hardware. Some engines provide sub-stepping which processes multiple physics calculations per frame at a greater CPU cost, e.g.\ Unreal Engine~\cite{UE4_substepping}. If the engine tries to render between physics updates, \textit{residual lag} can occur, which may result in frames arriving with a delay to the simulated physics. Thus, extrapolation between frames may need to be performed to smooth transition between scenes. Note that both residual lag and extrapolation could affect perception stack testing. In exceptional cases, where computational resources are scarce, the fixed time step can be greater than the time between render ticks and the simulation will exhibit lag between input commands and rendered states, resulting in unsynchronised and unrealistic behaviour as can be experienced when games are executed on platforms not intended for gaming. 
 
@@ -244,8 +244,8 @@ A good analysis of potential sources is given by Strandberg et al.~\cite{intermi
 \DIFdelbegin \DIFdel{A common misconception is to attribute non-determinism }\DIFdelend %DIF >  NEW TEXT V3
 \DIFaddbegin \DIFadd{It is a common misconception }\DIFaddend to \DIFaddbegin \DIFadd{attribute non-deterministic computational execution with }\DIFaddend the use of floating point number representation\DIFdelbegin \DIFdel{. This is an erroneous conflation with non-deterministic computational execution.  
 %DIF < 
-Floating-point representation of real numbers is }\DIFdelend \DIFaddbegin \DIFadd{, which }\DIFaddend limited by the fixed bit width available \DIFdelbegin \DIFdel{in the hardware, resulting in the finite precision with which numbers can be represented in a computation. 
-Thus, the results of arithmetic operations must fit into the given bit width, which is achieved through rounding to the nearest representable value. This gives rise to }\DIFdelend \DIFaddbegin \DIFadd{and potentially resulting }\DIFaddend rounding errors~\cite{FloatingPointsBook,goldberg1991every}. %DIF < 
+Floating-point representation of real numbers }\DIFdelend \DIFaddbegin \DIFadd{, which }\DIFaddend is limited by the fixed bit width available \DIFdelbegin \DIFdel{in the hardware, resulting in the finite precision with which numbers can be represented in a computation. 
+Thus, the results of arithmetic operations must fit into the given bit width, which is achieved through rounding to the nearest representable value. This gives rise to }\DIFdelend \DIFaddbegin \DIFadd{and can potentially result }\DIFaddend rounding errors~\cite{FloatingPointsBook,goldberg1991every}. %DIF < 
 \DIFdelbegin %DIFDELCMD < 
 
 %DIFDELCMD < %%%
@@ -271,7 +271,7 @@ Thus, one could conclude that floating-point arithmetic causes non-determinism, 
 %DIF < 
 Thus, given the same operands and sequence of operations, the same processor should always produce the same bit pattern. 
 %DIF < 
-}\DIFdelend So, even if the result of a \DIFdelbegin \DIFdel{floating-point }\DIFdelend operation is incorrect due to floating-point rounding errors, it should always be equally \textit{incorrect} for implementations that conform to the IEEE floating-point standard~\cite{8766229}. 
+}\DIFdelend So, even if the result of a \DIFdelbegin \DIFdel{floating-point }\DIFdelend \DIFaddbegin \DIFadd{mathematical }\DIFaddend operation is incorrect due to floating-point rounding errors, it should always be equally \textit{incorrect} \DIFaddbegin \DIFadd{when repeated }\DIFaddend for implementations that conform to the IEEE floating-point standard~\cite{8766229}. 
 \DIFdelbegin %DIFDELCMD < 
 
 %DIFDELCMD < %%%
@@ -289,11 +289,15 @@ However, different compiler configurations, aggressive optimisations~\cite{llvm-
 \DIFdelbegin \DIFdel{and 
 }\DIFdelend parallelisation within the runtime environment or at the hardware level \DIFdelbegin \DIFdel{can change the execution order, which can cause simulation results to differ between runs when floating-point operations are affected. 
 %DIF < 
-Furthermore, floating-point calculation results may differ }\DIFdelend \DIFaddbegin \DIFadd{and }\DIFaddend if the execution is performed on a GPU rather than a CPU \DIFaddbegin \DIFadd{(}\DIFaddend which may have different register widths~\cite{Whitehead2011}\DIFdelbegin \DIFdel{. 
+Furthermore, floating-point calculation results may differ }\DIFdelend \DIFaddbegin \DIFadd{and }\DIFaddend if the execution is performed on a GPU rather than a CPU\DIFdelbegin \DIFdel{which may have different register widths~\mbox{%DIFAUXCMD
+\cite{Whitehead2011}}\hspace{0pt}%DIFAUXCMD
+. 
 }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \DIFadd{) may all affect the execution order. 
+\DIFdelend \DIFaddbegin \footnote{ \DIFadd{CPU and GPU processors may have different register widths~\mbox{%DIFAUXCMD
+\cite{Whitehead2011} }\hspace{0pt}%DIFAUXCMD
+}} \DIFadd{may all affect the execution order. 
 %DIF > 
 }\DIFaddend In conclusion, floating-point arithmetic does not cause non-zero \textit{simulation variance} for repeated simulation runs when using the same executable\DIFdelbegin \DIFdel{on the same hardwarewith exactly the same }\DIFdelend \DIFaddbegin \DIFadd{, hardware, }\DIFaddend configuration and execution order.
 
@@ -323,7 +327,7 @@ Furthermore, floating-point calculation results may differ }\DIFdelend \DIFaddbe
 \DIFaddend Runtime scheduling is a resource management method for sharing computational resources between tasks of different or equal priority \DIFdelbegin \DIFdel{where tasks are executed }\DIFdelend depending on the operating system's scheduler policy. A scheduler policy may be optimised in many ways such as for task throughput, deadline delivery or minimum latency~\cite{liu1973scheduling}. %DIF < 
 In principle, changing the scheduling policy and thread priorities may increase simulation variance. 
 
-It is \DIFdelbegin \DIFdel{, however, }\DIFdelend unlikely that changes to thread priorities or scheduling policy would occur during repeated \DIFdelbegin \DIFdel{controlled tests for the same hardware and operating system configuration. Given that hardware is considered deterministic and if the thread execution order does not change between tests, then for }\DIFdelend \DIFaddbegin \DIFadd{tests on }\DIFaddend the same hardware and \DIFdelbegin \DIFdel{operating system configuration }\DIFdelend \DIFaddbegin \DIFadd{should give }\DIFaddend the same output\DIFdelbegin \DIFdel{should be given. }%DIFDELCMD < 
+It is \DIFdelbegin \DIFdel{, however, }\DIFdelend unlikely that changes to thread priorities or scheduling policy would occur during repeated \DIFdelbegin \DIFdel{controlled tests for the same hardware and operating system configuration. Given that hardware is considered deterministic and if the thread execution order does not change between tests, then for }\DIFdelend \DIFaddbegin \DIFadd{tests on }\DIFaddend the same hardware and \DIFdelbegin \DIFdel{operating system configuration }\DIFdelend \DIFaddbegin \DIFadd{should therefore give }\DIFaddend the same output\DIFdelbegin \DIFdel{should be given. }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
 \DIFdelend \DIFaddbegin \DIFadd{. }\DIFaddend However, if some aspects of the game loop are multi-threaded\DIFdelbegin \DIFdel{~\mbox{%DIFAUXCMD
@@ -346,7 +350,7 @@ Similar to thread scheduling, scheduling at the hardware level on a multi-core s
 %DIF < 
 This is because the processor cores are identical and any impurities across the bulk silicon and minor perturbations in the semiconductor processing across the chip that may exist should have been accommodated for in design and manufacturing tolerances.
 %DIF < 
-However, scheduling }\DIFdelend \DIFaddbegin \DIFadd{Scheduling }\DIFaddend multiple processes across several processing cores, where the number of cores is smaller than the number of processes, \DIFaddbegin \DIFadd{or if executing across parallel GPU architecture, }\DIFaddend can result in variation of the execution order and cause simulation variance unless explicitly constrained or statically allocated prior to execution. \DIFdelbegin %DIFDELCMD < 
+However, scheduling }\DIFdelend \DIFaddbegin \DIFadd{Scheduling }\DIFaddend multiple processes across several processing cores, where the number of cores is smaller than the number of processes, \DIFaddbegin \DIFadd{or executing across a parallel GPU architecture, }\DIFaddend can result in variation of the execution order and cause simulation variance unless explicitly constrained or statically allocated prior to execution. \DIFdelbegin %DIFDELCMD < 
 
 %DIFDELCMD < %%%
 \DIFdelend Indeed, the developers of the debugging program \texttt{rr}~\cite{RR_link} took significant steps to ensure deterministic behaviour of their program by executing or context-switching all processes to a single core, which avoids data races as single threads cannot concurrently access shared memory. This allowed control over the scheduling and execution order of threads, thus promoting deterministic behaviour by design~\cite{acm-q-rr-interview}.
@@ -519,17 +523,17 @@ We first describe the context, scene and scenario of interest before discussing 
 \begin{figure}[!t]
     \centering
     \begin{subfigure}{.24\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/fig3a}
+        \includegraphics[width=1\textwidth]{\pathToOtherFiles/figures/fig3a}
         \caption{}
         \label{Test_a}
     \end{subfigure}
     \begin{subfigure}{.24\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/det_fig3bb}
+        \includegraphics[width=1\textwidth]{\pathToOtherFiles/figures/det_fig3bb}
         \caption{}
         \label{Test_b}
     \end{subfigure}
     \begin{subfigure}{.24\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/det_fig3c}
+        \includegraphics[width=1\textwidth]{\pathToOtherFiles/figures/det_fig3c}
         \caption{}
         \label{Test_c}
     \end{subfigure}
@@ -652,14 +656,14 @@ Practitioners should also be aware that many libraries for calculating variance 
 \DIFaddend \section{Results and Discussion}\label{s:FinalResultsSection}
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.48\textwidth]{../other/figures/actor_path_plot.jpg}
+    \includegraphics[width=0.48\textwidth]{\pathToOtherFiles/figures/actor_path_plot.jpg}
     \caption{Actor path plot in X--Y plane for Test 4 with 95\% resource utilisation.}
     \label{actorPathPlot}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.48\textwidth]{../other/figures/ExperimentsStressSummaryV6.pdf}
+    \includegraphics[width=0.48\textwidth]{\pathToOtherFiles/figures/ExperimentsStressSummaryV6.pdf}
     \caption{Summary of results showing maximum deviation for each scenario against different resource utilisation levels. Tests 5 and 6 overlap having almost identical results. Note that the lines between data points are only a guide.}
     \label{ExperimentsStressSummary}
 \end{figure}
@@ -694,12 +698,12 @@ A detailed guide for reproducing the experiments along with the scripts used are
 \DIFdelend \begin{figure*}[t]
     \centering
     \begin{subfigure}{.49\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/CarsCollisionCG25_V4.pdf}
+        \includegraphics[width=1\textwidth]{\pathToOtherFiles/figures/CarsCollisionCG25_V4.pdf}
         \caption{}
         \label{CarsCollisionCG25}
     \end{subfigure}
     \begin{subfigure}{.49\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/CarsCollisionPrePostV5.pdf}
+        \includegraphics[width=1\textwidth]{\pathToOtherFiles/figures/CarsCollisionPrePostV5.pdf}
         \caption{}
         \label{CarsCollisionPrePost}
     \end{subfigure}
@@ -709,12 +713,12 @@ A detailed guide for reproducing the experiments along with the scripts used are
 \begin{figure*}[h]
     \centering
     \begin{subfigure}{.49\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/CarsPeopleCollsionsCG25_V3.pdf}
+        \includegraphics[width=1\textwidth]{\pathToOtherFiles/figures/CarsPeopleCollsionsCG25_V3.pdf}
         \caption{}
         \label{CarsPeopleCollsionsCG25}
     \end{subfigure}
     \begin{subfigure}{.49\textwidth}
-        \includegraphics[width=1\textwidth]{../other/figures/CarsPeopleCollisionPrePostV5.pdf}
+        \includegraphics[width=1\textwidth]{\pathToOtherFiles/figures/CarsPeopleCollisionPrePostV5.pdf}
         \caption{}
         \label{CarsPeopleCollisionPrePost}
     \end{subfigure}
@@ -739,14 +743,14 @@ The second key finding of this work is illustrated in Fig.~\ref{CarsPeopleCollsi
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.48\textwidth]{../other/figures/NICE_analysis_summary_V4.pdf}
+    \includegraphics[width=0.48\textwidth]{\pathToOtherFiles/figures/NICE_analysis_summary_V4.pdf}
     \caption{Variance range of three NICE priority settings for additional CPU \& GPU resource utilisation of 0\% and 75\%.}
     \label{NICEExperimentStressSummary}
 \end{figure}
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.99\linewidth]{../other/figures/Methodology_Diagram_v8.pdf}
+    \includegraphics[width=0.99\linewidth]{\pathToOtherFiles/figures/Methodology_Diagram_v8.pdf}
     \caption{Stages of the method proposed to determine the variance of a simulation.}
     \label{method_diagram}
 \end{figure*}

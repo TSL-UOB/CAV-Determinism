@@ -1,7 +1,10 @@
 \documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
 % \input{archive/main.config.tex}
 \usepackage[maxnames=2,firstinits=true,doi=false,url=true,isbn=false]{biblatex}
-\addbibresource{../source/cav_determinism.bib}
+
+\newcommand{\pathToSourceFiles}{../../source}
+\newcommand{\pathToOtherFiles}{../../other}
+\addbibresource{\pathToSourceFiles/cav_determinism.bib}
 \usepackage{array}
 \usepackage{graphicx}
 \usepackage{amsmath}
@@ -25,8 +28,6 @@
 \usepackage{siunitx}
 % \usepackage{draftwatermark}
 \usepackage{flushend}
-
-
 
 
 \RequirePackage[normalem]{ulem} %DIF PREAMBLE
@@ -120,7 +121,7 @@ Digital Object Identifier ....
 % ***************************************************
 \begin{abstract}
 \noindent 
-\input{../source/abstract.tex}
+\input{\pathToSourceFiles/abstract.tex}
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -132,8 +133,12 @@ Autonomous Driving, Autonomous Vehicles, Determinism, Game Engines, Physics Engi
 % ***************************************************
 %  Main Body
 % ***************************************************
-% \input{../source/body.tex}
-\input{../source/diff_v3.tex}
+% 
+% RUN THIS FIRST ---->>>>>>>
+% 
+% latexdiff document/source/second_submit_body.tex document/source/body.tex > document/ieee_trans/diff/diff_v3.tex
+% 
+\input{diff_v3.tex}
 
 % ***************************************************
 %  Bib
@@ -144,29 +149,29 @@ Autonomous Driving, Autonomous Vehicles, Determinism, Game Engines, Physics Engi
 %  Bio
 % ***************************************************
 
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{../other/mugs/greg.png}}]{Greg Chance}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{\pathToOtherFiles/mugs/greg.png}}]{Greg Chance}
 received the B.Sc. (Hons.) and Ph.D. degrees in physics from the University of Bath, Bath, U.K., in 2001 and 2005, respectively. He was previously at the Bristol Robotics Lab and is currently a Senior Research Associate with the Trustworthy Systems Laboratory, University of Bristol, Bristol, U.K. His current research interests are simulation-based verification for autonomous systems and cybersecurity. He has ten years industrial experience researching for Oxford Instruments, U.K., and BAE Systems, U.K. Dr Chance is a Chartered Engineer and a member of the Institute of Physics and holds a patent for a novel plasma control method. 
 \end{IEEEbiography}
 
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{../other/mugs/abanoub}}]{Abanoub Ghobrial}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{\pathToOtherFiles/mugs/abanoub}}]{Abanoub Ghobrial}
 received the MEng degree in mechanical engineering from the University of Bristol, Bristol,  U.K., in 2018. He is currently pursuing the Ph.D. degree in computer science at the University of Bristol and is a part-time Research Associate with the Trustworthy Systems Lab, Bristol,  U.K. From 2018 to 2020, he was a full-time Research Associate with the Trustworthy Systems Lab. His current research interests are techniques to allow self-managing of autonomous safety-critical systems via continual learning during operation; and the development of simulation-based verification techniques for autonomous systems.
 \end{IEEEbiography}
 
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{../other/mugs/kevin.jpg}}]{Kevin McAreavey}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{\pathToOtherFiles/mugs/kevin.jpg}}]{Kevin McAreavey}
 received a BSc (Hons) in computer science from Queen's University Belfast (QUB) in 2010 followed by a PhD in AI in 2014. He is currently a Senior Research Associate with the Intelligent Systems Laboratory at the University of Bristol (UOB), working on explainable AI for AI-enabled domestic life. Previously he has worked with the Trustworthy Systems Laboratory at UOB and as a Research Fellow at QUB. His research interests are broadly in the areas of knowledge representation and reasoning, agents and multi-agent systems, and automated planning.
 \end{IEEEbiography}
 
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{../other/mugs/severin}}]{S\'everin Lemaignan}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{\pathToOtherFiles/mugs/severin}}]{S\'everin Lemaignan}
 is Associate Professor in Social Robotics and AI at the Bristol Robotics Laboratory, University of the West of England, Bristol. He obtained a joint PhD in Cognitive Robotics from the CNRS/LAAS (France) and the Technical University of Munich (Germany) in 2012. He then joined the EPFL (Switzerland) and Plymouth University (UK) as post-doc, then lecturer in Robotics until 2018, when he joined the Bristol Robotics Lab. His research interest primarily concerns the socio-cognitive aspects of human-robot interaction and he has been focusing his recent experimental work on child-robot interaction and human-in-the-loop machine learning for social robots. Pr.\ S\'everin Lemaignan has been involved in several European projects related to social and cognitive robotics (CHRIS, DREAM, L2TOR) and was  awarded in 2015 a EU H2020 Marie Sk\l{}odowska-Curie Individual Fellowship for his project on robots and theory of mind.
 \end{IEEEbiography}
 
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{../other/mugs/tony}}]{Tony Pipe} 
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{\pathToOtherFiles/mugs/tony}}]{Tony Pipe} 
 received his BSc (Hons.) degree in Electronic Engineering from Warwick in 1979 and, after an eight-year period in industry that included running a small company, received his PhD in Robotics from the University of the West of England (UWE) in 1997. Since 2010 he has been a Professor of Robotics and Autonomous Systems at UWE. He was a founding member of the Bristol Robotics Laboratory (BRL), and acted as one of its two Deputy Directors from its inception in 2006 until 2020. His research interests focus on safe and correct operation whilst in close-proximity to human beings. He has co-authored over 200 international refereed publications, supervised 35 PhDs, and created a BRL income of \pounds10M since 2013. 
 %He has acted as BRL-UWE PI on the EPSRC grant ‘Trustworthy Robotic Assistants’, the Programme/Hub grants ‘Robotics for Nuclear Environments’ and ‘National Centre for Nuclear Robotics’, and the Centre for Doctoral Training in Robotics and Autonomous Systems. 
 Prof.\ Pipe has been involved with Connected Autonomous Vehicle research and development since 2015 via the Innovate UK/CCAV funded projects VENTURER, FLOURISH, MultiCAV, CAPRI, ROBOPILOT and CAV-Forth.
 \end{IEEEbiography}
 
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{../other/mugs/kie}}]{{Kerstin Eder}} 
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{\pathToOtherFiles/mugs/kie}}]{{Kerstin Eder}} 
 is Professor of Computer Science and heads the Trustworthy Systems Laboratory at the University of Bristol, UK. She also leads the Verification and Validation for Safety in Robots research theme at the  Bristol Robotics Laboratory. 
 %She has gained extensive experience of verifying complex microelectronic designs while working with leading semiconductor design and Electronic Design Automation companies worldwide. Her research is focused on specification, verification and analysis techniques to verify or explore a system's behaviour in terms of functional correctness, safety, security, performance and energy efficiency. 
 Prof.\ Eder's most recent contributions include agent-based testing, how to use assertions and theorem proving to verify control system designs, energy modeling and static resource analysis techniques to predict energy consumption of software. She holds a PhD in Computational Logic and an MSc in Artificial Intelligence from the University of Bristol, UK, as well as an MEng in Informatics (Dipl.\,Inf.) from the Technical University Dresden, Germany. In 2007 she was awarded an ``Excellence in Engineering'' prize from the Royal Academy of Engineering, UK.
