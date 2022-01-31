@@ -124,7 +124,9 @@ We adopt the terminology defined for automated driving in~\cite{Ulbrich2015}, wh
 % NEW TEXT
 Determinism is a key requirement for simulation during AV development and testing, it ensures repeated runs have the same output and therefore have zero variance. A simulator with non-zero variance is non-deterministic but may be sufficient for some applications as long as variance is permissible, i.e. \textit{within tolerance}. Therefore, \textit{tolerance} is the acceptable degree of variability between repeated simulations. When the simulation output is within tolerance, coverage results are stable and, when a test fails, debugging can rely on the test producing the same trace and outcome when repeated. This ensures that software bugs can be found and fixed efficiently, and that simulation results are trustworthy.
 
-Non-deterministic simulation may have non-zero variance in, for example, actor positions, which may result in intermittent assertion failure, failing to detect bugs and potentially leading to false confidence in the system under test. When used for gaming, game engines do not need to be deterministic nor do they have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions are:
+Non-deterministic simulation may have non-zero variance in, for example, actor positions, which may render the outcome unstable producing incorrect results potentially leading false confidence in the system under test. 
+%in intermittent assertion failure, failing to detect bugs and potentially leading to false confidence in the system under test. 
+When used for gaming, game engines do not need to be deterministic nor do they have any requirements on the limits of permissible variance; there are no safety implications from non-determinism in this domain, nor is finding and fixing all the bugs a high priority for games developers. It could even be argued that simulation variance is a feature that enhances gaming and improves the user experience. However, the situation is very different for AV development and testing. Thus, our main research questions are:
 {\em How can one assess whether a simulation environment is deterministic?} and 
 {\em How can one determine and control the simulation variance?}
 
@@ -173,7 +175,9 @@ A game loop is broken up into three distinct phases: processing the inputs, upda
 \label{GameEngineLoopDiagram}
 \end{figure}
 
-The game loop cycle starts with initialising the scene and actors. Input events from the User or AI are then processed followed by a physics cycle which may repeat more than once per rendered frame if the physics time step, $dt$, is less than the render update rate. This is illustrated by the loop in the physics update in Fig.~\ref{GameEngineLoopDiagram}. The render update will process frames as fast as the computational processing will allow up to the maximum monitor refresh rate~\cite{unity_framerates}. When the frame is rendered the game loop cycle returns to processing inputs. An intuitive and  more detailed description of the interplay between the physics and render cycles, see\footnote{\url{https://johnaustin.io/articles/2019/fix-your-unity-timestep}}.% is given in~\cite{JohnAustinUnity}.
+The game loop cycle starts with initialising the scene and actors. Input events from the User or AI are then processed followed by a physics cycle which may repeat more than once per rendered frame if the physics time step, $dt$, is less than the render update rate. This is illustrated by the loop in the physics update in Fig.~\ref{GameEngineLoopDiagram}. The render update will process frames as fast as the computational processing will allow up to the maximum monitor refresh rate~\cite{unity_framerates}. When the frame is rendered the game loop cycle returns to processing inputs. For an intuitive and  more detailed description of the interplay between the physics and render cycles, see~\cite{JohnAustinUnity}. 
+% \footnote{\url{https://johnaustin.io/articles/2019/fix-your-unity-timestep}}.% is given 
+
 
 The physics engine operates according to a time step, $dt$. The shorter this time step is, the smoother the interpretation of the physical dynamics will be. To use a fixed physics time step, the user's display refresh rate needs to be known in advance. This requires an update loop to take less than one render tick (one frame of real world time). Given the range of different hardware capabilities, a variable delta time is often implemented for game playing, taking the previous frame time as the next $dt$. However, variable $dt$ can lead to different outcomes in repeated tests and in some cases unrealistic physical representations\footnote{\url{https://gafferongames.com/post/fix_your_timestep/}}. %~\cite{gaffer}. 
 %
@@ -198,12 +202,19 @@ A good analysis of potential sources is given by Strandberg et al.~\cite{intermi
 
 
 % NEW TEXT V3
-It is a common misconception to attribute non-deterministic computational execution with the use of floating point number representation, which is limited by the fixed bit width available and can potentially result rounding errors~\cite{FloatingPointsBook,goldberg1991every}. As a consequence, floating-point arithmetic is not associative~\cite{Kapre2007} and depends on execution order where some authors even suggest avoiding floating point representation entirely~\cite{empirical-analysis-of-flaky-tests}. 
+It is a common misconception to attribute non-deterministic computational execution with the use of floating point number representation, which necessitates rounding due to a fixed bit width~\cite{FloatingPointsBook,goldberg1991every}. 
+% available and can potentially result in rounding errors~\cite{FloatingPointsBook,goldberg1991every}. 
+As a consequence, floating-point arithmetic is not associative~\cite{Kapre2007} and results may differ depending on execution order.
+% Some authors even suggest avoiding floating point representation entirely~\cite{empirical-analysis-of-flaky-tests}. 
 %
-In the context of AV simulation, such rounding errors could result in accuracy issues of, for example, actor positions but we argue that the precision issues related to floating-point operations are better described as \textit{incorrectness} that is in fact repeatable; they do not cause non-determinism per se. So, even if the result of a mathematical operation is incorrect due to floating-point rounding errors, it should always be equally \textit{incorrect} when repeated for implementations that conform to the IEEE floating-point standard~\cite{8766229}. 
+In the context of AV simulation, this
+% finite-precision of floating point number representation 
+% such rounding errors 
+could result in accuracy issues of, for example, actor positions. While some authors suggest
+avoiding floating point representation entirely~\cite{empirical-analysis-of-flaky-tests}, we argue that the precision issues related to floating-point operations are better described as \textit{incorrectness} that is in fact repeatable; they do not cause non-determinism per se. So, even if the result of a mathematical operation is incorrect due to floating-point rounding errors, it should always be equally \textit{incorrect} when repeated for implementations that conform to the IEEE floating-point standard~\cite{8766229}. 
 %
 However, different compiler configurations, aggressive optimisations~\cite{llvm-floating-point}, 
-parallelisation within the runtime environment or at the hardware level and if the execution is performed on a GPU rather than a CPU\footnote{ CPU and GPU processors may have different register widths~\cite{Whitehead2011} } may all affect the execution order. 
+parallelisation within the runtime environment or at the hardware level and performing the execution on a GPU rather than a CPU\footnote{ CPU and GPU processors may have different register widths~\cite{Whitehead2011} } may all affect the execution order. 
 %
 In conclusion, floating-point arithmetic does not cause non-zero \textit{simulation variance} for repeated simulation runs when using the same executable, hardware, configuration and execution order.
 
@@ -230,7 +241,9 @@ In conclusion, floating-point arithmetic does not cause non-zero \textit{simulat
 
 Runtime scheduling is a resource management method for sharing computational resources between tasks of different or equal priority depending on the operating system's scheduler policy. A scheduler policy may be optimised in many ways such as for task throughput, deadline delivery or minimum latency~\cite{liu1973scheduling}. In principle, changing the scheduling policy and thread priorities may increase simulation variance. 
 
-It is unlikely that changes to thread priorities or scheduling policy would occur during repeated tests on the same hardware and should therefore give the same output. However, if some aspects of the game loop are multi-threaded\footnote{\url{https://docs.unity3d.com/Manual/JobSystemMultithreading.html}} 
+It is responsibility of the tester
+% It is unlikely 
+It's unlikely that changes to thread priorities or scheduling policy would occur during repeated tests on the same hardware and should therefore give the same output. However, if some aspects of the game loop are multi-threaded\footnote{\url{https://docs.unity3d.com/Manual/JobSystemMultithreading.html}} 
 % ~\cite{unity_multithreading} 
 or if the scheduler simply randomly selects from a set of threads with equal priority, this may alter an otherwise deterministic sequence of events. 
 
