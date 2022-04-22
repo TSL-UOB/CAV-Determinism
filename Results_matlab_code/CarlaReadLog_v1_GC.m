@@ -39,11 +39,11 @@ PCC=false; CC=false;
 % file = "TEST_CarsPeople_CG75.txt";
 % file = "TEST_CarsPeople_CG95.txt";
 % 
-file = "TEST_CarsPeopleCollision_CG0.txt";PCC=true;
+% file = "TEST_CarsPeopleCollision_CG0.txt";PCC=true;
 % file = "TEST_CarsPeopleCollision_CG25.txt";PCC=true;
 % file = "TEST_CarsPeopleCollision_CG50.txt";PCC=true;
 % file = "TEST_CarsPeopleCollision_CG75.txt"; PCC=true;
-% file = "TEST_CarsPeopleCollision_CG95.txt"; PCC=true;
+file = "TEST_CarsPeopleCollision_CG95.txt"; PCC=true;
 % 
 % file = "TEST_People_CG0.txt";
 % file = "TEST_People_CG25.txt";
@@ -85,9 +85,12 @@ rawData = zeros(nRepeats,nAgents,3,round(maxTime/timeStep));
 variance = zeros(nRepeats,nAgents,2);
 avgVar = zeros(nRepeats,1);
 
+
 %% For each agent get (T,X,Y) and interpolate, then variance
+data2D=[];
 for i=1:nRepeats
     for j=1:nAgents
+        A = data2D;
         sel1 = data.repeatNo==i; %select data for each repeat
         sel2 = data.agentNo==j; %select data for each agent
         sel = sel1 & sel2;
@@ -115,15 +118,53 @@ for i=1:nRepeats
         
         rawData = rawData(:,:,:,1:shortest_tempT); % chopping data to the shortest
         rawData(i,j,:,:) = [tempT, tempX, tempY]';
+        actor = j.* ones(length(squeeze(tempY)),1);
+        temp2D = [squeeze(tempX), squeeze(tempY), actor];
+        data2D = vertcat(A,temp2D);
 %         a=0
     end
 end
 
 %% Interpolate data if you need to?
 % % interpolate data
-% regT = min(tempT):0.1:max(tempT);
-% regX=interp1(tempT,tempX,regT,'linear','extrap');
-% regY=interp1(tempT,tempY,regT,'linear','extrap');
+regT = min(tempT):0.1:max(tempT);
+regX=interp1(tempT,tempX,regT,'linear','extrap');
+regY=interp1(tempT,tempY,regT,'linear','extrap');
+
+%% remove rows with zero
+zdata2D = data2D(all(data2D,2),:);
+% zdata2D(:,1) = zdata2D(:,1) * -1;
+zdata2D(:,2) = zdata2D(:,2) * -1;
+
+sel = zdata2D(:,3)==1;
+actor1 = zdata2D(sel,1:2);
+actor2 = zdata2D(zdata2D(:,3)==2,1:2);
+actor3 = zdata2D(zdata2D(:,3)==3,1:2);
+figure(1); clf; hold on; mkr=50;
+scatter(actor1(:,1), actor1(:,2),mkr,'sk'); 
+scatter(actor2(:,1), actor2(:,2),mkr,'ok'); 
+scatter(actor3(:,1), actor3(:,2),mkr,'*k')
+hLeg = legend('Vehicle 1', 'Vehicle 2', 'Pedestrian');
+set(gca,'FontSize',18)
+
+% save high res (40:14 = 2.85)
+xlim([-35 0])
+ylim([3 17])
+ax = gca; set(gcf, 'Color', 'w');
+exportgraphics(ax,'path_divergenceXY.png','Resolution',300)
+
+
+xlim([-28 -16])
+ylim([6 13])
+set(hLeg,'visible','off')
+ax = gca; set(gcf, 'Color', 'w');
+exportgraphics(ax,'path_divergenceXY_zoom.png','Resolution',300)
+
+
+xlim([-27 -22]) %5:1.5 = 2.5
+ylim([9.5 11])
+ax = gca; set(gcf, 'Color', 'w'); 
+exportgraphics(ax,'path_divergenceXY_zoom2.png','Resolution',300)
 
 %% Deviation vs time
 % for i=1:nRepeats
@@ -138,7 +179,7 @@ for j=1:nAgents
     varX = var(rawX,0,1);
     varY = var(rawY,0,1);
     
-%     plot(-rawX',-rawY')
+    plot(-rawX',-rawY')
 %     plot(varY)    
     Agent1DataIndex = data.agentNo == j;
     Agent1Data      = data(Agent1DataIndex,:);
